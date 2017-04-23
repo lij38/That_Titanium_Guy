@@ -7,6 +7,7 @@ import flixel.util.FlxColor;
 import flixel.FlxG;
 import flixel.math.FlxPoint;
 import flixel.FlxObject;
+import weapons.*;
 
 class Player extends FlxSprite {
 	public var speed:Float = 200;
@@ -16,9 +17,11 @@ class Player extends FlxSprite {
 	private var faced:Int = FlxObject.RIGHT;
 	private var numJump:Int = 0;
 	public var numJumpLimit:Int = 2;
-	
-	private var bulletArray:FlxTypedGroup<Bullet>;
-	
+	private var rifle:Rifle;
+	private var laser:Laser;
+	private var shotgun:Shotgun;
+	private var sword:Sword;
+
 	public function new(?X:Float=0, ?Y:Float=0, playerBulletArray:FlxTypedGroup<Bullet>) {
 		super(X, Y);
 		//makeGraphic(16, 16, FlxColor.BLUE);
@@ -36,7 +39,10 @@ class Player extends FlxSprite {
 		
 		acceleration.y = gravity;
 		
-		bulletArray = playerBulletArray;
+		rifle = new Rifle(playerBulletArray);
+		laser = new Laser(playerBulletArray);
+		shotgun = new Shotgun(playerBulletArray);
+		sword = new Sword(playerBulletArray);
 	}
 	
 	override public function update(elapsed:Float):Void {
@@ -129,18 +135,19 @@ class Player extends FlxSprite {
 				animation.play("stop");
 		}
 		
-		if (FlxG.keys.anyJustPressed([J, K])) {
+		if (FlxG.keys.anyJustPressed([J])) {
 			if (facing == FlxObject.NONE) {
-				attack(faced);
+				sword.attack(x, y, faced);
 			} else {
-				attack(facing);
+				sword.attack(x, y, facing);
+			}
+		}
+		if (FlxG.keys.anyJustPressed([K])) {
+			if (facing == FlxObject.NONE) {
+				shotgun.attack(x, y, faced);
+			} else {
+				shotgun.attack(x, y, facing);
 			}
 		}
 	}
-	
-	private function attack(direction:Int):Void {
-		var newBullet = new Bullet(x + 20, y + 20, 500, direction, 10);
-		bulletArray.add(newBullet);
-	}
-	
 }

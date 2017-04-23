@@ -8,6 +8,7 @@ import flixel.text.FlxText;
 import flixel.tile.FlxTilemap;
 import flixel.addons.editors.ogmo.FlxOgmoLoader;
 import flixel.ui.FlxButton;
+import weapons.*;
 
 class PlayState extends FlxState {
 	private var _player:Player;
@@ -44,6 +45,14 @@ class PlayState extends FlxState {
 	override public function update(elapsed:Float):Void {
 		super.update(elapsed);
 		FlxG.collide(_player, _mWalls);
+		for (pb in playerBullets){
+			//destroyed?
+			if (pb.isTouching(FlxObject.ANY) || (pb.x > _player.x + pb.getRange() 
+				|| (pb.x < _player.x - pb.getRange()))){
+				playerBullets.remove(pb);
+				pb.destroy();
+			}
+		}
 	}
 	
 	private function placeEntities(entityName:String, entityData:Xml):Void {
