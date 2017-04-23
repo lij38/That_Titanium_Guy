@@ -3,6 +3,7 @@ package;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxState;
+import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.text.FlxText;
 import flixel.tile.FlxTilemap;
 import flixel.addons.editors.ogmo.FlxOgmoLoader;
@@ -14,8 +15,11 @@ class PlayState extends FlxState {
 	private var _mWalls:FlxTilemap;
 	private var _btnMenu:FlxButton;
 	
+	private var playerBullets:FlxTypedGroup<Bullet>;
+	
 	override public function create():Void {
 		//add(new FlxText(10, 10, 100, "Hello, World!"));
+		trace("Hello world!");
 		_map = new FlxOgmoLoader("assets/data/first_level.oel");
 		_mWalls = _map.loadTilemap(AssetPaths.tiles__png, 16, 16, "walls");
 		_mWalls.follow();
@@ -23,7 +27,10 @@ class PlayState extends FlxState {
 		_mWalls.setTileProperties(2, FlxObject.ANY);
 		add(_mWalls);
 		
-		_player = new Player();
+		playerBullets = new FlxTypedGroup<Bullet>();
+		add(playerBullets);
+		
+		_player = new Player(playerBullets);
 		_map.loadEntities(placeEntities, "entities");
 		add(_player);
 		
