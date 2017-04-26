@@ -62,6 +62,11 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		
 		
+		
+		
+		
+		
+		
 		openfl.text.Font.registerFont (__ASSET__OPENFL__flixel_fonts_nokiafc22_ttf);
 		openfl.text.Font.registerFont (__ASSET__OPENFL__flixel_fonts_monsterrat_ttf);
 		
@@ -77,10 +82,20 @@ class DefaultAssetLibrary extends AssetLibrary {
 		type.set ("assets/data/first_level.oel", AssetType.TEXT);
 		className.set ("assets/data/first_map.oep", __ASSET__assets_data_first_map_oep);
 		type.set ("assets/data/first_map.oep", AssetType.TEXT);
+		className.set ("assets/images/a.png", __ASSET__assets_images_a_png);
+		type.set ("assets/images/a.png", AssetType.IMAGE);
+		className.set ("assets/images/b.png", __ASSET__assets_images_b_png);
+		type.set ("assets/images/b.png", AssetType.IMAGE);
+		className.set ("assets/images/c.png", __ASSET__assets_images_c_png);
+		type.set ("assets/images/c.png", AssetType.IMAGE);
+		className.set ("assets/images/d.png", __ASSET__assets_images_d_png);
+		type.set ("assets/images/d.png", AssetType.IMAGE);
 		className.set ("assets/images/home_rough (lighten).png", __ASSET__assets_images_home_rough__lighten__png);
 		type.set ("assets/images/home_rough (lighten).png", AssetType.IMAGE);
 		className.set ("assets/images/images-go-here.txt", __ASSET__assets_images_images_go_here_txt);
 		type.set ("assets/images/images-go-here.txt", AssetType.TEXT);
+		className.set ("assets/images/mainCharacter.png", __ASSET__assets_images_maincharacter_png);
+		type.set ("assets/images/mainCharacter.png", AssetType.IMAGE);
 		className.set ("assets/images/player.png", __ASSET__assets_images_player_png);
 		type.set ("assets/images/player.png", AssetType.IMAGE);
 		className.set ("assets/images/tiles.png", __ASSET__assets_images_tiles_png);
@@ -118,6 +133,22 @@ class DefaultAssetLibrary extends AssetLibrary {
 		path.set (id, id);
 		
 		type.set (id, AssetType.TEXT);
+		id = "assets/images/a.png";
+		path.set (id, id);
+		
+		type.set (id, AssetType.IMAGE);
+		id = "assets/images/b.png";
+		path.set (id, id);
+		
+		type.set (id, AssetType.IMAGE);
+		id = "assets/images/c.png";
+		path.set (id, id);
+		
+		type.set (id, AssetType.IMAGE);
+		id = "assets/images/d.png";
+		path.set (id, id);
+		
+		type.set (id, AssetType.IMAGE);
 		id = "assets/images/home_rough (lighten).png";
 		path.set (id, id);
 		
@@ -126,6 +157,10 @@ class DefaultAssetLibrary extends AssetLibrary {
 		path.set (id, id);
 		
 		type.set (id, AssetType.TEXT);
+		id = "assets/images/mainCharacter.png";
+		path.set (id, id);
+		
+		type.set (id, AssetType.IMAGE);
 		id = "assets/images/player.png";
 		path.set (id, id);
 		
@@ -193,11 +228,26 @@ class DefaultAssetLibrary extends AssetLibrary {
 		className.set ("assets/data/first_map.oep", __ASSET__assets_data_first_map_oep);
 		type.set ("assets/data/first_map.oep", AssetType.TEXT);
 		
+		className.set ("assets/images/a.png", __ASSET__assets_images_a_png);
+		type.set ("assets/images/a.png", AssetType.IMAGE);
+		
+		className.set ("assets/images/b.png", __ASSET__assets_images_b_png);
+		type.set ("assets/images/b.png", AssetType.IMAGE);
+		
+		className.set ("assets/images/c.png", __ASSET__assets_images_c_png);
+		type.set ("assets/images/c.png", AssetType.IMAGE);
+		
+		className.set ("assets/images/d.png", __ASSET__assets_images_d_png);
+		type.set ("assets/images/d.png", AssetType.IMAGE);
+		
 		className.set ("assets/images/home_rough (lighten).png", __ASSET__assets_images_home_rough__lighten__png);
 		type.set ("assets/images/home_rough (lighten).png", AssetType.IMAGE);
 		
 		className.set ("assets/images/images-go-here.txt", __ASSET__assets_images_images_go_here_txt);
 		type.set ("assets/images/images-go-here.txt", AssetType.TEXT);
+		
+		className.set ("assets/images/mainCharacter.png", __ASSET__assets_images_maincharacter_png);
+		type.set ("assets/images/mainCharacter.png", AssetType.IMAGE);
 		
 		className.set ("assets/images/player.png", __ASSET__assets_images_player_png);
 		type.set ("assets/images/player.png", AssetType.IMAGE);
@@ -876,8 +926,13 @@ class DefaultAssetLibrary extends AssetLibrary {
 @:keep @:bind #if display private #end class __ASSET__assets_data_data_goes_here_txt extends null { }
 @:keep @:bind #if display private #end class __ASSET__assets_data_first_level_oel extends null { }
 @:keep @:bind #if display private #end class __ASSET__assets_data_first_map_oep extends null { }
+@:keep @:bind #if display private #end class __ASSET__assets_images_a_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind #if display private #end class __ASSET__assets_images_b_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind #if display private #end class __ASSET__assets_images_c_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind #if display private #end class __ASSET__assets_images_d_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__assets_images_home_rough__lighten__png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__assets_images_images_go_here_txt extends null { }
+@:keep @:bind #if display private #end class __ASSET__assets_images_maincharacter_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__assets_images_player_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__assets_images_tiles_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__assets_music_music_goes_here_txt extends null { }
@@ -891,6 +946,11 @@ class DefaultAssetLibrary extends AssetLibrary {
 
 
 #elseif html5
+
+
+
+
+
 
 
 
@@ -919,8 +979,13 @@ class DefaultAssetLibrary extends AssetLibrary {
 @:file("assets/data/data-goes-here.txt") #if display private #end class __ASSET__assets_data_data_goes_here_txt extends lime.utils.Bytes {}
 @:file("assets/data/first_level.oel") #if display private #end class __ASSET__assets_data_first_level_oel extends lime.utils.Bytes {}
 @:file("assets/data/first_map.oep") #if display private #end class __ASSET__assets_data_first_map_oep extends lime.utils.Bytes {}
+@:image("assets/images/a.png") #if display private #end class __ASSET__assets_images_a_png extends lime.graphics.Image {}
+@:image("assets/images/b.png") #if display private #end class __ASSET__assets_images_b_png extends lime.graphics.Image {}
+@:image("assets/images/c.png") #if display private #end class __ASSET__assets_images_c_png extends lime.graphics.Image {}
+@:image("assets/images/d.png") #if display private #end class __ASSET__assets_images_d_png extends lime.graphics.Image {}
 @:image("assets/images/home_rough (lighten).png") #if display private #end class __ASSET__assets_images_home_rough__lighten__png extends lime.graphics.Image {}
 @:file("assets/images/images-go-here.txt") #if display private #end class __ASSET__assets_images_images_go_here_txt extends lime.utils.Bytes {}
+@:image("assets/images/mainCharacter.png") #if display private #end class __ASSET__assets_images_maincharacter_png extends lime.graphics.Image {}
 @:image("assets/images/player.png") #if display private #end class __ASSET__assets_images_player_png extends lime.graphics.Image {}
 @:image("assets/images/tiles.png") #if display private #end class __ASSET__assets_images_tiles_png extends lime.graphics.Image {}
 @:file("assets/music/music-goes-here.txt") #if display private #end class __ASSET__assets_music_music_goes_here_txt extends lime.utils.Bytes {}

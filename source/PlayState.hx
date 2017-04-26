@@ -44,6 +44,11 @@ class PlayState extends FlxState {
 	override public function update(elapsed:Float):Void {
 		super.update(elapsed);
 		FlxG.collide(_player, _mWalls);
+		FlxG.collide(_mWalls, playerBullets, bulletsHitWalls);
+	}
+	
+	public function bulletsHitWalls(Object1:FlxObject, Object2:FlxObject):Void {
+		//
 	}
 	
 	private function placeEntities(entityName:String, entityData:Xml):Void {

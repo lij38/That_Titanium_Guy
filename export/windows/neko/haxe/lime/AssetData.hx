@@ -22,6 +22,14 @@ class AssetData {
 			type.set ("assets/data/first_level.oel", Reflect.field (AssetType, "text".toUpperCase ()));
 			path.set ("assets/data/first_map.oep", "assets/data/first_map.oep");
 			type.set ("assets/data/first_map.oep", Reflect.field (AssetType, "text".toUpperCase ()));
+			path.set ("assets/images/e.png", "assets/images/e.png");
+			type.set ("assets/images/e.png", Reflect.field (AssetType, "image".toUpperCase ()));
+			path.set ("assets/images/f.png", "assets/images/f.png");
+			type.set ("assets/images/f.png", Reflect.field (AssetType, "image".toUpperCase ()));
+			path.set ("assets/images/g.png", "assets/images/g.png");
+			type.set ("assets/images/g.png", Reflect.field (AssetType, "image".toUpperCase ()));
+			path.set ("assets/images/h.png", "assets/images/h.png");
+			type.set ("assets/images/h.png", Reflect.field (AssetType, "image".toUpperCase ()));
 			path.set ("assets/images/home_rough (lighten).png", "assets/images/home_rough (lighten).png");
 			type.set ("assets/images/home_rough (lighten).png", Reflect.field (AssetType, "image".toUpperCase ()));
 			path.set ("assets/images/images-go-here.txt", "assets/images/images-go-here.txt");
