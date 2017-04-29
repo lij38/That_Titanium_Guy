@@ -10,6 +10,8 @@ class Bullet extends FlxSprite {
 	private var direction:Int;
 	private var damage:Float;
 	private var range:Float;
+	private var xpos:Float;
+	private var ypos:Float;
 	
 	public function new(X:Float=0, Y:Float=0, Speed:Float, Direction:Int, Damage:Float, Range:Float) {
 		super(X, Y);
@@ -17,12 +19,17 @@ class Bullet extends FlxSprite {
 		direction = Direction;
 		damage = Damage;
 		range = Range;
+		xpos = X;
+		ypos = Y;
 		//makeGraphic(6, 6, FlxColor.BLUE);
 		//loadGraphic(AssetPaths.player__png, true, 6, 6, true, "bullet");
 	}
 	
-	public function getRange() {
-		return range;
+	public function outOfRange(pbx:Float):Bool {
+		if((pbx > xpos + range) || (pbx < xpos - range)) {
+			return true;
+		}
+		return false;
 	}
 	
 	override public function update(elapsed:Float):Void {

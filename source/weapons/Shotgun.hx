@@ -1,13 +1,13 @@
 package weapons;
 import flixel.group.FlxGroup;
+import flixel.FlxObject;
 
 class Shotgun extends Weapon {
     override public function new(playerBulletArray:FlxTypedGroup<Bullet>) {
         super(playerBulletArray);
         this.damage = new Array<Int>();
-        damage.push(60);
-        for(i in 1...5) {
-            this.damage.push(cast(damage[i - 1] * 1.5, Int));
+        for(i in 1...6) {
+            this.damage.push(i * 10);
         }
 
         this.type = "ballistic";
@@ -24,8 +24,22 @@ class Shotgun extends Weapon {
         if(curAmmo < 1) {
             reload();
         }
-        var newBullet = new ShotgunBullet(x + 20, y, speed, direction, this.damage[damageIndex], range);
-		this.bulletArray.add(newBullet);
+        if(direction == FlxObject.LEFT) {
+            var angle:Int = 165;
+            for(i in 0...5) {
+                var newBullet = new ShotgunBullet(x + 20, y, speed, angle, this.damage[damageIndex], range);
+                this.bulletArray.add(newBullet);
+                angle += 6;
+            }
+        }
+        if(direction == FlxObject.RIGHT) {
+            var angle:Int = 345;
+            for(i in 0...5) {
+                var newBullet = new ShotgunBullet(x + 20, y, speed, angle % 360, this.damage[damageIndex], range);
+                this.bulletArray.add(newBullet);
+                angle += 6;
+            }
+        }
         curAmmo--;
     }
 }

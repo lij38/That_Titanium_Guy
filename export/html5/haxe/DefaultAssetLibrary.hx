@@ -62,6 +62,7 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		
 		
+		
 		openfl.text.Font.registerFont (__ASSET__OPENFL__flixel_fonts_nokiafc22_ttf);
 		openfl.text.Font.registerFont (__ASSET__OPENFL__flixel_fonts_monsterrat_ttf);
 		
@@ -77,6 +78,8 @@ class DefaultAssetLibrary extends AssetLibrary {
 		type.set ("assets/data/first_level.oel", AssetType.TEXT);
 		className.set ("assets/data/first_map.oep", __ASSET__assets_data_first_map_oep);
 		type.set ("assets/data/first_map.oep", AssetType.TEXT);
+		className.set ("assets/images/h.png", __ASSET__assets_images_h_png);
+		type.set ("assets/images/h.png", AssetType.IMAGE);
 		className.set ("assets/images/home_rough (lighten).png", __ASSET__assets_images_home_rough__lighten__png);
 		type.set ("assets/images/home_rough (lighten).png", AssetType.IMAGE);
 		className.set ("assets/images/images-go-here.txt", __ASSET__assets_images_images_go_here_txt);
@@ -118,6 +121,10 @@ class DefaultAssetLibrary extends AssetLibrary {
 		path.set (id, id);
 		
 		type.set (id, AssetType.TEXT);
+		id = "assets/images/h.png";
+		path.set (id, id);
+		
+		type.set (id, AssetType.IMAGE);
 		id = "assets/images/home_rough (lighten).png";
 		path.set (id, id);
 		
@@ -192,6 +199,9 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		className.set ("assets/data/first_map.oep", __ASSET__assets_data_first_map_oep);
 		type.set ("assets/data/first_map.oep", AssetType.TEXT);
+		
+		className.set ("assets/images/h.png", __ASSET__assets_images_h_png);
+		type.set ("assets/images/h.png", AssetType.IMAGE);
 		
 		className.set ("assets/images/home_rough (lighten).png", __ASSET__assets_images_home_rough__lighten__png);
 		type.set ("assets/images/home_rough (lighten).png", AssetType.IMAGE);
@@ -876,6 +886,7 @@ class DefaultAssetLibrary extends AssetLibrary {
 @:keep @:bind #if display private #end class __ASSET__assets_data_data_goes_here_txt extends null { }
 @:keep @:bind #if display private #end class __ASSET__assets_data_first_level_oel extends null { }
 @:keep @:bind #if display private #end class __ASSET__assets_data_first_map_oep extends null { }
+@:keep @:bind #if display private #end class __ASSET__assets_images_h_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__assets_images_home_rough__lighten__png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__assets_images_images_go_here_txt extends null { }
 @:keep @:bind #if display private #end class __ASSET__assets_images_player_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
@@ -891,6 +902,7 @@ class DefaultAssetLibrary extends AssetLibrary {
 
 
 #elseif html5
+
 
 
 
@@ -919,18 +931,19 @@ class DefaultAssetLibrary extends AssetLibrary {
 @:file("assets/data/data-goes-here.txt") #if display private #end class __ASSET__assets_data_data_goes_here_txt extends lime.utils.Bytes {}
 @:file("assets/data/first_level.oel") #if display private #end class __ASSET__assets_data_first_level_oel extends lime.utils.Bytes {}
 @:file("assets/data/first_map.oep") #if display private #end class __ASSET__assets_data_first_map_oep extends lime.utils.Bytes {}
+@:image("assets/images/h.png") #if display private #end class __ASSET__assets_images_h_png extends lime.graphics.Image {}
 @:image("assets/images/home_rough (lighten).png") #if display private #end class __ASSET__assets_images_home_rough__lighten__png extends lime.graphics.Image {}
 @:file("assets/images/images-go-here.txt") #if display private #end class __ASSET__assets_images_images_go_here_txt extends lime.utils.Bytes {}
 @:image("assets/images/player.png") #if display private #end class __ASSET__assets_images_player_png extends lime.graphics.Image {}
 @:image("assets/images/tiles.png") #if display private #end class __ASSET__assets_images_tiles_png extends lime.graphics.Image {}
 @:file("assets/music/music-goes-here.txt") #if display private #end class __ASSET__assets_music_music_goes_here_txt extends lime.utils.Bytes {}
 @:file("assets/sounds/sounds-go-here.txt") #if display private #end class __ASSET__assets_sounds_sounds_go_here_txt extends lime.utils.Bytes {}
-@:file("C:/HaxeToolkit/haxe/lib/flixel/4,2,1/assets/sounds/beep.ogg") #if display private #end class __ASSET__flixel_sounds_beep_ogg extends lime.utils.Bytes {}
-@:file("C:/HaxeToolkit/haxe/lib/flixel/4,2,1/assets/sounds/flixel.ogg") #if display private #end class __ASSET__flixel_sounds_flixel_ogg extends lime.utils.Bytes {}
-@:font("C:/HaxeToolkit/haxe/lib/flixel/4,2,1/assets/fonts/nokiafc22.ttf") #if display private #end class __ASSET__flixel_fonts_nokiafc22_ttf extends lime.text.Font {}
-@:font("C:/HaxeToolkit/haxe/lib/flixel/4,2,1/assets/fonts/monsterrat.ttf") #if display private #end class __ASSET__flixel_fonts_monsterrat_ttf extends lime.text.Font {}
-@:image("C:/HaxeToolkit/haxe/lib/flixel/4,2,1/assets/images/ui/button.png") #if display private #end class __ASSET__flixel_images_ui_button_png extends lime.graphics.Image {}
-@:image("C:/HaxeToolkit/haxe/lib/flixel/4,2,1/assets/images/logo/default.png") #if display private #end class __ASSET__flixel_images_logo_default_png extends lime.graphics.Image {}
+@:file("/usr/local/lib/haxe/lib/flixel/4,2,1/assets/sounds/beep.ogg") #if display private #end class __ASSET__flixel_sounds_beep_ogg extends lime.utils.Bytes {}
+@:file("/usr/local/lib/haxe/lib/flixel/4,2,1/assets/sounds/flixel.ogg") #if display private #end class __ASSET__flixel_sounds_flixel_ogg extends lime.utils.Bytes {}
+@:font("/usr/local/lib/haxe/lib/flixel/4,2,1/assets/fonts/nokiafc22.ttf") #if display private #end class __ASSET__flixel_fonts_nokiafc22_ttf extends lime.text.Font {}
+@:font("/usr/local/lib/haxe/lib/flixel/4,2,1/assets/fonts/monsterrat.ttf") #if display private #end class __ASSET__flixel_fonts_monsterrat_ttf extends lime.text.Font {}
+@:image("/usr/local/lib/haxe/lib/flixel/4,2,1/assets/images/ui/button.png") #if display private #end class __ASSET__flixel_images_ui_button_png extends lime.graphics.Image {}
+@:image("/usr/local/lib/haxe/lib/flixel/4,2,1/assets/images/logo/default.png") #if display private #end class __ASSET__flixel_images_logo_default_png extends lime.graphics.Image {}
 
 
 

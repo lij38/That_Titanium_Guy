@@ -45,16 +45,21 @@ class PlayState extends FlxState {
 	override public function update(elapsed:Float):Void {
 		super.update(elapsed);
 		FlxG.collide(_player, _mWalls);
+		FlxG.collide(playerBullets, _mWalls, bulletHitWall);
 		for (pb in playerBullets){
 			//destroyed?
-			if (pb.isTouching(FlxObject.ANY) || (pb.x > _player.x + pb.getRange() 
-				|| (pb.x < _player.x - pb.getRange()))){
+			if (pb.outOfRange(pb.x)){
 				playerBullets.remove(pb);
 				pb.destroy();
 			}
 		}
 	}
 	
+	public function bulletHitWall(pb:Bullet, wall:FlxObject):Void {
+		playerBullets.remove(pb);
+		pb.destroy();
+	}
+
 	private function placeEntities(entityName:String, entityData:Xml):Void {
 		var x:Int = Std.parseInt(entityData.get("x"));
 		var y:Int = Std.parseInt(entityData.get("y"));
@@ -67,4 +72,6 @@ class PlayState extends FlxState {
 	private function clickMenu():Void {
 		FlxG.switchState(new MenuState());
 	}
+
+
 }

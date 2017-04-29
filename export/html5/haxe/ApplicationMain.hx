@@ -42,6 +42,10 @@ class ApplicationMain {
 		types.push (lime.Assets.AssetType.TEXT);
 		
 		
+		urls.push ("assets/images/h.png");
+		types.push (lime.Assets.AssetType.IMAGE);
+		
+		
 		urls.push ("assets/images/home_rough (lighten).png");
 		types.push (lime.Assets.AssetType.IMAGE);
 		
@@ -151,7 +155,7 @@ class ApplicationMain {
 		
 		config = {
 			
-			build: "66",
+			build: "112",
 			company: "HaxeFlixel",
 			file: "FlixelTut",
 			fps: 60,
