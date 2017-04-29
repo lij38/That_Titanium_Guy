@@ -29,27 +29,6 @@ class Player extends FlxSprite {
 	public function new(?X:Float=0, ?Y:Float=0, playerBulletArray:FlxTypedGroup<Bullet>) {
 		super(X, Y);
 		
-		/*loadGraphic(AssetPaths.player__png, true, 16, 16);
-		setFacingFlip(FlxObject.LEFT, false, false);
-		setFacingFlip(FlxObject.RIGHT, true, false);
-		
-		scale.set(4, 4);
-		animation.add("lr", [3, 4, 3, 5], 6, false);
-		animation.add("stop", [3], 1, false);
-		
-		setSize(40, 50);
-		offset.set( -10, -15);
-		*/
-		
-		/*loadGraphic(AssetPaths.mainCharacter__png, true, 518, 854);
-		setFacingFlip(FlxObject.LEFT, true, false);
-		setFacingFlip(FlxObject.RIGHT, false, false);
-		scale.set(0.2, 0.2);
-		animation.add("lr", [1, 2, 3, 4, 5, 6], 5, false);
-		animation.add("stop", [0], 1, false);
-		offset.set(230, 360);
-		setSize(60, 150);*/
-		
 		loadGraphic(AssetPaths.h__png, true, 408, 435);
 		setFacingFlip(FlxObject.LEFT, true, false);
 		setFacingFlip(FlxObject.RIGHT, false, false);
@@ -97,13 +76,14 @@ class Player extends FlxSprite {
 		var rightP:Bool = false;
 		var jetpack:Bool = false;
 		
+		
 		if (!isTumbling()) {
 			tumbleTimer = -1;
-			up = FlxG.keys.anyPressed([UP, W, SPACE]);
+			up = FlxG.keys.anyPressed([UP, W]);
 			down = FlxG.keys.anyPressed([DOWN, S]);
 			left = FlxG.keys.anyPressed([LEFT, A]);
 			right = FlxG.keys.anyPressed([RIGHT, D]);
-			doubleJump = FlxG.keys.anyJustPressed([UP, W, SPACE]);
+			doubleJump = FlxG.keys.anyJustPressed([UP, W]);
 			
 			leftP = FlxG.keys.anyJustPressed([LEFT, A]);
 			rightP = FlxG.keys.anyJustPressed([RIGHT, D]);
