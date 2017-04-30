@@ -20,9 +20,10 @@ class Shotgun extends Weapon {
         this.curAmmo = 8;
     }
 
-    public function attack(x:Float, y:Float, direction:Int) {
+    public function attack(x:Float, y:Float, direction:Int):Bool {
         if(curAmmo < 1) {
             reload();
+            return false;
         }
         if(direction == FlxObject.LEFT) {
             var angle:Int = 165;
@@ -41,5 +42,6 @@ class Shotgun extends Weapon {
             }
         }
         curAmmo--;
+        return true;
     }
 }

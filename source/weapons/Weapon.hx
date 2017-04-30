@@ -11,6 +11,7 @@ class Weapon {
     private var bulletArray:FlxTypedGroup<Bullet>;
     private var magCapacity:Int;
     private var curAmmo:Int;
+    private var isReloading:Bool;
 
     public function new(playerBulletArray:FlxTypedGroup<Bullet>) {
         this.damageIndex = 0;
