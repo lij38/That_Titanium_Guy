@@ -17,11 +17,11 @@ class Player extends FlxSprite {
 	private var numJump:Int = 0;
 	public var numJumpLimit:Int = 2;
 	
-	private var leftTimer:Float = -1;
-	private var rightTimer:Float = -1;
+	//private var leftTimer:Float = -1;
+	//private var rightTimer:Float = -1;
 	private var tumbleTimer:Float = -1;
 	
-	private var TumblePressedBetween:Float = 0.3;
+	//private var TumblePressedBetween:Float = 0.3;
 	private var TumbleTime:Float = 0.3;
 	
 	private var bulletArray:FlxTypedGroup<Bullet>;
@@ -54,28 +54,28 @@ class Player extends FlxSprite {
 	
 	private function movement(elapsed:Float):Void {
 		
-		if (leftTimer >= 0) {
-			leftTimer += elapsed;
-		}
-		if (leftTimer > TumblePressedBetween) {
-			leftTimer = -1;
-		}
-		if (rightTimer >= 0) {
-			rightTimer += elapsed;
-		}
-		if (rightTimer > TumblePressedBetween) {
-			rightTimer = -1;
-		}
+		//if (leftTimer >= 0) {
+			//leftTimer += elapsed;
+		//}
+		//if (leftTimer > TumblePressedBetween) {
+			//leftTimer = -1;
+		//}
+		//if (rightTimer >= 0) {
+			//rightTimer += elapsed;
+		//}
+		//if (rightTimer > TumblePressedBetween) {
+			//rightTimer = -1;
+		//}
 		
 		var up:Bool = false;
 		var down:Bool = false;
 		var left:Bool = false;
 		var right:Bool = false;
 		var doubleJump:Bool = false;
-		var leftP:Bool = false;
-		var rightP:Bool = false;
+		//var leftP:Bool = false;
+		//var rightP:Bool = false;
 		var jetpack:Bool = false;
-		
+		var roll:Bool = false;
 		
 		if (!isTumbling()) {
 			tumbleTimer = -1;
@@ -85,10 +85,12 @@ class Player extends FlxSprite {
 			right = FlxG.keys.anyPressed([RIGHT, D]);
 			doubleJump = FlxG.keys.anyJustPressed([UP, W]);
 			
-			leftP = FlxG.keys.anyJustPressed([LEFT, A]);
-			rightP = FlxG.keys.anyJustPressed([RIGHT, D]);
+			//leftP = FlxG.keys.anyJustPressed([LEFT, A]);
+			//rightP = FlxG.keys.anyJustPressed([RIGHT, D]);
 			
 			jetpack = FlxG.keys.anyPressed([SHIFT]);
+			
+			roll = FlxG.keys.anyJustPressed([SPACE]);
 		} else {
 			tumble(FlxObject.NONE, elapsed);
 		}
@@ -98,7 +100,8 @@ class Player extends FlxSprite {
 		if (left && right)
 			left = right = false;
 		
-		if (!up && !down && !jetpack) {
+		// double tap rip
+		/*if (!up && !down && !jetpack) {
 			if (leftP && leftTimer < 0) {
 				leftTimer = 0.0;
 			} else if (leftTimer >= 0 && leftP) {
@@ -119,7 +122,7 @@ class Player extends FlxSprite {
 					trace("Tumble!!!");
 				}
 			}
-		}
+		}*/
 		
 		if (jetpack) {
 			if (up || down || left || right) {
@@ -131,11 +134,13 @@ class Player extends FlxSprite {
 					if (up) mA += 45;
 					else if (down) mA -= 45;
 					facing = FlxObject.LEFT;
+					faced = FlxObject.LEFT;
 				} else if (right) {
 					mA = 0;
 					if (up) mA -= 45;
 					else if (down) mA += 45;
 					facing = FlxObject.RIGHT;
+					faced = FlxObject.RIGHT;
 				} else if (up) {
 					mA = -90;
 				} else if (down) {
@@ -147,6 +152,8 @@ class Player extends FlxSprite {
 			} else {
 				velocity.set(0, 0);
 			}
+		} else if (roll) {
+			tumble(faced, elapsed);
 		} else if (!isTumbling()) {
 			acceleration.y = gravity;
 			if (left) {
@@ -212,7 +219,7 @@ class Player extends FlxSprite {
 					animation.play("stop");
 			}
 		}
-		if (FlxG.keys.anyJustPressed([J, K])) {
+		if (!isTumbling() && FlxG.keys.anyJustPressed([J, K])) {
 			if (facing == FlxObject.NONE) {
 				attack(faced);
 			} else {
