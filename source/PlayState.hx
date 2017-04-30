@@ -8,6 +8,7 @@ import flixel.text.FlxText;
 import flixel.tile.FlxTilemap;
 import flixel.addons.editors.ogmo.FlxOgmoLoader;
 import flixel.ui.FlxButton;
+import weapons.*;
 
 class PlayState extends FlxState {
 	private var _player:Player;
@@ -49,8 +50,21 @@ class PlayState extends FlxState {
 	
 	public function bulletsHitWalls(Object1:FlxObject, Object2:FlxObject):Void {
 		//
+		FlxG.collide(playerBullets, _mWalls, bulletHitWall);
+		for (pb in playerBullets){
+			//destroyed?
+			if (pb.outOfRange(pb.x)){
+				playerBullets.remove(pb);
+				pb.destroy();
+			}
+		}
 	}
 	
+	public function bulletHitWall(pb:Bullet, wall:FlxObject):Void {
+		playerBullets.remove(pb);
+		pb.destroy();
+	}
+
 	private function placeEntities(entityName:String, entityData:Xml):Void {
 		var x:Int = Std.parseInt(entityData.get("x"));
 		var y:Int = Std.parseInt(entityData.get("y"));
@@ -63,4 +77,6 @@ class PlayState extends FlxState {
 	private function clickMenu():Void {
 		FlxG.switchState(new MenuState());
 	}
+
+
 }
