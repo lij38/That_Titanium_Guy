@@ -9,17 +9,19 @@ class Laser extends Weapon {
             this.damage.push(i * 12);
         }
 
+        this.name = "laser rifle";
         this.type = "energy";
         this.range = 1000;
-        this.fireRate = 5;
-        this.speed = 1000;
+        this.fireRate = 0.2;
+        this.speed = 1300;
         this.bulletArray = playerBulletArray;
 
         this.magCapacity = 20;
         this.curAmmo = 20;
+        this.reloadTime = 1.5;
     }
 
-    public function attack(x:Float, y:Float, direction:Int): Bool {
+    public override function attack(x:Float, y:Float, direction:Int): Bool {
         if(curAmmo < 1) {
             reload();
             return false;

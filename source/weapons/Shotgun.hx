@@ -5,6 +5,7 @@ import flixel.FlxObject;
 class Shotgun extends Weapon {
     override public function new(playerBulletArray:FlxTypedGroup<Bullet>) {
         super(playerBulletArray);
+        this.name = "shotgun";
         this.damage = new Array<Int>();
         for(i in 1...6) {
             this.damage.push(i * 10);
@@ -12,15 +13,16 @@ class Shotgun extends Weapon {
 
         this.type = "ballistic";
         this.range = 300;
-        this.fireRate = 5;
-        this.speed = 1000;
+        this.fireRate = 0.5;
+        this.speed = 1300;
         this.bulletArray = playerBulletArray;
 
         this.magCapacity = 8;
         this.curAmmo = 8;
+        this.reloadTime = 3.0;
     }
 
-    public function attack(x:Float, y:Float, direction:Int):Bool {
+    public override function attack(x:Float, y:Float, direction:Int):Bool {
         if(curAmmo < 1) {
             reload();
             return false;
