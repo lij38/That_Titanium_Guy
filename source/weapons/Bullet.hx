@@ -45,4 +45,8 @@ class Bullet extends FlxSprite {
 	override public function destroy():Void {
 		super.destroy();
 	}
+	
+	public function getDamage():Float {
+		return damage;
+	}
 }

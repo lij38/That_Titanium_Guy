@@ -14,25 +14,16 @@ class MenuState extends FlxState {
 	override public function create():Void {
 		_btnPlay = new FlxButton(0, 0, "Play", clickPlay);
 		_btnPlay.screenCenter();
-		
-		//
-		/*spritesheet = new FlxSprite(0, 0);
-		spritesheet.loadGraphic(AssetPaths.mainCharacter__png, true, 518, 854);
-		spritesheet.animation.add("lr", [1, 2, 3, 4, 5, 6], 6, true);
-		spritesheet.animation.add("stop", [0], 1, false);
-		add(spritesheet);
-		
-		spritesheet.scale.set(0.2, 0.2);
-		spritesheet.animation.play("lr");
-		spritesheet.offset.set(230, 360);
-		spritesheet.setSize(60, 100);*/
-		
+
 		spritesheet = new FlxSprite(0, 0);
-		spritesheet.loadGraphic(AssetPaths.p__png, true, 472, 418);
-		spritesheet.animation.add("lr", [0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 9, true);
+		spritesheet.loadGraphic(AssetPaths.v__png, true, 552, 381);
+		spritesheet.animation.add("lr", [0, 1, 2, 3, 4, 5, 
+										 0, 1, 2, 3, 4, 5, 
+										 6, 6, 8, 8, 6, 6, 8, 8, 9, 
+										 10, 10, 10, 10, 10], 9, true);
 		//spritesheet.animation.add("stop", [0], 1, false);
 		add(spritesheet);
-		spritesheet.scale.set(0.25, 0.25);
+		spritesheet.scale.set(0.3, 0.3);
 		spritesheet.setSize(102, 109);
 		spritesheet.offset.set(50, 50);
 		spritesheet.animation.play("lr");

@@ -1,0 +1,1 @@
+t_01.png.png 0 48, t_02.png.png 279 46, t_03.png.png 577 58, t_04.png.png 886 43, t_05.png.png 1197 48, t_06.png.png 1528 52, t_07.png.png 1863 49, t_08.png.png 2174 52, t_09.png.png 2650 49, t_10.png.png 2992 127, t_11.png.png 3561 301.

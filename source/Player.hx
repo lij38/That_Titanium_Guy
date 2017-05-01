@@ -11,7 +11,7 @@ import weapons.*;
 
 class Player extends FlxSprite {
 	public var speed:Float = 200;
-	private var gravity:Float = 1000;
+	private var GRAVITY:Float;
 	private var jumped:Bool = false;
 	private var jump:Float = 0.0;
 	private var faced:Int = FlxObject.RIGHT;
@@ -34,23 +34,26 @@ class Player extends FlxSprite {
 	private var leftReloadTimer:Float = -0.1;
 	private var rightReloadTimer:Float = -0.1;
 	
-	public function new(?X:Float=0, ?Y:Float=0, playerBulletArray:FlxTypedGroup<Bullet>) {
+	public function new(?X:Float = 0, ?Y:Float = 0, playerBulletArray:FlxTypedGroup<Bullet>, 
+						gravity:Float) {
 		super(X, Y);
 		
+		GRAVITY = gravity;
+		
 		loadGraphic(AssetPaths.h__png, true, 408, 435);
+		scale.set(0.25, 0.25);
+		offset.set(190, 175);
+		setSize(40, 90);
+		
 		setFacingFlip(FlxObject.LEFT, true, false);
 		setFacingFlip(FlxObject.RIGHT, false, false);
-		scale.set(0.25, 0.25);
 		animation.add("lr", [2, 3, 4, 5, 6, 7, 8, 9], 12, false);
 		animation.add("stop", [1], 1, false);
 		animation.add("jetpack", [17, 18], 12, false);
-		//animation.add("beginjump", [14], 1, false);
 		animation.add("midjump", [15], 1, false);
 		animation.add("tumble", [10, 11, 12, 13], 12, false);
-		offset.set(170, 175);
-		setSize(70, 90);
 		
-		acceleration.y = gravity;
+		acceleration.y = GRAVITY;
 		
 		bulletArray = playerBulletArray;
 
@@ -189,7 +192,7 @@ class Player extends FlxSprite {
 		} else if (roll) {
 			tumble(faced, elapsed);
 		} else if (!isTumbling()) {
-			acceleration.y = gravity;
+			acceleration.y = GRAVITY;
 			if (left) {
 				facing = FlxObject.LEFT;
 				faced = FlxObject.LEFT;
@@ -243,7 +246,7 @@ class Player extends FlxSprite {
 			animation.play("tumble");
 		} else if (jetpack) {
 			animation.play("jetpack");
-		} else if (velocity.y != 0) {
+		} else if (!isTouching(FlxObject.DOWN)) {
 			animation.play("midjump");
 		} else {
 			switch (facing) {
@@ -309,7 +312,7 @@ class Player extends FlxSprite {
 	}
 
 	private function tumble(direction:Int, elapsed:Float):Void {
-		acceleration.y = gravity;
+		acceleration.y = GRAVITY;
 		if (direction == FlxObject.LEFT) {
 			velocity.x = -speed * 3;
 		} else if (direction == FlxObject.RIGHT) {
@@ -324,7 +327,7 @@ class Player extends FlxSprite {
 		}
 	}
 	
-	private function isTumbling():Bool {
+	public function isTumbling():Bool {
 		return tumbleTimer >= 0 && tumbleTimer < TumbleTime;
 	}
 }
