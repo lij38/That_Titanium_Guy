@@ -18,21 +18,25 @@ class Player extends FlxSprite {
 	private var numJump:Int = 0;
 	public var numJumpLimit:Int = 2;
 	
-	private var leftTimer:Float = -1;
-	private var rightTimer:Float = -1;
+	//private var leftTimer:Float = -1;
+	//private var rightTimer:Float = -1;
 	private var tumbleTimer:Float = -1;
 	
-	private var TumblePressedBetween:Float = 0.3;
+	//private var TumblePressedBetween:Float = 0.3;
 	private var TumbleTime:Float = 0.3;
+	
+	private var bulletArray:FlxTypedGroup<Bullet>;
 
-	private var rifle:Rifle;
-	private var laser:Laser;
-	private var shotgun:Shotgun;
-	private var sword:Sword;
-
+	private var leftWeapon:Weapon;
+	private var rightWeapon:Weapon;
+	private var leftWeaponTimer:Float = -0.1;
+	private var rightWeaponTimer:Float = -0.1;
+	private var leftReloadTimer:Float = -0.1;
+	private var rightReloadTimer:Float = -0.1;
+	
 	public function new(?X:Float=0, ?Y:Float=0, playerBulletArray:FlxTypedGroup<Bullet>) {
 		super(X, Y);
-		//makeGraphic(16, 16, FlxColor.BLUE);
+		
 		loadGraphic(AssetPaths.h__png, true, 408, 435);
 		setFacingFlip(FlxObject.LEFT, true, false);
 		setFacingFlip(FlxObject.RIGHT, false, false);
@@ -48,52 +52,79 @@ class Player extends FlxSprite {
 		
 		acceleration.y = gravity;
 		
-		rifle = new Rifle(playerBulletArray);
-		laser = new Laser(playerBulletArray);
-		shotgun = new Shotgun(playerBulletArray);
-		sword = new Sword(playerBulletArray);
+		bulletArray = playerBulletArray;
+
+		leftWeapon = new Revolver(playerBulletArray);
+		//laser = new Laser(playerBulletArray);
+		rightWeapon = new Revolver(playerBulletArray);
+		//sword = new Sword(playerBulletArray);
 	}
 	
 	override public function update(elapsed:Float):Void {
+		if(leftWeaponTimer > -0.1) {
+			leftWeaponTimer += elapsed;
+		}
+		if(rightWeaponTimer > -0.1) {
+			rightWeaponTimer += elapsed;
+		}
+		if(leftReloadTimer > -0.1) {
+			leftReloadTimer += elapsed;
+		}
+		if(rightReloadTimer > -0.1) {
+			rightReloadTimer += elapsed;
+		}
+
 		movement(elapsed);
+
+		if(leftReloadTimer > leftWeapon.getReloadTime()) {
+			leftReloadTimer = -0.1;
+		}
+		if(rightReloadTimer > rightWeapon.getReloadTime()) {
+			rightReloadTimer = -0.1;
+		}
+			
 		super.update(elapsed);
 	}
 	
 	private function movement(elapsed:Float):Void {
-		if (leftTimer >= 0) {
-			leftTimer += elapsed;
-		}
-		if (leftTimer > TumblePressedBetween) {
-			leftTimer = -1;
-		}
-		if (rightTimer >= 0) {
-			rightTimer += elapsed;
-		}
-		if (rightTimer > TumblePressedBetween) {
-			rightTimer = -1;
-		}
+		
+		//if (leftTimer >= 0) {
+			//leftTimer += elapsed;
+		//}
+		//if (leftTimer > TumblePressedBetween) {
+			//leftTimer = -1;
+		//}
+		//if (rightTimer >= 0) {
+			//rightTimer += elapsed;
+		//}
+		//if (rightTimer > TumblePressedBetween) {
+			//rightTimer = -1;
+		//}
 		
 		var up:Bool = false;
 		var down:Bool = false;
 		var left:Bool = false;
 		var right:Bool = false;
 		var doubleJump:Bool = false;
-		var leftP:Bool = false;
-		var rightP:Bool = false;
+		//var leftP:Bool = false;
+		//var rightP:Bool = false;
 		var jetpack:Bool = false;
+		var roll:Bool = false;
 		
 		if (!isTumbling()) {
 			tumbleTimer = -1;
-			up = FlxG.keys.anyPressed([UP, W, SPACE]);
+			up = FlxG.keys.anyPressed([UP, W]);
 			down = FlxG.keys.anyPressed([DOWN, S]);
 			left = FlxG.keys.anyPressed([LEFT, A]);
 			right = FlxG.keys.anyPressed([RIGHT, D]);
-			doubleJump = FlxG.keys.anyJustPressed([UP, W, SPACE]);
+			doubleJump = FlxG.keys.anyJustPressed([UP, W]);
 			
-			leftP = FlxG.keys.anyJustPressed([LEFT, A]);
-			rightP = FlxG.keys.anyJustPressed([RIGHT, D]);
+			//leftP = FlxG.keys.anyJustPressed([LEFT, A]);
+			//rightP = FlxG.keys.anyJustPressed([RIGHT, D]);
 			
 			jetpack = FlxG.keys.anyPressed([SHIFT]);
+			
+			roll = FlxG.keys.anyJustPressed([SPACE]);
 		} else {
 			tumble(FlxObject.NONE, elapsed);
 		}
@@ -103,7 +134,8 @@ class Player extends FlxSprite {
 		if (left && right)
 			left = right = false;
 		
-		if (!up && !down && !jetpack) {
+		// double tap rip
+		/*if (!up && !down && !jetpack) {
 			if (leftP && leftTimer < 0) {
 				leftTimer = 0.0;
 			} else if (leftTimer >= 0 && leftP) {
@@ -124,18 +156,10 @@ class Player extends FlxSprite {
 					trace("Tumble!!!");
 				}
 			}
-		}
+		}*/
 		
 		if (jetpack) {
-			if (isTouching(FlxObject.DOWN) && (left || right)) {
-				if (left) {
-					velocity.set(-speed * 5, 0);
-					facing = FlxObject.LEFT;
-				} else {
-					velocity.set(speed * 5, 0);
-					facing = FlxObject.RIGHT;
-				}
-			} else if (up || down || left || right) {
+			if (up || down || left || right) {
 				acceleration.y = 0;
 				facing = faced;
 				var mA:Float = 0; // our temporary angle
@@ -144,11 +168,13 @@ class Player extends FlxSprite {
 					if (up) mA += 45;
 					else if (down) mA -= 45;
 					facing = FlxObject.LEFT;
+					faced = FlxObject.LEFT;
 				} else if (right) {
 					mA = 0;
 					if (up) mA -= 45;
 					else if (down) mA += 45;
 					facing = FlxObject.RIGHT;
+					faced = FlxObject.RIGHT;
 				} else if (up) {
 					mA = -90;
 				} else if (down) {
@@ -160,6 +186,8 @@ class Player extends FlxSprite {
 			} else {
 				velocity.set(0, 0);
 			}
+		} else if (roll) {
+			tumble(faced, elapsed);
 		} else if (!isTumbling()) {
 			acceleration.y = gravity;
 			if (left) {
@@ -225,20 +253,58 @@ class Player extends FlxSprite {
 					animation.play("stop");
 			}
 		}
-		
-		if (FlxG.keys.anyJustPressed([J])) {
-			if (facing == FlxObject.NONE) {
-				rifle.attack(x, y, faced);
-			} else {
-				rifle.attack(x, y, facing);
+		if (!isTumbling()) {
+			if(FlxG.keys.anyPressed([J])) {
+				if(leftWeapon.getName() == "rifle") {
+					if((leftWeaponTimer == -0.1 || leftWeaponTimer > leftWeapon.getRate())
+						&& leftReloadTimer == -0.1) {
+						if(!fireWeapon(leftWeapon)) {
+							leftReloadTimer = 0.0;
+						} 
+						leftWeaponTimer = 0.0;
+					} 
+				}
+			}
+
+			if(FlxG.keys.anyPressed([K])) {
+				if(rightWeapon.getName() == "rifle") {
+					if((rightWeaponTimer == -0.1 || rightWeaponTimer > rightWeapon.getRate())
+						&& rightReloadTimer == -0.1) {
+						if(!fireWeapon(rightWeapon)) {
+							rightReloadTimer = 0.0;
+						} 
+						rightWeaponTimer = 0.0;
+					}
+				}
+			}
+
+			if(FlxG.keys.anyJustPressed([J])) {
+				if((leftWeaponTimer == -0.1 || leftWeaponTimer > leftWeapon.getRate())
+					&& leftReloadTimer == -0.1) {
+					if(!fireWeapon(leftWeapon)) {
+						leftReloadTimer = 0.0;
+					} 
+					leftWeaponTimer = 0.0;
+				}
+			}
+
+			if(FlxG.keys.anyJustPressed([K])) {
+				if((rightWeaponTimer == -0.1 || rightWeaponTimer > rightWeapon.getRate())
+					&& rightReloadTimer == -0.1) {
+					if(!fireWeapon(rightWeapon)) {
+						rightReloadTimer = 0.0;
+					} 
+					rightWeaponTimer = 0.0;
+				}
 			}
 		}
-		if (FlxG.keys.anyJustPressed([K])) {
-			if (facing == FlxObject.NONE) {
-				shotgun.attack(x, y, faced);
-			} else {
-				shotgun.attack(x, y, facing);
-			}
+	}
+	
+	private function fireWeapon(w: Weapon):Bool {
+		if (facing == FlxObject.NONE) {
+			return w.attack(x, y, faced);
+		} else {
+			return w.attack(x, y, facing);
 		}
 	}
 
