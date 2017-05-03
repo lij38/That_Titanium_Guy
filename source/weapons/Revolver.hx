@@ -23,7 +23,7 @@ class Revolver extends Weapon {
 
     public override function attack(x:Float, y:Float, direction:Int):Bool {
         if(curAmmo < 1) {
-            reload();
+            reload();            
             return false;
         }
         var newBullet = new RevolverBullet(x + 20, y + 20, speed, direction, this.damage[damageIndex], range);

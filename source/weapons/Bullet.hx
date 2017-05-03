@@ -12,6 +12,7 @@ class Bullet extends FlxSprite {
 	private var range:Float;
 	private var xpos:Float;
 	private var ypos:Float;
+	private var type:String;
 	
 	public function new(X:Float=0, Y:Float=0, Speed:Float, Direction:Int, Damage:Float, Range:Float) {
 		super(X, Y);
@@ -21,8 +22,6 @@ class Bullet extends FlxSprite {
 		range = Range;
 		xpos = X;
 		ypos = Y;
-		//makeGraphic(6, 6, FlxColor.BLUE);
-		//loadGraphic(AssetPaths.player__png, true, 6, 6, true, "bullet");
 	}
 	
 	public function outOfRange(pbx:Float):Bool {
@@ -32,6 +31,14 @@ class Bullet extends FlxSprite {
 		return false;
 	}
 	
+	public function getDamage():Float {
+		return this.damage;
+	}
+
+	public function getType():String {
+		return this.type;
+	}
+
 	override public function update(elapsed:Float):Void {
 		super.update(elapsed);
 		if (direction == FlxObject.LEFT) {

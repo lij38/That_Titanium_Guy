@@ -27,16 +27,21 @@ class Player extends FlxSprite {
 	
 	private var bulletArray:FlxTypedGroup<Bullet>;
 
-	private var leftWeapon:Weapon;
-	private var rightWeapon:Weapon;
-	private var leftWeaponTimer:Float = -0.1;
-	private var rightWeaponTimer:Float = -0.1;
-	private var leftReloadTimer:Float = -0.1;
-	private var rightReloadTimer:Float = -0.1;
-	
+	private var jWeapon:Weapon;
+	private var kWeapon:Weapon;
+	private var j2ndWeapon:Weapon;
+	private var k2ndWeapon:Weapon;
+	private var jWeaponTimer:Float = -0.1;
+	private var kWeaponTimer:Float = -0.1;
+	private var jReloadTimer:Float = -0.1;
+	private var kReloadTimer:Float = -0.1;
+	private var shielding:Bool;
+
 	public function new(?X:Float=0, ?Y:Float=0, playerBulletArray:FlxTypedGroup<Bullet>) {
 		super(X, Y);
 		
+		health = 100;
+
 		loadGraphic(AssetPaths.h__png, true, 408, 435);
 		setFacingFlip(FlxObject.LEFT, true, false);
 		setFacingFlip(FlxObject.RIGHT, false, false);
@@ -54,35 +59,33 @@ class Player extends FlxSprite {
 		
 		bulletArray = playerBulletArray;
 
-		leftWeapon = new Revolver(playerBulletArray);
-		//laser = new Laser(playerBulletArray);
-		rightWeapon = new Revolver(playerBulletArray);
-		//sword = new Sword(playerBulletArray);
+		jWeapon = new Sword(playerBulletArray);
+		j2ndWeapon = new Rifle(playerBulletArray);
+		kWeapon = new Shield(playerBulletArray);
+		k2ndWeapon = new Weapon(playerBulletArray);
+		shielding = false;
 	}
 	
 	override public function update(elapsed:Float):Void {
-		if(leftWeaponTimer > -0.1) {
-			leftWeaponTimer += elapsed;
+		if(jWeaponTimer > -0.1) {
+			jWeaponTimer += elapsed;
 		}
-		if(rightWeaponTimer > -0.1) {
-			rightWeaponTimer += elapsed;
+		if(kWeaponTimer > -0.1) {
+			kWeaponTimer += elapsed;
 		}
-		if(leftReloadTimer > -0.1) {
-			leftReloadTimer += elapsed;
+		if(jReloadTimer > -0.1) {
+			jReloadTimer += elapsed;
 		}
-		if(rightReloadTimer > -0.1) {
-			rightReloadTimer += elapsed;
+		if(kReloadTimer > -0.1) {
+			kReloadTimer += elapsed;
 		}
-
-		movement(elapsed);
-
-		if(leftReloadTimer > leftWeapon.getReloadTime()) {
-			leftReloadTimer = -0.1;
+		if(jReloadTimer > jWeapon.getReloadTime()) {
+			jReloadTimer = -0.1;
 		}
-		if(rightReloadTimer > rightWeapon.getReloadTime()) {
-			rightReloadTimer = -0.1;
+		if(kReloadTimer > kWeapon.getReloadTime()) {
+			kReloadTimer = -0.1;
 		}
-			
+		movement(elapsed);			
 		super.update(elapsed);
 	}
 	
@@ -111,6 +114,19 @@ class Player extends FlxSprite {
 		var jetpack:Bool = false;
 		var roll:Bool = false;
 		
+		//change weapon configuration
+		if(FlxG.keys.anyJustPressed([Q])) {
+			changeWeaponConfig();
+		}
+
+		//unshield if shielding
+		if(FlxG.keys.anyJustReleased([J, K])) {
+			if(shielding) {
+				shielding = false;
+				trace("unshielded");
+			}
+		}
+
 		if (!isTumbling()) {
 			tumbleTimer = -1;
 			up = FlxG.keys.anyPressed([UP, W]);
@@ -255,51 +271,126 @@ class Player extends FlxSprite {
 		}
 		if (!isTumbling()) {
 			if(FlxG.keys.anyPressed([J])) {
-				if(leftWeapon.getName() == "rifle") {
-					if((leftWeaponTimer == -0.1 || leftWeaponTimer > leftWeapon.getRate())
-						&& leftReloadTimer == -0.1) {
-						if(!fireWeapon(leftWeapon)) {
-							leftReloadTimer = 0.0;
+				//RIFLE fully automatic, can hold to fire
+				if(jWeapon.getName() == "rifle") {
+					if((jWeaponTimer == -0.1 || jWeaponTimer > jWeapon.getRate())
+						&& jReloadTimer == -0.1) {
+						if(!fireWeapon(jWeapon)) {
+							jReloadTimer = 0.0;
 						} 
-						leftWeaponTimer = 0.0;
+						jWeaponTimer = 0.0;
 					} 
-				}
-			}
-
-			if(FlxG.keys.anyPressed([K])) {
-				if(rightWeapon.getName() == "rifle") {
-					if((rightWeaponTimer == -0.1 || rightWeaponTimer > rightWeapon.getRate())
-						&& rightReloadTimer == -0.1) {
-						if(!fireWeapon(rightWeapon)) {
-							rightReloadTimer = 0.0;
-						} 
-						rightWeaponTimer = 0.0;
+				} else if(jWeapon.getName() == "shield") { //engage shield
+					if(!shielding) {
+						shielding = true;
+						trace("shielding");
 					}
 				}
-			}
-
-			if(FlxG.keys.anyJustPressed([J])) {
-				if((leftWeaponTimer == -0.1 || leftWeaponTimer > leftWeapon.getRate())
-					&& leftReloadTimer == -0.1) {
-					if(!fireWeapon(leftWeapon)) {
-						leftReloadTimer = 0.0;
-					} 
-					leftWeaponTimer = 0.0;
+				//Other weapons that cannot hold to fire
+				if(FlxG.keys.anyJustPressed([J])) {
+					if((jWeaponTimer == -0.1 || jWeaponTimer > jWeapon.getRate())
+						&& jReloadTimer == -0.1) {
+						if(!fireWeapon(jWeapon)) {
+							jReloadTimer = 0.0;
+						} 
+						jWeaponTimer = 0.0;
+					}
 				}
-			}
-
-			if(FlxG.keys.anyJustPressed([K])) {
-				if((rightWeaponTimer == -0.1 || rightWeaponTimer > rightWeapon.getRate())
-					&& rightReloadTimer == -0.1) {
-					if(!fireWeapon(rightWeapon)) {
-						rightReloadTimer = 0.0;
+			} else if(FlxG.keys.anyPressed([K])) {
+				//RIFLE fully automatic, can hold to fire
+				if(kWeapon.getName() == "rifle") {
+					if((kWeaponTimer == -0.1 || kWeaponTimer > kWeapon.getRate())
+						&& kReloadTimer == -0.1) {
+						if(!fireWeapon(kWeapon)) {
+							kReloadTimer = 0.0;
+						} 
+						kWeaponTimer = 0.0;
 					} 
-					rightWeaponTimer = 0.0;
+				} else if(kWeapon.getName() == "shield") { //engage shield
+					if(!shielding) {
+						shielding = true;
+						trace("shielding");
+					}
 				}
-			}
+				//Other weapons that cannot hold to fire
+				if(FlxG.keys.anyJustPressed([K])) {
+					if((kWeaponTimer == -0.1 || kWeaponTimer > kWeapon.getRate())
+						&& kReloadTimer == -0.1) {
+						if(!fireWeapon(kWeapon)) {
+							kReloadTimer = 0.0;
+						} 
+						kWeaponTimer = 0.0;
+					}
+				}
+			}		
 		}
 	}
-	
+
+	public function isShielding():Bool {
+		return shielding;
+	}
+
+	public function getWeaponName(which:Int):String {
+		if(which == 0) {
+			if(jWeapon == null) {
+				return "";
+			}
+			return jWeapon.getName();
+		} else {
+			if(kWeapon == null) {
+				return "";
+			}
+			return kWeapon.getName();
+		}
+	}
+
+	public function getAmmo(which:Int):Int {
+		if(which == 0) {
+			if(jWeapon == null) {
+				return -1;
+			}
+			return jWeapon.getCurAmmo();
+		} else {
+			if(kWeapon == null) {
+				return -1;
+			}
+			return kWeapon.getCurAmmo();
+		}
+	}
+
+	public function getAmmoCap(which:Int):Int {
+		if(which == 0) {
+			if(jWeapon == null) {
+				return -1;
+			}
+			return jWeapon.getMaxAmmo();
+		} else {
+			if(kWeapon == null) {
+				return -1;
+			}
+			return kWeapon.getMaxAmmo();
+		}
+	}
+
+	public function isReloading(which:Int):Bool {
+		if(which == 0) {
+			return jReloadTimer != -0.1;
+		} else {
+			return kReloadTimer != -0.1;
+		}
+	}
+
+
+ 	
+	private function changeWeaponConfig():Void {
+		var temp1:Weapon = jWeapon;
+		var temp2:Weapon = kWeapon;
+		jWeapon = j2ndWeapon;
+		j2ndWeapon = temp1;
+		kWeapon = k2ndWeapon;
+		k2ndWeapon = temp2;
+	}
+
 	private function fireWeapon(w: Weapon):Bool {
 		if (facing == FlxObject.NONE) {
 			return w.attack(x, y, faced);

@@ -15,12 +15,14 @@ class PlayState extends FlxState {
 	private var _map:FlxOgmoLoader;
 	private var _mWalls:FlxTilemap;
 	private var _btnMenu:FlxButton;
+	private var _health:Int;
+	private var _hud:HUD;
 	
 	private var playerBullets:FlxTypedGroup<Bullet>;
 	
 	override public function create():Void {
 		//add(new FlxText(10, 10, 100, "Hello, World!"));
-		trace("Hello world!");
+		//trace("Hello world!");
 		_map = new FlxOgmoLoader("assets/data/first_level.oel");
 		_mWalls = _map.loadTilemap(AssetPaths.tiles__png, 16, 16, "walls");
 		_mWalls.follow();
@@ -35,22 +37,26 @@ class PlayState extends FlxState {
 		_map.loadEntities(placeEntities, "entities");
 		add(_player);
 		
-		_btnMenu = new FlxButton(0, 0, "Menu", clickMenu);
-		add(_btnMenu);
+		// _btnMenu = new FlxButton(0, 0, "Menu", clickMenu);
+		// add(_btnMenu);
 		
+		_health = 100;
 		FlxG.camera.follow(_player, TOPDOWN, 1);
+
+		_hud = new HUD(_player);
+		add(_hud);
+		_hud.updateHUD(_player.getAmmo(0), _player.getAmmo(1), _player.isReloading(0), _player.isReloading(1),
+						_player.getWeaponName(0), _player.getWeaponName(1));
 		super.create();
 	}
 
 	override public function update(elapsed:Float):Void {
 		super.update(elapsed);
+
+		_hud.updateHUD(_player.getAmmo(0), _player.getAmmo(1), _player.isReloading(0), _player.isReloading(1),
+						_player.getWeaponName(0), _player.getWeaponName(1));
 		FlxG.collide(_player, _mWalls);
 		FlxG.collide(_mWalls, playerBullets, bulletsHitWalls);
-	}
-	
-	public function bulletsHitWalls(Object1:FlxObject, Object2:FlxObject):Void {
-		//
-		FlxG.collide(playerBullets, _mWalls, bulletHitWall);
 		for (pb in playerBullets){
 			//destroyed?
 			if (pb.outOfRange(pb.x)){
@@ -60,7 +66,7 @@ class PlayState extends FlxState {
 		}
 	}
 	
-	public function bulletHitWall(pb:Bullet, wall:FlxObject):Void {
+	public function bulletsHitWalls(wall:FlxObject, pb:Bullet):Void {
 		playerBullets.remove(pb);
 		pb.destroy();
 	}
@@ -77,6 +83,4 @@ class PlayState extends FlxState {
 	private function clickMenu():Void {
 		FlxG.switchState(new MenuState());
 	}
-
-
 }

@@ -13,7 +13,7 @@ class Laser extends Weapon {
         this.type = "energy";
         this.range = 1000;
         this.fireRate = 0.2;
-        this.speed = 1300;
+        this.speed = 1500;
         this.bulletArray = playerBulletArray;
 
         this.magCapacity = 20;
@@ -23,7 +23,7 @@ class Laser extends Weapon {
 
     public override function attack(x:Float, y:Float, direction:Int): Bool {
         if(curAmmo < 1) {
-            reload();
+            reload(); 
             return false;
         }
         var newBullet = new EnergyBullet(x + 20, y + 20, speed, direction, this.damage[damageIndex], range);
