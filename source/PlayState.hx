@@ -1,5 +1,6 @@
 package;
 
+import enemies.*;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxState;
@@ -16,7 +17,7 @@ class PlayState extends FlxState {
 	private var _mWalls:FlxTilemap;
 	private var _btnMenu:FlxButton;
 	
-	private var enemies:FlxTypedGroup<Enemy>;
+	private var enemiesGroup:FlxTypedGroup<Enemy>;
 	private var playerBullets:FlxTypedGroup<Bullet>;
 	
 	private var GRAVITY:Float = 1000;
@@ -34,8 +35,8 @@ class PlayState extends FlxState {
 		playerBullets = new FlxTypedGroup<Bullet>();
 		add(playerBullets);
 		
-		enemies = new FlxTypedGroup<Enemy>();
-		add(enemies);
+		enemiesGroup = new FlxTypedGroup<Enemy>();
+		add(enemiesGroup);
 		
 		_player = new Player(playerBullets, GRAVITY);
 		_map.loadEntities(placeEntities, "entities");
@@ -51,14 +52,24 @@ class PlayState extends FlxState {
 	override public function update(elapsed:Float):Void {
 		super.update(elapsed);
 		
-		if (!_player.isTumbling()) {
-			FlxG.collide(_player, enemies, playerCollidesEnemies);
-		}
-		
-		FlxG.overlap(playerBullets, enemies, bulletsHitEnemies);
+		FlxG.overlap(playerBullets, enemiesGroup, bulletsHitEnemies);
 		FlxG.collide(_mWalls, playerBullets, bulletsHitWalls);
+		enemiesGroup.forEach(enemiesUpdate);
 		FlxG.collide(_player, _mWalls);
-		FlxG.collide(enemies, _mWalls);
+		FlxG.collide(enemiesGroup, _mWalls);
+	}
+	
+	private function enemiesUpdate(e:Enemy):Void {
+		if (!e.alive && e.animation.finished) {
+			enemiesGroup.remove(e);
+			e.destroy();
+		} else if (e.alive) {
+			e.playerPos.copyFrom(_player.getMidpoint());
+			if (!_player.isTumbling()) {
+				FlxG.collide(_player, e, playerCollidesEnemies);
+			}
+			
+		}
 	}
 	
 	public function bulletsHitEnemies(bullet:Bullet, enemy:Enemy):Void {
@@ -97,13 +108,12 @@ class PlayState extends FlxState {
 			_player.x = x;
 			_player.y = y;
 		} else if (entityName == "enemy") {
-			enemies.add(new Enemy(x, y, GRAVITY));
+			enemiesGroup.add(new Enemy(x, y, GRAVITY));
 		}
 	}
 	
 	private function clickMenu():Void {
 		FlxG.switchState(new MenuState());
 	}
-
 
 }

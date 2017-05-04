@@ -40,10 +40,15 @@ class Player extends FlxSprite {
 		
 		GRAVITY = gravity;
 		
-		loadGraphic(AssetPaths.h__png, true, 408, 435);
-		scale.set(0.25, 0.25);
-		offset.set(190, 175);
-		setSize(40, 90);
+		//loadGraphic(AssetPaths.h__png, true, 408, 435);
+		//scale.set(0.25, 0.25);
+		//offset.set(190, 175);
+		//setSize(40, 90);
+		FlxG.debugger.drawDebug;
+		loadGraphic(AssetPaths.b__png, true, 273, 148);
+		offset.set(121, 5);
+		setSize(31, 112);
+		
 		
 		setFacingFlip(FlxObject.LEFT, true, false);
 		setFacingFlip(FlxObject.RIGHT, false, false);
@@ -162,6 +167,7 @@ class Player extends FlxSprite {
 		}*/
 		
 		if (jetpack) {
+			numJump = numJumpLimit;
 			if (up || down || left || right) {
 				acceleration.y = 0;
 				facing = faced;
