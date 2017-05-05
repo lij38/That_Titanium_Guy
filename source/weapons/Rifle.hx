@@ -26,7 +26,7 @@ class Rifle extends Weapon {
             reload();
             return false;
         }
-        var newBullet = new BallBullet(x + 20, y + 20, speed, direction, this.damage[damageIndex], range);
+        var newBullet = new BallBullet(x, y + 22, speed, direction, this.damage[damageIndex], range);
 		this.bulletArray.add(newBullet);
         curAmmo--;
         return true;

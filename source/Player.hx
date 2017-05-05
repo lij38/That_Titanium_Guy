@@ -36,25 +36,25 @@ class Player extends FlxSprite {
 	private var jReloadTimer:Float = -0.1;
 	private var kReloadTimer:Float = -0.1;
 	private var shielding:Bool;
+	private var swordNum:Int = 2;
+	private var swordTime:Float = 0.25;
+	private var swordTimer:Float = -1;
+	private var curConfig:String;
 
 	public function new(?X:Float=0, ?Y:Float=0, playerBulletArray:FlxTypedGroup<Bullet>) {
 		super(X, Y);
 		
 		health = 100;
 
-		loadGraphic(AssetPaths.h__png, true, 408, 435);
+		loadGraphic(AssetPaths.player__png, true, cast(4745 / 5, Int), cast(11109 / 21, Int));
 		setFacingFlip(FlxObject.LEFT, true, false);
 		setFacingFlip(FlxObject.RIGHT, false, false);
 		scale.set(0.25, 0.25);
-		animation.add("lr", [2, 3, 4, 5, 6, 7, 8, 9], 12, false);
-		animation.add("stop", [1], 1, false);
-		animation.add("jetpack", [17, 18], 12, false);
-		//animation.add("beginjump", [14], 1, false);
-		animation.add("midjump", [15], 1, false);
-		animation.add("tumble", [10, 11, 12, 13], 12, false);
-		offset.set(170, 175);
-		setSize(70, 90);
 		
+		addAnimation();
+		
+		setSize(31, 80);
+		offset.set(450, 220);
 		acceleration.y = gravity;
 		
 		bulletArray = playerBulletArray;
@@ -63,6 +63,7 @@ class Player extends FlxSprite {
 		j2ndWeapon = new Rifle(playerBulletArray);
 		kWeapon = new Shield(playerBulletArray);
 		k2ndWeapon = new Weapon(playerBulletArray);
+		curConfig = "swsh";
 		shielding = false;
 	}
 	
@@ -84,6 +85,12 @@ class Player extends FlxSprite {
 		}
 		if(kReloadTimer > kWeapon.getReloadTime()) {
 			kReloadTimer = -0.1;
+		}
+		if(swordTimer > -1) {
+			swordTimer += elapsed;
+		}
+		if(swordTimer > swordTime) {
+			swordTimer = -1;
 		}
 		movement(elapsed);			
 		super.update(elapsed);
@@ -127,7 +134,7 @@ class Player extends FlxSprite {
 			}
 		}
 
-		if (!isTumbling()) {
+		if (!isSwording() && !isTumbling()) {
 			tumbleTimer = -1;
 			up = FlxG.keys.anyPressed([UP, W]);
 			down = FlxG.keys.anyPressed([DOWN, S]);
@@ -141,7 +148,7 @@ class Player extends FlxSprite {
 			jetpack = FlxG.keys.anyPressed([SHIFT]);
 			
 			roll = FlxG.keys.anyJustPressed([SPACE]);
-		} else {
+		} else if (isTumbling()){
 			tumble(FlxObject.NONE, elapsed);
 		}
 		
@@ -258,18 +265,13 @@ class Player extends FlxSprite {
 		if (isTumbling()) {
 			animation.play("tumble");
 		} else if (jetpack) {
-			animation.play("jetpack");
-		} else if (velocity.y != 0) {
-			animation.play("midjump");
-		} else {
-			switch (facing) {
-				case FlxObject.LEFT, FlxObject.RIGHT:
-					animation.play("lr");
-				case FlxObject.NONE:
-					animation.play("stop");
-			}
+			animation.play(curConfig + "JP");
+		} else if (velocity.y != 0 && !isSwording()) {
+			animation.play(curConfig + "Jump");
+		} else if(!isSwording()){
+			playRun(curConfig);
 		}
-		if (!isTumbling()) {
+		if (!isTumbling() && !isSwording()) {
 			if(FlxG.keys.anyPressed([J])) {
 				//RIFLE fully automatic, can hold to fire
 				if(jWeapon.getName() == "rifle") {
@@ -380,7 +382,14 @@ class Player extends FlxSprite {
 		}
 	}
 
-
+	private function playRun(option:String) {
+		switch (facing) {
+			case FlxObject.LEFT, FlxObject.RIGHT:
+				animation.play(option + "Run");
+			case FlxObject.NONE:
+				animation.play(option + "Stop");
+		}
+	}
  	
 	private function changeWeaponConfig():Void {
 		var temp1:Weapon = jWeapon;
@@ -389,9 +398,45 @@ class Player extends FlxSprite {
 		j2ndWeapon = temp1;
 		kWeapon = k2ndWeapon;
 		k2ndWeapon = temp2;
+		if(jWeapon.getName() == "sword" && kWeapon.getName() == "shield" ||
+			kWeapon.getName() == "sword" && jWeapon.getName() == "shield") {
+			curConfig = "swsh";
+		} else {
+			curConfig = jWeapon.getName();
+		}
 	}
 
+	// //helper for checking condition in changeWeaponConfig
+	// private function checkConfig(w1:String, w2:String):Bool {
+	// 	if(jWeapon.getName() == w1 && kWeapon.getName() == w2 ||
+	// 		kWeapon.getName() == w1 && jWeapon.getName() == w2) {
+	// 		return true;
+	// 	}
+	// 	return false;
+	// }
+
+	// //helper single arg
+	// private function singleCheckConfig(w:String):Bool {
+	// 	if(jWeapon.getName() == w || kWeapon.getName() == w) {
+	// 		return true;
+	// 	}
+	// 	return false;
+	// }
+
 	private function fireWeapon(w: Weapon):Bool {
+		if(w.getName() == "sword") {
+			swordTimer = 0;
+			if(swordNum % 2 == 0) {
+				animation.play(curConfig + "Stab");
+			} else {
+				animation.play(curConfig + "Cut");
+			}
+			trace(swordNum);
+			swordNum++;
+			if(swordNum > 2) {
+				swordNum = 0;
+			}
+		}
 		if (facing == FlxObject.NONE) {
 			return w.attack(x, y, faced);
 		} else {
@@ -417,5 +462,54 @@ class Player extends FlxSprite {
 	
 	private function isTumbling():Bool {
 		return tumbleTimer >= 0 && tumbleTimer < TumbleTime;
+	}
+
+	private function isSwording():Bool {
+		return swordTimer >= 0 && swordTimer < swordTime;
+	}
+
+	private function addAnimation() {
+		animation.add("lr", [2, 3, 4, 5, 6, 7, 8, 9], 12, false);
+		animation.add("stop", [1], 1, false);
+		animation.add("jetpack", [15, 16], 12, false);
+		animation.add("midjump", [14], 1, false);
+		animation.add("tumble", [10, 11, 12, 13], 12, false);
+		
+		//sword run
+		animation.add("swordRun", [33, 34, 35, 36, 37, 38, 39, 40], 12, false);
+		//sword standing
+		animation.add("swordStop", [23], 1, false);
+		//sword jetpack
+		animation.add("swordJP", [31, 32], 12, false);
+		//sword jump
+		animation.add("swordJump", [30], 1, false);
+		//sword stab
+		animation.add("swordStab", [21, 22, 22, 21], 16, false);
+		//sword cut
+		animation.add("swordCut", [17, 18, 19, 20], 16, false);
+		
+		//rifle standing
+		animation.add("rifleStop", [41], 1, false);
+		//rifle run
+		animation.add("rifleRun", [42, 43, 44, 45, 46, 47, 48, 49], 12, false);
+		//rifle jump
+		animation.add("rifleJump", [50], 1, false);
+		//rifle jetpack
+		animation.add("rifleJP", [51, 52], 12, false);
+
+		//sword shield run
+		animation.add("swshRun", [96, 97, 98, 99, 100, 101, 102, 103], 12, false);
+		//sword shield standing
+		animation.add("swshStop", [85], 1, false);
+		//sword shield jump
+		animation.add("swshJump", [92], 1, false);
+		//sword shield stab
+		animation.add("swshStab", [83, 84, 84, 83], 16, false);
+		//sword shield cut
+		animation.add("swshCut", [79, 80, 81, 82], 16, false);
+		//sword shield jetpack
+		animation.add("swshJP", [93, 94], 12, false);
+		//engage shield
+		animation.add("swshShield", [104], 1, false);
 	}
 }

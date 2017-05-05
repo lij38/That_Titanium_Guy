@@ -28,13 +28,13 @@ class MenuState extends FlxState {
 		spritesheet.setSize(60, 100);*/
 		
 		spritesheet = new FlxSprite(0, 0);
-		spritesheet.loadGraphic(AssetPaths.p__png, true, 472, 418);
-		spritesheet.animation.add("lr", [0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 9, true);
+		spritesheet.loadGraphic(AssetPaths.player__png, true, cast(4745 / 5, Int), cast(11109 / 21, Int));
+		spritesheet.animation.add("lr", [2, 3, 4, 5, 6, 7, 8, 9], 12, true);
 		//spritesheet.animation.add("stop", [0], 1, false);
 		add(spritesheet);
 		spritesheet.scale.set(0.25, 0.25);
 		spritesheet.setSize(102, 109);
-		spritesheet.offset.set(50, 50);
+		spritesheet.offset.set(450, 220);
 		spritesheet.animation.play("lr");
 		add(_btnPlay);
 		super.create();

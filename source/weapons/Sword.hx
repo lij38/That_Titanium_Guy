@@ -11,14 +11,14 @@ class Sword extends Weapon {
         
         this.name = "sword";
         this.type = "melee";
-        this.range = 75;
-        this.fireRate = 0.5;
+        this.range = 134;
+        this.fireRate = 0.25;
         this.speed = 4000;
         this.bulletArray = playerBulletArray;
     }
 
     public override function attack(x:Float, y:Float, direction:Int):Bool {
-        var newBullet = new MeleeBullet(x + 20, y, speed, direction, this.damage[damageIndex], range);
+        var newBullet = new MeleeBullet(x + 7, y + 20, speed, direction, this.damage[damageIndex], range);
 		this.bulletArray.add(newBullet);
         return true;
     }

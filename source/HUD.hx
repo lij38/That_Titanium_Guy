@@ -23,8 +23,8 @@ class HUD extends FlxTypedGroup<FlxSprite>
          super();
          
         //ammo
-        _txtjAmmo = new FlxText(60, FlxG.height - 60, 0, "", 24);
-        _txtkAmmo = new FlxText(FlxG.width - 110, FlxG.height - 60, 0, "", 24);
+        _txtjAmmo = new FlxText(55, FlxG.height - 30, 0, "", 24);
+        _txtkAmmo = new FlxText(FlxG.width - 110, FlxG.height - 30, 0, "", 24);
 
          //player head icon
          _sprHead = new FlxSprite(4, 2, AssetPaths.playerhead__png);
@@ -37,8 +37,8 @@ class HUD extends FlxTypedGroup<FlxSprite>
         _healthbar.createFilledBar(FlxColor.TRANSPARENT, FlxColor.RED, true, FlxColor.BLACK);
 
         //weapons
-        _jWeapon = new FlxSprite(50, _txtjAmmo.y - 20);
-        _kWeapon = new FlxSprite(_txtkAmmo.x, _txtkAmmo.y - 20);
+        _jWeapon = new FlxSprite(50, FlxG.height - 80);
+        _kWeapon = new FlxSprite(_txtkAmmo.x - 5, FlxG.height - 80);
 
          add(_sprHead);
          add(_sprHealth);
