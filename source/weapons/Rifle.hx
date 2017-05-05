@@ -12,8 +12,8 @@ class Rifle extends Weapon {
 
         this.type = "ballistic";
         this.range = 1000;
-        this.fireRate = 0.2;
-        this.speed = 1300;
+        this.fireRate = 0.1;
+        this.speed = 1500;
         this.bulletArray = playerBulletArray;
 
         this.magCapacity = 20;
@@ -26,7 +26,7 @@ class Rifle extends Weapon {
             reload();
             return false;
         }
-        var newBullet = new BallBullet(x + 20, y + 20, speed, direction, this.damage[damageIndex], range);
+        var newBullet = new BallBullet(x, y + 22, speed, direction, this.damage[damageIndex], range);
 		this.bulletArray.add(newBullet);
         curAmmo--;
         return true;

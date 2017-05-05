@@ -6,10 +6,9 @@ import flixel.math.FlxPoint;
 
 //private var angle:Int;
 
-class ShotgunBullet extends Bullet {
+class ShotgunBullet extends BallBullet {
     override public function new(X:Float=0, Y:Float=0, Speed:Float, Direction:Int, Damage:Float, Range:Float) {
         super(X, Y, Speed, Direction, Damage, Range);
-        makeGraphic(25, 6, FlxColor.PURPLE);
     }
 
     override public function update(elapsed:Float):Void {

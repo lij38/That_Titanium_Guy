@@ -1,10 +1,12 @@
 package weapons;
 
 import flixel.util.FlxColor;
+import flixel.FlxObject;
 
 class RevolverBullet extends Bullet {
     override public function new(X:Float=0, Y:Float=0, Speed:Float, Direction:Int, Damage:Float, Range:Float) {
         super(X, Y, Speed, Direction, Damage, Range);
-        makeGraphic(12, 12, FlxColor.RED);
+        this.type = "ballistic";
+        loadGraphic(AssetPaths.revolverbullet__png);
     }
 }

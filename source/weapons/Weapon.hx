@@ -17,6 +17,14 @@ class Weapon {
 
     public function new(playerBulletArray:FlxTypedGroup<Bullet>) {
         this.damageIndex = 0;
+        this.name = "";
+        this.range = -1;
+        this.fireRate = -1;
+        this.speed = -1;
+
+        this.magCapacity = -1;
+        this.curAmmo = -1;
+        this.reloadTime = -1;
         this.bulletArray = playerBulletArray;
     }
 
@@ -45,5 +53,13 @@ class Weapon {
 
     public function getReloadTime():Float {
         return reloadTime;
+    }
+
+    public function getCurAmmo():Int {
+        return curAmmo;
+    }
+
+    public function getMaxAmmo():Int {
+        return magCapacity;
     }
 }

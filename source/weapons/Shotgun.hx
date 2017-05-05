@@ -14,7 +14,7 @@ class Shotgun extends Weapon {
         this.type = "ballistic";
         this.range = 300;
         this.fireRate = 0.5;
-        this.speed = 1300;
+        this.speed = 1500;
         this.bulletArray = playerBulletArray;
 
         this.magCapacity = 8;
