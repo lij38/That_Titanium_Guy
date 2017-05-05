@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="25" tilewidth="16" tileheight="16" nextobjectid="4">
+ <tileset firstgid="1" name="tiles" tilewidth="16" tileheight="16" tilecount="3" columns="3">
+  <image source="../../../../tmp/full-mecha-jacket/assets/images/tiles.png" width="48" height="16"/>
+ </tileset>
+ <layer name="map" width="40" height="25">
+  <data encoding="base64" compression="zlib">
+   eJzt0EENAAAIBKCb9u9sDJ3jQQEqSQEAwBF93PYP8NcA56MH+Q==
+  </data>
+ </layer>
+ <objectgroup name="entities">
+  <object id="1" name="player" type="player" x="31" y="145" width="16" height="16"/>
+  <object id="2" name="enemy" type="enemy" x="463" y="253" width="16" height="16"/>
+ </objectgroup>
+</map>
