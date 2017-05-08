@@ -514,6 +514,6 @@ class Player extends FlxSprite {
 		//sword shield jetpack
 		animation.add("swshJP", [93, 94], 12, false);
 		//engage shield
-		animation.add("swshShield", [104], 1, false);
+		animation.add("swshShield", [104], 3, false);
 	}
 }
