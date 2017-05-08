@@ -1,15 +1,15 @@
 package enemies;
 
 class EnemyFSM {
-	public var activeState:Void->Void;
+	public var activeState:Float->Void;
 	
-	public function new(?InitState:Void->Void):Void {
+	public function new(?InitState:Float->Void):Void {
 		activeState = InitState;
 	}
 	
-	public function update():Void {
+	public function update(elapsed:Float):Void {
 		if (activeState != null) {
-			activeState();
+			activeState(elapsed);
 		}
 	}
 	
