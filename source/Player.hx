@@ -433,7 +433,7 @@ class Player extends FlxSprite {
 			} else {
 				animation.play(curConfig + "Cut");
 			}
-			trace(swordNum);
+			//trace(swordNum);
 			swordNum++;
 			if(swordNum > 2) {
 				swordNum = 0;

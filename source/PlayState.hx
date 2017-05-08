@@ -21,6 +21,7 @@ class PlayState extends FlxState {
 	
 	private var enemiesGroup:FlxTypedGroup<Enemy>;
 	private var playerBullets:FlxTypedGroup<Bullet>;
+	private var enemiesBullets:FlxTypedGroup<Bullet>;
 	
 	private var GRAVITY:Float = 1000;
 	
@@ -38,6 +39,8 @@ class PlayState extends FlxState {
 		
 		playerBullets = new FlxTypedGroup<Bullet>();
 		add(playerBullets);
+		enemiesBullets = new FlxTypedGroup<Bullet>();
+		add(enemiesBullets);
 		
 		enemiesGroup = new FlxTypedGroup<Enemy>();
 		add(enemiesGroup);
@@ -72,11 +75,21 @@ class PlayState extends FlxState {
 		enemiesGroup.forEach(enemiesUpdate);
 		FlxG.collide(_player, _mWalls);
 		FlxG.collide(enemiesGroup, _mWalls);
-		for (pb in playerBullets){
+		bulletsRangeUpdate();
+	}
+	
+	private function bulletsRangeUpdate():Void {
+		for (pb in playerBullets) {
 			//destroyed?
 			if (pb.outOfRange(pb.x)){
 				playerBullets.remove(pb);
 				pb.destroy();
+			}
+		}
+		for (eb in enemiesBullets) {
+			if (eb.outOfRange(eb.x)) {
+				playerBullets.remove(eb);
+				eb.destroy();
 			}
 		}
 	}
@@ -118,7 +131,7 @@ class PlayState extends FlxState {
 			_player.x = x;
 			_player.y = y;
 		} else if (entityName == "enemy") {
-			enemiesGroup.add(new Enemy(x, y, GRAVITY));
+			enemiesGroup.add(new RifleEnemy(x, y, enemiesBullets, GRAVITY));
 		}
 	}
 	
