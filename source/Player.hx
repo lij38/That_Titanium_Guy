@@ -41,8 +41,8 @@ class Player extends FlxSprite {
 	private var swordTimer:Float = -1;
 	private var curConfig:String;
 
-	public function new(?X:Float = 0, ?Y:Float = 0, playerBulletArray:FlxTypedGroup<Bullet>,
-						gravity:Float) {
+	public function new(?X:Float = 0, ?Y:Float = 0, ?playerBulletArray:FlxTypedGroup<Bullet>,
+						?gravity:Float = 1000) {
 		super(X, Y);
 		GRAVITY = gravity;
 		health = 100;
