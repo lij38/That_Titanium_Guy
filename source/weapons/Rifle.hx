@@ -1,7 +1,8 @@
 package weapons;
 import flixel.group.FlxGroup;
+import flixel.FlxObject;
 
-class Rifle extends Weapon {
+class Rifle extends Weapon {   
     override public function new(playerBulletArray:FlxTypedGroup<Bullet>) {
         super(playerBulletArray);
         this.name = "rifle";
@@ -26,7 +27,12 @@ class Rifle extends Weapon {
             reload();
             return false;
         }
-        var newBullet = new BallBullet(x, y + 22, speed, direction, this.damage[damageIndex], range);
+        var offset:Int = 70;
+        if(direction == FlxObject.LEFT) {
+            offset = offset * -1;
+            offset += 30;
+        }
+        var newBullet = new BallBullet(x + offset, y + 26, speed, direction, this.damage[damageIndex], range);
 		this.bulletArray.add(newBullet);
         curAmmo--;
         return true;
