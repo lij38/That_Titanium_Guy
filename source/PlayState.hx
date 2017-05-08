@@ -71,11 +71,27 @@ class PlayState extends FlxState {
 						_player.getWeaponName(0), _player.getWeaponName(1));
 						
 		FlxG.overlap(playerBullets, enemiesGroup, bulletsHitEnemies);
+		if (!_player.isTumbling()) {
+			FlxG.overlap(enemiesBullets, _player, bulletsHitPlayer);
+		}
 		FlxG.collide(_mWalls, playerBullets, bulletsHitWalls);
 		enemiesGroup.forEach(enemiesUpdate);
 		FlxG.collide(_player, _mWalls);
 		FlxG.collide(enemiesGroup, _mWalls);
+		
 		bulletsRangeUpdate();
+	}
+	
+	private function bulletsHitPlayer(bullet:Bullet, player:Player):Void {
+		if (player.alive) {
+			var damage:Float = bullet.getDamage();
+			if (player.isShielding()) {
+				damage /= 10;
+			}
+			player.hurt(damage);
+			enemiesBullets.remove(bullet);
+			bullet.destroy();
+		}
 	}
 	
 	private function bulletsRangeUpdate():Void {

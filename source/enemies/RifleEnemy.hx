@@ -16,8 +16,8 @@ class RifleEnemy extends Enemy {
 	private var bulletCount:Int = 0;
 	private var fireTimer:Float = -1;
 	private var fireTime:Float = 2.0;
-	private var rate:Float = 0.2;
-	private var rateTimer:Float = -1;
+	private var rate:Float = 0.1;
+	private var rateTimer:Float = 0;
 	
 	public function new(X:Float = 0, Y:Float = 0, bulletArray:FlxTypedGroup<Bullet>,
 						gravity:Float) {
@@ -40,7 +40,7 @@ class RifleEnemy extends Enemy {
 		health = 100;
 		facing = FlxObject.LEFT;
 		brain = new EnemyFSM(idle);
-		range = 200;
+		range = 300;
 	}
 	
 	public function idle(elapsed:Float):Void {
@@ -75,8 +75,9 @@ class RifleEnemy extends Enemy {
 	private function shoot(dir:Int, elapsed:Float):Void {
 		
 		if (bulletCount < 3) {
-			if (rateTimer = -1 || rateTimer > rate) {
-				bulletArray.add(new EnemyBullet(x, y, 500, dir, 10, range));
+			rateTimer += elapsed;
+			if (rateTimer > rate * bulletCount) {
+				bulletArray.add(new EnemyBullet(x, y + 45, 250, dir, 5, range));
 				bulletCount++;
 			}
 				
@@ -90,6 +91,7 @@ class RifleEnemy extends Enemy {
 		if (fireTimer > fireTime) {
 			fireTimer = -1;
 			bulletCount = 0;
+			rateTimer = 0;
 		}
 	}
 	
