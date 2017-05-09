@@ -11,7 +11,7 @@ class Sword extends Weapon {
         
         this.name = "sword";
         this.type = "melee";
-        this.range = 134;
+        this.range = 130;
         this.fireRate = 0.25;
         this.speed = 4000;
         this.bulletArray = playerBulletArray;

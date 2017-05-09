@@ -3,8 +3,7 @@ import flixel.*;
 import flixel.text.FlxText;
 
 
-class Instruction extends FlxText
-{
+class Instruction extends FlxText {
     private static inline var D:String = "Press D to move to the right";
     private static inline var A:String = "Press A to move to the left";
     private static inline var W:String = "Press W to jump";
@@ -14,19 +13,22 @@ class Instruction extends FlxText
     private static inline var SPACE1:String = "Press SPACE and try to roll through the enemy";
     private var _current:String;
     
+<<<<<<< HEAD
     override public function new(X:Float = 0, Y:Float = 0, FieldWidth:Float = 0, ?Text:String, Size:Int = 8)
     {
         //_current = "A";
         //text = A;
         //visible = true;
+=======
+    override public function new(X:Float = 0, Y:Float = 0, FieldWidth:Float = 0, ?Text:String, Size:Int = 8) {
+>>>>>>> 7e0e469e55d37f2ac00c417e40519e5afc352b07
         _current = "";
         text = "";
         visible = false;
         super(X, Y, FieldWidth, Size);
     }
 
-    public function instruct(option:String, X:Float, Y:Float):Void
-    {
+    public function instruct(option:String, X:Float, Y:Float):Void {
        switch option {
            //case "A": text = A;
            case "D": text = D;
@@ -51,8 +53,7 @@ class Instruction extends FlxText
         super.update(elapsed);
     }
 
-    private function complete(elapsed:Float):Void
-    { 
+    private function complete(elapsed:Float):Void { 
 
         var jump:Bool = false;
 		//var down:Bool = false;
@@ -66,12 +67,23 @@ class Instruction extends FlxText
         var attack:Bool = false;
         var shield:Bool = false;
 
+<<<<<<< HEAD
         jump = FlxG.keys.anyPressed(["W"]);
         left = FlxG.keys.anyPressed(["A"]);
         right = FlxG.keys.anyPressed(["D"]);
         roll = FlxG.keys.anyPressed(["SPACE"]);
         attack = FlxG.keys.anyPressed(["J"]);
         shield = FlxG.keys.anyPressed(["K"]);
+=======
+        jump = FlxG.keys.anyPressed([W]);
+        left = FlxG.keys.anyPressed([LEFT, "A"]);
+        right = FlxG.keys.anyPressed([D]);
+        roll = FlxG.keys.anyPressed([SPACE]);
+        attack = FlxG.keys.anyPressed([J]);
+        shield = FlxG.keys.anyPressed([K]);
+        trace(left + "          " + _current);
+		FlxG.watch.addQuick("A pressed", FlxG.keys.anyPressed(["A"]));
+>>>>>>> 7e0e469e55d37f2ac00c417e40519e5afc352b07
         if ((left && _current == "A") || 
             (right && _current == "D") ||
             (jump && _current == "W") ||

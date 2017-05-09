@@ -16,11 +16,11 @@ class PlayState extends FlxState {
 	private var _map:FlxOgmoLoader;
 	private var _mWalls:FlxTilemap;
 	private var _btnMenu:FlxButton;
-	private var _health:Int;
 	private var _hud:HUD;
 	
 	private var enemiesGroup:FlxTypedGroup<Enemy>;
 	private var playerBullets:FlxTypedGroup<Bullet>;
+	private var enemiesBullets:FlxTypedGroup<Bullet>;
 	
 	private var GRAVITY:Float = 1000;
 	
@@ -38,6 +38,8 @@ class PlayState extends FlxState {
 		
 		playerBullets = new FlxTypedGroup<Bullet>();
 		add(playerBullets);
+		enemiesBullets = new FlxTypedGroup<Bullet>();
+		add(enemiesBullets);
 		
 		enemiesGroup = new FlxTypedGroup<Enemy>();
 		add(enemiesGroup);
@@ -49,7 +51,6 @@ class PlayState extends FlxState {
 		// _btnMenu = new FlxButton(0, 0, "Menu", clickMenu);
 		// add(_btnMenu);
 		
-		_health = 100;
 		FlxG.camera.follow(_player, TOPDOWN, 1);
 
 		_hud = new HUD(_player);
@@ -68,15 +69,41 @@ class PlayState extends FlxState {
 						_player.getWeaponName(0), _player.getWeaponName(1));
 						
 		FlxG.overlap(playerBullets, enemiesGroup, bulletsHitEnemies);
+		if (!_player.isTumbling()) {
+			FlxG.overlap(enemiesBullets, _player, bulletsHitPlayer);
+		}
 		FlxG.collide(_mWalls, playerBullets, bulletsHitWalls);
 		enemiesGroup.forEach(enemiesUpdate);
 		FlxG.collide(_player, _mWalls);
 		FlxG.collide(enemiesGroup, _mWalls);
-		for (pb in playerBullets){
+		
+		bulletsRangeUpdate();
+	}
+	
+	private function bulletsHitPlayer(bullet:Bullet, player:Player):Void {
+		if (player.alive) {
+			var damage:Float = bullet.getDamage();
+			if (player.isShielding()) {
+				damage /= 10;
+			}
+			player.hurt(damage);
+			enemiesBullets.remove(bullet);
+			bullet.destroy();
+		}
+	}
+	
+	private function bulletsRangeUpdate():Void {
+		for (pb in playerBullets) {
 			//destroyed?
 			if (pb.outOfRange(pb.x)){
 				playerBullets.remove(pb);
 				pb.destroy();
+			}
+		}
+		for (eb in enemiesBullets) {
+			if (eb.outOfRange(eb.x)) {
+				playerBullets.remove(eb);
+				eb.destroy();
 			}
 		}
 	}
@@ -118,11 +145,11 @@ class PlayState extends FlxState {
 			_player.x = x;
 			_player.y = y;
 		} else if (entityName == "enemy") {
-			enemiesGroup.add(new Enemy(x, y, GRAVITY));
+			enemiesGroup.add(new RifleEnemy(x, y, enemiesBullets, GRAVITY));
 		}
 	}
 	
 	private function clickMenu():Void {
-		FlxG.switchState(new MenuState());
+		FlxG.switchState(new PlayState());
 	}
 }

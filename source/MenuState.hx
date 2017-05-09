@@ -17,13 +17,19 @@ class MenuState extends FlxState {
 		
 		spritesheet = new FlxSprite(0, 0);
 
-		spritesheet.loadGraphic(AssetPaths.player__png, true, cast(4745 / 5, Int), cast(11109 / 21, Int));
-		spritesheet.animation.add("lr", [2, 3, 4, 5, 6, 7, 8, 9], 12, true);
+		spritesheet.loadGraphic(AssetPaths.abc__png, true, cast(5035 / 5, Int), cast(3510 / 5, Int));
+		spritesheet.animation.add("lr", [0, 0, 0, 0, 20, 20, 20, 20,
+										 0, 0, 0, 0, 20, 20, 20, 20,
+										 1, 2, 3, 4, 4, 5, 5, 6, 6, 7, 7, 7, 7, 7, 
+										 8, 9, 10, 11, 12, 13, 14,
+										 15, 16, 16, 17, 18, 18, 19, 19, 19, 19,
+										 18, 18, 19, 19, 19, 19, 19,
+										 20, 20, 21, 21, 22, 22, 22, 22, 22, 22], 12, true);
 		//spritesheet.animation.add("stop", [0], 1, false);
 		add(spritesheet);
 		spritesheet.scale.set(0.25, 0.25);
 		spritesheet.setSize(102, 109);
-		spritesheet.offset.set(450, 220);
+		spritesheet.offset.set(200, 200);
 
 		spritesheet.animation.play("lr");
 		
