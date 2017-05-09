@@ -18,7 +18,7 @@ class OpeningState extends FlxState
 	private var _bg:FlxTilemap;
 	private var _platform:FlxObject;
 	private var _player:PlayerAnimation;
-	private var count:Int;
+	private var count:Int = 0;
 	private var _dialog:Dialog;
 	private var _text:FlxText;
 	private var _enemy:RifleEnemyAnimation;
@@ -147,7 +147,7 @@ class OpeningState extends FlxState
 	 			_player.animation.play("Run");
 		     	_player.x += 4;
 	 		} else if (count == 105) {
-		     	_enemy.animation.play("Stop");
+		     	_enemy.animation.play("stop");
 		    } else if (count == 120) {
 		    	// hypin begins to talk
 		    	_dialog.dialog1();
