@@ -86,7 +86,7 @@ class TutorialState extends FlxState {
             return 0;
         });
         _instruct = new Instruction(_player.x + 100, _player.y, 300, 12);
-        trace(_sorted.length);
+        trace(_sorted);
         _next = _sorted.shift();
         trace(_next);
 
@@ -179,16 +179,16 @@ class TutorialState extends FlxState {
 		}
 	}
 
-    // private function instructInit(elapsed:Float):Void {   
-    //     //trace(_player.x + "     " +_next);ddd
-    //     //trace(_player.x == cast(_next, Float));
-    //     if (Std.int(_player.x) == _next) {
-    //         trace("Reached!");
-    //         _instruct.instruct(_locations.get(_next), _player.x + 100, _player.y - 20);
+    private function instructInit(elapsed:Float):Void {   
+        //trace(_player.x + "     " +_next);
+        //trace(_player.x == cast(_next, Float));
+        if (Std.int(_player.x) == _next) {
+            trace("Reached!");
+            _instruct.instruct(_locations.get(_next), _player.x + 100, _player.y - 20);
             
-    //         _next = _sorted.shift();
-    //     }        
-    // }
+            _next = _sorted.shift();
+        }        
+    }
 
 	override public function update(elapsed:Float):Void  {
 	 	super.update(elapsed);

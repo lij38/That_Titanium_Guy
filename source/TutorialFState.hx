@@ -23,9 +23,9 @@ class TutorialFState extends FlxState
     private var _btnMenu:FlxButton;
     private var _instruct:Instruction;
 
-    private var _locations:Map<Int, String>;
-    private var _sorted:Array<Int>;
-    private var _next:Int;
+    private var locations:Map<Int, String>;
+    private var sorted:Array<Int>;
+    private var next:Int;
 
     private var playerBullets:FlxTypedGroup<Bullet>;
 	private var GRAVITY:Float = 1000;
@@ -75,22 +75,22 @@ class TutorialFState extends FlxState
 
 
         //LOAD INSTRUCTIONS
-        _locations = new Map<Int, String>();
-        _sorted = new Array<Int>();
+        locations = new Map<Int, String>();
+        sorted = new Array<Int>();
         var tmpLayer:TiledObjectLayer = cast _map.getLayer("instructions");
         for (e in tmpLayer.objects)
         {
             placeInstructions(e.name, e.xmlData.x);
         }
-        haxe.ds.ArraySort.sort(_sorted, function(a, b):Int {
+        haxe.ds.ArraySort.sort(sorted, function(a, b):Int {
             if (a < b) return -1;
             else if (a > b) return 1;
             return 0;
         });
         _instruct = new Instruction(0, 0, 300, 12);
-        trace(_sorted.length);
-        _next = _sorted.shift();
-        trace(_next);
+        trace(sorted.length);
+        next = sorted.shift();
+        trace(next);
 
 
 
@@ -100,10 +100,12 @@ class TutorialFState extends FlxState
         add(_plat); 
         add(_player);
         add(_btnMenu);
-        //add(_instruct);
+        add(_instruct);
         add(playerBullets);
         add(_enemies);
-        //add(_locations);
+        add(locations);
+        add(sorted);
+        add(next);
         FlxG.camera.follow(_player, TOPDOWN, 1);
 		super.create();
     }
@@ -127,8 +129,8 @@ class TutorialFState extends FlxState
     {
 		var x:Int = Std.parseInt(entityData.get("x"));
 		//var y:Int = Std.parseInt(entityData.get("y"));
-        _locations.set(x, entityName); 
-        _sorted.push(x);
+        locations.set(x, entityName); 
+        sorted.push(x);
     }
 
     //Intialize instructions 
@@ -137,10 +139,10 @@ class TutorialFState extends FlxState
         //trace(_player.x + "     " +_next);
         //trace(cast(_player.x, Int) + "      " +  _next);
         //trace(_sorted.length + "        " + _next);
-        if (Std.int(_player.x) == _next) {
+        if (Std.int(_player.x) == next) {
             trace("Reached!");
-            _instruct.instruct(_locations.get(_next), _player.x + 100, _player.y - 30);
-            _next = _sorted.shift();
+            _instruct.instruct(locations.get(next), _player.x + 100, _player.y - 30);
+            next = sorted.shift();
         }        
     }
 
