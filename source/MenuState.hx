@@ -29,7 +29,7 @@ class MenuState extends FlxState {
 		add(spritesheet);
 		spritesheet.scale.set(0.25, 0.25);
 		spritesheet.setSize(102, 109);
-		spritesheet.offset.set(200, 200);
+		spritesheet.offset.set(250, 250);
 
 		spritesheet.animation.play("lr");
 		
@@ -42,7 +42,7 @@ class MenuState extends FlxState {
 	}
 	
 	private function clickPlay():Void {
-		FlxG.switchState(new TutorialState());
+		FlxG.switchState(new OpeningState());
 	}
 	
 }
