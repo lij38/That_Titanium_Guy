@@ -171,8 +171,8 @@ class TutorialState extends FlxState {
            case "D": texts.add(new FlxText(x + 40, y - 100, 300, "Press D to move to the right", 12));
            case "W": texts.add(new FlxText(x + 40, y - 100, 300, "Press W to jump", 12));
            case "J": texts.add(new FlxText(x + 40, y - 100, 300, "Press J to attack",12));
-           case "K": texts.add(new FlxText(x + 40, y - 100, 300, "Press K to use the shied", 12));
-           case "SPACE": texts.add(new FlxText(x + 40, y - 100, 300, "Press SPACE to roll", 12));
+           case "K": texts.add(new FlxText(x + 40, y - 100, 300, "Press and hold K to use the shield", 12));
+           case "SPACE": texts.add(new FlxText(x + 40, y - 100, 300, "Press SPACE to roll to dodge the bullets", 12));
            case "SPACE1": texts.add(new FlxText(x + 40, y - 100, 300, "Press SPACE and try to roll through the enemy", 12));
        }
     }
