@@ -38,7 +38,7 @@ class MeleeEnemy extends Enemy {
 		animation.add("attack", [7, 7, 7, 8, 8, 8, 9, 9, 9], 9, false);
 		animation.play("stop");
 		
-		health = 100;
+		health = 50;
 		facing = FlxObject.LEFT;
 		brain = new EnemyFSM(idle);
 		range = 90;
@@ -89,7 +89,7 @@ class MeleeEnemy extends Enemy {
 			rateTimer = 0;
 		}
 		if (rateTimer > 0.33 && !attacked) {
-			bulletArray.add(new MeleeBullet(x + 7, y + 10, 4000, dir, 5, range));
+			bulletArray.add(new MeleeBullet(x + 7, y + 10, 4000, dir, 1, range));
 			attacked = true;
 		}
 	}

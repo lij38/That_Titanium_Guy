@@ -80,7 +80,7 @@ class OpeningState extends FlxState
 		_dialog.width = 500;
 		_dialog.height = 120;
 		_text = new FlxText(0, 0, 300, 12);
-		_helptext = new FlxText(0, 0, 300, "Press space bar to continue", 12);
+		_helptext = new FlxText(0, 0, 300, "Press ENTER to continue", 12);
 		_helptext.visible = false;
 		_text.width = 300;
 		_text.height = 100;
@@ -125,7 +125,7 @@ class OpeningState extends FlxState
 		     	count = 0;
 		     }
 	 	} else if (_stage2) {
-	 		var space:Bool = FlxG.keys.anyJustPressed([SPACE]);
+	 		var space:Bool = FlxG.keys.anyJustPressed([ENTER]);
 	 		if (space) {
 	 			if (_conv_index == 1) {
 	 				// after enemy talk ends, end stage2, begin stage3
@@ -157,7 +157,7 @@ class OpeningState extends FlxState
 		    	_text.visible = true;	    	
 		    } else if (count > 120) {
 		    	// enemy and hypin talks
-		    	var space:Bool = FlxG.keys.anyJustPressed([SPACE]);
+		    	var space:Bool = FlxG.keys.anyJustPressed([ENTER]);
 		 		if (space) {
 		 			if (_conv_index == 3) {
 		 				// if talk ends, end stage3, begin stage4

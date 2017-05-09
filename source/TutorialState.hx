@@ -137,7 +137,7 @@ class TutorialState extends FlxState {
         add(_player);
 		add(shield);
         //add(_btnMenu);
-        add(_instruct);
+        //add(_instruct);
         add(_hud);
 		add(texts);
 		 _hud.updateHUD(_player.getAmmo(0), _player.getAmmo(1), _player.isReloading(0), _player.isReloading(1),

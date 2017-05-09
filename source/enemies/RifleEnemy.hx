@@ -37,7 +37,7 @@ class RifleEnemy extends Enemy {
 		animation.add("die", [8, 9, 10, 10, 10, 10, 10, 10, 10, 10, 10], 9, false);
 		animation.play("stop");
 		
-		health = 100;
+		health = 50;
 		facing = FlxObject.LEFT;
 		brain = new EnemyFSM(idle);
 		range = 500;
@@ -77,7 +77,7 @@ class RifleEnemy extends Enemy {
 		if (bulletCount < 3) {
 			rateTimer += elapsed;
 			if (rateTimer > rate * bulletCount) {
-				bulletArray.add(new EnemyBullet(x, y + 45, 250, dir, 5, range));
+				bulletArray.add(new EnemyBullet(x, y + 45, 250, dir, 1, range));
 				bulletCount++;
 			}
 				
