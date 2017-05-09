@@ -34,6 +34,9 @@ class TutorialState extends FlxState {
 	
 	private var GRAVITY:Float = 1000;
 
+    private var playerBullets:FlxTypedGroup<Bullet>;
+	private var GRAVITY:Float = 1000;
+
 
     override public function create():Void {
         //LOAD MAP BASICS
@@ -63,8 +66,7 @@ class TutorialState extends FlxState {
 		add(enemiesGroup);
 
         //LOAD PLAYER
-		playerBullets = new FlxTypedGroup<Bullet>();
-        add(playerBullets);
+        playerBullets = new FlxTypedGroup<Bullet>();
         _player = new Player(playerBullets, GRAVITY);
         _btnMenu = new FlxButton(0, 0, "Menu", clickMenu);
 
@@ -102,6 +104,7 @@ class TutorialState extends FlxState {
         add(_player);
         add(_btnMenu);
         add(_instruct);
+
         add(_hud);
 		_hud.updateHUD(_player.getAmmo(0), _player.getAmmo(1), _player.isReloading(0), _player.isReloading(1),
 						_player.getWeaponName(0), _player.getWeaponName(1));
@@ -124,7 +127,7 @@ class TutorialState extends FlxState {
 	}
 
     private function instructInit(elapsed:Float):Void {   
-        //trace(_player.x + "     " +_next);
+        //trace(_player.x + "     " +_next);ddd
         //trace(_player.x == cast(_next, Float));
         if (Std.int(_player.x) == _next) {
             trace("Reached!");
