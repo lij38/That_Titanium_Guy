@@ -42,7 +42,7 @@ class MenuState extends FlxState {
 	}
 	
 	private function clickPlay():Void {
-		FlxG.switchState(new TutorialFState());
+		FlxG.switchState(new PlayState());
 	}
 	
 }

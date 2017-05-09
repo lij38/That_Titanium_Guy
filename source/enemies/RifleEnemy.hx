@@ -40,7 +40,7 @@ class RifleEnemy extends Enemy {
 		health = 100;
 		facing = FlxObject.LEFT;
 		brain = new EnemyFSM(idle);
-		range = 300;
+		range = 500;
 	}
 	
 	public function idle(elapsed:Float):Void {
@@ -50,12 +50,14 @@ class RifleEnemy extends Enemy {
 	}
 	
 	public function attack(elapsed:Float):Void {
-		if (playerPos.x <= getMidpoint().x) {
-			velocity.x = -speed;
-			facing = FlxObject.LEFT;
-		} else {
-			facing = FlxObject.RIGHT;
-			velocity.x = speed;
+		if (rateTimer == 0) {
+			if (playerPos.x <= getMidpoint().x) {
+				velocity.x = -speed;
+				facing = FlxObject.LEFT;
+			} else {
+				facing = FlxObject.RIGHT;
+				velocity.x = speed;
+			}
 		}
 		if (playerInRange()) {
 			velocity.x = 0;
@@ -65,7 +67,6 @@ class RifleEnemy extends Enemy {
 			animation.play("lr");
 			rateTimer = -1;
 		}
-		
 	}
 	
 	private function playerInRange():Bool {
@@ -73,7 +74,6 @@ class RifleEnemy extends Enemy {
 	}
 	
 	private function shoot(dir:Int, elapsed:Float):Void {
-		
 		if (bulletCount < 3) {
 			rateTimer += elapsed;
 			if (rateTimer > rate * bulletCount) {
@@ -82,6 +82,7 @@ class RifleEnemy extends Enemy {
 			}
 				
 		} else {
+			rateTimer = 0;
 			if (fireTimer >= 0) {
 				fireTimer += elapsed;
 			} else {
@@ -91,7 +92,6 @@ class RifleEnemy extends Enemy {
 		if (fireTimer > fireTime) {
 			fireTimer = -1;
 			bulletCount = 0;
-			rateTimer = 0;
 		}
 	}
 	

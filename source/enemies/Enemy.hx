@@ -15,7 +15,7 @@ class Enemy extends FlxSprite {
 	
 	private var GRAVITY:Float;
 	private var brain:EnemyFSM;
-	public var speed:Float = 100;
+	public var speed:Float = 50;
 	public var playerPos(default, null):FlxPoint;
 	public var seesPlayer:Bool = false;
 	public var hurtTime:Float = 0.25;

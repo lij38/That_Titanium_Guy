@@ -145,7 +145,7 @@ class PlayState extends FlxState {
 			_player.x = x;
 			_player.y = y;
 		} else if (entityName == "enemy") {
-			enemiesGroup.add(new RifleEnemy(x, y, enemiesBullets, GRAVITY));
+			enemiesGroup.add(new MeleeEnemy(x, y, enemiesBullets, GRAVITY));
 		}
 	}
 	
