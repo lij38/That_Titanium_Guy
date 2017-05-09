@@ -3,48 +3,37 @@ package enemies;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
+import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxPoint;
 import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
+import weapons.*;
 
 class Enemy extends FlxSprite {
+	private var bulletArray:FlxTypedGroup<Bullet>;
+	
 	private var GRAVITY:Float;
 	private var brain:EnemyFSM;
 	public var speed:Float = 100;
 	public var playerPos(default, null):FlxPoint;
 	public var seesPlayer:Bool = false;
 	public var hurtTime:Float = 0.25;
+	private var range:Float;
 	
 	private var hurtTimer:Float = -1;
 	
-	public function new(X:Float=0, Y:Float=0, gravity:Float) {
+	public function new(X:Float = 0, Y:Float = 0, enemiesBulletArray:FlxTypedGroup<Bullet>,
+						gravity:Float) {
 		super(X, Y);
 		GRAVITY = gravity;
-		
-		
-		loadGraphic(AssetPaths.v__png, true, 552, 383);
-		scale.set(0.3, 0.3);
-		setSize(35, 105);
-		offset.set(260, 133);
-		
-		setFacingFlip(FlxObject.LEFT, false, false);
-		setFacingFlip(FlxObject.RIGHT, true, false);
-		
-		animation.add("stop", [6], 1, false);
-		animation.add("lr", [0, 1, 2, 3, 4, 5], 9, false);
-		animation.add("hurt", [8, 8, 8, 8, 6], 12, false);
-		animation.add("die", [8, 9, 10, 10, 10, 10, 10, 10, 10, 10, 10], 9, false);
-		animation.play("stop");
+		bulletArray = enemiesBulletArray;
 		
 		acceleration.y = GRAVITY;
-		health = 100;
 		playerPos = FlxPoint.get();
-		facing = FlxObject.LEFT;
-		brain = new EnemyFSM(idle);
 	}
 	
-	public function idle():Void {
+/*	public function idle():Void {
 		if (seesPlayer) {
 			brain.activeState = chase;
 		}
@@ -59,12 +48,11 @@ class Enemy extends FlxSprite {
 			velocity.x = speed;
 		}
 		animation.play("lr");
-	}
+	}*/
+	
+	
 	
 	override public function update(elapsed:Float):Void {
-		//if (health < 0 && animation.finished) {
-			//kill();
-		//}
 		if (!alive) {
 			velocity.set(0, 0);
 			super.update(elapsed);
@@ -79,7 +67,7 @@ class Enemy extends FlxSprite {
 			if (isHurting()) {
 				velocity.set(0, 0);
 			} else {
-				brain.update();
+				brain.update(elapsed);
 			}
 		}
 		super.update(elapsed);

@@ -2,16 +2,19 @@ package;
 
 import flixel.*;
 import flixel.addons.editors.tiled.TiledMap;
+import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.tile.FlxTilemap;
 import flixel.ui.FlxButton;
 import flixel.addons.editors.tiled.TiledTileLayer;
 import flixel.addons.editors.tiled.TiledObjectLayer;
 import flixel.tile.FlxBaseTilemap;
+<<<<<<< HEAD
 import flixel.group.FlxGroup.FlxTypedGroup;
+=======
+>>>>>>> 7e5b75ebebc42ea5c171fe28c5eb60df8f4d5736
 import weapons.*;
 
-class TutorialState extends FlxState
-{
+class TutorialState extends FlxState {
     private var _player:Player;
     private var _map:TiledMap;
 
@@ -25,14 +28,15 @@ class TutorialState extends FlxState
     private var _locations:Map<Int, String>;
     private var _sorted:Array<Int>;
     private var _next:Int;
+	
+	private var playerBullets:FlxTypedGroup<Bullet>;
 
     private var playerBullets:FlxTypedGroup<Bullet>;
 	
 	private var GRAVITY:Float = 1000;
 
 
-    override public function create():Void
-    {
+    override public function create():Void {
         //LOAD MAP BASICS
         _map = new TiledMap(AssetPaths.tutorial__tmx);
         _background = new FlxTilemap();
@@ -54,12 +58,12 @@ class TutorialState extends FlxState
         _plat.setTileProperties(1, FlxObject.ANY);
 
         //LOAD PLAYER
+		playerBullets = new FlxTypedGroup<Bullet>();
         _player = new Player(playerBullets, GRAVITY);
         _btnMenu = new FlxButton(0, 0, "Menu", clickMenu);
 
         var tmpMap:TiledObjectLayer = cast _map.getLayer("player");
-        for (e in tmpMap.objects)
-        {
+        for (e in tmpMap.objects) {
             placeEntities(e.name, e.xmlData.x);
         }
 
@@ -67,8 +71,7 @@ class TutorialState extends FlxState
         _locations = new Map<Int, String>();
         _sorted = new Array<Int>();
         var tmpLayer:TiledObjectLayer = cast _map.getLayer("instruction");
-        for (e in tmpLayer.objects)
-        {
+        for (e in tmpLayer.objects) {
             placeEntities(e.name, e.xmlData.x);
         }
         haxe.ds.ArraySort.sort(_sorted, function(a, b):Int {
@@ -96,8 +99,7 @@ class TutorialState extends FlxState
 
     }
 
-	private function placeEntities(entityName:String, entityData:Xml):Void 
-    {
+	private function placeEntities(entityName:String, entityData:Xml):Void  {
 		var x:Int = Std.parseInt(entityData.get("x"));
 		var y:Int = Std.parseInt(entityData.get("y"));
 		if (entityName == "player") {
@@ -110,11 +112,10 @@ class TutorialState extends FlxState
 
 	}
 
-    private function instructInit(elapsed:Float):Void
-    {   
+    private function instructInit(elapsed:Float):Void {   
         //trace(_player.x + "     " +_next);
         //trace(_player.x == cast(_next, Float));
-        if (cast(_player.x, Int) == _next) {
+        if (Std.int(_player.x) == _next) {
             trace("Reached!");
             _instruct.instruct(_locations.get(_next), _player.x + 100, _player.y - 20);
             
@@ -122,8 +123,7 @@ class TutorialState extends FlxState
         }        
     }
 
-	override public function update(elapsed:Float):Void 
-    {
+	override public function update(elapsed:Float):Void  {
         instructInit(elapsed);
         FlxG.collide(_player, _bound);
         FlxG.collide(_player, _plat);

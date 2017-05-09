@@ -435,7 +435,7 @@ class Player extends FlxSprite {
 			} else {
 				animation.play(curConfig + "Cut");
 			}
-			trace(swordNum);
+			//trace(swordNum);
 			swordNum++;
 			if(swordNum > 2) {
 				swordNum = 0;
@@ -514,6 +514,6 @@ class Player extends FlxSprite {
 		//sword shield jetpack
 		animation.add("swshJP", [93, 94], 12, false);
 		//engage shield
-		animation.add("swshShield", [104], 1, false);
+		animation.add("swshShield", [104], 3, false);
 	}
 }
