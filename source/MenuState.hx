@@ -4,7 +4,7 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.ui.FlxButton;
-
+import animation.*;
 
 class MenuState extends FlxState {
 	private var _btnPlay:FlxButton;
@@ -42,7 +42,7 @@ class MenuState extends FlxState {
 	}
 	
 	private function clickPlay():Void {
-		FlxG.switchState(new TutorialFState());
+		FlxG.switchState(new OpeningState());
 	}
 	
 }

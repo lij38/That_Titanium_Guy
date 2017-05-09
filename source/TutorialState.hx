@@ -34,10 +34,6 @@ class TutorialState extends FlxState {
 	
 	private var GRAVITY:Float = 1000;
 
-    private var playerBullets:FlxTypedGroup<Bullet>;
-	private var GRAVITY:Float = 1000;
-
-
     override public function create():Void {
         //LOAD MAP BASICS
         _map = new TiledMap(AssetPaths.tutorial__tmx);
@@ -60,10 +56,8 @@ class TutorialState extends FlxState {
         _plat.setTileProperties(1, FlxObject.ANY);
 
         enemiesBullets = new FlxTypedGroup<Bullet>();
-		add(enemiesBullets);
 		
 		enemiesGroup = new FlxTypedGroup<Enemy>();
-		add(enemiesGroup);
 
         //LOAD PLAYER
         playerBullets = new FlxTypedGroup<Bullet>();
@@ -100,6 +94,9 @@ class TutorialState extends FlxState {
         //ADD EVERY COMPONENT
         add(_background);
         add(_bound);
+        add(enemiesBullets);
+        add(enemiesGroup);
+        add(playerBullets);
         add(_plat); 
         add(_player);
         add(_btnMenu);
@@ -109,7 +106,7 @@ class TutorialState extends FlxState {
 		_hud.updateHUD(_player.getAmmo(0), _player.getAmmo(1), _player.isReloading(0), _player.isReloading(1),
 						_player.getWeaponName(0), _player.getWeaponName(1));
         FlxG.camera.follow(_player, TOPDOWN, 1);
-        Main.LOGGER.logLevelStart(1);
+        //Main.LOGGER.logLevelStart(1);
 		super.create();
     }
 
@@ -159,9 +156,8 @@ class TutorialState extends FlxState {
         if (!_player.exists)
 		{
 			// Player died, so set our label to YOU LOST
-			statusMessage = "YOU LOST";
-			Main.LOGGER.logLevelEnd({won: false});
-			FlxG.switchState(new MenuState("You Lost"));
+			//Main.LOGGER.logLevelEnd({won: false});
+			FlxG.switchState(new MenuState());
 		}
 	}
 
