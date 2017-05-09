@@ -16,7 +16,6 @@ class PlayState extends FlxState {
 	private var _map:FlxOgmoLoader;
 	private var _mWalls:FlxTilemap;
 	private var _btnMenu:FlxButton;
-	private var _health:Int;
 	private var _hud:HUD;
 	
 	private var enemiesGroup:FlxTypedGroup<Enemy>;
@@ -52,7 +51,6 @@ class PlayState extends FlxState {
 		// _btnMenu = new FlxButton(0, 0, "Menu", clickMenu);
 		// add(_btnMenu);
 		
-		_health = 100;
 		FlxG.camera.follow(_player, TOPDOWN, 1);
 
 		_hud = new HUD(_player);
