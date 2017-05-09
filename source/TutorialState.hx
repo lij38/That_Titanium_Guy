@@ -9,6 +9,7 @@ import flixel.addons.editors.tiled.TiledTileLayer;
 import flixel.addons.editors.tiled.TiledObjectLayer;
 import flixel.tile.FlxBaseTilemap;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.text.FlxText;
 import weapons.*;
 import enemies.*;
 
@@ -33,7 +34,7 @@ class TutorialState extends FlxState {
     private var enemiesBullets:FlxTypedGroup<Bullet>;
 	private var GRAVITY:Float = 1000;
 	private var shield:FlxSprite;
-
+	private var texts:FlxTypedGroup<FlxText>;
     override public function create():Void {
         //LOAD MAP BASICS
         _map = new TiledMap(AssetPaths.tutorialFormal__tmx);
@@ -73,6 +74,7 @@ class TutorialState extends FlxState {
 
 
         //LOAD INSTRUCTIONS
+		texts = new FlxTypedGroup<FlxText>();
         _locations = new Map<Int, String>();
         _sorted = new Array<Int>();
         var tmpLayer:TiledObjectLayer = cast _map.getLayer("instructions");
@@ -84,10 +86,10 @@ class TutorialState extends FlxState {
             else if (a > b) return 1;
             return 0;
         });
-        _instruct = new Instruction(_player.x - 40, _player.y - 40, 300, 12);
-        trace(_sorted);
+        //_instruct = new Instruction(_player.x - 40, _player.y - 40, 300, 12);
+        //trace(_sorted);
         _next = _sorted.shift();
-        trace(_next);
+        //trace(_next);
 
 		//LOAD ENEMIES
 		enemiesGroup = new FlxTypedGroup<Enemy>();
@@ -137,6 +139,7 @@ class TutorialState extends FlxState {
         //add(_btnMenu);
         add(_instruct);
         add(_hud);
+		add(texts);
 		 _hud.updateHUD(_player.getAmmo(0), _player.getAmmo(1), _player.isReloading(0), _player.isReloading(1),
 		 				_player.getWeaponName(0), _player.getWeaponName(1));
         FlxG.camera.follow(_player, TOPDOWN, 1);
@@ -163,6 +166,15 @@ class TutorialState extends FlxState {
 		var y:Int = Std.parseInt(entityData.get("y"));
         _locations.set(x, entityName); 
         _sorted.push(x);
+		switch entityName {
+           case "A": texts.add(new FlxText(x + 40, y - 100, 300, "Press A to move to the left", 12));
+           case "D": texts.add(new FlxText(x + 40, y - 100, 300, "Press D to move to the right", 12));
+           case "W": texts.add(new FlxText(x + 40, y - 100, 300, "Press W to jump", 12));
+           case "J": texts.add(new FlxText(x + 40, y - 100, 300, "Press J to attack",12));
+           case "K": texts.add(new FlxText(x + 40, y - 100, 300, "Press K to use the shied", 12));
+           case "SPACE": texts.add(new FlxText(x + 40, y - 100, 300, "Press SPACE to roll", 12));
+           case "SPACE1": texts.add(new FlxText(x + 40, y - 100, 300, "Press SPACE and try to roll through the enemy", 12));
+       }
     }
 
 
@@ -196,7 +208,7 @@ class TutorialState extends FlxState {
     //  if (enemiesGroup.countLiving() == -1) {
 	// 		_map.loadEntities(placeEntities, "entities");
 	// 	}
-		instructInit(elapsed);
+		//instructInit(elapsed);
         FlxG.collide(_player, _bound);
         FlxG.collide(_player, _plat);
 		FlxG.collide(shield, _bound);
