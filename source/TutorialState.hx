@@ -216,11 +216,14 @@ class TutorialState extends FlxState {
 		FlxG.collide(enemiesGroup, _plat);
 
 		bulletsRangeUpdate();
-        if (!_player.exists)
-		{
+        if (!_player.exists) {
 			// Player died, so set our label to YOU LOST
 			//Main.LOGGER.logLevelEnd({won: false});
 			FlxG.switchState(new OverState());
+		}
+		
+		if (enemiesGroup.countLiving() == -1) {
+			FlxG.switchState(new FinishState());
 		}
 	}
 
