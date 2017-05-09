@@ -72,7 +72,6 @@ class TutorialState extends FlxState {
         _hud = new HUD(_player);
 
 
-
         //LOAD INSTRUCTIONS
         _locations = new Map<Int, String>();
         _sorted = new Array<Int>();
@@ -85,7 +84,7 @@ class TutorialState extends FlxState {
             else if (a > b) return 1;
             return 0;
         });
-        _instruct = new Instruction(_player.x + 100, _player.y, 300, 12);
+        _instruct = new Instruction(_player.x - 40, _player.y - 40, 300, 12);
         trace(_sorted);
         _next = _sorted.shift();
         trace(_next);
@@ -162,7 +161,6 @@ class TutorialState extends FlxState {
     {
 		var x:Int = Std.parseInt(entityData.get("x"));
 		var y:Int = Std.parseInt(entityData.get("y"));
-		//var y:Int = Std.parseInt(entityData.get("y"));
         _locations.set(x, entityName); 
         _sorted.push(x);
     }
@@ -182,9 +180,12 @@ class TutorialState extends FlxState {
     private function instructInit(elapsed:Float):Void {   
         //trace(_player.x + "     " +_next);
         //trace(_player.x == cast(_next, Float));
-        if (Std.int(_player.x) == _next) {
-            trace("Reached!");
-            _instruct.instruct(_locations.get(_next), _player.x + 100, _player.y - 20);
+        //if (!(Std.int(_player.x) > _next && !(Std.int(_player.x) < _next)) {
+		//trace(Std.int(_player.x) + "       " + Std.int(_next));
+		trace(_sorted.length);
+        if (Std.int(_player.x) == Std.int(_next)) {
+		    trace("Reached!");
+            _instruct.instruct(_locations.get(_next), _player.x - 40, _player.y - 40);
             
             _next = _sorted.shift();
         }        
@@ -195,7 +196,7 @@ class TutorialState extends FlxState {
     //  if (enemiesGroup.countLiving() == -1) {
 	// 		_map.loadEntities(placeEntities, "entities");
 	// 	}
-		//instructInit(elapsed);
+		instructInit(elapsed);
         FlxG.collide(_player, _bound);
         FlxG.collide(_player, _plat);
 		FlxG.collide(shield, _bound);
