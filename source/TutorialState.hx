@@ -111,14 +111,14 @@ class TutorialState extends FlxState {
 
 		//LOAD SHIELD
 		shield = new FlxSprite();
-		shield.loadGraphic(AssetPaths.SHIELD);
+		shield.loadGraphic(AssetPaths.shield__png);
 		var shieldLayer:TiledObjectLayer = cast _map.getLayer("shield");
 		for (e in shieldLayer.objects) {
 			var x:Int = Std.parseInt(e.xmlData.x.get("x"));
-			var y:Int = Std.parseInt(e.xmlData.x.get("y"));
+			var y:Int = Std.parseInt(e.xmlData.x.get("y")) - 50;
 			if (e.name == "shield") {
-				shield.x = x;
-				shield.y = y;
+				shield.x = _player.x + 50;
+				shield.y = _player.y;
 			}
 		}
 
@@ -134,6 +134,7 @@ class TutorialState extends FlxState {
         add(playerBullets);
         add(_plat); 
         add(_player);
+		add(shield);
         //add(_btnMenu);
         add(_instruct);
         add(_hud);
@@ -222,9 +223,9 @@ class TutorialState extends FlxState {
 		}
 	}
 
-	private function onPickup():Void {
-		shield.kill;
-		_player.
+	private function onPickup(a:FlxSprite, b:FlxSprite):Void {
+		shield.kill();
+		_player.pickUpShield();
 	}
 
     private function bulletsHitPlayer(bullet:Bullet, player:Player):Void {
