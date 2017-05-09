@@ -8,10 +8,10 @@ import flixel.addons.editors.tiled.TiledTileLayer;
 import flixel.addons.editors.tiled.TiledObjectLayer;
 import flixel.tile.FlxBaseTilemap;
 import flixel.group.FlxGroup.FlxTypedGroup;
-import flixel.FlixBasic.*;
 import weapons.*;
+import enemies.*;
 
-class TutorialState extends FlxState
+class TutorialFState extends FlxState
 {
     private var _player:Player;
     private var _map:TiledMap;
@@ -30,11 +30,14 @@ class TutorialState extends FlxState
     private var playerBullets:FlxTypedGroup<Bullet>;
 	private var GRAVITY:Float = 1000;
 
+    private var _end:Int;
+    private var _enemies:FlxTypedGroup<Enemy>;
+
 
     override public function create():Void
     {
         //LOAD MAP BASICS
-        _map = new TiledMap(AssetPaths.tutorial__tmx);
+        _map = new TiledMap(AssetPaths.tutorialFormal__tmx);
         _background = new FlxTilemap();
         _plat = new FlxTilemap();
         _bound = new FlxTilemap();
@@ -44,14 +47,15 @@ class TutorialState extends FlxState
             _map.height, AssetPaths.tutorialBG__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 1023);
         //load platform
         _plat.loadMapFromArray(cast(_map.getLayer("plat"), TiledTileLayer).tileArray, _map.width,
-            _map.height, AssetPaths.green__jpg, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 2041, 1, 2040);
+            _map.height, AssetPaths.green__jpg, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1021, 1, 1020);
         //load bounds
         _bound.loadMapFromArray(cast(_map.getLayer("bound"), TiledTileLayer).tileArray, _map.width,
-            _map.height, AssetPaths.green__jpg, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 2041, 1, 2040);
+            _map.height, AssetPaths.green__jpg, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1021, 1, 1020);
 
         _background.setTileProperties(2, FlxObject.NONE);
         _bound.setTileProperties(1, FlxObject.ANY);
         _plat.setTileProperties(1, FlxObject.ANY);
+
 
         //LOAD PLAYER
         playerBullets = new FlxTypedGroup<Bullet>();
@@ -64,13 +68,19 @@ class TutorialState extends FlxState
             placeEntities(e.name, e.xmlData.x);
         }
 
+        //LOAD ENEMIES
+        //
+        //
+        _enemies = new FlxTypedGroup<Enemy>();
+
+
         //LOAD INSTRUCTIONS
         _locations = new Map<Int, String>();
         _sorted = new Array<Int>();
-        var tmpLayer:TiledObjectLayer = cast _map.getLayer("instruction");
+        var tmpLayer:TiledObjectLayer = cast _map.getLayer("instructions");
         for (e in tmpLayer.objects)
         {
-            placeEntities(e.name, e.xmlData.x);
+            placeInstructions(e.name, e.xmlData.x);
         }
         haxe.ds.ArraySort.sort(_sorted, function(a, b):Int {
             if (a < b) return -1;
@@ -90,42 +100,53 @@ class TutorialState extends FlxState
         add(_plat); 
         add(_player);
         add(_btnMenu);
-        add(_instruct);
+        //add(_instruct);
         add(playerBullets);
+        add(_enemies);
+        //add(_locations);
         FlxG.camera.follow(_player, TOPDOWN, 1);
 		super.create();
-
-
     }
 
-	private function placeEntities(entityName:String, entityData:Xml):Void 
+    //Place enemies and player starting/ending point
+    private function placeEntities(entityName:String, entityData:Xml):Void 
     {
 		var x:Int = Std.parseInt(entityData.get("x"));
 		var y:Int = Std.parseInt(entityData.get("y"));
-		if (entityName == "player") {
-			_player.x = x;
-			_player.y = y;
-		} else {
-            _locations.set(x, entityName);
-            _sorted.push(x);
+        switch entityName {
+            case "START": _player.x = x; _player.y = y;
+            case "END": _end = x;
+            //ENEMIES CASES NEEDED
+            //
+            //
         }
+    }
 
-	}
+    //Place all the instructions
+    private function placeInstructions(entityName:String, entityData:Xml):Void 
+    {
+		var x:Int = Std.parseInt(entityData.get("x"));
+		//var y:Int = Std.parseInt(entityData.get("y"));
+        _locations.set(x, entityName); 
+        _sorted.push(x);
+    }
 
+    //Intialize instructions 
     private function instructInit(elapsed:Float):Void
     {   
         //trace(_player.x + "     " +_next);
-        trace(cast(_player.x, Int) == _next);
+        //trace(cast(_player.x, Int) + "      " +  _next);
+        //trace(_sorted.length + "        " + _next);
         if (cast(_player.x, Int) == _next) {
             trace("Reached!");
-            _instruct.instruct(_locations.get(_next), _player.x + 100, _player.y - 20);
-            
+            _instruct.instruct(_locations.get(_next), _player.x + 100, _player.y - 30);
             _next = _sorted.shift();
         }        
     }
 
 	override public function update(elapsed:Float):Void 
     {
+        trace(_player.x);
         instructInit(elapsed);
         FlxG.collide(_player, _bound);
         FlxG.collide(_player, _plat);
@@ -136,5 +157,6 @@ class TutorialState extends FlxState
     private function clickMenu():Void {
 		FlxG.switchState(new MenuState());
 	}
+
 
 }

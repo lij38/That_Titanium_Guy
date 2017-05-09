@@ -10,11 +10,15 @@ class Instruction extends FlxText
     private static inline var W:String = "Press W to jump";
     private static inline var J:String = "Press J to attack";
     private static inline var K:String = "Press K to use the shied";
-    private static inline var SPACE:String = "Press SPACE to tumble";
+    private static inline var SPACE:String = "Press SPACE to roll";
+    private static inline var SPACE1:String = "Press SPACE and try to roll through the enemy";
     private var _current:String;
     
     override public function new(X:Float = 0, Y:Float = 0, FieldWidth:Float = 0, ?Text:String, Size:Int = 8)
     {
+        //_current = "A";
+        //text = A;
+        //visible = true;
         _current = "";
         text = "";
         visible = false;
@@ -24,12 +28,13 @@ class Instruction extends FlxText
     public function instruct(option:String, X:Float, Y:Float):Void
     {
        switch option {
-           case "A": text = A;
+           //case "A": text = A;
            case "D": text = D;
            case "W": text = W;
            case "J": text = J;
            case "K": text = K;
            case "SPACE": text = SPACE;
+           case "SPACE1": text = SPACE1;
        }
 
        _current = option;
@@ -61,20 +66,19 @@ class Instruction extends FlxText
         var attack:Bool = false;
         var shield:Bool = false;
 
-        jump = FlxG.keys.anyPressed([W]);
-        left = FlxG.keys.anyPressed([A, LEFT]);
-        right = FlxG.keys.anyPressed([D]);
-        roll = FlxG.keys.anyPressed([SPACE]);
-        attack = FlxG.keys.anyPressed([J]);
-        shield = FlxG.keys.anyPressed([K]);
-        trace(left + "          " + _current);
+        jump = FlxG.keys.anyPressed(["W"]);
+        left = FlxG.keys.anyPressed(["A"]);
+        right = FlxG.keys.anyPressed(["D"]);
+        roll = FlxG.keys.anyPressed(["SPACE"]);
+        attack = FlxG.keys.anyPressed(["J"]);
+        shield = FlxG.keys.anyPressed(["K"]);
         if ((left && _current == "A") || 
             (right && _current == "D") ||
             (jump && _current == "W") ||
             (roll && _current == "SPACE") ||
             (attack && _current == "J") ||
-            (shield && _current == "K")) {
-                trace("Damn");
+            (shield && _current == "K") ||
+            (roll&& _current == "SPACE1")) {
                 visible = false;
             }
     
