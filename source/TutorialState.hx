@@ -34,7 +34,6 @@ class TutorialState extends FlxState {
 	
 	private var GRAVITY:Float = 1000;
 
-
     override public function create():Void {
         //LOAD MAP BASICS
         _map = new TiledMap(AssetPaths.tutorialFormal__tmx);
@@ -59,10 +58,8 @@ class TutorialState extends FlxState {
 		_plat.follow();
 
         enemiesBullets = new FlxTypedGroup<Bullet>();
-		add(enemiesBullets);
 		
 		enemiesGroup = new FlxTypedGroup<Enemy>();
-		add(enemiesGroup);
 
         //LOAD PLAYER
         playerBullets = new FlxTypedGroup<Bullet>();
@@ -100,6 +97,9 @@ class TutorialState extends FlxState {
         //ADD EVERY COMPONENT
         add(_background);
         add(_bound);
+        add(enemiesBullets);
+        add(enemiesGroup);
+        add(playerBullets);
         add(_plat); 
         add(_player);
         add(_btnMenu);
@@ -164,14 +164,14 @@ class TutorialState extends FlxState {
 		FlxG.collide(_bound, playerBullets, bulletsHitWalls);
 		enemiesGroup.forEach(enemiesUpdate);
 		FlxG.collide(enemiesGroup, _bound);
-	 	bulletsRangeUpdate();
-         if (!_player.exists)
-	 	{
-	 		// Player died, so set our label to YOU LOST
-	 		//statusMessage = "YOU LOST";
-	 		//Main.LOGGER.logLevelEnd({won: false});
-	 		//FlxG.switchState(new MenuState("You Lost"));
-	 	}
+
+		bulletsRangeUpdate();
+        if (!_player.exists)
+		{
+			// Player died, so set our label to YOU LOST
+			//Main.LOGGER.logLevelEnd({won: false});
+			FlxG.switchState(new MenuState());
+		}
 	}
 
     private function bulletsHitPlayer(bullet:Bullet, player:Player):Void {

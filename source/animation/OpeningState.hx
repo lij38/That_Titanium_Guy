@@ -182,7 +182,9 @@ class OpeningState extends FlxState
 		     	_player.x += 4;
 		     	_enemy.animation.play("lr");
 		     	_enemy.x -= 4;
-		    }
+		    } else if (count > 100) {
+				FlxG.switchState(new TutorialState());
+			}
 	 	}
 
 		super.update(elapsed);
