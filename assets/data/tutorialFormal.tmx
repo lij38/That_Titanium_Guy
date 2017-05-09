@@ -85,12 +85,12 @@
 </data>
  </layer>
  <objectgroup name="enemiesScene5">
-  <object id="8" x="3065" y="125" width="63" height="110"/>
-  <object id="22" x="2849" y="293" width="65" height="122"/>
+  <object id="8" name="MELEE" x="3065" y="125" width="63" height="110"/>
+  <object id="22" name="RIFLE" x="2849" y="293" width="65" height="122"/>
  </objectgroup>
  <objectgroup name="enemiesScene6">
-  <object id="10" x="3852" y="276" width="78" height="139"/>
-  <object id="11" x="3656" y="283" width="73" height="133"/>
+  <object id="10" name="RIFLE" x="3852" y="276" width="78" height="139"/>
+  <object id="11" name="MELEE" x="3656" y="283" width="73" height="133"/>
  </objectgroup>
  <objectgroup name="player">
   <object id="12" name="START" x="212" y="311" width="65" height="106"/>
@@ -101,20 +101,20 @@
   <object id="16" name="J" x="714" y="320" width="55" height="97"/>
   <object id="17" name="K" x="1476" y="319" width="65" height="100"/>
   <object id="21" name="SPACE" x="1895" y="307" width="60" height="110"/>
-  <object id="23" name="W" x="2850" y="296" width="63" height="120"/>
+  <object id="23" name="W" x="2850" y="295" width="63" height="120"/>
   <object id="24" name="SPACE1" x="3333" y="288" width="71" height="130"/>
   <object id="31" name="A" x="213" y="313" width="47" height="106"/>
  </objectgroup>
  <objectgroup name="enemiesScene1">
-  <object id="1" x="1088" y="312" width="64" height="107"/>
-  <object id="2" x="1193" y="317" width="54" height="102"/>
-  <object id="3" x="1279" y="312" width="51" height="107"/>
+  <object id="1" name="MELEE" x="1088" y="312" width="64" height="107"/>
+  <object id="2" name="MELEE" x="1193" y="317" width="54" height="102"/>
+  <object id="3" name="MELEE" x="1279" y="312" width="51" height="107"/>
  </objectgroup>
  <objectgroup name="shield">
   <object id="32" name="SHIELD" x="1477" y="321" width="64" height="97"/>
  </objectgroup>
  <objectgroup name="enemiesScene4">
-  <object id="18" x="2186" y="301" width="64" height="117"/>
-  <object id="19" x="2304" y="307" width="61" height="110"/>
+  <object id="18" name="MELEE" x="2186" y="301" width="64" height="117"/>
+  <object id="19" name="MELEE" x="2304" y="307" width="61" height="110"/>
  </objectgroup>
 </map>

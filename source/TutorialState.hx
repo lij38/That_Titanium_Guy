@@ -20,7 +20,7 @@ class TutorialState extends FlxState {
     private var _plat:FlxTilemap;
     private var _bound:FlxTilemap;
 
-    private var _btnMenu:FlxButton;
+    //private var _btnMenu:FlxButton;
     private var _instruct:Instruction;
 
     private var _locations:Map<Int, String>;
@@ -31,8 +31,8 @@ class TutorialState extends FlxState {
     private var _hud:HUD;
 	private var enemiesGroup:FlxTypedGroup<Enemy>;
     private var enemiesBullets:FlxTypedGroup<Bullet>;
-	
 	private var GRAVITY:Float = 1000;
+	private var shield:FlxSprite;
 
     override public function create():Void {
         //LOAD MAP BASICS
@@ -58,13 +58,11 @@ class TutorialState extends FlxState {
 		_plat.follow();
 
         enemiesBullets = new FlxTypedGroup<Bullet>();
-		
-		enemiesGroup = new FlxTypedGroup<Enemy>();
 
         //LOAD PLAYER
         playerBullets = new FlxTypedGroup<Bullet>();
         _player = new Player(playerBullets, GRAVITY);
-        _btnMenu = new FlxButton(0, 0, "Menu", clickMenu);
+        //_btnMenu = new FlxButton(0, 0, "Menu", clickMenu);
 		var tmpMap:TiledObjectLayer = cast _map.getLayer("player");
         for (e in tmpMap.objects) {
             placeEntities(e.name, e.xmlData.x);
@@ -92,6 +90,40 @@ class TutorialState extends FlxState {
         _next = _sorted.shift();
         trace(_next);
 
+		//LOAD ENEMIES
+		enemiesGroup = new FlxTypedGroup<Enemy>();
+		var enemyLayer1:TiledObjectLayer = cast _map.getLayer("enemiesScene1");
+		var enemyLayer4:TiledObjectLayer = cast _map.getLayer("enemiesScene4");
+		var enemyLayer5:TiledObjectLayer = cast _map.getLayer("enemiesScene5");
+		var enemyLayer6:TiledObjectLayer = cast _map.getLayer("enemiesScene6");
+		for (e in enemyLayer1.objects) {
+			placeEnemies(e.name, e.xmlData.x);
+		}
+		for (e in enemyLayer4.objects) {
+			placeEnemies(e.name, e.xmlData.x);
+		}
+		for (e in enemyLayer5.objects) {
+			placeEnemies(e.name, e.xmlData.x);
+		}
+		for (e in enemyLayer6.objects) {
+			placeEnemies(e.name, e.xmlData.x);
+		}
+
+		//LOAD SHIELD
+		shield = new FlxSprite();
+		shield.loadGraphic(AssetPaths.SHIELD);
+		var shieldLayer:TiledObjectLayer = cast _map.getLayer("shield");
+		for (e in shieldLayer.objects) {
+			var x:Int = Std.parseInt(e.xmlData.x.get("x"));
+			var y:Int = Std.parseInt(e.xmlData.x.get("y"));
+			if (e.name == "shield") {
+				shield.x = x;
+				shield.y = y;
+			}
+		}
+
+
+
 
 
         //ADD EVERY COMPONENT
@@ -102,9 +134,8 @@ class TutorialState extends FlxState {
         add(playerBullets);
         add(_plat); 
         add(_player);
-        add(_btnMenu);
+        //add(_btnMenu);
         add(_instruct);
-
         add(_hud);
 		 _hud.updateHUD(_player.getAmmo(0), _player.getAmmo(1), _player.isReloading(0), _player.isReloading(1),
 		 				_player.getWeaponName(0), _player.getWeaponName(1));
@@ -112,7 +143,7 @@ class TutorialState extends FlxState {
         //Main.LOGGER.logLevelStart(1);
 		super.create();
     }
-
+	//Place player info
 	private function placeEntities(entityName:String, entityData:Xml):Void  {
 		var x:Int = Std.parseInt(entityData.get("x"));
 		var y:Int = Std.parseInt(entityData.get("y"));
@@ -129,10 +160,23 @@ class TutorialState extends FlxState {
     private function placeInstructions(entityName:String, entityData:Xml):Void 
     {
 		var x:Int = Std.parseInt(entityData.get("x"));
+		var y:Int = Std.parseInt(entityData.get("y"));
 		//var y:Int = Std.parseInt(entityData.get("y"));
         _locations.set(x, entityName); 
         _sorted.push(x);
     }
+
+
+	private function placeEnemies(entityName:String, entityData:Xml):Void
+	{
+		var x:Int = Std.parseInt(entityData.get("x"));
+		var y:Int = Std.parseInt(entityData.get("y"));
+		if (entityName == "MELEE") {
+			enemiesGroup.add(new MeleeEnemy(x, y, enemiesBullets, GRAVITY));
+		} else {
+			enemiesGroup.add(new RifleEnemy(x, y, enemiesBullets, GRAVITY));
+		}
+	}
 
     // private function instructInit(elapsed:Float):Void {   
     //     //trace(_player.x + "     " +_next);ddd
@@ -153,17 +197,21 @@ class TutorialState extends FlxState {
 		//instructInit(elapsed);
         FlxG.collide(_player, _bound);
         FlxG.collide(_player, _plat);
+		FlxG.collide(shield, _bound);
+		
 
 		_hud.updateHUD(_player.getAmmo(0), _player.getAmmo(1), _player.isReloading(0), _player.isReloading(1),
 	 					_player.getWeaponName(0), _player.getWeaponName(1));
 						
 	 	FlxG.overlap(playerBullets, enemiesGroup, bulletsHitEnemies);
+		FlxG.overlap(shield, _player, onPickup);
 	 	if (!_player.isTumbling()) {
 	 		FlxG.overlap(enemiesBullets, _player, bulletsHitPlayer);
 	 	}
 		FlxG.collide(_bound, playerBullets, bulletsHitWalls);
 		enemiesGroup.forEach(enemiesUpdate);
 		FlxG.collide(enemiesGroup, _bound);
+		FlxG.collide(enemiesGroup, _plat);
 
 		bulletsRangeUpdate();
         if (!_player.exists)
@@ -172,6 +220,11 @@ class TutorialState extends FlxState {
 			//Main.LOGGER.logLevelEnd({won: false});
 			FlxG.switchState(new MenuState());
 		}
+	}
+
+	private function onPickup():Void {
+		shield.kill;
+		_player.
 	}
 
     private function bulletsHitPlayer(bullet:Bullet, player:Player):Void {
@@ -232,8 +285,8 @@ class TutorialState extends FlxState {
 		pb.destroy();
 	}
 
-    private function clickMenu():Void {
-		FlxG.switchState(new MenuState());
-	}
+    // private function clickMenu():Void {
+	// 	FlxG.switchState(new MenuState());
+	// }
 
 }
