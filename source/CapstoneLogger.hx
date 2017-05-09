@@ -1,11 +1,15 @@
 package cse481d.logging;
+#if flash
 import flash.net.SharedObject;
+#end
 import haxe.Timer;
 import haxe.Http;
 import haxe.Json;
 import haxe.crypto.Md5;
+#if js
 import js.Browser;
 import js.html.Storage;
+#end
 
 /**
  * ...
@@ -80,7 +84,7 @@ class CapstoneLogger
 		#if js
 			savedUserId = Browser.window.localStorage.getItem("saved_userid");
 		#elseif flash
-			var sharedObject:SharedObject = new SharedObject();
+			var sharedObject:SharedObject = SharedObject.getLocal("capstone");
 			savedUserId = sharedObject.data.saved_userid;
 		#end
 		
@@ -92,7 +96,7 @@ class CapstoneLogger
 		#if js
 			Browser.window.localStorage.setItem("saved_userid", value);
 		#elseif flash
-			var sharedObject:SharedObject = new SharedObject();
+			var sharedObject:SharedObject = SharedObject.getLocal("capstone");
 			sharedObject.setProperty("saved_userid", value);
 		#end
 	}
@@ -127,9 +131,7 @@ class CapstoneLogger
 				if (parsedResults.tstatus == 't')
 				{
 					this.currentSessionId = parsedResults.r_data.sessionid;
-					trace(this.currentSessionId);
 					sessionSuccess = true;
-					
 				}
 			}
 			
@@ -141,7 +143,6 @@ class CapstoneLogger
 		
 		sessionRequest.onError = function(message:String):Void
 		{
-			trace(message);
 			callback(false);
 		};
 		sessionRequest.request(true);

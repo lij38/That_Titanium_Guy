@@ -106,9 +106,8 @@ class TutorialState extends FlxState {
 		_hud.updateHUD(_player.getAmmo(0), _player.getAmmo(1), _player.isReloading(0), _player.isReloading(1),
 						_player.getWeaponName(0), _player.getWeaponName(1));
         FlxG.camera.follow(_player, TOPDOWN, 1);
+        Main.LOGGER.logLevelStart(1);
 		super.create();
-
-
     }
 
 	private function placeEntities(entityName:String, entityData:Xml):Void  {
@@ -154,6 +153,13 @@ class TutorialState extends FlxState {
 		enemiesGroup.forEach(enemiesUpdate);
 		FlxG.collide(enemiesGroup, _bound);
 		bulletsRangeUpdate();
+        if (!_player.exists)
+		{
+			// Player died, so set our label to YOU LOST
+			statusMessage = "YOU LOST";
+			Main.LOGGER.logLevelEnd({won: false});
+			FlxG.switchState(new MenuState("You Lost"));
+		}
 	}
 
     private function bulletsHitPlayer(bullet:Bullet, player:Player):Void {
