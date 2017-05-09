@@ -61,10 +61,10 @@ class Player extends FlxSprite {
 		bulletArray = playerBulletArray;
 
 		jWeapon = new Sword(playerBulletArray);
-		j2ndWeapon = new Rifle(playerBulletArray);
-		kWeapon = new Shield(playerBulletArray);
+		j2ndWeapon = new Weapon(playerBulletArray);
+		kWeapon = new Weapon(playerBulletArray);
 		k2ndWeapon = new Weapon(playerBulletArray);
-		curConfig = "swsh";
+		curConfig = "sword";
 		shielding = false;
 	}
 	
@@ -384,6 +384,11 @@ class Player extends FlxSprite {
 		} else {
 			return kReloadTimer != -0.1;
 		}
+	}
+
+	public function pickUpShield() {
+		kWeapon = new Shield(bulletArray);
+		curConfig = "swsh";
 	}
 
 	private function playRun(option:String) {
