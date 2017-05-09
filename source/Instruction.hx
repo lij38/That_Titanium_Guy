@@ -64,7 +64,6 @@ class Instruction extends FlxText {
         attack = FlxG.keys.anyPressed([J]);
         shield = FlxG.keys.anyPressed([K]);
         trace(left + "          " + _current);
-		FlxG.watch.addQuick("A pressed", FlxG.keys.anyPressed(["A"]));
         if ((left && _current == "A") || 
             (right && _current == "D") ||
             (jump && _current == "W") ||
