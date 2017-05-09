@@ -123,6 +123,6 @@ class PlayState extends FlxState {
 	}
 	
 	private function clickMenu():Void {
-		FlxG.switchState(new MenuState());
+		FlxG.switchState(new PlayState());
 	}
 }

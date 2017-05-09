@@ -7,6 +7,8 @@ import flixel.ui.FlxButton;
 import flixel.addons.editors.tiled.TiledTileLayer;
 import flixel.addons.editors.tiled.TiledObjectLayer;
 import flixel.tile.FlxBaseTilemap;
+import flixel.group.FlxGroup.FlxTypedGroup;
+import weapons.*;
 
 class TutorialState extends FlxState
 {
@@ -23,6 +25,10 @@ class TutorialState extends FlxState
     private var _locations:Map<Int, String>;
     private var _sorted:Array<Int>;
     private var _next:Int;
+
+    private var playerBullets:FlxTypedGroup<Bullet>;
+	
+	private var GRAVITY:Float = 1000;
 
 
     override public function create():Void
@@ -48,7 +54,7 @@ class TutorialState extends FlxState
         _plat.setTileProperties(1, FlxObject.ANY);
 
         //LOAD PLAYER
-        _player = new Player();
+        _player = new Player(playerBullets, GRAVITY);
         _btnMenu = new FlxButton(0, 0, "Menu", clickMenu);
 
         var tmpMap:TiledObjectLayer = cast _map.getLayer("player");
