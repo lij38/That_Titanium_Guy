@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="220" height="22" tilewidth="20" tileheight="20" nextobjectid="28">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="220" height="22" tilewidth="20" tileheight="20" nextobjectid="35">
  <tileset firstgid="1" name="tutorialBG" tilewidth="20" tileheight="20" tilecount="1020" columns="51">
   <image source="../images/tutorialBG.png" width="1024" height="400"/>
  </tileset>
@@ -99,15 +99,19 @@
  <objectgroup name="instructions">
   <object id="14" name="D" x="136" y="312" width="47" height="106"/>
   <object id="16" name="J" x="714" y="320" width="55" height="97"/>
-  <object id="17" name="K" x="1346" y="317" width="65" height="100"/>
+  <object id="17" name="K" x="1476" y="319" width="65" height="100"/>
   <object id="21" name="SPACE" x="1895" y="307" width="60" height="110"/>
   <object id="23" name="W" x="2850" y="296" width="63" height="120"/>
   <object id="24" name="SPACE1" x="3333" y="288" width="71" height="130"/>
+  <object id="31" name="A" x="213" y="313" width="47" height="106"/>
  </objectgroup>
  <objectgroup name="enemiesScene1">
   <object id="1" x="1088" y="312" width="64" height="107"/>
   <object id="2" x="1193" y="317" width="54" height="102"/>
   <object id="3" x="1279" y="312" width="51" height="107"/>
+ </objectgroup>
+ <objectgroup name="shield">
+  <object id="32" name="SHIELD" x="1477" y="321" width="64" height="97"/>
  </objectgroup>
  <objectgroup name="enemiesScene4">
   <object id="18" x="2186" y="301" width="64" height="117"/>

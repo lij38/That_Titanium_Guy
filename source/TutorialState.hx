@@ -34,13 +34,10 @@ class TutorialState extends FlxState {
 	
 	private var GRAVITY:Float = 1000;
 
-    private var playerBullets:FlxTypedGroup<Bullet>;
-	private var GRAVITY:Float = 1000;
-
 
     override public function create():Void {
         //LOAD MAP BASICS
-        _map = new TiledMap(AssetPaths.tutorial__tmx);
+        _map = new TiledMap(AssetPaths.tutorialFormal__tmx);
         _background = new FlxTilemap();
         _plat = new FlxTilemap();
         _bound = new FlxTilemap();
@@ -50,14 +47,16 @@ class TutorialState extends FlxState {
             _map.height, AssetPaths.tutorialBG__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 1023);
         //load platform
         _plat.loadMapFromArray(cast(_map.getLayer("plat"), TiledTileLayer).tileArray, _map.width,
-            _map.height, AssetPaths.green__jpg, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 2041, 1, 2040);
+            _map.height, AssetPaths.green__jpg, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1021, 1, 1020);
         //load bounds
         _bound.loadMapFromArray(cast(_map.getLayer("bound"), TiledTileLayer).tileArray, _map.width,
-            _map.height, AssetPaths.green__jpg, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 2041, 1, 2040);
+            _map.height, AssetPaths.green__jpg, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1021, 1, 1020);
 
         _background.setTileProperties(2, FlxObject.NONE);
         _bound.setTileProperties(1, FlxObject.ANY);
         _plat.setTileProperties(1, FlxObject.ANY);
+		_bound.follow();
+		_plat.follow();
 
         enemiesBullets = new FlxTypedGroup<Bullet>();
 		add(enemiesBullets);
@@ -69,28 +68,29 @@ class TutorialState extends FlxState {
         playerBullets = new FlxTypedGroup<Bullet>();
         _player = new Player(playerBullets, GRAVITY);
         _btnMenu = new FlxButton(0, 0, "Menu", clickMenu);
-
-        //load hud
-        _hud = new HUD(_player);
-
-        var tmpMap:TiledObjectLayer = cast _map.getLayer("player");
+		var tmpMap:TiledObjectLayer = cast _map.getLayer("player");
         for (e in tmpMap.objects) {
             placeEntities(e.name, e.xmlData.x);
         }
 
+        //LOAD HUD
+        _hud = new HUD(_player);
+
+
+
         //LOAD INSTRUCTIONS
         _locations = new Map<Int, String>();
         _sorted = new Array<Int>();
-        var tmpLayer:TiledObjectLayer = cast _map.getLayer("instruction");
+        var tmpLayer:TiledObjectLayer = cast _map.getLayer("instructions");
         for (e in tmpLayer.objects) {
-            placeEntities(e.name, e.xmlData.x);
+            placeInstructions(e.name, e.xmlData.x);
         }
         haxe.ds.ArraySort.sort(_sorted, function(a, b):Int {
             if (a < b) return -1;
             else if (a > b) return 1;
             return 0;
         });
-        _instruct = new Instruction(0, 0, 300, 12);
+        _instruct = new Instruction(_player.x + 100, _player.y, 300, 12);
         trace(_sorted.length);
         _next = _sorted.shift();
         trace(_next);
@@ -106,63 +106,72 @@ class TutorialState extends FlxState {
         add(_instruct);
 
         add(_hud);
-		_hud.updateHUD(_player.getAmmo(0), _player.getAmmo(1), _player.isReloading(0), _player.isReloading(1),
-						_player.getWeaponName(0), _player.getWeaponName(1));
+		 _hud.updateHUD(_player.getAmmo(0), _player.getAmmo(1), _player.isReloading(0), _player.isReloading(1),
+		 				_player.getWeaponName(0), _player.getWeaponName(1));
         FlxG.camera.follow(_player, TOPDOWN, 1);
-        Main.LOGGER.logLevelStart(1);
+        //Main.LOGGER.logLevelStart(1);
 		super.create();
     }
 
 	private function placeEntities(entityName:String, entityData:Xml):Void  {
 		var x:Int = Std.parseInt(entityData.get("x"));
 		var y:Int = Std.parseInt(entityData.get("y"));
-		if (entityName == "player") {
+		if (entityName == "START") {
 			_player.x = x;
 			_player.y = y;
-		} else {
-            _locations.set(x, entityName);
-            _sorted.push(x);
+		} else if (entityName == "END") {
+
         }
 
 	}
 
-    private function instructInit(elapsed:Float):Void {   
-        //trace(_player.x + "     " +_next);ddd
-        //trace(_player.x == cast(_next, Float));
-        if (Std.int(_player.x) == _next) {
-            trace("Reached!");
-            _instruct.instruct(_locations.get(_next), _player.x + 100, _player.y - 20);
-            
-            _next = _sorted.shift();
-        }        
+	//Place all the instructions
+    private function placeInstructions(entityName:String, entityData:Xml):Void 
+    {
+		var x:Int = Std.parseInt(entityData.get("x"));
+		//var y:Int = Std.parseInt(entityData.get("y"));
+        _locations.set(x, entityName); 
+        _sorted.push(x);
     }
 
+    // private function instructInit(elapsed:Float):Void {   
+    //     //trace(_player.x + "     " +_next);ddd
+    //     //trace(_player.x == cast(_next, Float));
+    //     if (Std.int(_player.x) == _next) {
+    //         trace("Reached!");
+    //         _instruct.instruct(_locations.get(_next), _player.x + 100, _player.y - 20);
+            
+    //         _next = _sorted.shift();
+    //     }        
+    // }
+
 	override public function update(elapsed:Float):Void  {
-		super.update(elapsed);
-        // if (enemiesGroup.countLiving() == -1) {
-		// 	_map.loadEntities(placeEntities, "entities");
-		// }
-        instructInit(elapsed);
+	 	super.update(elapsed);
+    //  if (enemiesGroup.countLiving() == -1) {
+	// 		_map.loadEntities(placeEntities, "entities");
+	// 	}
+		//instructInit(elapsed);
         FlxG.collide(_player, _bound);
         FlxG.collide(_player, _plat);
+
 		_hud.updateHUD(_player.getAmmo(0), _player.getAmmo(1), _player.isReloading(0), _player.isReloading(1),
-						_player.getWeaponName(0), _player.getWeaponName(1));
+	 					_player.getWeaponName(0), _player.getWeaponName(1));
 						
-		FlxG.overlap(playerBullets, enemiesGroup, bulletsHitEnemies);
-		if (!_player.isTumbling()) {
-			FlxG.overlap(enemiesBullets, _player, bulletsHitPlayer);
-		}
+	 	FlxG.overlap(playerBullets, enemiesGroup, bulletsHitEnemies);
+	 	if (!_player.isTumbling()) {
+	 		FlxG.overlap(enemiesBullets, _player, bulletsHitPlayer);
+	 	}
 		FlxG.collide(_bound, playerBullets, bulletsHitWalls);
 		enemiesGroup.forEach(enemiesUpdate);
 		FlxG.collide(enemiesGroup, _bound);
-		bulletsRangeUpdate();
-        if (!_player.exists)
-		{
-			// Player died, so set our label to YOU LOST
-			statusMessage = "YOU LOST";
-			Main.LOGGER.logLevelEnd({won: false});
-			FlxG.switchState(new MenuState("You Lost"));
-		}
+	 	bulletsRangeUpdate();
+         if (!_player.exists)
+	 	{
+	 		// Player died, so set our label to YOU LOST
+	 		//statusMessage = "YOU LOST";
+	 		//Main.LOGGER.logLevelEnd({won: false});
+	 		//FlxG.switchState(new MenuState("You Lost"));
+	 	}
 	}
 
     private function bulletsHitPlayer(bullet:Bullet, player:Player):Void {
