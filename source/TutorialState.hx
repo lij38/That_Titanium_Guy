@@ -8,7 +8,9 @@ import flixel.ui.FlxButton;
 import flixel.addons.editors.tiled.TiledTileLayer;
 import flixel.addons.editors.tiled.TiledObjectLayer;
 import flixel.tile.FlxBaseTilemap;
+import flixel.group.FlxGroup.FlxTypedGroup;
 import weapons.*;
+import enemies.*;
 
 class TutorialState extends FlxState {
     private var _player:Player;
@@ -26,6 +28,14 @@ class TutorialState extends FlxState {
     private var _next:Int;
 	
 	private var playerBullets:FlxTypedGroup<Bullet>;
+    private var _hud:HUD;
+	private var enemiesGroup:FlxTypedGroup<Enemy>;
+    private var enemiesBullets:FlxTypedGroup<Bullet>;
+	
+	private var GRAVITY:Float = 1000;
+
+    private var playerBullets:FlxTypedGroup<Bullet>;
+	private var GRAVITY:Float = 1000;
 
 
     override public function create():Void {
@@ -49,10 +59,19 @@ class TutorialState extends FlxState {
         _bound.setTileProperties(1, FlxObject.ANY);
         _plat.setTileProperties(1, FlxObject.ANY);
 
+        enemiesBullets = new FlxTypedGroup<Bullet>();
+		add(enemiesBullets);
+		
+		enemiesGroup = new FlxTypedGroup<Enemy>();
+		add(enemiesGroup);
+
         //LOAD PLAYER
-		playerBullets = new FlxTypedGroup<Bullet>();
-        _player = new Player(playerBullets, 1000);
+        playerBullets = new FlxTypedGroup<Bullet>();
+        _player = new Player(playerBullets, GRAVITY);
         _btnMenu = new FlxButton(0, 0, "Menu", clickMenu);
+
+        //load hud
+        _hud = new HUD(_player);
 
         var tmpMap:TiledObjectLayer = cast _map.getLayer("player");
         for (e in tmpMap.objects) {
@@ -85,6 +104,10 @@ class TutorialState extends FlxState {
         add(_player);
         add(_btnMenu);
         add(_instruct);
+
+        add(_hud);
+		_hud.updateHUD(_player.getAmmo(0), _player.getAmmo(1), _player.isReloading(0), _player.isReloading(1),
+						_player.getWeaponName(0), _player.getWeaponName(1));
         FlxG.camera.follow(_player, TOPDOWN, 1);
 		super.create();
 
@@ -105,7 +128,7 @@ class TutorialState extends FlxState {
 	}
 
     private function instructInit(elapsed:Float):Void {   
-        //trace(_player.x + "     " +_next);
+        //trace(_player.x + "     " +_next);ddd
         //trace(_player.x == cast(_next, Float));
         if (Std.int(_player.x) == _next) {
             trace("Reached!");
@@ -116,11 +139,82 @@ class TutorialState extends FlxState {
     }
 
 	override public function update(elapsed:Float):Void  {
+		super.update(elapsed);
+        // if (enemiesGroup.countLiving() == -1) {
+		// 	_map.loadEntities(placeEntities, "entities");
+		// }
         instructInit(elapsed);
         FlxG.collide(_player, _bound);
         FlxG.collide(_player, _plat);
-		super.update(elapsed);
+		_hud.updateHUD(_player.getAmmo(0), _player.getAmmo(1), _player.isReloading(0), _player.isReloading(1),
+						_player.getWeaponName(0), _player.getWeaponName(1));
+						
+		FlxG.overlap(playerBullets, enemiesGroup, bulletsHitEnemies);
+		if (!_player.isTumbling()) {
+			FlxG.overlap(enemiesBullets, _player, bulletsHitPlayer);
+		}
+		FlxG.collide(_bound, playerBullets, bulletsHitWalls);
+		enemiesGroup.forEach(enemiesUpdate);
+		FlxG.collide(enemiesGroup, _bound);
+		bulletsRangeUpdate();
+	}
 
+    private function bulletsHitPlayer(bullet:Bullet, player:Player):Void {
+		if (player.alive) {
+			var damage:Float = bullet.getDamage();
+			if (player.isShielding()) {
+				damage /= 10;
+			}
+			player.hurt(damage);
+			enemiesBullets.remove(bullet);
+			bullet.destroy();
+		}
+	}
+	
+	private function bulletsRangeUpdate():Void {
+		for (pb in playerBullets) {
+			//destroyed?
+			if (pb.outOfRange(pb.x)){
+				playerBullets.remove(pb);
+				pb.destroy();
+			}
+		}
+		for (eb in enemiesBullets) {
+			if (eb.outOfRange(eb.x)) {
+				playerBullets.remove(eb);
+				eb.destroy();
+			}
+		}
+	}
+	
+	private function enemiesUpdate(e:Enemy):Void {
+		if (!e.alive && e.animation.finished) {
+			enemiesGroup.remove(e);
+			e.destroy();
+		} else if (e.alive) {
+			e.playerPos.copyFrom(_player.getMidpoint());
+			if (!_player.isTumbling()) {
+				FlxG.collide(_player, e, playerCollidesEnemies);
+			}
+			
+		}
+	}
+	
+	public function bulletsHitEnemies(bullet:Bullet, enemy:Enemy):Void {
+		if (enemy.alive) {
+			enemy.hurt(bullet.getDamage());
+			playerBullets.remove(bullet);
+			bullet.destroy();
+		}
+	}
+	
+	public function playerCollidesEnemies(player:Player, enemy:Enemy):Void {
+		enemy.velocity.set(0, 0);
+	}
+	
+	public function bulletsHitWalls(wall:FlxObject, pb:Bullet):Void {
+		playerBullets.remove(pb);
+		pb.destroy();
 	}
 
     private function clickMenu():Void {
