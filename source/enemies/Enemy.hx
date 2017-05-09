@@ -53,6 +53,9 @@ class Enemy extends FlxSprite {
 	
 	
 	override public function update(elapsed:Float):Void {
+		if (Math.abs(playerPos.x - getMidpoint().x) < 500) {
+			seesPlayer = true;
+		}
 		if (!alive) {
 			velocity.set(0, 0);
 			super.update(elapsed);
