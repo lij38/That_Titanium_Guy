@@ -115,10 +115,10 @@ class TutorialState extends FlxState {
 		var shieldLayer:TiledObjectLayer = cast _map.getLayer("shield");
 		for (e in shieldLayer.objects) {
 			var x:Int = Std.parseInt(e.xmlData.x.get("x"));
-			var y:Int = Std.parseInt(e.xmlData.x.get("y")) - 50;
-			if (e.name == "shield") {
-				shield.x = _player.x + 50;
-				shield.y = _player.y;
+			var y:Int = Std.parseInt(e.xmlData.x.get("y"));
+			if (e.name == "SHIELD") {
+				shield.x = x;
+				shield.y = y;
 			}
 		}
 
@@ -219,7 +219,7 @@ class TutorialState extends FlxState {
 		{
 			// Player died, so set our label to YOU LOST
 			//Main.LOGGER.logLevelEnd({won: false});
-			FlxG.switchState(new MenuState());
+			FlxG.switchState(new OverState());
 		}
 	}
 
