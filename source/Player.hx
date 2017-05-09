@@ -128,7 +128,7 @@ class Player extends FlxSprite {
 		}
 
 		//unshield if shielding
-		if(FlxG.keys.anyJustReleased([J, K])) {
+		if(FlxG.keys.anyJustReleased([K])) {
 			if(shielding) {
 				shielding = false;
 				trace("unshielded");
@@ -270,10 +270,12 @@ class Player extends FlxSprite {
 			animation.play(curConfig + "JP");
 		} else if (velocity.y != 0 && !isSwording()) {
 			animation.play(curConfig + "Jump");
+		} else if (isShielding()) {
+			animation.play(curConfig + "Shield");
 		} else if(!isSwording()){
 			playRun(curConfig);
 		}
-		if (!isTumbling() && !isSwording()) {
+		if (!isTumbling() && !isSwording() && !isShielding()) {
 			if(FlxG.keys.anyPressed([J])) {
 				//RIFLE fully automatic, can hold to fire
 				if(jWeapon.getName() == "rifle") {
@@ -512,6 +514,6 @@ class Player extends FlxSprite {
 		//sword shield jetpack
 		animation.add("swshJP", [93, 94], 12, false);
 		//engage shield
-		animation.add("swshShield", [104], 1, false);
+		animation.add("swshShield", [104], 3, false);
 	}
 }
