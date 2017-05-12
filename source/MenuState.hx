@@ -17,7 +17,7 @@ class MenuState extends FlxState {
 		
 		spritesheet = new FlxSprite(0, 0);
 
-		spritesheet.loadGraphic(AssetPaths.abc__png, true, cast(5035 / 5, Int), cast(3510 / 5, Int));
+		spritesheet.loadGraphic(AssetPaths.abc__png, true, 1007, 702);
 		spritesheet.animation.add("lr", [0, 0, 0, 0, 20, 20, 20, 20,
 										 0, 0, 0, 0, 20, 20, 20, 20,
 										 1, 2, 3, 4, 4, 5, 5, 6, 6, 7, 7, 7, 7, 7, 
@@ -27,9 +27,9 @@ class MenuState extends FlxState {
 										 20, 20, 21, 21, 22, 22, 22, 22, 22, 22], 12, true);
 		//spritesheet.animation.add("stop", [0], 1, false);
 		add(spritesheet);
-		spritesheet.scale.set(0.25, 0.25);
-		spritesheet.setSize(102, 109);
-		spritesheet.offset.set(250, 250);
+		spritesheet.scale.set(0.45, 0.45);
+		spritesheet.setSize(120, 186);
+		spritesheet.offset.set(450, 300);
 
 		spritesheet.animation.play("lr");
 		
@@ -42,7 +42,7 @@ class MenuState extends FlxState {
 	}
 	
 	private function clickPlay():Void {
-		FlxG.switchState(new OpeningState());
+		FlxG.switchState(new PlayState());
 	}
 	
 }
