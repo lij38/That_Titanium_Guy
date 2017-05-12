@@ -10,15 +10,20 @@ import flixel.tile.FlxTilemap;
 import flixel.addons.editors.ogmo.FlxOgmoLoader;
 import flixel.ui.FlxButton;
 import weapons.*;
+import flixel.addons.editors.tiled.TiledMap;
+import flixel.addons.editors.tiled.TiledTileLayer;
+import flixel.addons.editors.tiled.TiledObjectLayer;
+import flixel.tile.FlxBaseTilemap;
 
 class PlayState extends FlxState {
 	private var _player:Player;
-	private var _map:FlxOgmoLoader;
+	private var _map:TiledMap;
 	private var _mWalls:FlxTilemap;
 	private var _btnMenu:FlxButton;
 	private var _hud:HUD;
+	private var _enemy:SmallBoss;
 	
-	private var enemiesGroup:FlxTypedGroup<Enemy>;
+	//private var enemiesGroup:FlxTypedGroup<Enemy>;
 	private var playerBullets:FlxTypedGroup<Bullet>;
 	private var enemiesBullets:FlxTypedGroup<Bullet>;
 	
@@ -29,29 +34,41 @@ class PlayState extends FlxState {
 		//trace("Hello world!");
 		//FlxG.debugger.drawDebug = true;
 		
-		_map = new FlxOgmoLoader("assets/data/first_level.oel");
-		_mWalls = _map.loadTilemap(AssetPaths.tiles__png, 16, 16, "walls");
+		_map = new TiledMap(AssetPaths.level1__tmx);
+		_mWalls = new FlxTilemap();
+		_mWalls.loadMapFromArray(cast(_map.getLayer("map"), TiledTileLayer).tileArray, _map.width, _map.height, 
+			AssetPaths.tiles__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 3);
+
 		_mWalls.follow();
-		_mWalls.setTileProperties(1, FlxObject.NONE);
-		_mWalls.setTileProperties(2, FlxObject.ANY);
+		_mWalls.setTileProperties(2, FlxObject.NONE);
+		_mWalls.setTileProperties(3, FlxObject.ANY);
 		add(_mWalls);
 		
 		playerBullets = new FlxTypedGroup<Bullet>();
 		add(playerBullets);
 		enemiesBullets = new FlxTypedGroup<Bullet>();
 		add(enemiesBullets);
+
+		_enemy = new SmallBoss(0,0,enemiesBullets, 0);
 		
-		enemiesGroup = new FlxTypedGroup<Enemy>();
-		add(enemiesGroup);
-		
+		//enemiesGroup = new FlxTypedGroup<Enemy>();
+		//add(enemiesGroup);
+		 
 		_player = new Player(playerBullets, GRAVITY);
-		_map.loadEntities(placeEntities, "entities");
+
+		var tmpMap:TiledObjectLayer = cast _map.getLayer("entities");
+		 for (e in tmpMap.objects)
+		 {
+		     placeEntities(e.type, e.xmlData.x);
+		 }
+
 		add(_player);
+		add(_enemy);
 		
-		// _btnMenu = new FlxButton(0, 0, "Menu", clickMenu);
-		// add(_btnMenu);
+		 _btnMenu = new FlxButton(0, 0, "Menu", clickMenu);
+		 add(_btnMenu);
 		
-		FlxG.camera.follow(_player, TOPDOWN, 1);
+		//FlxG.camera.follow(_player, TOPDOWN, 1);
 
 		_hud = new HUD(_player);
 		add(_hud);
@@ -62,20 +79,25 @@ class PlayState extends FlxState {
 
 	override public function update(elapsed:Float):Void {
 		super.update(elapsed);
-		if (enemiesGroup.countLiving() == -1) {
-			_map.loadEntities(placeEntities, "entities");
-		}
+		//if (enemiesGroup.countLiving() == -1) {
+		//	_map.loadEntities(placeEntities, "entities");
+		//}
+
+		_enemy.playerPos.copyFrom(_player.getMidpoint());
+
 		_hud.updateHUD(_player.getAmmo(0), _player.getAmmo(1), _player.isReloading(0), _player.isReloading(1),
 						_player.getWeaponName(0), _player.getWeaponName(1));
 						
-		FlxG.overlap(playerBullets, enemiesGroup, bulletsHitEnemies);
+		//FlxG.overlap(playerBullets, enemiesGroup, bulletsHitEnemies);
 		if (!_player.isTumbling()) {
 			FlxG.overlap(enemiesBullets, _player, bulletsHitPlayer);
 		}
 		FlxG.collide(_mWalls, playerBullets, bulletsHitWalls);
-		enemiesGroup.forEach(enemiesUpdate);
+		//enemiesGroup.forEach(enemiesUpdate);
 		FlxG.collide(_player, _mWalls);
-		FlxG.collide(enemiesGroup, _mWalls);
+		//FLxG.collide(_player, _enemy);
+		//FlxG.collide(enemiesGroup, _mWalls);
+		FlxG.overlap(_player, _enemy, hurtPlayer);
 		
 		bulletsRangeUpdate();
 	}
@@ -91,6 +113,22 @@ class PlayState extends FlxState {
 			bullet.destroy();
 		}
 	}
+
+	public function hurtPlayer(player:FlxObject, enemy:SmallBoss):Void {
+		//if (facing = FlxObject.LEFT) {
+			// facing left
+		//	if (getMidpoint().x - playerPos.x <= 100) {
+
+		//	}
+		//}
+		//if (Math.abs(playerPos.x - getMidpoint().x) <= damage_dist) {
+		//	brain.activeState = attack;
+		//}
+		//if (enemy.inDash) {
+		//	enemy.stuck = true;
+		//}
+	}
+
 	
 	private function bulletsRangeUpdate():Void {
 		for (pb in playerBullets) {
@@ -108,6 +146,7 @@ class PlayState extends FlxState {
 		}
 	}
 	
+	/*
 	private function enemiesUpdate(e:Enemy):Void {
 		if (!e.alive && e.animation.finished) {
 			enemiesGroup.remove(e);
@@ -120,6 +159,7 @@ class PlayState extends FlxState {
 			
 		}
 	}
+	*/
 	
 	public function bulletsHitEnemies(bullet:Bullet, enemy:Enemy):Void {
 		if (enemy.alive) {
@@ -145,7 +185,9 @@ class PlayState extends FlxState {
 			_player.x = x;
 			_player.y = y;
 		} else if (entityName == "enemy") {
-			enemiesGroup.add(new RifleEnemy(x, y, enemiesBullets, GRAVITY));
+			_enemy.x = x;
+			_enemy.y = y;
+			//enemiesGroup.add(new RifleEnemy(x, y, enemiesBullets, GRAVITY));
 		}
 	}
 	
