@@ -20,6 +20,7 @@ class Enemy extends FlxSprite {
 	public var seesPlayer:Bool = false;
 	public var hurtTime:Float = 0.25;
 	private var range:Float;
+	private var hurtColorTimer:Float = -1;
 	
 	private var hurtTimer:Float = -1;
 	
@@ -59,6 +60,7 @@ class Enemy extends FlxSprite {
 		if (!alive) {
 			velocity.set(0, 0);
 			super.update(elapsed);
+			color = 0xffffff;
 			return;
 		} else {
 			if (hurtTimer >= 0) {
@@ -73,6 +75,13 @@ class Enemy extends FlxSprite {
 				brain.update(elapsed);
 			}
 		}
+		if (hurtColorTimer >= 0) {
+			hurtColorTimer += elapsed;
+		}
+		if (hurtColorTimer > hurtTime) {
+			hurtColorTimer = -1;
+			color = 0xffffff;
+		}
 		super.update(elapsed);
 	}
 	
@@ -86,6 +95,8 @@ class Enemy extends FlxSprite {
 			hurtTimer = 0;
 		}
 		health -= damage;
+		color = 0xff0000;
+		hurtColorTimer = 0.0;
 	}
 	
 	public function isHurting():Bool {
