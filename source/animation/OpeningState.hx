@@ -11,6 +11,7 @@ import flixel.addons.editors.tiled.TiledTileLayer;
 import flixel.tile.FlxBaseTilemap;
 import flixel.addons.editors.tiled.TiledObjectLayer;
 import flixel.text.FlxText;
+import flixel.util.FlxColor;
 
 class OpeningState extends FlxState
 {
@@ -23,6 +24,7 @@ class OpeningState extends FlxState
 	private var _text:FlxText;
 	private var _enemy:RifleEnemyAnimation;
 	private var _helptext:FlxText;
+	private var _skiptext:FlxText;
 	// an array stores all conversations
 	private var _text_array:Array<String>;
 	// index of conversation (in text array)
@@ -69,18 +71,22 @@ class OpeningState extends FlxState
 		// initialize with all conversations
 		_text_array = new Array<String>();
 		_conv_index = 0;
-		_text_array.push("Federal Union Army Soldiers: This land is now confiscated under the authority of the Federal Union " + 
-			"Government to use as an outpost in our war against the Rebel Army.");
-		_text_array.push("FUA Soldiers: You have 24 hours to vacate the premises. Failure to do so will result in the use of deadly forces.");
+		_text_array.push("Federal Army Soldiers: This land is now confiscated under the authority of the Federal Government for our Supreme Leader");
+		_text_array.push("FA Soldiers: You have 24 hours to vacate the premises. Failure to do so will result in the use of deadly forces.");
 		_text_array.push("Hypin: WHAT?! You can’t just take my land from me and my family! We have rights to this land and I will defend my rights!");
-		_text_array.push("FUA Soldiers: Resistance detected, deadly force is now authorized.");
+		_text_array.push("FA Soldiers: Resistance detected, deadly force is now authorized.");
 
 		_player = new PlayerAnimation(0,0, 1000);
 		_dialog = new Dialog();
 		_dialog.width = 500;
 		_dialog.height = 120;
-		_text = new FlxText(0, 0, 300, 12);
-		_helptext = new FlxText(0, 0, 300, "Press ENTER to continue", 12);
+		_skiptext = new FlxText(FlxG.width / 2 - 120, 20, 250, "Press ESC to skip", 30);
+		_skiptext.setFormat(AssetPaths.FONT, _skiptext.size);
+
+		_text = new FlxText(0, 0, 300, 15);
+		_text.setFormat(AssetPaths.FONT, _text.size);
+		_helptext = new FlxText(0, 0, 300, "Press ENTER to continue", 17);
+		_helptext.setFormat(AssetPaths.FONT, _helptext.size);
 		_helptext.visible = false;
 		_text.width = 300;
 		_text.height = 100;
@@ -95,6 +101,7 @@ class OpeningState extends FlxState
 		 add(_text);
 		 add(_enemy);
 		 add(_helptext);
+		 add(_skiptext);
 
 		super.create();
 		
@@ -103,6 +110,10 @@ class OpeningState extends FlxState
 	override public function update(elapsed:Float):Void
 	{
 		FlxG.collide(_player, _bg);
+		
+		if(FlxG.keys.anyJustPressed([ESCAPE])) {
+			FlxG.switchState(new TutorialState());
+		}
 
 		if (_stage1) {
 			count++;

@@ -62,7 +62,7 @@ class Player extends FlxSprite {
 
 		jWeapon = new Sword(playerBulletArray);
 		j2ndWeapon = new Weapon(playerBulletArray);
-		kWeapon = new Weapon(playerBulletArray);
+		kWeapon = new Rifle(playerBulletArray);
 		k2ndWeapon = new Weapon(playerBulletArray);
 		curConfig = "sword";
 		shielding = false;
