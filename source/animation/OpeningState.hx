@@ -11,6 +11,7 @@ import flixel.addons.editors.tiled.TiledTileLayer;
 import flixel.tile.FlxBaseTilemap;
 import flixel.addons.editors.tiled.TiledObjectLayer;
 import flixel.text.FlxText;
+import flixel.util.FlxColor;
 
 class OpeningState extends FlxState
 {
@@ -96,6 +97,7 @@ class OpeningState extends FlxState
 		 add(_enemy);
 		 add(_helptext);
 
+		FlxG.camera.fade(FlxColor.BLACK, .25, true);
 		super.create();
 		
 	}
@@ -183,7 +185,10 @@ class OpeningState extends FlxState
 		     	_enemy.animation.play("lr");
 		     	_enemy.x -= 4;
 		    } else if (count > 100) {
-				FlxG.switchState(new TutorialState());
+				FlxG.camera.fade(FlxColor.BLACK,.25, false, function()
+				{
+					FlxG.switchState(new TutorialState());
+				});
 			}
 	 	}
 

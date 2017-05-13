@@ -4,6 +4,7 @@ import flixel.FlxG;
 import flixel.FlxState;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
+import flixel.util.FlxColor;
 
 class OverState extends FlxState
 {
@@ -16,6 +17,8 @@ class OverState extends FlxState
         _btnPlay = new FlxButton(0, 0, "Play", clickPlay);
 		_btnPlay.screenCenter();
         add(_btnPlay);
+		
+		FlxG.camera.fade(FlxColor.BLACK, .25, true);
         super.create();
     }
 
@@ -25,6 +28,8 @@ class OverState extends FlxState
     }
 
     private function clickPlay():Void {
-		FlxG.switchState(new TutorialState());
+		FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
+			FlxG.switchState(new TutorialState());
+		});
 	}
 }

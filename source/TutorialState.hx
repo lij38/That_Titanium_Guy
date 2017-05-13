@@ -12,6 +12,7 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.text.FlxText;
 import weapons.*;
 import enemies.*;
+import flixel.util.FlxColor;
 
 class TutorialState extends FlxState {
     private var _player:Player;
@@ -37,6 +38,8 @@ class TutorialState extends FlxState {
 	private var texts:FlxTypedGroup<FlxText>;
     override public function create():Void {
         //LOAD MAP BASICS
+		
+		//FlxG.debugger.drawDebug = true;
         _map = new TiledMap(AssetPaths.tutorialFormal__tmx);
         _background = new FlxTilemap();
         _plat = new FlxTilemap();
@@ -123,10 +126,6 @@ class TutorialState extends FlxState {
 			}
 		}
 
-
-
-
-
         //ADD EVERY COMPONENT
         add(_background);
         add(_bound);
@@ -144,6 +143,7 @@ class TutorialState extends FlxState {
 		 				_player.getWeaponName(0), _player.getWeaponName(1));
         FlxG.camera.follow(_player, TOPDOWN, 1);
         //Main.LOGGER.logLevelStart(1);
+		FlxG.camera.fade(FlxColor.BLACK, .25, true);
 		super.create();
     }
 	//Place player info
@@ -231,11 +231,17 @@ class TutorialState extends FlxState {
         if (!_player.exists) {
 			// Player died, so set our label to YOU LOST
 			//Main.LOGGER.logLevelEnd({won: false});
-			FlxG.switchState(new OverState());
+			FlxG.camera.fade(FlxColor.BLACK,.25, false, function()
+			{
+				FlxG.switchState(new OverState());
+			});
 		}
 		
 		if (enemiesGroup.countLiving() == -1) {
-			FlxG.switchState(new FinishState());
+			FlxG.camera.fade(FlxColor.BLACK,.25, false, function()
+			{
+				FlxG.switchState(new FinishState());
+			});
 		}
 	}
 
@@ -247,7 +253,9 @@ class TutorialState extends FlxState {
     private function bulletsHitPlayer(bullet:Bullet, player:Player):Void {
 		if (player.alive) {
 			var damage:Float = bullet.getDamage();
-			if (player.isShielding()) {
+			if (player.isShielding() &&
+				((bullet.velocity.x < 0 && player.faced == FlxObject.RIGHT) ||
+				 (bullet.velocity.x > 0 && player.faced == FlxObject.LEFT))) {
 				damage /= 10;
 			}
 			player.hurt(damage);
