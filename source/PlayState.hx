@@ -22,6 +22,8 @@ class PlayState extends FlxState {
 	private var _btnMenu:FlxButton;
 	private var _hud:HUD;
 	private var _enemy:SmallBoss;
+	private var _boss_hud:SmallBossHUD;
+	private var _hurt_count:Int;
 	
 	//private var enemiesGroup:FlxTypedGroup<Enemy>;
 	private var playerBullets:FlxTypedGroup<Bullet>;
@@ -74,6 +76,12 @@ class PlayState extends FlxState {
 		add(_hud);
 		_hud.updateHUD(_player.getAmmo(0), _player.getAmmo(1), _player.isReloading(0), _player.isReloading(1),
 						_player.getWeaponName(0), _player.getWeaponName(1));
+
+		_boss_hud = new SmallBossHUD(_enemy);
+		add(_boss_hud);
+
+		_hurt_count = 0;
+
 		super.create();
 	}
 
@@ -89,17 +97,38 @@ class PlayState extends FlxState {
 						_player.getWeaponName(0), _player.getWeaponName(1));
 						
 		//FlxG.overlap(playerBullets, enemiesGroup, bulletsHitEnemies);
-		if (!_player.isTumbling()) {
-			FlxG.overlap(enemiesBullets, _player, bulletsHitPlayer);
-		}
+		
+		
 		FlxG.collide(_mWalls, playerBullets, bulletsHitWalls);
 		//enemiesGroup.forEach(enemiesUpdate);
 		FlxG.collide(_player, _mWalls);
 		//FLxG.collide(_player, _enemy);
 		//FlxG.collide(enemiesGroup, _mWalls);
-		FlxG.overlap(_player, _enemy, hurtPlayer);
+		if (_enemy.alive) {
+			if (FlxG.overlap(playerBullets, _enemy, bulletsHitEnemy)){
+			_enemy.color = 0xff0000;
+			} else {
+				_enemy.color = 0xffffff;
+			}
+			if (!_player.isTumbling()) {
+			FlxG.overlap(enemiesBullets, _player, bulletsHitPlayer);
+			}
+			FlxG.overlap(_player, _enemy, stopPlayer);
+		} else {
+			_enemy.color = 0xffffff;
+		}
 		
 		bulletsRangeUpdate();
+	}
+
+	private function bulletsHitEnemy(bullet:Bullet, small_boss:enemies.SmallBoss):Void {
+		if (small_boss.alive) {
+			var damage:Float = bullet.getDamage();
+			trace(damage);
+			small_boss.hurt(damage);
+			enemiesBullets.remove(bullet);
+			bullet.destroy();
+		}
 	}
 	
 	private function bulletsHitPlayer(bullet:Bullet, player:Player):Void {
@@ -114,19 +143,14 @@ class PlayState extends FlxState {
 		}
 	}
 
-	public function hurtPlayer(player:FlxObject, enemy:SmallBoss):Void {
-		//if (facing = FlxObject.LEFT) {
-			// facing left
-		//	if (getMidpoint().x - playerPos.x <= 100) {
-
-		//	}
-		//}
-		//if (Math.abs(playerPos.x - getMidpoint().x) <= damage_dist) {
-		//	brain.activeState = attack;
-		//}
-		//if (enemy.inDash) {
-		//	enemy.stuck = true;
-		//}
+	public function stopPlayer(player:Player, enemy:SmallBoss):Void {
+		if(!player.isTumbling()) {
+			if (player.facing == FlxObject.LEFT) {
+				player.x += 2;
+			} else {
+				player.x -= 2;	
+			}
+		}
 	}
 
 	
