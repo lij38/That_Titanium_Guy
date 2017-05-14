@@ -1,6 +1,7 @@
 package;
 
 import flixel.FlxSprite;
+import flixel.effects.FlxFlicker;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.util.FlxColor;
@@ -14,7 +15,7 @@ class Player extends FlxSprite {
 	private var GRAVITY:Float;
 	private var jumped:Bool = false;
 	private var jump:Float = 0.0;
-	private var faced:Int = FlxObject.RIGHT;
+	public var faced:Int = FlxObject.RIGHT;
 	private var numJump:Int = 0;
 	public var numJumpLimit:Int = 2;
 	
@@ -62,7 +63,7 @@ class Player extends FlxSprite {
 
 		jWeapon = new Sword(playerBulletArray);
 		j2ndWeapon = new Weapon(playerBulletArray);
-		kWeapon = new Weapon(playerBulletArray);
+		kWeapon = new Rifle(playerBulletArray);
 		k2ndWeapon = new Weapon(playerBulletArray);
 		curConfig = "sword";
 		shielding = false;
@@ -268,9 +269,10 @@ class Player extends FlxSprite {
 			animation.play("tumble");
 		} else if (jetpack) {
 			animation.play(curConfig + "JP");
-		} else if (velocity.y != 0 && !isSwording()) {
+		} else if (!isTouching(FlxObject.DOWN) && !isSwording()) {
 			animation.play(curConfig + "Jump");
 		} else if (isShielding()) {
+			trace(facing);
 			animation.play(curConfig + "Shield");
 		} else if(!isSwording()){
 			playRun(curConfig);
@@ -520,5 +522,10 @@ class Player extends FlxSprite {
 		animation.add("swshJP", [93, 94], 12, false);
 		//engage shield
 		animation.add("swshShield", [104], 3, false);
+	}
+	
+	override public function hurt(damage:Float):Void {
+		super.hurt(damage);
+		FlxFlicker.flicker(this, 0.5, 0.10);
 	}
 }

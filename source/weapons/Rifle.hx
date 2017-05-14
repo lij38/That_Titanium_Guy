@@ -13,7 +13,7 @@ class Rifle extends Weapon {
 
         this.type = "ballistic";
         this.range = 1000;
-        this.fireRate = 0.1;
+        this.fireRate = 0.15;
         this.speed = 1500;
         this.bulletArray = playerBulletArray;
 

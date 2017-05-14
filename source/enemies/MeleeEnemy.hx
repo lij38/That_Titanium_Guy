@@ -14,7 +14,7 @@ import weapons.*;
 class MeleeEnemy extends Enemy {
 	
 	private var bulletCount:Int = 0;
-	private var rate:Float = 1.0;
+	private var rate:Float = 1.66;
 	private var rateTimer:Float = -1;
 	private var attacked:Bool = false;
 	
@@ -35,10 +35,10 @@ class MeleeEnemy extends Enemy {
 		animation.add("lr", [0, 1, 2, 3, 4, 5], 9, false);
 		animation.add("hurt", [10, 10, 10, 10, 6], 12, false);
 		animation.add("die", [10, 11, 12, 12, 12, 12, 12, 12, 12, 12, 12], 9, false);
-		animation.add("attack", [7, 7, 7, 8, 8, 8, 9, 9, 9], 9, false);
+		animation.add("attack", [7, 7, 7, 8, 8, 8, 9, 9, 9, 6, 6, 6, 6, 6, 6], 9, false);
 		animation.play("stop");
 		
-		health = 100;
+		health = 70;
 		facing = FlxObject.LEFT;
 		brain = new EnemyFSM(idle);
 		range = 90;
@@ -77,6 +77,10 @@ class MeleeEnemy extends Enemy {
 		} else if (rateTimer < 0) {
 			animation.play("lr");
 		}
+		if (rateTimer > 0.66 && !attacked) {
+			bulletArray.add(new MeleeBullet(x + 7, y + 10, 1000, facing, 5, range));
+			attacked = true;
+		}
 		
 	}
 	
@@ -88,10 +92,7 @@ class MeleeEnemy extends Enemy {
 		if (rateTimer == -1) {
 			rateTimer = 0;
 		}
-		if (rateTimer > 0.33 && !attacked) {
-			bulletArray.add(new MeleeBullet(x + 7, y + 10, 4000, dir, 5, range));
-			attacked = true;
-		}
+		
 	}
 	
 	override public function hurt(damage:Float):Void {
@@ -104,6 +105,8 @@ class MeleeEnemy extends Enemy {
 			hurtTimer = 0;
 		}
 		health -= damage;
+		color = 0xff0000;
+		hurtColorTimer = 0.0;
 	}
 	
 }
