@@ -17,13 +17,16 @@ import enemies.*;
 
 class PlayState extends FlxState {
 	private var _player:Player;
+	private var _hud:HUD;
+
 	private var _map:TiledMap;
     private var _background:FlxTilemap;
     private var _plat:FlxTilemap;
     private var _bound:FlxTilemap;
 
-	private var _hud:HUD;
 	private var enemiesGroup:FlxTypedGroup<Enemy>;
+	private var _enemiesMap:Map<Enemy, EnemyHUD>;
+	private var _enemiesHUD:FlxTypedGroup<EnemyHUD>;
 	private var playerBullets:FlxTypedGroup<Bullet>;
 	private var enemiesBullets:FlxTypedGroup<Bullet>;
 	
@@ -64,13 +67,14 @@ class PlayState extends FlxState {
 		//ADD EVERY COMPONENT
         add(_background);
         add(_bound);
-        add(enemiesBullets);
+        add(_plat); 
+		add(enemiesBullets);
         add(enemiesGroup);
         add(playerBullets);
-        add(_plat); 
         add(_player);
         //add(_instruct);
         add(_hud);
+		add(_enemiesHUD);
 		
 		 _hud.updateHUD(_player.getAmmo(0), _player.getAmmo(1), _player.isReloading(0), _player.isReloading(1),
 		 				_player.getWeaponName(0), _player.getWeaponName(1));
@@ -82,6 +86,8 @@ class PlayState extends FlxState {
 	override public function update(elapsed:Float):Void {
 		super.update(elapsed);
 		_hud.updateXY();
+		updateEnemyHud();
+
 		FlxG.collide(_player, _bound);
         FlxG.collide(_player, _plat);
 		
@@ -109,6 +115,17 @@ class PlayState extends FlxState {
 		}
 	}
 	
+	private function updateEnemyHud() {
+		for(en in _enemiesMap.keys()) {
+			if(en.health > 0){
+				_enemiesMap.get(en).updateXY();
+			} else {
+				_enemiesMap.get(en).destroy();
+				_enemiesMap.remove(en);
+			}
+		}
+	}
+
 	//Place player info
 	private function placeEntities(entityName:String, entityData:Xml):Void  {
 		var x:Int = Std.parseInt(entityData.get("x"));
@@ -169,6 +186,7 @@ class PlayState extends FlxState {
 			enemy.hurt(bullet.getDamage());
 			playerBullets.remove(bullet);
 			bullet.destroy();
+			_enemiesMap.get(enemy).updateDamage(bullet.getDamage());
 		}
 	}
 	

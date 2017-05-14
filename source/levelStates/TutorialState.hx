@@ -47,6 +47,8 @@ class TutorialState extends PlayState {
 		//LOAD ENEMIES
         enemiesBullets = new FlxTypedGroup<Bullet>();
 		enemiesGroup = new FlxTypedGroup<Enemy>();
+		_enemiesMap = new Map<Enemy, EnemyHUD>();
+		_enemiesHUD = new FlxTypedGroup<EnemyHUD>();
 		var enemyLayer1:TiledObjectLayer = cast _map.getLayer("enemiesScene1");
 		var enemyLayer4:TiledObjectLayer = cast _map.getLayer("enemiesScene4");
 		var enemyLayer5:TiledObjectLayer = cast _map.getLayer("enemiesScene5");
@@ -111,11 +113,17 @@ class TutorialState extends PlayState {
 	{
 		var x:Int = Std.parseInt(entityData.get("x"));
 		var y:Int = Std.parseInt(entityData.get("y"));
+		var eh:EnemyHUD;
+		var en:Enemy;
 		if (entityName == "MELEE") {
-			enemiesGroup.add(new MeleeEnemy(x, y, enemiesBullets, GRAVITY));
+			en = new MeleeEnemy(x, y, enemiesBullets, GRAVITY);
 		} else {
-			enemiesGroup.add(new RifleEnemy(x, y, enemiesBullets, GRAVITY));
+			en = new RifleEnemy(x, y, enemiesBullets, GRAVITY);
 		}
+		eh = new EnemyHUD(en);
+		enemiesGroup.add(en);
+		_enemiesMap.set(en, eh);
+		_enemiesHUD.add(eh);
 	}
 
     private function instructInit(elapsed:Float):Void {   

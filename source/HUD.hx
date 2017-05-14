@@ -13,7 +13,6 @@ class HUD extends FlxTypedGroup<FlxSprite>
 {
     private var _player:Player;
     private var _sprHealth:FlxSprite;
-    private var _sprHead:FlxSprite;
     private var _txtjAmmo:FlxText;
     private var _txtkAmmo:FlxText;
     private var _healthbar:FlxBar;
@@ -37,7 +36,7 @@ class HUD extends FlxTypedGroup<FlxSprite>
          _sprHealth = new FlxSprite(20, 4, AssetPaths.health__png);
 
          //health bar
-        _healthbar = new FlxBar(40, 4, 250, 15, _player, "health");
+        _healthbar = new FlxBar(40, 4, LEFT_TO_RIGHT, 250, 15, _player, "health", 0, _player.health);
         _healthbar.createFilledBar(FlxColor.TRANSPARENT, FlxColor.RED, true, FlxColor.BLACK);
 
         //weapons
