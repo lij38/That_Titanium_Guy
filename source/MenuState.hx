@@ -6,6 +6,7 @@ import flixel.FlxState;
 import flixel.ui.FlxButton;
 import animation.*;
 import levelStates.*;
+import flixel.util.FlxColor;
 
 class MenuState extends FlxState {
 	private var _btnPlay:FlxButton;
@@ -35,6 +36,7 @@ class MenuState extends FlxState {
 		spritesheet.animation.play("lr");
 		
 		add(_btnPlay);
+		FlxG.camera.fade(FlxColor.BLACK, .33, true);
 		super.create();
 	}
 	
@@ -43,7 +45,10 @@ class MenuState extends FlxState {
 	}
 	
 	private function clickPlay():Void {
-		FlxG.switchState(new TutorialState());
+		FlxG.camera.fade(FlxColor.BLACK,.25, false, function()
+		{
+			FlxG.switchState(new OpeningState());
+		});
 	}
 	
 }

@@ -103,6 +103,7 @@ class OpeningState extends FlxState
 		 add(_helptext);
 		 add(_skiptext);
 
+		FlxG.camera.fade(FlxColor.BLACK, .25, true);
 		super.create();
 		
 	}
@@ -194,7 +195,10 @@ class OpeningState extends FlxState
 		     	_enemy.animation.play("lr");
 		     	_enemy.x -= 4;
 		    } else if (count > 100) {
-				FlxG.switchState(new TutorialState());
+				FlxG.camera.fade(FlxColor.BLACK,.25, false, function()
+				{
+					FlxG.switchState(new TutorialState());
+				});
 			}
 	 	}
 

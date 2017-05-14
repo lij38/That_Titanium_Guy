@@ -50,7 +50,11 @@ class RifleEnemy extends Enemy {
 	}
 	
 	public function attack(elapsed:Float):Void {
-		if (rateTimer == 0) {
+		if (fireTimer > fireTime) {
+			fireTimer = -1;
+			bulletCount = 0;
+		}
+		if (rateTimer == 0 && fireTimer == -1) {
 			if (playerPos.x <= getMidpoint().x) {
 				velocity.x = -speed;
 				facing = FlxObject.LEFT;
@@ -89,10 +93,7 @@ class RifleEnemy extends Enemy {
 				fireTimer = 0.0;
 			}
 		}
-		if (fireTimer > fireTime) {
-			fireTimer = -1;
-			bulletCount = 0;
-		}
+		
 	}
 	
 }
