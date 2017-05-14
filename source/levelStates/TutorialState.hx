@@ -131,9 +131,9 @@ class TutorialState extends PlayState {
         //trace(_player.x == cast(_next, Float));
         //if (!(Std.int(_player.x) > _next && !(Std.int(_player.x) < _next)) {
 		//trace(Std.int(_player.x) + "       " + Std.int(_next));
-		trace(_sorted.length);
+		//trace(_sorted.length);
         if (Std.int(_player.x) == Std.int(_next)) {
-		    trace("Reached!");
+		    //trace("Reached!");
             _instruct.instruct(_locations.get(_next), _player.x - 40, _player.y - 40);
             
             _next = _sorted.shift();

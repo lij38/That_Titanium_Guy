@@ -12,6 +12,7 @@ import flixel.tile.FlxBaseTilemap;
 import flixel.addons.editors.tiled.TiledObjectLayer;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
+import levelStates.*;
 
 class OpeningState extends FlxState
 {

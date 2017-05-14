@@ -27,7 +27,7 @@ class HUD extends FlxTypedGroup<FlxSprite>
          super();
          _player = player;
         //ammo
-        _txtjAmmo = new FlxText(390, 55, 0, "", 24);
+        _txtjAmmo = new FlxText(382, 55, 0, "", 24);
         _txtkAmmo = new FlxText(462, 55, 0, "", 24);
         _txtjAmmo.setFormat(AssetPaths.FONT, _txtjAmmo.size);
         _txtkAmmo.setFormat(AssetPaths.FONT, _txtkAmmo.size);
@@ -40,7 +40,7 @@ class HUD extends FlxTypedGroup<FlxSprite>
         _healthbar.createFilledBar(FlxColor.TRANSPARENT, FlxColor.RED, true, FlxColor.BLACK);
 
         //weapons
-        _jWeapon = new FlxSprite(390, 4);
+        _jWeapon = new FlxSprite(375, 4);
         _kWeapon = new FlxSprite(455, 4);
 
         //damage
