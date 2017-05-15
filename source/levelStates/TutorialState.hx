@@ -26,45 +26,6 @@ class TutorialState extends PlayState {
     override public function create():Void {
         //LOAD MAP BASICS
         _map = new TiledMap(AssetPaths.tutorialFormal__tmx);
-        //LOAD INSTRUCTIONS
-		_locations = new Map<Int, String>();
-		texts = new FlxTypedGroup<FlxText>();
-        _sorted = new Array<Int>();
-        var tmpLayer:TiledObjectLayer = cast _map.getLayer("instructions");
-        for (e in tmpLayer.objects) {
-            placeInstructions(e.name, e.xmlData.x);
-        }
-        haxe.ds.ArraySort.sort(_sorted, function(a, b):Int {
-            if (a < b) return -1;
-            else if (a > b) return 1;
-            return 0;
-        });
-        //_instruct = new Instruction(_player.x - 40, _player.y - 40, 300, 12);
-        //trace(_sorted);
-        _next = _sorted.shift();
-        //trace(_next);
-
-		//LOAD ENEMIES
-        enemiesBullets = new FlxTypedGroup<Bullet>();
-		enemiesGroup = new FlxTypedGroup<Enemy>();
-		_enemiesMap = new Map<Enemy, EnemyHUD>();
-		_enemiesHUD = new FlxTypedGroup<EnemyHUD>();
-		var enemyLayer1:TiledObjectLayer = cast _map.getLayer("enemiesScene1");
-		var enemyLayer4:TiledObjectLayer = cast _map.getLayer("enemiesScene4");
-		var enemyLayer5:TiledObjectLayer = cast _map.getLayer("enemiesScene5");
-		var enemyLayer6:TiledObjectLayer = cast _map.getLayer("enemiesScene6");
-		for (e in enemyLayer1.objects) {
-			placeEnemies(e.name, e.xmlData.x);
-		}
-		for (e in enemyLayer4.objects) {
-			placeEnemies(e.name, e.xmlData.x);
-		}
-		for (e in enemyLayer5.objects) {
-			placeEnemies(e.name, e.xmlData.x);
-		}
-		for (e in enemyLayer6.objects) {
-			placeEnemies(e.name, e.xmlData.x);
-		}
 
 		//LOAD SHIELD
 		shield = new FlxSprite();
