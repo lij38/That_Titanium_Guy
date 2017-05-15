@@ -32,29 +32,6 @@ class PlayState extends FlxState {
 	private var GRAVITY:Float = 1000;
 	
 	override public function create():Void {
-		////////////////
-		//MAP LOADING DISABLED TEMP
-		////////////////
-
-		//_background = new FlxTilemap();
-        //_plat = new FlxTilemap();
-
-
-        //load background
-        //_background.loadMapFromArray(cast(_map.getLayer("background"), TiledTileLayer).tileArray, _map.width,
-        //    _map.height, AssetPaths.tutorialBG__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 1023);
-        //load platform
-        //_plat.loadMapFromArray(cast(_map.getLayer("plat"), TiledTileLayer).tileArray, _map.width,
-        //    _map.height, AssetPaths.green__jpg, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1021, 1, 1020);
-        //load bounds
-        //_bound.loadMapFromArray(cast(_map.getLayer("bound"), TiledTileLayer).tileArray, _map.width,
-        //    _map.height, AssetPaths.green__jpg, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1021, 1, 1020);
-
-        //_background.setTileProperties(2, FlxObject.NONE);
-        //_bound.setTileProperties(1, FlxObject.ANY);
-        //_plat.setTileProperties(1, FlxObject.ANY);
-		//_bound.follow();
-		//_plat.follow();
 
 		//////////////////
         //LOAD PLAYER
@@ -98,7 +75,6 @@ class PlayState extends FlxState {
 		 _hud.updateHUD(_player.getAmmo(0), _player.getAmmo(1), _player.isReloading(0), _player.isReloading(1),
 		 				_player.getWeaponName(0), _player.getWeaponName(1));
         FlxG.camera.follow(_player, TOPDOWN, 1);
-        //Main.LOGGER.logLevelStart(1);
 		super.create();
 	}
 
@@ -106,7 +82,6 @@ class PlayState extends FlxState {
 		super.update(elapsed);
 		enemiesGroup.forEach(enemiesUpdate);
 		_hud.updateXY();
-		updateEnemyHud();
 
         FlxG.collide(_player, _plat);
 		
@@ -125,15 +100,16 @@ class PlayState extends FlxState {
 		bulletsRangeUpdate();
         if (!_player.exists) {
 			// Player died, so set our label to YOU LOST
-			//Main.LOGGER.logLevelEnd({won: false});
+			Main.LOGGER.logLevelEnd({won: false});
 			FlxG.switchState(new OverState());
 		}
 		
 		if (enemiesGroup.countLiving() == -1) {
+			Main.LOGGER.logLevelEnd({won: true});
 			FlxG.switchState(new FinishState());
 		}
 	}
-	
+
 	private function updateEnemyHud() {
 		for(en in _enemiesMap.keys()) {
 			if(en.health > 0){

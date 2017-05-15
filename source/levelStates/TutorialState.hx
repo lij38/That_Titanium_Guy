@@ -13,13 +13,8 @@ import flixel.text.FlxText;
 import weapons.*;
 import enemies.*;
 
-class TutorialState extends PlayState {
-    // private var _instruct:Instruction;
 
-    // private var _locations:Map<Int, String>;
-    // private var _sorted:Array<Int>;
-    // private var _next:Int;
-	
+class TutorialState extends PlayState {
 	private var shield:FlxSprite;
 	//private var texts:FlxTypedGroup<FlxText>;
 
@@ -44,6 +39,11 @@ class TutorialState extends PlayState {
 		 _plat.follow();
 
 		/////////////////////////////////////////////
+        //LOAD INSTRUCTIONS
+		////////////////////////////////////////////
+		texts = new FlxTypedGroup<FlxText>();
+
+		////////////////////////////////////////////
 		//LOAD SHIELD
 		/////////////////////////////////////////////
 		shield = new FlxSprite();
@@ -60,12 +60,16 @@ class TutorialState extends PlayState {
 		super.create();
 		//add(texts);
 		add(shield);
+		Main.LOGGER.logLevelStart(1);
     }
 
 	override public function update(elapsed:Float):Void  {
+		if (enemiesGroup.countLiving() == -1) {
+			Main.SAVE.data.tutComplete = true;
+		}
 	 	super.update(elapsed);
-		//instructInit(elapsed);
 		FlxG.overlap(shield, _player, onPickup);
+		FlxG.collide(shield, _plat);
 	}
 
 	// //Place all the instructions
@@ -86,23 +90,6 @@ class TutorialState extends PlayState {
     //    }
     // }
 
-
-	// private function placeEnemies(entityName:String, entityData:Xml):Void
-	// {
-	// 	var x:Int = Std.parseInt(entityData.get("x"));
-	// 	var y:Int = Std.parseInt(entityData.get("y"));
-	// 	var eh:EnemyHUD;
-	// 	var en:Enemy;
-	// 	if (entityName == "MELEE") {
-	// 		en = new MeleeEnemy(x, y, enemiesBullets, GRAVITY);
-	// 	} else {
-	// 		en = new RifleEnemy(x, y, enemiesBullets, GRAVITY);
-	// 	}
-	// 	eh = new EnemyHUD(en);
-	// 	enemiesGroup.add(en);
-	// 	_enemiesMap.set(en, eh);
-	// 	_enemiesHUD.add(eh);
-	// }
 
 
 	private function onPickup(a:FlxSprite, b:FlxSprite):Void {
