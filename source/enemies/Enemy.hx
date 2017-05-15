@@ -23,38 +23,24 @@ class Enemy extends FlxSprite {
 	private var hurtColorTimer:Float = -1;
 	
 	private var hurtTimer:Float = -1;
+	public var TYPE:String;
 	
 	public function new(X:Float = 0, Y:Float = 0, enemiesBulletArray:FlxTypedGroup<Bullet>,
-						gravity:Float) {
+						gravity:Float, type:String) {
 		super(X, Y);
 		GRAVITY = gravity;
 		bulletArray = enemiesBulletArray;
 		
 		acceleration.y = GRAVITY;
 		playerPos = FlxPoint.get();
+		
+		TYPE = type;
 	}
-	
-/*	public function idle():Void {
-		if (seesPlayer) {
-			brain.activeState = chase;
-		}
-	}
-	
-	public function chase():Void {
-		if (playerPos.x <= getMidpoint().x) {
-			velocity.x = -speed;
-			facing = FlxObject.LEFT;
-		} else {
-			facing = FlxObject.RIGHT;
-			velocity.x = speed;
-		}
-		animation.play("lr");
-	}*/
-	
-	
 	
 	override public function update(elapsed:Float):Void {
-		if (Math.abs(playerPos.x - getMidpoint().x) < 500) {
+		if (!seesPlayer &&
+			Math.abs(playerPos.x - getMidpoint().x) < 100 &&
+			Math.abs(playerPos.y - getMidpoint().y) < 50) {
 			seesPlayer = true;
 		}
 		if (!alive) {
@@ -87,7 +73,7 @@ class Enemy extends FlxSprite {
 	
 	override public function hurt(damage:Float):Void {
 		seesPlayer = true;
-		if (health - damage < 0) {
+		if (health - damage <= 0) {
 			animation.play("die");
 			alive = false;
 		} else {

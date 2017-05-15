@@ -107,6 +107,7 @@ class PlayState extends FlxState {
 
 	override public function update(elapsed:Float):Void {
 		super.update(elapsed);
+		enemiesGroup.forEach(enemiesUpdate);
 		_hud.updateXY();
 		updateEnemyHud();
 
@@ -120,8 +121,9 @@ class PlayState extends FlxState {
 		if (!_player.isTumbling()) {
 	 		FlxG.overlap(enemiesBullets, _player, bulletsHitPlayer);
 	 	}
-		FlxG.collide(_bound, playerBullets, bulletsHitWalls);
-		enemiesGroup.forEach(enemiesUpdate);
+		
+		FlxG.collide(_plat, playerBullets, bulletsHitWalls);
+		FlxG.collide(_plat, enemiesBullets, bulletsHitWalls);
 		FlxG.collide(enemiesGroup, _bound);
 		FlxG.collide(enemiesGroup, _plat);
 
@@ -162,8 +164,7 @@ class PlayState extends FlxState {
 	}
 
     	//Place enemies individually
-	private function placeEnemies(entityName:String, entityData:Xml):Void
-	{
+	private function placeEnemies(entityName:String, entityData:Xml):Void {
 		var x:Int = Std.parseInt(entityData.get("x"));
 		var y:Int = Std.parseInt(entityData.get("y"));
 		var eh:EnemyHUD;
@@ -188,8 +189,7 @@ class PlayState extends FlxState {
 			}
 			player.hurt(damage);
 			_hud.updateDamage(damage);
-			enemiesBullets.remove(bullet);
-			bullet.destroy();
+			bullet.kill();
 		}
 	}
 	
@@ -203,8 +203,7 @@ class PlayState extends FlxState {
 		}
 		for (eb in enemiesBullets) {
 			if (eb.outOfRange(eb.x)) {
-				playerBullets.remove(eb);
-				eb.destroy();
+				eb.kill();
 			}
 		}
 	}
@@ -218,16 +217,16 @@ class PlayState extends FlxState {
 			if (!_player.isTumbling()) {
 				FlxG.collide(_player, e, playerCollidesEnemies);
 			}
-			
 		}
 	}
 	
 	public function bulletsHitEnemies(bullet:Bullet, enemy:Enemy):Void {
 		if (enemy.alive) {
+			_enemiesMap.get(enemy).updateDamage(bullet.getDamage());
 			enemy.hurt(bullet.getDamage());
 			playerBullets.remove(bullet);
 			bullet.destroy();
-			_enemiesMap.get(enemy).updateDamage(bullet.getDamage());
+			
 		}
 	}
 	

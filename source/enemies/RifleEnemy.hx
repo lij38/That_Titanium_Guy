@@ -19,9 +19,14 @@ class RifleEnemy extends Enemy {
 	private var rate:Float = 0.1;
 	private var rateTimer:Float = 0;
 	
+	private var level:Int;
+	private var damageLevel = [for (i in 1...4) i];	
+	private var healthLevel = [for (i in 1...4) 50 * i];
+	
 	public function new(X:Float = 0, Y:Float = 0, bulletArray:FlxTypedGroup<Bullet>,
-						gravity:Float) {
-		super(X, Y, bulletArray, gravity);
+						gravity:Float, level:Int = 1) {
+		super(X, Y, bulletArray, gravity, "RIFLE");
+		this.level = level;
 		
 		loadGraphic(AssetPaths.enemy_rifle__png, true, 552, 383);
 		scale.set(0.3, 0.3);
@@ -37,7 +42,7 @@ class RifleEnemy extends Enemy {
 		animation.add("die", [8, 9, 10, 10, 10, 10, 10, 10, 10, 10, 10], 9, false);
 		animation.play("stop");
 		
-		health = 50;
+		health = healthLevel[level];
 		facing = FlxObject.LEFT;
 		brain = new EnemyFSM(idle);
 		range = 500;
@@ -81,7 +86,9 @@ class RifleEnemy extends Enemy {
 		if (bulletCount < 3) {
 			rateTimer += elapsed;
 			if (rateTimer > rate * bulletCount) {
-				bulletArray.add(new EnemyBullet(x, y + 45, 250, dir, 1, range));
+				bulletArray.add(new EnemyBullet(x, y + 45, 250, dir, 
+								damageLevel[level], range));
+				bulletArray.
 				bulletCount++;
 			}
 				
