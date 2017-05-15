@@ -24,11 +24,15 @@ class Main extends Sprite {
 			userId = Main.LOGGER.generateUuid();
 			Main.LOGGER.setSavedUserId(userId);
 		}
-		Main.LOGGER.startNewSession(userId, this.onSessionReady);
+		Main.LOGGER.startNewSession(userId, onSessionReady);
 		Main.SAVE = new FlxSave();
 		Main.SAVE.bind(userId);
 
 
 		addChild(new FlxGame(800, 600, MenuState));
+	}
+	
+	public function onSessionReady(b:Bool):Void {
+		
 	}
 }

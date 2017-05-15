@@ -23,8 +23,9 @@ class RifleEnemy extends Enemy {
 	private var damageLevel = [for (i in 1...4) i];	
 	private var healthLevel = [for (i in 1...4) 50 * i];
 	
-	public function new(X:Float = 0, Y:Float = 0, bulletArray:FlxTypedGroup<Bullet>,
-						gravity:Float, level:Int = 1) {
+	public function new(X:Float = 0, Y:Float = 0, 
+						bulletArray:FlxTypedGroup<EnemyBullet>,
+						gravity:Float, level:Int = 0) {
 		super(X, Y, bulletArray, gravity, "RIFLE");
 		this.level = level;
 		
@@ -86,8 +87,10 @@ class RifleEnemy extends Enemy {
 		if (bulletCount < 3) {
 			rateTimer += elapsed;
 			if (rateTimer > rate * bulletCount) {
-				bulletArray.add(new EnemyBullet(x, y + 45, 250, dir, 
-								damageLevel[level], range));
+				var curBullet:EnemyBullet = bulletArray.recycle(EnemyBullet, true);
+				curBullet.setBullet(x, y + 45, 250, dir, 
+								damageLevel[level], range,
+								Ranged);
 				bulletCount++;
 			}
 				
