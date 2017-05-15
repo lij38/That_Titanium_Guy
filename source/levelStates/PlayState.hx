@@ -99,7 +99,7 @@ class PlayState extends FlxState {
 
 		bulletsRangeUpdate();
         if (!_player.exists) {
-			// Player died, so set our label to YOU LOST
+			//Player died, so set our label to YOU LOST
 			Main.LOGGER.logLevelEnd({won: false});
 			FlxG.switchState(new OverState());
 		}

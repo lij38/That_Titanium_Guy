@@ -9,26 +9,26 @@ import flixel.addons.editors.tiled.TiledTileLayer;
 import flixel.addons.editors.tiled.TiledObjectLayer;
 import flixel.tile.FlxBaseTilemap;
 import flixel.group.FlxGroup.FlxTypedGroup;
-import flixel.text.FlxText;
+import flixel.FlxSprite;
 import weapons.*;
 import enemies.*;
 
 
 class TutorialState extends PlayState {
-	private var shield:FlxSprite;
-	//private var texts:FlxTypedGroup<FlxText>;
+	private var shield:FlxSprite;   //Shield in this map
+	private var texts:FlxTypedGroup<FlxSprite>;    //Instructions present in them map
 
     override public function create():Void {
         //////////////////////////////////////////////////
         //LOAD MAP
         //////////////////////////////////////////////////
-         _map = new TiledMap(AssetPaths.tutorial__tmx);
+        _map = new TiledMap(AssetPaths.tutorial__tmx);
         _background = new FlxTilemap();
         _plat = new FlxTilemap();
 
         //load background
         _background.loadMapFromArray(cast(_map.getLayer("background"), TiledTileLayer).tileArray, _map.width,
-            _map.height, AssetPaths.tutorialBG__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 2, 2, 1771);
+            _map.height, AssetPaths.tutorialBG__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 2, 1, 1771);
         //load platform
          _plat.loadMapFromArray(cast(_map.getLayer("plat"), TiledTileLayer).tileArray, _map.width,
              _map.height, AssetPaths.green__jpg, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 1);
@@ -41,7 +41,13 @@ class TutorialState extends PlayState {
 		/////////////////////////////////////////////
         //LOAD INSTRUCTIONS
 		////////////////////////////////////////////
-		texts = new FlxTypedGroup<FlxText>();
+		texts = new FlxTypedGroup<FlxSprite>();
+		// var instructLayer:TiledObjectLayer = cast _map.getLayer("instructions");
+		// for (e in instructLayer.objects) {
+		// 	placeInstructions(e.name, e.xmlData.x);
+		// }
+		// add(texts);
+
 
 		////////////////////////////////////////////
 		//LOAD SHIELD
@@ -57,10 +63,9 @@ class TutorialState extends PlayState {
 				shield.y = y;
 			}
 		}
-		super.create();
-		//add(texts);
 		add(shield);
 		Main.LOGGER.logLevelStart(1);
+		super.create();
     }
 
 	override public function update(elapsed:Float):Void  {
@@ -72,21 +77,18 @@ class TutorialState extends PlayState {
 		FlxG.collide(shield, _plat);
 	}
 
-	// //Place all the instructions
+	//Place all the instructions
     // private function placeInstructions(entityName:String, entityData:Xml):Void 
     // {
 	// 	var x:Int = Std.parseInt(entityData.get("x"));
 	// 	var y:Int = Std.parseInt(entityData.get("y"));
-    //     _locations.set(x, entityName); 
-    //     _sorted.push(x);
 	// 	switch entityName {
-    //        case "A": texts.add(new FlxText(x + 40, y - 100, 300, "Press A to move to the left", 12));
-    //        case "D": texts.add(new FlxText(x + 40, y - 100, 300, "Press D to move to the right", 12));
-    //        case "W": texts.add(new FlxText(x + 40, y - 100, 300, "Press W to jump", 12));
-    //        case "J": texts.add(new FlxText(x + 40, y - 100, 300, "Press J to attack",12));
-    //        case "K": texts.add(new FlxText(x + 40, y - 100, 300, "Press and hold K to use the shield", 12));
-    //        case "SPACE": texts.add(new FlxText(x + 40, y - 100, 300, "Press SPACE to roll to dodge the bullets", 12));
-    //        case "SPACE1": texts.add(new FlxText(x + 40, y - 100, 300, "Press SPACE and try to roll through the enemy", 12));
+    //        case "A": texts.add(new FlxSprite(x, y, AssetPaths.a__png));
+    //        case "D": texts.add(new FlxSprite(x, y, AssetPaths.d__png));
+    //        case "W": texts.add(new FlxSprite(x, y, AssetPaths.w__png));
+    //        case "J": texts.add(new FlxSprite(x, y, AssetPaths.j__png));
+    //        case "K": texts.add(new FlxSprite(x, y, AssetPaths.k__png));
+    //        case "SPACE": texts.add(new FlxSprite(x, y, AssetPaths.space__jpg));
     //    }
     // }
 

@@ -15,10 +15,6 @@ import enemies.*;
 
 class Level1State extends PlayState
 {
-	//private var _map:TiledMap;
-    //private var _background:FlxTilemap;
-    //private var _plat:FlxTilemap;
-
     override public function create():Void 
     {
         ////////////////////////
