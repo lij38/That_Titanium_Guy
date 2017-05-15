@@ -83,6 +83,7 @@ class PlayState extends FlxState {
 	override public function update(elapsed:Float):Void {
 		super.update(elapsed);
 		enemiesGroup.forEach(enemiesUpdate);
+		updateEnemyHud();
 		_hud.updateXY();
 
 		FlxG.collide(_player, _bound);
@@ -201,7 +202,6 @@ class PlayState extends FlxState {
 			enemy.hurt(bullet.getDamage());
 			playerBullets.remove(bullet);
 			bullet.destroy();
-			
 		}
 	}
 	
