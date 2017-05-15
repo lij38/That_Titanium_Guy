@@ -13,13 +13,7 @@ import flixel.text.FlxText;
 import weapons.*;
 import enemies.*;
 
-class TutorialState extends PlayState {
-    private var _instruct:Instruction;
-
-    private var _locations:Map<Int, String>;
-    private var _sorted:Array<Int>;
-    private var _next:Int;
-	
+class TutorialState extends PlayState {	
 	private var shield:FlxSprite;
 	private var texts:FlxTypedGroup<FlxText>;
 
@@ -27,22 +21,7 @@ class TutorialState extends PlayState {
         //LOAD MAP BASICS
         _map = new TiledMap(AssetPaths.tutorialFormal__tmx);
         //LOAD INSTRUCTIONS
-		_locations = new Map<Int, String>();
 		texts = new FlxTypedGroup<FlxText>();
-        _sorted = new Array<Int>();
-        var tmpLayer:TiledObjectLayer = cast _map.getLayer("instructions");
-        for (e in tmpLayer.objects) {
-            placeInstructions(e.name, e.xmlData.x);
-        }
-        haxe.ds.ArraySort.sort(_sorted, function(a, b):Int {
-            if (a < b) return -1;
-            else if (a > b) return 1;
-            return 0;
-        });
-        //_instruct = new Instruction(_player.x - 40, _player.y - 40, 300, 12);
-        //trace(_sorted);
-        _next = _sorted.shift();
-        //trace(_next);
 
 		//LOAD ENEMIES
         enemiesBullets = new FlxTypedGroup<Bullet>();
@@ -89,7 +68,6 @@ class TutorialState extends PlayState {
 			Main.SAVE.data.tutComplete = true;
 		}
 	 	super.update(elapsed);
-		//instructInit(elapsed);
 		FlxG.collide(shield, _bound);
 		FlxG.overlap(shield, _player, onPickup);
 	}
@@ -99,8 +77,6 @@ class TutorialState extends PlayState {
     {
 		var x:Int = Std.parseInt(entityData.get("x"));
 		var y:Int = Std.parseInt(entityData.get("y"));
-        _locations.set(x, entityName); 
-        _sorted.push(x);
 		switch entityName {
            case "A": texts.add(new FlxText(x + 40, y - 100, 300, "Press A to move to the left", 12));
            case "D": texts.add(new FlxText(x + 40, y - 100, 300, "Press D to move to the right", 12));
@@ -110,38 +86,6 @@ class TutorialState extends PlayState {
            case "SPACE": texts.add(new FlxText(x + 40, y - 100, 300, "Press SPACE to roll to dodge the bullets", 12));
            case "SPACE1": texts.add(new FlxText(x + 40, y - 100, 300, "Press SPACE and try to roll through the enemy", 12));
        }
-    }
-
-
-	// private function placeEnemies(entityName:String, entityData:Xml):Void
-	// {
-	// 	var x:Int = Std.parseInt(entityData.get("x"));
-	// 	var y:Int = Std.parseInt(entityData.get("y"));
-	// 	var eh:EnemyHUD;
-	// 	var en:Enemy;
-	// 	if (entityName == "MELEE") {
-	// 		en = new MeleeEnemy(x, y, enemiesBullets, GRAVITY);
-	// 	} else {
-	// 		en = new RifleEnemy(x, y, enemiesBullets, GRAVITY);
-	// 	}
-	// 	eh = new EnemyHUD(en);
-	// 	enemiesGroup.add(en);
-	// 	_enemiesMap.set(en, eh);
-	// 	_enemiesHUD.add(eh);
-	// }
-
-    private function instructInit(elapsed:Float):Void {   
-        //trace(_player.x + "     " +_next);
-        //trace(_player.x == cast(_next, Float));
-        //if (!(Std.int(_player.x) > _next && !(Std.int(_player.x) < _next)) {
-		//trace(Std.int(_player.x) + "       " + Std.int(_next));
-		//trace(_sorted.length);
-        if (Std.int(_player.x) == Std.int(_next)) {
-		    //trace("Reached!");
-            _instruct.instruct(_locations.get(_next), _player.x - 40, _player.y - 40);
-            
-            _next = _sorted.shift();
-        }        
     }
 
 	private function onPickup(a:FlxSprite, b:FlxSprite):Void {

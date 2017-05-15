@@ -41,8 +41,6 @@ class Level1State extends PlayState
 		_plat.follow();
 
         super.create();
+        Main.LOGGER.logLevelStart(2);
     }
-
-    
-
 }

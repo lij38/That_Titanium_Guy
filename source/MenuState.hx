@@ -65,6 +65,6 @@ class MenuState extends FlxState {
 			} else {
 				//TODO: switch to homeState
 			}
-		}
+		});
 	}
 }
