@@ -28,7 +28,7 @@ class PlayState extends FlxState {
 	private var _enemiesMap:Map<Enemy, EnemyHUD>;
 	private var _enemiesHUD:FlxTypedGroup<EnemyHUD>;
 	private var playerBullets:FlxTypedGroup<Bullet>;
-	private var enemiesBullets:FlxTypedGroup<Bullet>;
+	private var enemiesBullets:FlxTypedGroup<EnemyBullet>;
 	
 	private var GRAVITY:Float = 1000;
 	
@@ -75,7 +75,8 @@ class PlayState extends FlxState {
 		/////////////////////////
 		//LOAD ENEMIES
 		////////////////////////
-		enemiesBullets = new FlxTypedGroup<Bullet>();
+		enemiesBullets = new FlxTypedGroup<EnemyBullet>();
+		
 		enemiesGroup = new FlxTypedGroup<Enemy>();
 		_enemiesMap = new Map<Enemy, EnemyHUD>();
 		_enemiesHUD = new FlxTypedGroup<EnemyHUD>();
@@ -123,7 +124,7 @@ class PlayState extends FlxState {
 	 	}
 		
 		FlxG.collide(_plat, playerBullets, bulletsHitWalls);
-		FlxG.collide(_plat, enemiesBullets, bulletsHitWalls);
+		FlxG.collide(_plat, enemiesBullets, enemiesBulletsHitWalls);
 		FlxG.collide(enemiesGroup, _bound);
 		FlxG.collide(enemiesGroup, _plat);
 
@@ -237,5 +238,9 @@ class PlayState extends FlxState {
 	public function bulletsHitWalls(wall:FlxObject, pb:Bullet):Void {
 		playerBullets.remove(pb);
 		pb.destroy();
+	}
+	
+	public function enemiesBulletsHitWalls(wall:FlxObject, b:Bullet):Void {
+		b.kill();
 	}
 }

@@ -11,7 +11,7 @@ import flixel.tweens.FlxTween;
 import weapons.*;
 
 class Enemy extends FlxSprite {
-	private var bulletArray:FlxTypedGroup<Bullet>;
+	private var bulletArray:FlxTypedGroup<EnemyBullet>;
 	
 	private var GRAVITY:Float;
 	private var brain:EnemyFSM;
@@ -25,7 +25,8 @@ class Enemy extends FlxSprite {
 	private var hurtTimer:Float = -1;
 	public var TYPE:String;
 	
-	public function new(X:Float = 0, Y:Float = 0, enemiesBulletArray:FlxTypedGroup<Bullet>,
+	public function new(X:Float = 0, Y:Float = 0, 
+						enemiesBulletArray:FlxTypedGroup<EnemyBullet>,
 						gravity:Float, type:String) {
 		super(X, Y);
 		GRAVITY = gravity;
