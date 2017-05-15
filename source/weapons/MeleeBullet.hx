@@ -1,5 +1,6 @@
 package weapons;
 
+import flixel.FlxObject;
 import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.util.FlxColor;
 

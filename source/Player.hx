@@ -1,6 +1,7 @@
 package;
 
 import flixel.FlxSprite;
+import flixel.effects.FlxFlicker;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.util.FlxColor;
@@ -14,7 +15,7 @@ class Player extends FlxSprite {
 	private var GRAVITY:Float;
 	private var jumped:Bool = false;
 	private var jump:Float = 0.0;
-	private var faced:Int = FlxObject.RIGHT;
+	public var faced:Int = FlxObject.RIGHT;
 	private var numJump:Int = 0;
 	public var numJumpLimit:Int = 2;
 	
@@ -59,12 +60,25 @@ class Player extends FlxSprite {
 		acceleration.y = GRAVITY;
 		
 		bulletArray = playerBulletArray;
-
-		jWeapon = new Sword(playerBulletArray);
-		j2ndWeapon = new Rifle(playerBulletArray);
-		kWeapon = new Shield(playerBulletArray);
-		k2ndWeapon = new Weapon(playerBulletArray);
-		curConfig = "swsh";
+		if(Main.SAVE.data.tutComplete == null || Main.SAVE.data.tutComplete == false) {
+			jWeapon = new Sword(playerBulletArray);
+			j2ndWeapon = new Weapon(playerBulletArray);
+			kWeapon = new Weapon(playerBulletArray);
+			k2ndWeapon = new Weapon(playerBulletArray);
+			curConfig = "sword";
+			Main.SAVE.data.jWeapon = jWeapon;
+			Main.SAVE.data.j2ndWeapon = j2ndWeapon;
+			Main.SAVE.data.kWeapon = kWeapon;
+			Main.SAVE.data.k2ndWeapon = k2ndWeapon;
+			Main.SAVE.data.curConfig = curConfig;
+			Main.SAVE.flush();
+		} else {
+			jWeapon = Main.SAVE.data.jWeapon;
+			j2ndWeapon = Main.SAVE.data.j2ndWeapon;
+			kWeapon = Main.SAVE.data.kWeapon;
+			k2ndWeapon = Main.SAVE.data.k2ndWeapon;
+			curConfig = Main.SAVE.data.curConfig;
+		}
 		shielding = false;
 	}
 	
@@ -131,7 +145,7 @@ class Player extends FlxSprite {
 		if(FlxG.keys.anyJustReleased([K])) {
 			if(shielding) {
 				shielding = false;
-				trace("unshielded");
+				//trace("unshielded");
 			}
 		}
 
@@ -268,7 +282,7 @@ class Player extends FlxSprite {
 			animation.play("tumble");
 		} else if (jetpack) {
 			animation.play(curConfig + "JP");
-		} else if (velocity.y != 0 && !isSwording()) {
+		} else if (!isTouching(FlxObject.DOWN) && !isSwording()) {
 			animation.play(curConfig + "Jump");
 		} else if (isShielding()) {
 			animation.play(curConfig + "Shield");
@@ -315,7 +329,7 @@ class Player extends FlxSprite {
 				} else if(kWeapon.getName() == "shield") { //engage shield
 					if(!shielding) {
 						shielding = true;
-						trace("shielding");
+						//trace("shielding");
 					}
 				}
 				//Other weapons that cannot hold to fire
@@ -384,6 +398,11 @@ class Player extends FlxSprite {
 		} else {
 			return kReloadTimer != -0.1;
 		}
+	}
+
+	public function pickUpShield() {
+		kWeapon = new Shield(bulletArray);
+		curConfig = "swsh";
 	}
 
 	private function playRun(option:String) {
@@ -515,5 +534,10 @@ class Player extends FlxSprite {
 		animation.add("swshJP", [93, 94], 12, false);
 		//engage shield
 		animation.add("swshShield", [104], 3, false);
+	}
+	
+	override public function hurt(damage:Float):Void {
+		super.hurt(damage);
+		FlxFlicker.flicker(this, 0.5, 0.10);
 	}
 }

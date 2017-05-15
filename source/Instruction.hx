@@ -15,18 +15,18 @@ class Instruction extends FlxText {
     
 
     override public function new(X:Float = 0, Y:Float = 0, FieldWidth:Float = 0, ?Text:String, Size:Int = 8) {
-        //_current = "A";
-        //text = A;
-        //visible = true;
-		_current = "";
-        text = "";
-        visible = false;
         super(X, Y, FieldWidth, Size);
+        _current = "A";
+        text = A;
+        visible = true;
+		// _current = "";
+        // text = "";
+        // visible = false;
     }
 
     public function instruct(option:String, X:Float, Y:Float):Void {
        switch option {
-           //case "A": text = A;
+           case "A": text = A;
            case "D": text = D;
            case "W": text = W;
            case "J": text = J;
@@ -43,10 +43,10 @@ class Instruction extends FlxText {
     }
 
     override public function update(elapsed:Float):Void {
+        super.update(elapsed);
         if (visible) {
             complete(elapsed);
         }
-        super.update(elapsed);
     }
 
     private function complete(elapsed:Float):Void { 
