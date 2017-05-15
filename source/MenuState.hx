@@ -47,7 +47,8 @@ class MenuState extends FlxState {
 	private function clickPlay():Void {
 		FlxG.camera.fade(FlxColor.BLACK,.25, false, function()
 		{
-			FlxG.switchState(new OpeningState());
+			//FlxG.switchState(new OpeningState());
+			FlxG.switchState(new Level1State());
 		});
 	}
 	
