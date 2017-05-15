@@ -81,9 +81,13 @@ class TutorialState extends PlayState {
 		super.create();
 		add(texts);
 		add(shield);
+		Main.LOGGER.logLevelStart(1);
     }
 
 	override public function update(elapsed:Float):Void  {
+		if (enemiesGroup.countLiving() == -1) {
+			Main.SAVE.data.tutComplete = true;
+		}
 	 	super.update(elapsed);
 		//instructInit(elapsed);
 		FlxG.collide(shield, _bound);

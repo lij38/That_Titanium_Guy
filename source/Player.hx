@@ -60,12 +60,25 @@ class Player extends FlxSprite {
 		acceleration.y = GRAVITY;
 		
 		bulletArray = playerBulletArray;
-
-		jWeapon = new Sword(playerBulletArray);
-		j2ndWeapon = new Weapon(playerBulletArray);
-		kWeapon = new Rifle(playerBulletArray);
-		k2ndWeapon = new Weapon(playerBulletArray);
-		curConfig = "sword";
+		if(Main.SAVE.data.tutComplete == null || Main.SAVE.data.tutComplete == false) {
+			jWeapon = new Sword(playerBulletArray);
+			j2ndWeapon = new Weapon(playerBulletArray);
+			kWeapon = new Weapon(playerBulletArray);
+			k2ndWeapon = new Weapon(playerBulletArray);
+			curConfig = "sword";
+			Main.SAVE.data.jWeapon = jWeapon;
+			Main.SAVE.data.j2ndWeapon = j2ndWeapon;
+			Main.SAVE.data.kWeapon = kWeapon;
+			Main.SAVE.data.k2ndWeapon = k2ndWeapon;
+			Main.SAVE.data.curConfig = curConfig;
+			Main.SAVE.flush();
+		} else {
+			jWeapon = Main.SAVE.data.jWeapon;
+			j2ndWeapon = Main.SAVE.data.j2ndWeapon;
+			kWeapon = Main.SAVE.data.kWeapon;
+			k2ndWeapon = Main.SAVE.data.k2ndWeapon;
+			curConfig = Main.SAVE.data.curConfig;
+		}
 		shielding = false;
 	}
 	

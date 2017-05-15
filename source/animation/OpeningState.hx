@@ -105,6 +105,7 @@ class OpeningState extends FlxState
 		 add(_skiptext);
 
 		FlxG.camera.fade(FlxColor.BLACK, .25, true);
+		Main.LOGGER.logLevelStart(0);
 		super.create();
 		
 	}
@@ -114,6 +115,7 @@ class OpeningState extends FlxState
 		FlxG.collide(_player, _bg);
 		
 		if(FlxG.keys.anyJustPressed([ESCAPE])) {
+			Main.LOGGER.logLevelEnd({won: false});
 			FlxG.switchState(new TutorialState());
 		}
 
@@ -198,6 +200,7 @@ class OpeningState extends FlxState
 		    } else if (count > 100) {
 				FlxG.camera.fade(FlxColor.BLACK,.25, false, function()
 				{
+					Main.LOGGER.logLevelEnd({won: true});
 					FlxG.switchState(new TutorialState());
 				});
 			}

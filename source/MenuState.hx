@@ -7,16 +7,18 @@ import flixel.ui.FlxButton;
 import animation.*;
 import levelStates.*;
 import flixel.util.FlxColor;
+import flixel.util.FlxSave;
 
 class MenuState extends FlxState {
 	private var _btnPlay:FlxButton;
+	private var _btnContinue:FlxButton;
 	
 	var spritesheet:FlxSprite;
 		
 	override public function create():Void {
-		_btnPlay = new FlxButton(0, 0, "Play", clickPlay);
-		_btnPlay.screenCenter();
-		
+		_btnPlay = new FlxButton(270, 180, "New Game", clickPlay);
+		_btnContinue = new FlxButton(0, 0, "Continue", clickContinue);
+		_btnContinue.screenCenter();
 		spritesheet = new FlxSprite(0, 0);
 
 		spritesheet.loadGraphic(AssetPaths.abc__png, true, cast(5035 / 5, Int), cast(3510 / 5, Int));
@@ -36,6 +38,7 @@ class MenuState extends FlxState {
 		spritesheet.animation.play("lr");
 		
 		add(_btnPlay);
+		add(_btnContinue);
 		FlxG.camera.fade(FlxColor.BLACK, .33, true);
 		super.create();
 	}
@@ -47,8 +50,20 @@ class MenuState extends FlxState {
 	private function clickPlay():Void {
 		FlxG.camera.fade(FlxColor.BLACK,.25, false, function()
 		{
+			Main.SAVE.erase();
+			Main.SAVE.bind(Main.LOGGER.getSavedUserId());
 			FlxG.switchState(new OpeningState());
 		});
 	}
 	
+	private function clickContinue():Void {
+		FlxG.camera.fade(FlxColor.BLACK,.25, false, function()
+		{
+			if(Main.SAVE.data.tutComplete == null || Main.SAVE.data.tutComplete == false) {
+				FlxG.switchState(new OpeningState());
+			} else {
+				//TODO: switch to homeState
+			}
+		}
+	}
 }

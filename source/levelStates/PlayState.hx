@@ -79,7 +79,6 @@ class PlayState extends FlxState {
 		 _hud.updateHUD(_player.getAmmo(0), _player.getAmmo(1), _player.isReloading(0), _player.isReloading(1),
 		 				_player.getWeaponName(0), _player.getWeaponName(1));
         FlxG.camera.follow(_player, TOPDOWN, 1);
-        //Main.LOGGER.logLevelStart(1);
 		super.create();
 	}
 
@@ -102,19 +101,26 @@ class PlayState extends FlxState {
 		enemiesGroup.forEach(enemiesUpdate);
 		FlxG.collide(enemiesGroup, _bound);
 		FlxG.collide(enemiesGroup, _plat);
+		FlxG.collide(enemiesBullets, _plat, enemyBulletsPlats);
 
 		bulletsRangeUpdate();
         if (!_player.exists) {
 			// Player died, so set our label to YOU LOST
-			//Main.LOGGER.logLevelEnd({won: false});
+			Main.LOGGER.logLevelEnd({won: false});
 			FlxG.switchState(new OverState());
 		}
 		
 		if (enemiesGroup.countLiving() == -1) {
+			Main.LOGGER.logLevelEnd({won: true});
 			FlxG.switchState(new FinishState());
 		}
 	}
 	
+	private function enemyBulletsPlats(bullet:Bullet, plat:FlxObject) {
+		enemiesBullets.remove(bullet);
+		bullet.destroy();
+	}
+
 	private function updateEnemyHud() {
 		for(en in _enemiesMap.keys()) {
 			if(en.health > 0){
