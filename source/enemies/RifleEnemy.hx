@@ -88,7 +88,6 @@ class RifleEnemy extends Enemy {
 			if (rateTimer > rate * bulletCount) {
 				bulletArray.add(new EnemyBullet(x, y + 45, 250, dir, 
 								damageLevel[level], range));
-				bulletArray.
 				bulletCount++;
 			}
 				

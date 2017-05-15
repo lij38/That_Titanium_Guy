@@ -22,7 +22,6 @@ class PlayState extends FlxState {
 	private var _map:TiledMap;
     private var _background:FlxTilemap;
     private var _plat:FlxTilemap;
-    private var _bound:FlxTilemap;
 
 	private var enemiesGroup:FlxTypedGroup<Enemy>;
 	private var _enemiesMap:Map<Enemy, EnemyHUD>;
@@ -39,7 +38,7 @@ class PlayState extends FlxState {
 
 		//_background = new FlxTilemap();
         //_plat = new FlxTilemap();
-        _bound = new FlxTilemap();
+
 
         //load background
         //_background.loadMapFromArray(cast(_map.getLayer("background"), TiledTileLayer).tileArray, _map.width,
@@ -88,13 +87,11 @@ class PlayState extends FlxState {
 		//ADD EVERY COMPONENT
 		////////////////////////
         add(_background);
-        add(_bound);
         add(_plat); 
 		add(enemiesBullets);
         add(enemiesGroup);
         add(playerBullets);
         add(_player);
-        //add(_instruct);
         add(_hud);
 		add(_enemiesHUD);
 		
@@ -111,7 +108,6 @@ class PlayState extends FlxState {
 		_hud.updateXY();
 		updateEnemyHud();
 
-		FlxG.collide(_player, _bound);
         FlxG.collide(_player, _plat);
 		
 		_hud.updateHUD(_player.getAmmo(0), _player.getAmmo(1), _player.isReloading(0), _player.isReloading(1),
@@ -124,7 +120,6 @@ class PlayState extends FlxState {
 		
 		FlxG.collide(_plat, playerBullets, bulletsHitWalls);
 		FlxG.collide(_plat, enemiesBullets, bulletsHitWalls);
-		FlxG.collide(enemiesGroup, _bound);
 		FlxG.collide(enemiesGroup, _plat);
 
 		bulletsRangeUpdate();

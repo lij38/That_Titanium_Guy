@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="15" tileheight="15" nextobjectid="35">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="15" tileheight="15" nextobjectid="36">
  <tileset firstgid="1" name="green" tilewidth="15" tileheight="15" tilecount="1" columns="1">
   <image source="../images/green.jpg" width="15" height="15"/>
  </tileset>
@@ -214,6 +214,9 @@
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
 </data>
  </layer>
+ <objectgroup name="player">
+  <object id="35" name="START" x="160" y="1356" width="52" height="112"/>
+ </objectgroup>
  <objectgroup name="enemies">
   <object id="11" name="MELEE" x="480" y="806.667" width="52" height="121.333"/>
   <object id="14" name="MELEE" x="338.667" y="582.667" width="52" height="121.333"/>
