@@ -22,6 +22,13 @@ class Bullet extends FlxSprite {
 		range = Range;
 		xpos = X;
 		ypos = Y;
+		
+		if (direction == FlxObject.LEFT) {
+			velocity.x = -speed;
+		}
+		if (direction == FlxObject.RIGHT) {
+			velocity.x = speed;
+		}
 	}
 	
 	public function outOfRange(pbx:Float):Bool {
@@ -37,16 +44,6 @@ class Bullet extends FlxSprite {
 
 	public function getType():String {
 		return this.type;
-	}
-
-	override public function update(elapsed:Float):Void {
-		super.update(elapsed);
-		if (direction == FlxObject.LEFT) {
-			velocity.x = -speed;
-		}
-		if (direction == FlxObject.RIGHT) {
-			velocity.x = speed;
-		}
 	}
 	
 	override public function destroy():Void {

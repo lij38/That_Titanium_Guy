@@ -11,7 +11,7 @@ import flixel.tweens.FlxTween;
 import weapons.*;
 
 class Enemy extends FlxSprite {
-	private var bulletArray:FlxTypedGroup<Bullet>;
+	private var bulletArray:FlxTypedGroup<EnemyBullet>;
 	
 	private var GRAVITY:Float;
 	private var brain:EnemyFSM;
@@ -20,45 +20,34 @@ class Enemy extends FlxSprite {
 	public var seesPlayer:Bool = false;
 	public var hurtTime:Float = 0.25;
 	private var range:Float;
+	private var hurtColorTimer:Float = -1;
 	
 	private var hurtTimer:Float = -1;
+	public var TYPE:String;
 	
-	public function new(X:Float = 0, Y:Float = 0, enemiesBulletArray:FlxTypedGroup<Bullet>,
-						gravity:Float) {
+	public function new(X:Float = 0, Y:Float = 0, 
+						enemiesBulletArray:FlxTypedGroup<EnemyBullet>,
+						gravity:Float, type:String) {
 		super(X, Y);
 		GRAVITY = gravity;
 		bulletArray = enemiesBulletArray;
 		
 		acceleration.y = GRAVITY;
 		playerPos = FlxPoint.get();
+		
+		TYPE = type;
 	}
-	
-/*	public function idle():Void {
-		if (seesPlayer) {
-			brain.activeState = chase;
-		}
-	}
-	
-	public function chase():Void {
-		if (playerPos.x <= getMidpoint().x) {
-			velocity.x = -speed;
-			facing = FlxObject.LEFT;
-		} else {
-			facing = FlxObject.RIGHT;
-			velocity.x = speed;
-		}
-		animation.play("lr");
-	}*/
-	
-	
 	
 	override public function update(elapsed:Float):Void {
-		if (Math.abs(playerPos.x - getMidpoint().x) < 500) {
+		if (!seesPlayer &&
+			Math.abs(playerPos.x - getMidpoint().x) < 100 &&
+			Math.abs(playerPos.y - getMidpoint().y) < 50) {
 			seesPlayer = true;
 		}
 		if (!alive) {
 			velocity.set(0, 0);
 			super.update(elapsed);
+			color = 0xffffff;
 			return;
 		} else {
 			if (hurtTimer >= 0) {
@@ -73,12 +62,19 @@ class Enemy extends FlxSprite {
 				brain.update(elapsed);
 			}
 		}
+		if (hurtColorTimer >= 0) {
+			hurtColorTimer += elapsed;
+		}
+		if (hurtColorTimer > hurtTime) {
+			hurtColorTimer = -1;
+			color = 0xffffff;
+		}
 		super.update(elapsed);
 	}
 	
 	override public function hurt(damage:Float):Void {
 		seesPlayer = true;
-		if (health - damage < 0) {
+		if (health - damage <= 0) {
 			animation.play("die");
 			alive = false;
 		} else {
@@ -86,6 +82,8 @@ class Enemy extends FlxSprite {
 			hurtTimer = 0;
 		}
 		health -= damage;
+		color = 0xff0000;
+		hurtColorTimer = 0.0;
 	}
 	
 	public function isHurting():Bool {

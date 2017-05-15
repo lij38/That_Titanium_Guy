@@ -5,16 +5,20 @@ import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.ui.FlxButton;
 import animation.*;
+import levelStates.*;
+import flixel.util.FlxColor;
+import flixel.util.FlxSave;
 
 class MenuState extends FlxState {
 	private var _btnPlay:FlxButton;
+	private var _btnContinue:FlxButton;
 	
 	var spritesheet:FlxSprite;
 		
 	override public function create():Void {
-		_btnPlay = new FlxButton(0, 0, "Play", clickPlay);
-		_btnPlay.screenCenter();
-		
+		_btnPlay = new FlxButton(270, 180, "New Game", clickPlay);
+		_btnContinue = new FlxButton(0, 0, "Continue", clickContinue);
+		_btnContinue.screenCenter();
 		spritesheet = new FlxSprite(0, 0);
 
 		spritesheet.loadGraphic(AssetPaths.abc__png, true, 1007, 702);
@@ -27,13 +31,21 @@ class MenuState extends FlxState {
 										 20, 20, 21, 21, 22, 22, 22, 22, 22, 22], 12, true);
 		//spritesheet.animation.add("stop", [0], 1, false);
 		add(spritesheet);
+<<<<<<< HEAD
 		spritesheet.scale.set(0.45, 0.45);
 		spritesheet.setSize(120, 186);
 		spritesheet.offset.set(450, 300);
+=======
+		spritesheet.scale.set(0.25, 0.25);
+		spritesheet.setSize(102, 109);
+		spritesheet.offset.set(250, 250);
+>>>>>>> master
 
 		spritesheet.animation.play("lr");
 		
 		add(_btnPlay);
+		add(_btnContinue);
+		FlxG.camera.fade(FlxColor.BLACK, .33, true);
 		super.create();
 	}
 	
@@ -42,7 +54,27 @@ class MenuState extends FlxState {
 	}
 	
 	private function clickPlay():Void {
+<<<<<<< HEAD
 		FlxG.switchState(new PlayState());
+=======
+		FlxG.camera.fade(FlxColor.BLACK,.25, false, function()
+		{
+			Main.SAVE.erase();
+			Main.SAVE.bind(Main.LOGGER.getSavedUserId());
+			//FlxG.switchState(new OpeningState());
+			FlxG.switchState(new TutorialState());
+		});
+>>>>>>> master
 	}
 	
+	private function clickContinue():Void {
+		FlxG.camera.fade(FlxColor.BLACK,.25, false, function()
+		{
+			if(Main.SAVE.data.tutComplete == null || Main.SAVE.data.tutComplete == false) {
+				FlxG.switchState(new OpeningState());
+			} else {
+				//TODO: switch to homeState
+			}
+		});
+	}
 }
