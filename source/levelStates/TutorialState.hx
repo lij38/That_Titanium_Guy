@@ -113,22 +113,22 @@ class TutorialState extends PlayState {
     }
 
 
-	private function placeEnemies(entityName:String, entityData:Xml):Void
-	{
-		var x:Int = Std.parseInt(entityData.get("x"));
-		var y:Int = Std.parseInt(entityData.get("y"));
-		var eh:EnemyHUD;
-		var en:Enemy;
-		if (entityName == "MELEE") {
-			en = new MeleeEnemy(x, y, enemiesBullets, GRAVITY);
-		} else {
-			en = new RifleEnemy(x, y, enemiesBullets, GRAVITY);
-		}
-		eh = new EnemyHUD(en);
-		enemiesGroup.add(en);
-		_enemiesMap.set(en, eh);
-		_enemiesHUD.add(eh);
-	}
+	// private function placeEnemies(entityName:String, entityData:Xml):Void
+	// {
+	// 	var x:Int = Std.parseInt(entityData.get("x"));
+	// 	var y:Int = Std.parseInt(entityData.get("y"));
+	// 	var eh:EnemyHUD;
+	// 	var en:Enemy;
+	// 	if (entityName == "MELEE") {
+	// 		en = new MeleeEnemy(x, y, enemiesBullets, GRAVITY);
+	// 	} else {
+	// 		en = new RifleEnemy(x, y, enemiesBullets, GRAVITY);
+	// 	}
+	// 	eh = new EnemyHUD(en);
+	// 	enemiesGroup.add(en);
+	// 	_enemiesMap.set(en, eh);
+	// 	_enemiesHUD.add(eh);
+	// }
 
     private function instructInit(elapsed:Float):Void {   
         //trace(_player.x + "     " +_next);

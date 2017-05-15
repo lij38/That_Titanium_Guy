@@ -33,27 +33,33 @@ class PlayState extends FlxState {
 	private var GRAVITY:Float = 1000;
 	
 	override public function create():Void {
-		_background = new FlxTilemap();
-        _plat = new FlxTilemap();
+		////////////////
+		//MAP LOADING DISABLED TEMP
+		////////////////
+
+		//_background = new FlxTilemap();
+        //_plat = new FlxTilemap();
         _bound = new FlxTilemap();
 
         //load background
-        _background.loadMapFromArray(cast(_map.getLayer("background"), TiledTileLayer).tileArray, _map.width,
-            _map.height, AssetPaths.tutorialBG__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 1023);
+        //_background.loadMapFromArray(cast(_map.getLayer("background"), TiledTileLayer).tileArray, _map.width,
+        //    _map.height, AssetPaths.tutorialBG__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 1023);
         //load platform
-        _plat.loadMapFromArray(cast(_map.getLayer("plat"), TiledTileLayer).tileArray, _map.width,
-            _map.height, AssetPaths.green__jpg, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1021, 1, 1020);
+        //_plat.loadMapFromArray(cast(_map.getLayer("plat"), TiledTileLayer).tileArray, _map.width,
+        //    _map.height, AssetPaths.green__jpg, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1021, 1, 1020);
         //load bounds
-        _bound.loadMapFromArray(cast(_map.getLayer("bound"), TiledTileLayer).tileArray, _map.width,
-            _map.height, AssetPaths.green__jpg, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1021, 1, 1020);
+        //_bound.loadMapFromArray(cast(_map.getLayer("bound"), TiledTileLayer).tileArray, _map.width,
+        //    _map.height, AssetPaths.green__jpg, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1021, 1, 1020);
 
-        _background.setTileProperties(2, FlxObject.NONE);
-        _bound.setTileProperties(1, FlxObject.ANY);
-        _plat.setTileProperties(1, FlxObject.ANY);
-		_bound.follow();
-		_plat.follow();
+        //_background.setTileProperties(2, FlxObject.NONE);
+        //_bound.setTileProperties(1, FlxObject.ANY);
+        //_plat.setTileProperties(1, FlxObject.ANY);
+		//_bound.follow();
+		//_plat.follow();
 
+		//////////////////
         //LOAD PLAYER
+		//////////////////
         playerBullets = new FlxTypedGroup<Bullet>();
         _player = new Player(playerBullets, GRAVITY);
 		var tmpMap:TiledObjectLayer = cast _map.getLayer("player");
@@ -61,10 +67,26 @@ class PlayState extends FlxState {
             placeEntities(e.name, e.xmlData.x);
         }
 
+		////////////////////////
         //LOAD HUD
+		///////////////////////
         _hud = new HUD(_player);
+
+		/////////////////////////
+		//LOAD ENEMIES
+		////////////////////////
+		enemiesBullets = new FlxTypedGroup<Bullet>();
+		enemiesGroup = new FlxTypedGroup<Enemy>();
+		_enemiesMap = new Map<Enemy, EnemyHUD>();
+		_enemiesHUD = new FlxTypedGroup<EnemyHUD>();
+		var enemyLayer:TiledObjectLayer = cast _map.getLayer("enemies");
+		for (e in enemyLayer.objects) {
+			placeEnemies(e.name, e.xmlData.x);
+		}
 		
+		/////////////////////////
 		//ADD EVERY COMPONENT
+		////////////////////////
         add(_background);
         add(_bound);
         add(_plat); 
@@ -144,6 +166,25 @@ class PlayState extends FlxState {
         }
 
 	}
+
+    	//Place enemies individually
+	private function placeEnemies(entityName:String, entityData:Xml):Void
+	{
+		var x:Int = Std.parseInt(entityData.get("x"));
+		var y:Int = Std.parseInt(entityData.get("y"));
+		var eh:EnemyHUD;
+		var en:Enemy;
+		if (entityName == "MELEE") {
+			en = new MeleeEnemy(x, y, enemiesBullets, GRAVITY);
+		} else {
+			en = new RifleEnemy(x, y, enemiesBullets, GRAVITY);
+		}
+		eh = new EnemyHUD(en);
+		enemiesGroup.add(en);
+		_enemiesMap.set(en, eh);
+		_enemiesHUD.add(eh);
+	}
+
 
 	private function bulletsHitPlayer(bullet:Bullet, player:Player):Void {
 		if (player.alive) {
