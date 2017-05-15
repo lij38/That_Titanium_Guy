@@ -30,7 +30,7 @@ class FinishState extends FlxState
 	
 	private function clickPlay():Void {
 		FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
-			FlxG.switchState(new Level1State());
+			FlxG.switchState(new TutorialState());
 		});
 	}
 }
