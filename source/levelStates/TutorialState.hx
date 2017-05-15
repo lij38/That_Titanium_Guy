@@ -20,30 +20,9 @@ class TutorialState extends PlayState {
     override public function create():Void {
         //LOAD MAP BASICS
         _map = new TiledMap(AssetPaths.tutorialFormal__tmx);
+
         //LOAD INSTRUCTIONS
 		texts = new FlxTypedGroup<FlxText>();
-
-		//LOAD ENEMIES
-        enemiesBullets = new FlxTypedGroup<Bullet>();
-		enemiesGroup = new FlxTypedGroup<Enemy>();
-		_enemiesMap = new Map<Enemy, EnemyHUD>();
-		_enemiesHUD = new FlxTypedGroup<EnemyHUD>();
-		var enemyLayer1:TiledObjectLayer = cast _map.getLayer("enemiesScene1");
-		var enemyLayer4:TiledObjectLayer = cast _map.getLayer("enemiesScene4");
-		var enemyLayer5:TiledObjectLayer = cast _map.getLayer("enemiesScene5");
-		var enemyLayer6:TiledObjectLayer = cast _map.getLayer("enemiesScene6");
-		for (e in enemyLayer1.objects) {
-			placeEnemies(e.name, e.xmlData.x);
-		}
-		for (e in enemyLayer4.objects) {
-			placeEnemies(e.name, e.xmlData.x);
-		}
-		for (e in enemyLayer5.objects) {
-			placeEnemies(e.name, e.xmlData.x);
-		}
-		for (e in enemyLayer6.objects) {
-			placeEnemies(e.name, e.xmlData.x);
-		}
 
 		//LOAD SHIELD
 		shield = new FlxSprite();

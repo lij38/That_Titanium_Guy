@@ -28,6 +28,6 @@ class Main extends Sprite {
 		Main.SAVE = new FlxSave();
 		Main.SAVE.bind(userId);
 
-		addChild(new FlxGame(550, 400, MenuState));
+		addChild(new FlxGame(800, 600, MenuState));
 	}
 }

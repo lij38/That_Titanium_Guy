@@ -145,7 +145,7 @@ class Player extends FlxSprite {
 		if(FlxG.keys.anyJustReleased([K])) {
 			if(shielding) {
 				shielding = false;
-				trace("unshielded");
+				//trace("unshielded");
 			}
 		}
 
@@ -285,7 +285,6 @@ class Player extends FlxSprite {
 		} else if (!isTouching(FlxObject.DOWN) && !isSwording()) {
 			animation.play(curConfig + "Jump");
 		} else if (isShielding()) {
-			trace(facing);
 			animation.play(curConfig + "Shield");
 		} else if(!isSwording()){
 			playRun(curConfig);
@@ -330,7 +329,7 @@ class Player extends FlxSprite {
 				} else if(kWeapon.getName() == "shield") { //engage shield
 					if(!shielding) {
 						shielding = true;
-						trace("shielding");
+						//trace("shielding");
 					}
 				}
 				//Other weapons that cannot hold to fire
