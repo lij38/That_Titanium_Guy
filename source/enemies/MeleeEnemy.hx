@@ -18,10 +18,16 @@ class MeleeEnemy extends Enemy {
 	private var rateTimer:Float = -1;
 	private var attacked:Bool = false;
 	
+	private var level:Int;
+	private var damageLevel = [for (i in 1...4) i];	
+	private var healthLevel = [for (i in 1...4) 50 * i + 20];
+	
 	
 	public function new(X:Float = 0, Y:Float = 0, bulletArray:FlxTypedGroup<Bullet>,
-						gravity:Float) {
-		super(X, Y, bulletArray, gravity);
+						gravity:Float, level:Int = 1) {
+		super(X, Y, bulletArray, gravity, "MELEE");
+		
+		this.level = level;
 		
 		loadGraphic(AssetPaths.enemy_melee__png, true, 492, 476);
 		scale.set(0.3, 0.3);
@@ -38,7 +44,7 @@ class MeleeEnemy extends Enemy {
 		animation.add("attack", [7, 7, 7, 8, 8, 8, 9, 9, 9, 6, 6, 6, 6, 6, 6], 9, false);
 		animation.play("stop");
 		
-		health = 70;
+		health = healthLevel[level];
 		facing = FlxObject.LEFT;
 		brain = new EnemyFSM(idle);
 		range = 90;
@@ -78,7 +84,8 @@ class MeleeEnemy extends Enemy {
 			animation.play("lr");
 		}
 		if (rateTimer > 0.66 && !attacked) {
-			bulletArray.add(new MeleeBullet(x + 7, y + 10, 1000, facing, 5, range));
+			bulletArray.add(new MeleeBullet(x + 7, y + 10, 1000, facing,
+							damageLevel[level], range));
 			attacked = true;
 		}
 		
@@ -108,5 +115,4 @@ class MeleeEnemy extends Enemy {
 		color = 0xff0000;
 		hurtColorTimer = 0.0;
 	}
-	
 }

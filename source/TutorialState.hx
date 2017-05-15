@@ -183,7 +183,7 @@ class TutorialState extends FlxState {
 		var x:Int = Std.parseInt(entityData.get("x"));
 		var y:Int = Std.parseInt(entityData.get("y"));
 		if (entityName == "MELEE") {
-			enemiesGroup.add(new MeleeEnemy(x, y, enemiesBullets, GRAVITY));
+			enemiesGroup.add(new ShieldEnemy(x, y, enemiesBullets, GRAVITY));
 		} else {
 			enemiesGroup.add(new RifleEnemy(x, y, enemiesBullets, GRAVITY));
 		}
