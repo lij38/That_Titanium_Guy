@@ -24,6 +24,6 @@ class Main extends Sprite {
 		// }
 		// Main.LOGGER.startNewSession(userId, this.onSessionReady);
 
-		addChild(new FlxGame(550, 400, MenuState));
+		addChild(new FlxGame(1100, 800, MenuState));
 	}
 }
