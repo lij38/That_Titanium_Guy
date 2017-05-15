@@ -22,17 +22,17 @@ class PlayState extends FlxState {
 	private var _map:TiledMap;
     private var _background:FlxTilemap;
     private var _plat:FlxTilemap;
-    private var _bound:FlxTilemap;
 
 	private var enemiesGroup:FlxTypedGroup<Enemy>;
 	private var _enemiesMap:Map<Enemy, EnemyHUD>;
 	private var _enemiesHUD:FlxTypedGroup<EnemyHUD>;
 	private var playerBullets:FlxTypedGroup<Bullet>;
-	private var enemiesBullets:FlxTypedGroup<Bullet>;
+	private var enemiesBullets:FlxTypedGroup<EnemyBullet>;
 	
 	private var GRAVITY:Float = 1000;
 	
 	override public function create():Void {
+
 		//////////////////
         //LOAD PLAYER
 		//////////////////
@@ -51,7 +51,8 @@ class PlayState extends FlxState {
 		/////////////////////////
 		//LOAD ENEMIES
 		////////////////////////
-		enemiesBullets = new FlxTypedGroup<Bullet>();
+		enemiesBullets = new FlxTypedGroup<EnemyBullet>();
+		
 		enemiesGroup = new FlxTypedGroup<Enemy>();
 		_enemiesMap = new Map<Enemy, EnemyHUD>();
 		_enemiesHUD = new FlxTypedGroup<EnemyHUD>();
@@ -64,13 +65,11 @@ class PlayState extends FlxState {
 		//ADD EVERY COMPONENT
 		////////////////////////
         add(_background);
-        add(_bound);
         add(_plat); 
 		add(enemiesBullets);
         add(enemiesGroup);
         add(playerBullets);
         add(_player);
-        //add(_instruct);
         add(_hud);
 		add(_enemiesHUD);
 		
@@ -86,7 +85,6 @@ class PlayState extends FlxState {
 		updateEnemyHud();
 		_hud.updateXY();
 
-		FlxG.collide(_player, _bound);
         FlxG.collide(_player, _plat);
 		
 		_hud.updateHUD(_player.getAmmo(0), _player.getAmmo(1), _player.isReloading(0), _player.isReloading(1),
@@ -98,8 +96,7 @@ class PlayState extends FlxState {
 	 	}
 		
 		FlxG.collide(_plat, playerBullets, bulletsHitWalls);
-		FlxG.collide(_plat, enemiesBullets, bulletsHitWalls);
-		FlxG.collide(enemiesGroup, _bound);
+		FlxG.collide(_plat, enemiesBullets, enemiesBulletsHitWalls);
 		FlxG.collide(enemiesGroup, _plat);
 
 		bulletsRangeUpdate();
@@ -197,8 +194,8 @@ class PlayState extends FlxState {
 	}
 	
 	public function bulletsHitEnemies(bullet:Bullet, enemy:Enemy):Void {
+		_enemiesMap.get(enemy).updateDamage(bullet.getDamage());
 		if (enemy.alive) {
-			_enemiesMap.get(enemy).updateDamage(bullet.getDamage());
 			enemy.hurt(bullet.getDamage());
 			playerBullets.remove(bullet);
 			bullet.destroy();
@@ -212,5 +209,9 @@ class PlayState extends FlxState {
 	public function bulletsHitWalls(wall:FlxObject, pb:Bullet):Void {
 		playerBullets.remove(pb);
 		pb.destroy();
+	}
+	
+	public function enemiesBulletsHitWalls(wall:FlxObject, b:Bullet):Void {
+		b.kill();
 	}
 }
