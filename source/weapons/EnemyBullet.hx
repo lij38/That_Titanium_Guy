@@ -9,7 +9,8 @@ enum BulletType {
 	Ranged;
 }
 
-class EnemyBullet extends Bullet{
+class EnemyBullet extends Bullet {
+	private var meleeColor:FlxColor = FlxColor.TRANSPARENT;
 
     public function new(X:Float = 0, Y:Float = 0, Speed:Float, 
 						Direction:Int, Damage:Float, Range:Float,
@@ -20,7 +21,7 @@ class EnemyBullet extends Bullet{
 			loadGraphic(AssetPaths.enemybullet__png);
 		} else if (bulletType == Melee) {
 			this.type = "melee";
-			makeGraphic(6, 70, FlxColor.BLACK);
+			makeGraphic(6, 70, meleeColor);
 		}
 	}
 	
@@ -49,7 +50,7 @@ class EnemyBullet extends Bullet{
 			loadGraphic(AssetPaths.enemybullet__png);
 		} else if (bulletType == Melee) {
 			this.type = "melee";
-			makeGraphic(6, 70, FlxColor.BLACK);
+			makeGraphic(6, 70, meleeColor);
 		}
 	}
 }

@@ -53,7 +53,7 @@ class MenuState extends FlxState {
 			Main.SAVE.bind(Main.LOGGER.getSavedUserId());
 			//FlxG.switchState(new OpeningState());
 			// FlxG.switchState(new TutorialState());
-			FlxG.switchState(new Boss1State());
+			FlxG.switchState(new MapTutorialState());
 		});
 	}
 	
