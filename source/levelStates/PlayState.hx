@@ -156,7 +156,7 @@ class PlayState extends FlxState {
 	private function bulletsHitPlayer(bullet:Bullet, player:Player):Void {
 		if (player.alive) {
 			var damage:Float = bullet.getDamage();
-			if (player.isShielding()) {
+			if (player.isShielding() && player.faced != bullet.facing) {
 				damage /= 10;
 			}
 			player.hurt(damage);
@@ -195,10 +195,13 @@ class PlayState extends FlxState {
 	public function bulletsHitEnemies(bullet:Bullet, enemy:Enemy):Void {
 		_enemiesMap.get(enemy).updateDamage(bullet.getDamage());
 		if (enemy.alive) {
+			var dmg:Float = bullet.getDamage();
+			if (enemy.type == SHIELD && bullet.facing != enemy.facing) {
+				dmg *= 0.1;
+			}
 			enemy.hurt(bullet.getDamage());
 			playerBullets.remove(bullet);
 			bullet.destroy();
-			
 		}
 	}
 	

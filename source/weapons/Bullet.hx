@@ -22,7 +22,7 @@ class Bullet extends FlxSprite {
 		range = Range;
 		xpos = X;
 		ypos = Y;
-		
+		facing = direction;
 		if (direction == FlxObject.LEFT) {
 			velocity.x = -speed;
 		}

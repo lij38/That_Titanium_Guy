@@ -14,7 +14,7 @@ import weapons.*;
 class ShieldEnemy extends Enemy {
 	
 	private var bulletCount:Int = 0;
-	private var rate:Float = 1.66;
+	private var rate:Float = 2.0;
 	private var rateTimer:Float = -1;
 	private var attacked:Bool = false;
 	
@@ -25,7 +25,7 @@ class ShieldEnemy extends Enemy {
 	
 	public function new(X:Float = 0, Y:Float = 0, bulletArray:FlxTypedGroup<Bullet>,
 						gravity:Float, level:Int = 1) {
-		super(X, Y, bulletArray, gravity, "SHIELD");
+		super(X, Y, bulletArray, gravity, SHIELD);
 		
 		this.level = level;
 		
@@ -41,7 +41,8 @@ class ShieldEnemy extends Enemy {
 		animation.add("lr", [0, 1, 2, 3, 4, 5], 9, false);
 		animation.add("hurt", [10, 10, 10, 10, 6], 12, false);
 		animation.add("die", [11, 12, 13, 13, 13, 13, 13, 13, 13, 13, 13], 9, false);
-		animation.add("attack", [7, 7, 7, 8, 8, 8, 9, 9, 9, 6, 6, 6, 6, 6, 6], 9, false);
+		animation.add("attack", [7, 7, 7, 8, 8, 8, 9, 9, 9,
+								 6, 6, 6, 6, 6, 6, 6, 6, 6], 9, false);
 		animation.play("stop");
 		
 		health = healthLevel[level];
