@@ -86,8 +86,7 @@ class OpeningState extends FlxState
 		
 	}
 
-	override public function update(elapsed:Float):Void
-	{
+	override public function update(elapsed:Float):Void {
 		
 		if(FlxG.keys.anyJustPressed([ESCAPE])) {
 			Main.LOGGER.logLevelEnd({won: false});
