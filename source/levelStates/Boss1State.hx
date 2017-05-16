@@ -14,6 +14,7 @@ import flixel.addons.editors.tiled.TiledMap;
 import flixel.addons.editors.tiled.TiledTileLayer;
 import flixel.addons.editors.tiled.TiledObjectLayer;
 import flixel.tile.FlxBaseTilemap;
+import flixel.util.FlxColor;
 
 class Boss1State extends FlxState {
 	private var _player:Player;
@@ -76,7 +77,7 @@ class Boss1State extends FlxState {
 		add(_boss_hud);
 
 		_hurt_count = 0;
-
+		FlxG.camera.fade(FlxColor.BLACK, .25, true);
 		super.create();
 	}
 
@@ -112,7 +113,11 @@ class Boss1State extends FlxState {
 			FlxG.overlap(_player, _enemy, stopPlayer);
 		} else {
 			_enemy.color = 0xffffff;
+			if (_enemy.animation.finished) {
+				_enemy.destroy();
+			}
 		}
+		
 		
 		bulletsRangeUpdate();
 
@@ -121,7 +126,7 @@ class Boss1State extends FlxState {
 			FlxG.switchState(new OverState());
 		}
 
-		if (!_enemy.alive) {
+		if (!_enemy.exists) {
 			FlxG.switchState(new FinishState());
 		}
 	}

@@ -15,6 +15,7 @@ import flixel.tile.FlxBaseTilemap;
 import flixel.addons.editors.tiled.TiledMap;
 import weapons.*;
 import enemies.*;
+import flixel.util.FlxColor;
 
 class PlayState extends FlxState {
 	private var _player:Player;
@@ -77,6 +78,7 @@ class PlayState extends FlxState {
 		 _hud.updateHUD(_player.getAmmo(0), _player.getAmmo(1), _player.isReloading(0), _player.isReloading(1),
 		 				_player.getWeaponName(0), _player.getWeaponName(1));
         FlxG.camera.follow(_player, TOPDOWN, 1);
+		FlxG.camera.fade(FlxColor.BLACK, .25, true);
 		super.create();
 	}
 

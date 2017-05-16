@@ -171,8 +171,7 @@ class OpeningState extends FlxState
 		     	_enemy.animation.play("lr");
 		     	_enemy.x -= 4;
 		    } else if (count > 100) {
-				FlxG.camera.fade(FlxColor.BLACK,.25, false, function()
-				{
+				FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
 					Main.LOGGER.logLevelEnd({won: true});
 					FlxG.switchState(new TutorialState());
 				});
