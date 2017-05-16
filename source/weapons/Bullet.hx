@@ -31,8 +31,8 @@ class Bullet extends FlxSprite {
 		}
 	}
 	
-	public function outOfRange(pbx:Float):Bool {
-		if((pbx > xpos + range) || (pbx < xpos - range)) {
+	public function outOfRange():Bool {
+		if((x > xpos + range) || (x < xpos - range)) {
 			return true;
 		}
 		return false;

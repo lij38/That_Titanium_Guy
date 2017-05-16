@@ -3,6 +3,7 @@ package levelStates;
 import enemies.*;
 import flixel.FlxG;
 import flixel.FlxObject;
+import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.text.FlxText;
@@ -140,25 +141,31 @@ class PlayState extends FlxState {
 	private function placeEnemies(entityName:String, entityData:Xml):Void {
 		var x:Int = Std.parseInt(entityData.get("x"));
 		var y:Int = Std.parseInt(entityData.get("y"));
-		var eh:EnemyHUD;
+		
 		var en:Enemy;
 
 		if (entityName == "MELEE") {
 			en = new MeleeEnemy(x, y, enemiesBullets, GRAVITY);
 		} else if (entityName == "RIFLE"){
 			en = new RifleEnemy(x, y, enemiesBullets, GRAVITY);
-		} else /*if (entityName == "SHIELD")*/ {
+		} else if (entityName == "SHIELD") {
 			en = new ShieldEnemy(x, y, enemiesBullets, GRAVITY, 1);
+		} else {
+			en = new RifleEnemy(x, y-55, enemiesBullets, GRAVITY);
+			en.hurt(en.health);
 		}
 		
-		eh = new EnemyHUD(en);
 		enemiesGroup.add(en);
-		_enemiesMap.set(en, eh);
-		_enemiesHUD.add(eh);
+		if (entityName != "RIFLEDEAD") {
+			var eh:EnemyHUD;
+			eh = new EnemyHUD(en);
+			_enemiesMap.set(en, eh);
+			_enemiesHUD.add(eh);
+		}
 	}
 
 
-	private function bulletsHitPlayer(bullet:Bullet, player:Player):Void {
+	private function bulletsHitPlayer(bullet:EnemyBullet, player:Player):Void {
 		if (player.alive) {
 			var damage:Float = bullet.getDamage();
 			if (player.isShielding() && player.faced != bullet.facing) {
@@ -173,13 +180,13 @@ class PlayState extends FlxState {
 	private function bulletsRangeUpdate():Void {
 		for (pb in playerBullets) {
 			//destroyed?
-			if (pb.outOfRange(pb.x)){
+			if (pb.outOfRange()){
 				playerBullets.remove(pb);
 				pb.destroy();
 			}
 		}
 		for (eb in enemiesBullets) {
-			if (eb.outOfRange(eb.x)) {
+			if (eb.outOfRange()) {
 				eb.kill();
 			}
 		}

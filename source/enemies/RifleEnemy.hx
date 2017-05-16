@@ -30,9 +30,9 @@ class RifleEnemy extends Enemy {
 		this.level = level;
 		
 		loadGraphic(AssetPaths.enemy_rifle__png, true, 552, 383);
-		scale.set(0.3, 0.3);
-		setSize(35, 105);
-		offset.set(260, 133);
+		scale.set(0.35, 0.35);
+		setSize(35, 120);
+		offset.set(260, 125);
 		
 		setFacingFlip(FlxObject.LEFT, false, false);
 		setFacingFlip(FlxObject.RIGHT, true, false);
