@@ -200,11 +200,11 @@
   <object id="9" name="MELEE" x="3200" y="545" width="59" height="142"/>
   <object id="10" name="MELEE" x="3239" y="545" width="59" height="142"/>
   <object id="12" name="MELEE" x="4133" y="666" width="59" height="142"/>
-  <object id="13" x="4379" y="665" width="59" height="142"/>
-  <object id="14" x="5901" y="539" width="58" height="160"/>
-  <object id="15" x="5926" y="539" width="58" height="160"/>
+  <object id="13" name="RIFLE" x="4379" y="665" width="59" height="142"/>
+  <object id="14" name="RIFLE" x="5901" y="539" width="58" height="160"/>
+  <object id="15" name="RILFE" x="5926" y="539" width="58" height="160"/>
   <object id="16" name="MELEE" x="6874" y="645" width="55" height="160"/>
-  <object id="17" x="7083" y="646" width="55" height="160"/>
+  <object id="17" name="RIFLE" x="7083" y="646" width="55" height="160"/>
   <object id="18" name="MELEE" x="6808" y="645" width="55" height="160"/>
  </objectgroup>
  <objectgroup name="player">
