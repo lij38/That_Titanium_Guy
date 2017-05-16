@@ -135,17 +135,21 @@ class PlayState extends FlxState {
 
 	}
 
-    	//Place enemies individually
+    //Place enemies individually
 	private function placeEnemies(entityName:String, entityData:Xml):Void {
 		var x:Int = Std.parseInt(entityData.get("x"));
 		var y:Int = Std.parseInt(entityData.get("y"));
 		var eh:EnemyHUD;
 		var en:Enemy;
+
 		if (entityName == "MELEE") {
 			en = new MeleeEnemy(x, y, enemiesBullets, GRAVITY);
-		} else {
+		} else {//if (entityName == "RIFLE"){
 			en = new RifleEnemy(x, y, enemiesBullets, GRAVITY);
+		//} else if (entityName == "SHIELD") {
+		//	en = new ShieldEnemy(x, y, enemiesBullets, GRAVITY, 1);
 		}
+		
 		eh = new EnemyHUD(en);
 		enemiesGroup.add(en);
 		_enemiesMap.set(en, eh);
