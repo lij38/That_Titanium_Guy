@@ -67,17 +67,21 @@ class Player extends FlxSprite {
 			kWeapon = new Weapon(playerBulletArray);
 			k2ndWeapon = new Weapon(playerBulletArray);
 			curConfig = "sword";
-			Main.SAVE.data.jWeapon = jWeapon;
-			Main.SAVE.data.j2ndWeapon = j2ndWeapon;
-			Main.SAVE.data.kWeapon = kWeapon;
-			Main.SAVE.data.k2ndWeapon = k2ndWeapon;
+			Main.SAVE.data.jWeapon = jWeapon.getName();
+			Main.SAVE.data.j2ndWeapon = j2ndWeapon.getName();
+			Main.SAVE.data.kWeapon = kWeapon.getName();
+			Main.SAVE.data.k2ndWeapon = k2ndWeapon.getName();
 			Main.SAVE.data.curConfig = curConfig;
 			Main.SAVE.flush();
 		} else {
-			jWeapon = Main.SAVE.data.jWeapon;
-			j2ndWeapon = Main.SAVE.data.j2ndWeapon;
-			kWeapon = Main.SAVE.data.kWeapon;
-			k2ndWeapon = Main.SAVE.data.k2ndWeapon;
+			var jn:String = Main.SAVE.data.jWeapon;
+			var j2n:String = Main.SAVE.data.j2ndWeapon;
+			var kn:String = Main.SAVE.data.kWeapon;
+			var k2n:String = Main.SAVE.data.k2ndWeapon;
+			jWeapon = WeaponFactory.getWeapon(jn, playerBulletArray);
+			j2ndWeapon = WeaponFactory.getWeapon(j2n, playerBulletArray);
+			kWeapon = WeaponFactory.getWeapon(kn, playerBulletArray);
+			k2ndWeapon = WeaponFactory.getWeapon(k2n, playerBulletArray);
 			curConfig = Main.SAVE.data.curConfig;
 		}
 		shielding = false;
@@ -402,8 +406,13 @@ class Player extends FlxSprite {
 	}
 
 	public function pickUpShield() {
-		kWeapon = new Shield(bulletArray);
-		curConfig = "swsh";
+		if(Main.SAVE.data.tutComplete == null || Main.SAVE.data.tutComplete == false) {
+			kWeapon = new Shield(bulletArray);
+			Main.SAVE.data.kWeapon = kWeapon.getName();
+			curConfig = "swsh";
+			Main.SAVE.data.curConfig = curConfig;
+			Main.SAVE.flush();
+		}
 	}
 	
 	public function pickUpRifle() {
@@ -432,6 +441,12 @@ class Player extends FlxSprite {
 		} else {
 			curConfig = jWeapon.getName();
 		}
+		Main.SAVE.data.jWeapon = jWeapon.getName();
+		Main.SAVE.data.j2ndWeapon = j2ndWeapon.getName();
+		Main.SAVE.data.kWeapon = kWeapon.getName();
+		Main.SAVE.data.k2ndWeapon = k2ndWeapon.getName();
+		Main.SAVE.data.curConfig = curConfig;
+		Main.SAVE.flush();
 	}
 
 	// //helper for checking condition in changeWeaponConfig

@@ -20,6 +20,7 @@ class TutorialState extends PlayState {
 	private var _keys:FlxTilemap;   //
 
     override public function create():Void {
+		LEVELID = 1;
         //////////////////////////////////////////////////
         //LOAD MAP
         //////////////////////////////////////////////////
@@ -71,15 +72,20 @@ class TutorialState extends PlayState {
 		}
 
 		Main.LOGGER.logLevelStart(1);
+
+		Main.LEVELS.set(1, this);
+		super.create();
 		add(_keys);
 		add(shield);
 		add(texts);
-		super.create();
+		add(_player);
+        add(_hud);
     }
 
 	override public function update(elapsed:Float):Void  {
 		if (enemiesGroup.countLiving() == -1) {
 			Main.SAVE.data.tutComplete = true;
+			Main.SAVE.flush();
 		}
 	 	super.update(elapsed);
 		FlxG.overlap(shield, _player, onPickup);

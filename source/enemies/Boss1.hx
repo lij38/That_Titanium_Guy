@@ -49,7 +49,7 @@ class Boss1 extends Enemy {
 		animation.play("stop");
 
 		acceleration.y = GRAVITY;
-		health = 500;
+		health = 800;
 		facing = FlxObject.LEFT;
 		playerPos = FlxPoint.get();
 		brain = new EnemyFSM(turn);
@@ -156,7 +156,7 @@ class Boss1 extends Enemy {
 		stuck_count++;
 		if (stuck_count == 15) {
 			var curBullet:EnemyBullet = bulletArray.recycle(EnemyBullet);
-			curBullet.setBullet(x, y + 120, 250, facing, 25, range, Melee);
+			curBullet.setBullet(x, y + 120, 250, facing, 30, range, Melee);
 		}
 		if (stuck_count > 30) {
 			stuck_count = 0;

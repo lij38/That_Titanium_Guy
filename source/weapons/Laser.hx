@@ -8,7 +8,7 @@ class Laser extends Weapon {
         for(i in 1...6) {
             this.damage.push(i * 12);
         }
-
+        this.damageIndex = 0;
         this.name = "laser rifle";
         this.type = "energy";
         this.range = 1000;

@@ -10,7 +10,7 @@ import flash.events.MouseEvent;
 
 class LevelIcon extends FlxSprite
 {
-	private var _onclick:Dynamic;
+	public var _onclick:Dynamic;
 
     public function new(X:Float=0, Y:Float=0, boss:Bool, locked:Bool, ?OnClick:Void->Void) 
 	{
