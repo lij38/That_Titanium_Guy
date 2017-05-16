@@ -31,9 +31,9 @@ class ShieldEnemy extends Enemy {
 		this.level = level;
 		
 		loadGraphic(AssetPaths.enemy_shield__png, true, 568, 481);
-		scale.set(0.3, 0.3);
-		setSize(35, 105);
-		offset.set(265, 186);
+		scale.set(0.35, 0.35);
+		setSize(35, 122);
+		offset.set(265, 176);
 		
 		setFacingFlip(FlxObject.LEFT, false, false);
 		setFacingFlip(FlxObject.RIGHT, true, false);

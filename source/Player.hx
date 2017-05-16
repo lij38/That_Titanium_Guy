@@ -462,9 +462,9 @@ class Player extends FlxSprite {
 			}
 		}
 		if (facing == FlxObject.NONE) {
-			return w.attack(x, y, faced);
+			return w.attack(getMidpoint().x, y, faced);
 		} else {
-			return w.attack(x, y, facing);
+			return w.attack(getMidpoint().x, y, facing);
 		}
 	}
 
