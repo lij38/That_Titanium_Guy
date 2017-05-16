@@ -71,10 +71,10 @@ class MapTutorialState extends FlxState
         _level_index = 0;
         _arrow = new Arrow();
 
-        _text = new FlxText(0, 0, 300, 15);
+        _text = new FlxText(0, 0, 330, 18);
         _text.text = "Congradulations! You just passed the tutorial level! Here is the map. " + 
             "This is your home, where you can configure your weapons and get equipped. (Click Anywhere to continue)";
-        _text.setFormat(AssetPaths.FONT, 15);
+        _text.setFormat(AssetPaths.FONT, 18);
 
         for (i in 3...7) {
             _levelarr[i].color = 0x777777;
@@ -112,10 +112,10 @@ class MapTutorialState extends FlxState
             if (click) {
                 _stage1 = false;
                 _stage2 = true;
-                _arrow.x = 86;
-                _arrow.y = 178;
-                _text.x = 139;
-                _text.y = 172;
+                _arrow.x = 123;
+                _arrow.y = 263;
+                _text.x = 187;
+                _text.y = 241;
                 _text.text = "This is the tutorial level you just finished. You can re-do any finished level " +
                     "with new weapons to achieve higher scores. (Click Anywhere to continue)";
             }
@@ -123,10 +123,10 @@ class MapTutorialState extends FlxState
             if (click) {
                 _stage2 = false;
                 _stage3 = true;
-                _arrow.x = 86;
-                _arrow.y = 291;
-                _text.x = 133;
-                _text.y = 282;
+                _arrow.x = 115;
+                _arrow.y = 441;
+                _text.x = 179;
+                _text.y = 424;
                 _text.text = "This is a newly unlocked level. Once you finish a level, the next level will be unlocked. " +
                     "(Click Anywhere to continue)";
             }
@@ -134,10 +134,10 @@ class MapTutorialState extends FlxState
             if (click) {
                 _stage3 = false;
                 _stage4 = true;
-                _arrow.x = 174;
-                _arrow.y = 242;
-                _text.x = 223;
-                _text.y = 233;
+                _arrow.x = 251;
+                _arrow.y = 376;
+                _text.x = 307;
+                _text.y = 365;
                 _text.text = "The red stars are boss levels. You should be well-equipped before challenging those levels. " +
                     "It is currently locked, to unlock, you need to finish the previous level. (Click Anywhere to continue)";
             }
@@ -146,7 +146,7 @@ class MapTutorialState extends FlxState
                 _stage4 = false;
                 _stage5 = true;
                 _arrow.visible = false;
-                _text.x = 236;
+                _text.x = 293;
                 _text.y = 76;
                 _text.text = "Now that you've finished the tutorial, you are free to challenge the next level "
                     + "or go home. Remember, this is only your first step on your journey to reach the FA Supreme "

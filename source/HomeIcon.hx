@@ -15,7 +15,7 @@ class HomeIcon extends FlxSprite
     public function new(X:Float=0, Y:Float=0, ?OnClick:Void->Void) 
 	{
 	    super(X, Y);
-	    loadGraphic(AssetPaths.shield_imageicon__png, false, 45, 45);
+	    loadGraphic(AssetPaths.shield_imageicon__png, false, 65, 65);
 
 	    _onclick = OnClick;
 

@@ -16,14 +16,14 @@ class Dialog extends FlxSprite
 
 	public function dialog1() {
 		visible = true;
-		loadGraphic("assets/images/dialog1.png", true, 500, 120);
+		loadGraphic("assets/images/dialog1.png", false, 720, 145);
 	}
 
 	
 
 	public function dialog2() {
 		visible = true;
-		loadGraphic("assets/images/dialog2.png", true, 500, 120);
+		loadGraphic("assets/images/dialog2.png", false, 720, 145);
 	}
     
 }

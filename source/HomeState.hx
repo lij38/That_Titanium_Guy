@@ -18,7 +18,7 @@ class HomeState extends FlxState
 {
 	private var _map:TiledMap;
 	private var _bg:FlxTilemap;
-	private var _platform:FlxObject;
+	private var _fg:FlxTilemap;
 	private var _player:Player;
 	private var playerBullets:FlxTypedGroup<Bullet>;
 	private var tutorial_map:Bool;
@@ -33,21 +33,15 @@ class HomeState extends FlxState
 		_map = new TiledMap(AssetPaths.home__tmx);
 		_bg = new FlxTilemap();
 		_bg.loadMapFromArray(cast(_map.getLayer("map1"), TiledTileLayer).tileArray, _map.width, _map.height, 
-			AssetPaths.home__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 3);
+			AssetPaths.home__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 391);
 		add(_bg);
 		_bg.follow();
 
-		for (j in 0...25){
-			for (i in 0...44){
-				_bg.setTileProperties(i + j*44 + 1, FlxObject.NONE);
-			}
-		}
-		for (i in 0...44){
-			_bg.setTileProperties(i + 17*44 + 1, FlxObject.ANY);
-		}
-
-		_bg.x = 0;
-		_bg.y = 0;
+		_fg = new FlxTilemap();
+		_fg.loadMapFromArray(cast(_map.getLayer("foreground"), TiledTileLayer).tileArray, _map.width, _map.height, 
+			AssetPaths.home__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 1);
+		add(_fg);
+		_fg.follow();
 
 		playerBullets = new FlxTypedGroup<Bullet>();
 		_player = new Player(playerBullets, 1000);
@@ -62,22 +56,24 @@ class HomeState extends FlxState
 		 _mapbutton = new MapIcon();
 		 _mapbutton.x = 31;
 		 _mapbutton.y = 26;
+		 _mapbutton.scrollFactor.set(0.0);
 		 add(_mapbutton);
 
 		 tutorial_map = true;
 		 if (tutorial_map) {
+		 	_fg.color = 0x777777;
 		 	_bg.color = 0x777777;
 		 	_player.color = 0x777777;
 		 	_arrow = new Arrow();
-			 _arrow.x = 102;
-			 _arrow.y = 41;
+			 _arrow.x = 120;
+			 _arrow.y = 50;
 			 add(_arrow);
-			 _text = new FlxText(0, 0, 300, 15);
-			 _text.x = 168;
-			 _text.y = 39;
+			 _text = new FlxText(0, 0, 330, 20);
+			 _text.x = 175;
+			 _text.y = 35;
         	_text.text = "This is your home! You can move and try your weapons. " + 
             	"This is the map, you can click here to go back to the map and challenge new levels. (Click Anywhere to continue)";
-        	_text.setFormat(AssetPaths.FONT, 15);
+        	_text.setFormat(AssetPaths.FONT, 20);
         	add(_text);
 		 }
 
@@ -89,6 +85,7 @@ class HomeState extends FlxState
 
 	override public function update(elapsed:Float):Void
 	{
+		FlxG.collide(_player, _fg);
 		if (tutorial_map) {
 			if (FlxG.mouse.justPressed) {
             	tutorial_map = false;
@@ -96,6 +93,7 @@ class HomeState extends FlxState
             	_text.visible = false;
             	_bg.color = 0xffffff;
             	_player.color = 0xffffff;
+            	_fg.color = 0xffffff;
             	_mapbutton._onclick = switchMapState;
         	}	
 		}

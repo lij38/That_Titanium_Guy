@@ -16,13 +16,13 @@ class LevelIcon extends FlxSprite
 	{
 	    super(X, Y);
 	    if (boss && !locked) {
-	    	loadGraphic(AssetPaths.star_red__png, false, 32, 32);
+	    	loadGraphic(AssetPaths.star_red__png, false, 50, 50);
 	    } else if (!boss && !locked) {
-	    	loadGraphic(AssetPaths.star_yellow__png, false, 32, 32);
+	    	loadGraphic(AssetPaths.star_yellow__png, false, 50, 50);
 	    } else if (boss && locked) {
-	    	loadGraphic(AssetPaths.star_red_lock__png, false, 32, 32);
+	    	loadGraphic(AssetPaths.star_red_lock__png, false, 50, 50);
 	    } else if (!boss && locked) {
-	    	loadGraphic(AssetPaths.star_yellow_lock__png, false, 32, 32);
+	    	loadGraphic(AssetPaths.star_yellow_lock__png, false, 50, 50);
 	    }
 
 	    _onclick = OnClick;

@@ -15,7 +15,7 @@ class MapIcon extends FlxSprite
     public function new(X:Float=0, Y:Float=0, ?OnClick:Void->Void) 
 	{
 	    super(X, Y);
-	    loadGraphic(AssetPaths.map_icon__png, false, 50, 50);
+	    loadGraphic(AssetPaths.map_icon__png, false, 70, 70);
 
 	    _onclick = OnClick;
 
