@@ -31,6 +31,7 @@ class Boss1State extends FlxState {
 	private var enemiesBullets:FlxTypedGroup<EnemyBullet>;
 	
 	private var GRAVITY:Float = 1000;
+	public var LEVELID:Int;
 
 	override public function create():Void {
 		LEVELID = 3;
@@ -81,7 +82,7 @@ class Boss1State extends FlxState {
 		super.create();
 		add(_player);
         add(_hud);
-		Main.LEVELS.set(3, this);
+		//Main.LEVELS.set(3, this);
         Main.LOGGER.logLevelStart(3);
 	}
 

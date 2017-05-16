@@ -17,15 +17,15 @@ class MapState extends FlxState
 {
     private var _map:TiledMap;
     private var _bg:FlxTilemap;
-    private var _tutorial:LevelIcon;
-    private var _level1:LevelIcon;
-    private var _level1boss:LevelIcon;
-    private var _level2:LevelIcon;
-    private var _level3:LevelIcon;
-    private var _level4:LevelIcon;
-    private var _level5:LevelIcon;
-    private var _home:HomeIcon;
-    private var _levelarr:Array<LevelIcon>;
+    private var _tutorial:FlxButton;
+    private var _level1:FlxButton;
+    private var _level1boss:FlxButton;
+    private var _level2:FlxButton;
+    private var _level3:FlxButton;
+    private var _level4:FlxButton;
+    private var _level5:FlxButton;
+    private var _home:FlxButton;
+    private var _levelarr:Array<FlxButton>;
     private var _level_index:Int;
     override public function create():Void
     {
@@ -37,15 +37,17 @@ class MapState extends FlxState
         add(_bg);
         _bg.follow();
 
-        _levelarr = new Array<LevelIcon>();
-        _tutorial = new LevelIcon(0, 0, false, false, tutorialOnClick);
-        _level1 = new LevelIcon(0, 0, false, false, level1OnClick);
-        _level1boss = new LevelIcon(0, 0, true, true);
-        _level2 = new LevelIcon(0, 0, false, true);
-        _level3 = new LevelIcon(0, 0, false, true);
-        _level4 = new LevelIcon(0, 0, false, true);
-        _level5 = new LevelIcon(0, 0, false, true);
-        _home = new HomeIcon(0, 0, switchHomeState);
+        var level:Int = Main.SAVE.data.levelCompleted + 1;
+
+        _levelarr = new Array<FlxButton>();
+        _tutorial = new FlxButton(0, 0, tutorialOnClick);
+        _level1 = new FlxButton(0, 0, level1OnClick);
+        _level1boss = new FlxButton(0, 0, level1bossOnClick);
+        _level2 = new FlxButton();
+        _level3 = new FlxButton();
+        _level4 = new FlxButton();
+        _level5 = new FlxButton();
+        _home = new FlxButton(0, 0, switchHomeState);
         _levelarr.push(_tutorial);
         _levelarr.push(_level1);
         _levelarr.push(_level1boss);
@@ -54,6 +56,29 @@ class MapState extends FlxState
         _levelarr.push(_level4);
         _levelarr.push(_level5);
         _level_index = 0;
+
+        _home.loadGraphic(AssetPaths.shield_imageicon__png, false, 65, 65);
+
+        // unlocked states
+        for (i in 0...level) {
+             _levelarr[i].active = true;
+            // BOSS Level
+            if (i == 2) {
+                _levelarr[i].loadGraphic(AssetPaths.star_red__png, false, 50, 50);
+            } else {
+                _levelarr[i].loadGraphic(AssetPaths.star_yellow__png, false, 50, 50);
+            }
+        }
+
+        // locked states
+        for (i in level..._levelarr.length) {
+            _levelarr[i].active = false;
+            if (i == 2) {
+                _levelarr[i].loadGraphic(AssetPaths.star_red_lock__png, false, 50, 50);
+            } else {
+                _levelarr[i].loadGraphic(AssetPaths.star_yellow_lock__png, false, 50, 50);
+            }
+        }
 
         for (level in _levelarr) {
             add(level);
@@ -84,7 +109,7 @@ class MapState extends FlxState
             _home.x = x;
             _home.y = y;
         } else {
-            var icon:LevelIcon = _levelarr[_level_index];
+            var icon:FlxButton = _levelarr[_level_index];
             _level_index++;
             icon.x = x;
             icon.y = y;
@@ -106,6 +131,12 @@ class MapState extends FlxState
     private function level1OnClick():Void {
         FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
             FlxG.switchState(new Level1State());
+        });
+    }
+
+    private function level1bossOnClick():Void {
+        FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
+            FlxG.switchState(new Boss1State());
         });
     }
 }

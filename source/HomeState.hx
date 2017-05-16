@@ -13,6 +13,7 @@ import flixel.addons.editors.tiled.TiledObjectLayer;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import weapons.*;
+import flixel.ui.FlxButton;
 
 class HomeState extends FlxState
 {
@@ -22,7 +23,7 @@ class HomeState extends FlxState
 	private var _player:Player;
 	private var playerBullets:FlxTypedGroup<Bullet>;
 	private var tutorial_map:Bool;
-	private var _mapbutton:MapIcon;
+	private var _mapbutton:FlxButton;
 	private var _arrow:Arrow;
 	private var _text:FlxText;
 	private var tutState:Bool;
@@ -54,21 +55,20 @@ class HomeState extends FlxState
 		 }
 		 add(_player);
 
-		 _mapbutton = new MapIcon();
-		 _mapbutton.x = 31;
-		 _mapbutton.y = 26;
+		 _mapbutton = new FlxButton(31, 26, switchMapState);
 		 _mapbutton.scrollFactor.set(0.0);
+		 _mapbutton.loadGraphic(AssetPaths.map_icon__png, false, 70, 70);
 		 add(_mapbutton);
 
 		 if(Main.SAVE.data.homeTut == null ||Main.SAVE.data.homeTut == false) {
 			 tutorial_map = true;
 			 tutState = true;
+			 _mapbutton.active = false;
 			 Main.SAVE.data.homeTut = true;
 			 Main.SAVE.flush();
 		 } else {
 			 tutorial_map = false;
 			 tutState = false;
-			 _mapbutton._onclick = switchMapState;
 		 }
 		 if (tutorial_map) {
 		 	_fg.color = 0x777777;
@@ -104,7 +104,7 @@ class HomeState extends FlxState
             	_bg.color = 0xffffff;
             	_player.color = 0xffffff;
             	_fg.color = 0xffffff;
-            	_mapbutton._onclick = switchMapState;
+            	_mapbutton.active = true;
         	}	
 		}
 		FlxG.collide(_player, _bg);
@@ -128,7 +128,7 @@ class HomeState extends FlxState
 			if(tutState) {
 				FlxG.switchState(new MapTutorialState());
 			} else {
-        		FlxG.switchState(new MapState());
+        		FlxG.switchState(new MapState());	
 			}
 		});
     }
