@@ -27,21 +27,21 @@ class HUD extends FlxTypedGroup<FlxSprite>
          super();
          _player = player;
         //ammo
-        _txtjAmmo = new FlxText(382, 55, 0, "", 24);
-        _txtkAmmo = new FlxText(462, 55, 0, "", 24);
+        _txtjAmmo = new FlxText(FlxG.width - 150, 55, 0, "", 24);
+        _txtkAmmo = new FlxText(FlxG.width - 75, 55, 0, "", 24);
         _txtjAmmo.setFormat(AssetPaths.FONT, _txtjAmmo.size);
         _txtkAmmo.setFormat(AssetPaths.FONT, _txtkAmmo.size);
 
          //health icon
-         _sprHealth = new FlxSprite(20, 4, AssetPaths.health__png);
+         _sprHealth = new FlxSprite(35, 4, AssetPaths.health__png);
 
          //health bar
-        _healthbar = new FlxBar(40, 4, LEFT_TO_RIGHT, 250, 15, _player, "health", 0, _player.health);
+        _healthbar = new FlxBar(60, 4, LEFT_TO_RIGHT, 400, 20, _player, "health", 0, _player.health);
         _healthbar.createFilledBar(FlxColor.TRANSPARENT, FlxColor.RED, true, FlxColor.BLACK);
 
         //weapons
-        _jWeapon = new FlxSprite(375, 4);
-        _kWeapon = new FlxSprite(455, 4);
+        _jWeapon = new FlxSprite(_txtjAmmo.x - 8, 4);
+        _kWeapon = new FlxSprite(_txtkAmmo.x - 8, 4);
 
         //damage
         _damage1 = new FlxText(_player.x + 30, _player.y - 50, 0, "1", 30);

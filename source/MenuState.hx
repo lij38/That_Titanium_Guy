@@ -63,6 +63,7 @@ class MenuState extends FlxState {
 				FlxG.switchState(new OpeningState());
 			} else {
 				//TODO: switch to homeState
+				FlxG.switchState(new HomeState());
 			}
 		});
 	}

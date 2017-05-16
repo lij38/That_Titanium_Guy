@@ -49,10 +49,10 @@ class TutorialState extends PlayState {
         //LOAD INSTRUCTIONS
 		////////////////////////////////////////////
 		texts = new FlxTypedGroup<FlxText>();
-		//  var instructLayer:TiledObjectLayer = cast _map.getLayer("instructions");
-		//  for (e in instructLayer.objects) {
-		//  	placeInstructions(e.name, e.xmlData.x);
-		//  }
+		var instructLayer:TiledObjectLayer = cast _map.getLayer("instruction");
+		for (e in instructLayer.objects) {
+			placeInstructions(e.name, e.xmlData.x);
+		}
 
 
 		////////////////////////////////////////////
@@ -91,9 +91,16 @@ class TutorialState extends PlayState {
     {
 		var x:Int = Std.parseInt(entityData.get("x"));
 		var y:Int = Std.parseInt(entityData.get("y"));
+		var k:FlxText = new FlxText(x, y, 100, "Hold to Shield", 19);
+		k.setFormat(AssetPaths.FONT, k.size);
+		var space:FlxText = new FlxText(x, y, 250, "Space to Roll through enemies", 19);
+		space.setFormat(AssetPaths.FONT, k.size);
+		var rb:FlxText = new FlxText(x, y, 250, "Roll to dodge bullets", 19);
+		rb.setFormat(AssetPaths.FONT, k.size);
 		switch entityName {
-           case "K": texts.add(new FlxText(x, y, 100, "Hold to Shield", 12));
-           case "SPACE": texts.add(new FlxText(x, y, 100, "Roll through enemies", 12));
+           case "K": texts.add(k);
+           case "SPACE": texts.add(space);
+		   case "RB": texts.add(rb);
        }
     }
 

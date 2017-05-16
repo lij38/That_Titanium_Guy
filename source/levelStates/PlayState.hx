@@ -82,6 +82,7 @@ class PlayState extends FlxState {
 	override public function update(elapsed:Float):Void {
 		super.update(elapsed);
 		enemiesGroup.forEach(enemiesUpdate);
+		updateEnemyHud();
 		_hud.updateXY();
 
         FlxG.collide(_player, _plat);
@@ -197,8 +198,8 @@ class PlayState extends FlxState {
 	}
 	
 	public function bulletsHitEnemies(bullet:Bullet, enemy:Enemy):Void {
-		_enemiesMap.get(enemy).updateDamage(bullet.getDamage());
 		if (enemy.alive) {
+			_enemiesMap.get(enemy).updateDamage(bullet.getDamage());
 			var dmg:Float = bullet.getDamage();
 			if (enemy.type == SHIELD && bullet.facing != enemy.facing) {
 				dmg *= 0.1;
