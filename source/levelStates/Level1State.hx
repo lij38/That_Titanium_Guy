@@ -13,13 +13,12 @@ import flixel.text.FlxText;
 import weapons.*;
 import enemies.*;
 
-class Level1State extends PlayState
-{
+class Level1State extends PlayState {
     private var _keys:FlxTilemap;
     private var texts:FlxTypedGroup<FlxText>; 
+	private var rifle:FlxSprite;
 
-    override public function create():Void 
-    {
+    override public function create():Void {
         ////////////////////////
         //LOAD MAP
         ////////////////////////
@@ -55,16 +54,42 @@ class Level1State extends PlayState
 		for (e in instructLayer.objects) {
 			placeInstructions(e.name, e.xmlData.x);
 		}
+		
+		
+		/////////////////////////////////////////////
+        //LOAD Rifle
+		////////////////////////////////////////////
+		rifle = new FlxSprite();
+		rifle.loadGraphic(AssetPaths.rifle__png);
+		var rifleLayer:TiledObjectLayer = cast _map.getLayer("rifle");
+		for (e in rifleLayer.objects) {
+			var x:Int = Std.parseInt(e.xmlData.x.get("x"));
+			var y:Int = Std.parseInt(e.xmlData.x.get("y"));
+			if (e.name == "RIFLE") {
+				rifle.x = x;
+				rifle.y = y;
+			}
+		}
 
         super.create();
         Main.LOGGER.logLevelStart(2);
         add(_keys);
 		add(texts);
+		add(rifle);
     }
+	
+	override public function update(elapsed:Float):Void {
+		FlxG.overlap(rifle, _player, onPickup);
+		super.update(elapsed);
+	}
+	
+	private function onPickup(a:FlxSprite, b:FlxSprite):Void {
+		rifle.kill();
+		_player.pickUpRifle();
+	}
 
 
-    private function placeInstructions(entityName:String, entityData:Xml):Void 
-    {
+    private function placeInstructions(entityName:String, entityData:Xml):Void {
 		var x:Int = Std.parseInt(entityData.get("x"));
 		var y:Int = Std.parseInt(entityData.get("y"));
 		switch entityName {

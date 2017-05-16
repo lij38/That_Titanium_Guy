@@ -87,8 +87,7 @@ class TutorialState extends PlayState {
 	}
 
 	//Place all the instructions
-    private function placeInstructions(entityName:String, entityData:Xml):Void 
-    {
+    private function placeInstructions(entityName:String, entityData:Xml):Void {
 		var x:Int = Std.parseInt(entityData.get("x"));
 		var y:Int = Std.parseInt(entityData.get("y"));
 		var k:FlxText = new FlxText(x, y, 100, "Hold to Shield", 19);

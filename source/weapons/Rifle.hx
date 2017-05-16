@@ -27,12 +27,12 @@ class Rifle extends Weapon {
             reload();
             return false;
         }
-        var offset:Int = 70;
+        var offset:Int = 50;
         if(direction == FlxObject.LEFT) {
             offset = offset * -1;
-            offset += 30;
+            offset += -5;
         }
-        var newBullet = new BallBullet(x + offset, y + 26, speed, direction, this.damage[damageIndex], range);
+        var newBullet = new BallBullet(x + offset, y + 45, speed, direction, this.damage[damageIndex], range);
 		this.bulletArray.add(newBullet);
         curAmmo--;
         return true;

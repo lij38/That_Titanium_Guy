@@ -161,13 +161,13 @@ class Boss1State extends FlxState {
 	private function bulletsRangeUpdate():Void {
 		for (pb in playerBullets) {
 			//destroyed?
-			if (pb.outOfRange(pb.x)){
+			if (pb.outOfRange()){
 				playerBullets.remove(pb);
 				pb.destroy();
 			}
 		}
 		for (eb in enemiesBullets) {
-			if (eb.outOfRange(eb.x)) {
+			if (eb.outOfRange()) {
 				eb.kill();
 			}
 		}

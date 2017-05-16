@@ -405,6 +405,10 @@ class Player extends FlxSprite {
 		kWeapon = new Shield(bulletArray);
 		curConfig = "swsh";
 	}
+	
+	public function pickUpRifle() {
+		this.j2ndWeapon = new Rifle(bulletArray);
+	}
 
 	private function playRun(option:String) {
 		switch (facing) {
