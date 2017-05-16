@@ -194,8 +194,8 @@ class PlayState extends FlxState {
 	}
 	
 	public function bulletsHitEnemies(bullet:Bullet, enemy:Enemy):Void {
-		_enemiesMap.get(enemy).updateDamage(bullet.getDamage());
 		if (enemy.alive) {
+			_enemiesMap.get(enemy).updateDamage(bullet.getDamage());
 			enemy.hurt(bullet.getDamage());
 			playerBullets.remove(bullet);
 			bullet.destroy();

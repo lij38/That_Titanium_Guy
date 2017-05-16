@@ -127,7 +127,7 @@ class MapTutorialState extends FlxState
                 _arrow.y = 291;
                 _text.x = 133;
                 _text.y = 282;
-                _text.text = "This is an unlocked new level. Once you finish a level, a new level will be unlocked. " +
+                _text.text = "This is a newly unlocked level. Once you finish a level, the next level will be unlocked. " +
                     "(Click Anywhere to continue)";
             }
         } else if (_stage3) {
@@ -138,8 +138,8 @@ class MapTutorialState extends FlxState
                 _arrow.y = 242;
                 _text.x = 223;
                 _text.y = 233;
-                _text.text = "The red star is a boss level. Better be well-equipped before challanging those levels. " +
-                    "It is currently locked, to unlock, you need to finish previous level. (Click Anywhere to continue)";
+                _text.text = "The red stars are boss levels. You should be well-equipped before challenging those levels. " +
+                    "It is currently locked, to unlock, you need to finish the previous level. (Click Anywhere to continue)";
             }
         } else if (_stage4) {
             if (click) {
@@ -148,8 +148,9 @@ class MapTutorialState extends FlxState
                 _arrow.visible = false;
                 _text.x = 236;
                 _text.y = 76;
-                _text.text = "Congradulations! You finish the tutorial. Now you are free to either challange a new level "
-                 + " or go home. (Click Anywhere to continue)";
+                _text.text = "Now that you've finished the tutorial, you are free to challenge the next level "
+                    + "or go home. Remember, this is only your first step on your journey to reach the FA Supreme "
+                    + "Leader in the Capital Hills, good luck! (Click Anywhere to continue)";
             }
         } else if (_stage5) {
             if (click) {
