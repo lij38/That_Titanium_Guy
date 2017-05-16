@@ -25,6 +25,7 @@ class HomeState extends FlxState
 	private var _mapbutton:MapIcon;
 	private var _arrow:Arrow;
 	private var _text:FlxText;
+	private var tutState:Bool;
 
 	override public function create():Void
 	{
@@ -59,7 +60,16 @@ class HomeState extends FlxState
 		 _mapbutton.scrollFactor.set(0.0);
 		 add(_mapbutton);
 
-		 tutorial_map = true;
+		 if(Main.SAVE.data.homeTut == null ||Main.SAVE.data.homeTut == false) {
+			 tutorial_map = true;
+			 tutState = true;
+			 Main.SAVE.data.homeTut = true;
+			 Main.SAVE.flush();
+		 } else {
+			 tutorial_map = false;
+			 tutState = false;
+			 _mapbutton._onclick = switchMapState;
+		 }
 		 if (tutorial_map) {
 		 	_fg.color = 0x777777;
 		 	_bg.color = 0x777777;
@@ -114,6 +124,12 @@ class HomeState extends FlxState
 	}
 
 	private function switchMapState():Void {
-        FlxG.switchState(new MapState());
+		FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
+			if(tutState) {
+				FlxG.switchState(new MapTutorialState());
+			} else {
+        		FlxG.switchState(new MapState());
+			}
+		});
     }
 }

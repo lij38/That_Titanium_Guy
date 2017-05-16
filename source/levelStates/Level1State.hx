@@ -19,6 +19,7 @@ class Level1State extends PlayState {
 	private var rifle:FlxSprite;
 
     override public function create():Void {
+		LEVELID = 2;
         ////////////////////////
         //LOAD MAP
         ////////////////////////
@@ -72,10 +73,13 @@ class Level1State extends PlayState {
 		}
 
         super.create();
+		Main.LEVELS.set(2, this);
         Main.LOGGER.logLevelStart(2);
         add(_keys);
 		add(texts);
 		add(rifle);
+		add(_player);
+        add(_hud);
     }
 	
 	override public function update(elapsed:Float):Void {

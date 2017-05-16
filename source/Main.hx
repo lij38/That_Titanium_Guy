@@ -3,10 +3,12 @@ package;
 import flixel.FlxGame;
 import openfl.display.Sprite;
 import flixel.util.FlxSave;
+import levelStates.*;
 
 class Main extends Sprite {
 	public static var LOGGER:CapstoneLogger;
 	public static var SAVE:FlxSave;
+	public static var LEVELS:Map<Int, PlayState>;
 
 	public function new() {
 		super();
@@ -24,14 +26,13 @@ class Main extends Sprite {
 			userId = Main.LOGGER.generateUuid();
 			Main.LOGGER.setSavedUserId(userId);
 		}
-		Main.LOGGER.startNewSession(userId, onSessionReady);
 		Main.SAVE = new FlxSave();
-		Main.SAVE.bind(userId);
-
-		addChild(new FlxGame(800, 600, MenuState));
+		Main.SAVE.bind(userId);	
+		LEVELS = new Map<Int, PlayState>();
+		Main.LOGGER.startNewSession(userId, this.onSessionReady);	
 	}
 	
 	public function onSessionReady(b:Bool):Void {
-		
+		addChild(new FlxGame(800, 600, MenuState));
 	}
 }

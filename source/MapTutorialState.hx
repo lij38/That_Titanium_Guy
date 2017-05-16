@@ -162,9 +162,9 @@ class MapTutorialState extends FlxState
                     _levelarr[i].color = 0xffffff;
                 }
                 _home._onclick = switchHomeState;
-                
+                _tutorial._onclick = switchTut;
             }
-        }
+        } 
         super.update(elapsed);
     }
 
@@ -191,6 +191,14 @@ class MapTutorialState extends FlxState
     }
 
     private function switchHomeState():Void {
-        FlxG.switchState(new HomeState());
+        FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
+            FlxG.switchState(new HomeState());
+        });
+    }
+
+    private function switchTut():Void {
+        FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
+            FlxG.switchState(new TutorialState());
+        });
     }
 }

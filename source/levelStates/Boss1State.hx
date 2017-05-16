@@ -31,9 +31,9 @@ class Boss1State extends FlxState {
 	private var enemiesBullets:FlxTypedGroup<EnemyBullet>;
 	
 	private var GRAVITY:Float = 1000;
-	
+
 	override public function create():Void {
-		
+		LEVELID = 3;
 		_map = new TiledMap(AssetPaths.boss1__tmx);
 		_foreground = new FlxTilemap();
 		_foreground.loadMapFromArray(cast(_map.getLayer("foreground"), TiledTileLayer).tileArray, _map.width, _map.height, 
@@ -79,6 +79,10 @@ class Boss1State extends FlxState {
 		_hurt_count = 0;
 		FlxG.camera.fade(FlxColor.BLACK, .25, true);
 		super.create();
+		add(_player);
+        add(_hud);
+		Main.LEVELS.set(3, this);
+        Main.LOGGER.logLevelStart(3);
 	}
 
 	override public function update(elapsed:Float):Void {

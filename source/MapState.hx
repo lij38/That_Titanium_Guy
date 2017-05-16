@@ -39,7 +39,7 @@ class MapState extends FlxState
 
         _levelarr = new Array<LevelIcon>();
         _tutorial = new LevelIcon(0, 0, false, false, tutorialOnClick);
-        _level1 = new LevelIcon(0, 0, false, false);
+        _level1 = new LevelIcon(0, 0, false, false, level1OnClick);
         _level1boss = new LevelIcon(0, 0, true, true);
         _level2 = new LevelIcon(0, 0, false, true);
         _level3 = new LevelIcon(0, 0, false, true);
@@ -92,10 +92,20 @@ class MapState extends FlxState
     }
 
     private function tutorialOnClick():Void {
-        trace("click");
+        FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
+            FlxG.switchState(new TutorialState());
+        });
     }
 
     private function switchHomeState():Void {
-        FlxG.switchState(new HomeState());
+        FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
+            FlxG.switchState(new HomeState());
+        });
+    }
+
+    private function level1OnClick():Void {
+        FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
+            FlxG.switchState(new Level1State());
+        });
     }
 }

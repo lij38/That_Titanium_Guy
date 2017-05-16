@@ -32,6 +32,7 @@ class PlayState extends FlxState {
 	private var enemiesBullets:FlxTypedGroup<EnemyBullet>;
 	
 	private var GRAVITY:Float = 1000;
+	public var LEVELID:Int;
 	
 	override public function create():Void {
 		//FlxG.debugger.drawDebug = true;
@@ -71,8 +72,6 @@ class PlayState extends FlxState {
 		add(enemiesBullets);
         add(enemiesGroup);
         add(playerBullets);
-        add(_player);
-        add(_hud);
 		add(_enemiesHUD);
 		
 		 _hud.updateHUD(_player.getAmmo(0), _player.getAmmo(1), _player.isReloading(0), _player.isReloading(1),
@@ -106,12 +105,28 @@ class PlayState extends FlxState {
         if (!_player.exists) {
 			//Player died, so set our label to YOU LOST
 			Main.LOGGER.logLevelEnd({won: false});
-			FlxG.switchState(new OverState());
+			FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
+				FlxG.switchState(new OverState());
+			});
 		}
 		
 		if (enemiesGroup.countLiving() == -1) {
+			if(Main.SAVE.data.levelCompleted != null) {
+				var old:Int = Main.SAVE.data.levelCompleted;
+				Main.SAVE.data.levelCompleted = Math.max(old, LEVELID);
+				Main.SAVE.flush();
+			} else {
+				Main.SAVE.data.levelCompleted = LEVELID;
+				Main.SAVE.flush();
+			}
+			if(LEVELID == 3) {
+				Main.SAVE.data.end = true;
+				Main.SAVE.flush();
+			}
 			Main.LOGGER.logLevelEnd({won: true});
-			FlxG.switchState(new FinishState());
+			FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
+				FlxG.switchState(new FinishState());
+			});
 		}
 	}
 
@@ -153,8 +168,8 @@ class PlayState extends FlxState {
 		} else if (entityName == "SHIELD") {
 			en = new ShieldEnemy(x, y, enemiesBullets, GRAVITY, 1);
 		} else {
-			en = new RifleEnemy(x, y-55, enemiesBullets, GRAVITY);
-			en.hurt(en.health);
+		 	en = new RifleEnemy(x, y-55, enemiesBullets, GRAVITY);
+		 	//en.hurt(en.health);
 		}
 		
 		enemiesGroup.add(en);
@@ -163,6 +178,8 @@ class PlayState extends FlxState {
 			eh = new EnemyHUD(en);
 			_enemiesMap.set(en, eh);
 			_enemiesHUD.add(eh);
+		} else {
+			en.hurt(en.health);
 		}
 	}
 

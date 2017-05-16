@@ -20,7 +20,7 @@ class EnemyBullet extends Bullet{
 			loadGraphic(AssetPaths.enemybullet__png);
 		} else if (bulletType == Melee) {
 			this.type = "melee";
-			makeGraphic(6, 70, FlxColor.BLACK);
+			makeGraphic(6, 70, FlxColor.TRANSPARENT);
 		}
 	}
 	
