@@ -29,7 +29,7 @@ class Main extends Sprite {
 		Main.SAVE.bind(userId);
 
 
-		addChild(new FlxGame(800, 600, MenuState));
+		addChild(new FlxGame(640, 480, MenuState));
 	}
 	
 	public function onSessionReady(b:Bool):Void {

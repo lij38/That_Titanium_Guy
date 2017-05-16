@@ -9,44 +9,50 @@ import flixel.addons.editors.tiled.TiledTileLayer;
 import flixel.addons.editors.tiled.TiledObjectLayer;
 import flixel.tile.FlxBaseTilemap;
 import flixel.group.FlxGroup.FlxTypedGroup;
-import flixel.FlxSprite;
+import flixel.text.FlxText;
 import weapons.*;
 import enemies.*;
 
 
 class TutorialState extends PlayState {
 	private var shield:FlxSprite;   //Shield in this map
-	private var texts:FlxTypedGroup<FlxSprite>;    //Instructions present in them map
+	private var texts:FlxTypedGroup<FlxText>;    //Instructions present in them map
+	private var _keys:FlxTilemap;   //
 
     override public function create():Void {
         //////////////////////////////////////////////////
         //LOAD MAP
         //////////////////////////////////////////////////
-        _map = new TiledMap(AssetPaths.tutorial__tmx);
+        _map = new TiledMap(AssetPaths.tutorialState__tmx);
         _background = new FlxTilemap();
         _plat = new FlxTilemap();
+		_keys = new FlxTilemap();
 
         //load background
         _background.loadMapFromArray(cast(_map.getLayer("background"), TiledTileLayer).tileArray, _map.width,
-            _map.height, AssetPaths.tutorialBG__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 2, 1, 1771);
+            _map.height, AssetPaths.tutorialBG__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 7209);
         //load platform
          _plat.loadMapFromArray(cast(_map.getLayer("plat"), TiledTileLayer).tileArray, _map.width,
-             _map.height, AssetPaths.green__jpg, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 1);
+             _map.height, AssetPaths.green__jpg, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 7209, 7208, 7209);
+		//load keys
+         _keys.loadMapFromArray(cast(_map.getLayer("keys"), TiledTileLayer).tileArray, _map.width,
+             _map.height, AssetPaths.keys__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 7210, 7209, 8085);
         
-         _background.setTileProperties(2, FlxObject.NONE);
-         _plat.setTileProperties(1, FlxObject.ANY);
+         _background.setTileProperties(1, FlxObject.NONE);
+         _plat.setTileProperties(7209, FlxObject.ANY);
+		 _keys.setTileProperties(7210, FlxObject.ANY);
          _background.follow();
 		 _plat.follow();
+		 _keys.follow();
 
 		/////////////////////////////////////////////
         //LOAD INSTRUCTIONS
 		////////////////////////////////////////////
-		texts = new FlxTypedGroup<FlxSprite>();
-		// var instructLayer:TiledObjectLayer = cast _map.getLayer("instructions");
-		// for (e in instructLayer.objects) {
-		// 	placeInstructions(e.name, e.xmlData.x);
-		// }
-		// add(texts);
+		texts = new FlxTypedGroup<FlxText>();
+		//  var instructLayer:TiledObjectLayer = cast _map.getLayer("instructions");
+		//  for (e in instructLayer.objects) {
+		//  	placeInstructions(e.name, e.xmlData.x);
+		//  }
 
 
 		////////////////////////////////////////////
@@ -63,9 +69,12 @@ class TutorialState extends PlayState {
 				shield.y = y;
 			}
 		}
-		add(shield);
+
 		Main.LOGGER.logLevelStart(1);
 		super.create();
+		add(_keys);
+		add(shield);
+		add(texts);
     }
 
 	override public function update(elapsed:Float):Void  {
@@ -78,19 +87,15 @@ class TutorialState extends PlayState {
 	}
 
 	//Place all the instructions
-    // private function placeInstructions(entityName:String, entityData:Xml):Void 
-    // {
-	// 	var x:Int = Std.parseInt(entityData.get("x"));
-	// 	var y:Int = Std.parseInt(entityData.get("y"));
-	// 	switch entityName {
-    //        case "A": texts.add(new FlxSprite(x, y, AssetPaths.a__png));
-    //        case "D": texts.add(new FlxSprite(x, y, AssetPaths.d__png));
-    //        case "W": texts.add(new FlxSprite(x, y, AssetPaths.w__png));
-    //        case "J": texts.add(new FlxSprite(x, y, AssetPaths.j__png));
-    //        case "K": texts.add(new FlxSprite(x, y, AssetPaths.k__png));
-    //        case "SPACE": texts.add(new FlxSprite(x, y, AssetPaths.space__jpg));
-    //    }
-    // }
+    private function placeInstructions(entityName:String, entityData:Xml):Void 
+    {
+		var x:Int = Std.parseInt(entityData.get("x"));
+		var y:Int = Std.parseInt(entityData.get("y"));
+		switch entityName {
+           case "K": texts.add(new FlxText(x, y, 100, "Hold to Shield", 12));
+           case "SPACE": texts.add(new FlxText(x, y, 100, "Roll through enemies", 12));
+       }
+    }
 
 
 
