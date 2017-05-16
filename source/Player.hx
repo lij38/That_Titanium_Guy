@@ -406,11 +406,13 @@ class Player extends FlxSprite {
 	}
 
 	public function pickUpShield() {
-		kWeapon = new Shield(bulletArray);
-		Main.SAVE.data.kWeapon = kWeapon.getName();
-		curConfig = "swsh";
-		Main.SAVE.data.curConfig = curConfig;
-		Main.SAVE.flush();
+		if(Main.SAVE.data.tutComplete == null || Main.SAVE.data.tutComplete == false) {
+			kWeapon = new Shield(bulletArray);
+			Main.SAVE.data.kWeapon = kWeapon.getName();
+			curConfig = "swsh";
+			Main.SAVE.data.curConfig = curConfig;
+			Main.SAVE.flush();
+		}
 	}
 	
 	public function pickUpRifle() {

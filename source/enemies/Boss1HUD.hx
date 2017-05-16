@@ -21,7 +21,7 @@ class Boss1HUD extends FlxTypedGroup<FlxSprite>
          //_sprHealth = new FlxSprite(320, 4, AssetPaths.health__png);
 
          //health bar
-        _healthbar = new FlxBar(120, 500, 600, 15, _smallboss, "health", 0, 500);
+        _healthbar = new FlxBar(120, 500, 600, 15, _smallboss, "health", 0, _smallboss.health);
         _healthbar.createFilledBar(FlxColor.TRANSPARENT, FlxColor.BLUE, true, FlxColor.BLACK);
 
          //add(_sprHealth);

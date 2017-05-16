@@ -132,6 +132,8 @@ class Boss1State extends FlxState {
 		}
 
 		if (!_enemy.exists) {
+			Main.SAVE.data.end = true;
+			Main.SAVE.flush();
 			FlxG.switchState(new FinishState());
 		}
 	}

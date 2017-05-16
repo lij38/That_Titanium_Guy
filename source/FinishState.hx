@@ -24,7 +24,7 @@ class FinishState extends FlxState
 		 _btnPlay = new FlxButton(0, 0, "Next", clickPlay);
 		_btnPlay.screenCenter();
         add(_btnPlay);
-        ending = new FlxText(250, 400, 500, "Thanks for playing! This is only a beta so more levels are coming soon!");
+        ending = new FlxText(250, 400, 500, "Thanks for playing! This is only a beta so more levels are coming soon!", 20);
         ending.setFormat(AssetPaths.FONT, ending.size);
         if(Main.SAVE.data.end != null) {
             add(ending);
