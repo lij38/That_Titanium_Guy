@@ -32,7 +32,7 @@ class PlayState extends FlxState {
 	private var GRAVITY:Float = 1000;
 	
 	override public function create():Void {
-
+		//FlxG.debugger.drawDebug = true;
 		//////////////////
         //LOAD PLAYER
 		//////////////////
@@ -145,10 +145,10 @@ class PlayState extends FlxState {
 
 		if (entityName == "MELEE") {
 			en = new MeleeEnemy(x, y, enemiesBullets, GRAVITY);
-		} else {//if (entityName == "RIFLE"){
+		} else if (entityName == "RIFLE"){
 			en = new RifleEnemy(x, y, enemiesBullets, GRAVITY);
-		//} else if (entityName == "SHIELD") {
-		//	en = new ShieldEnemy(x, y, enemiesBullets, GRAVITY, 1);
+		} else /*if (entityName == "SHIELD")*/ {
+			en = new ShieldEnemy(x, y, enemiesBullets, GRAVITY, 1);
 		}
 		
 		eh = new EnemyHUD(en);
@@ -199,12 +199,12 @@ class PlayState extends FlxState {
 	
 	public function bulletsHitEnemies(bullet:Bullet, enemy:Enemy):Void {
 		if (enemy.alive) {
-			_enemiesMap.get(enemy).updateDamage(bullet.getDamage());
 			var dmg:Float = bullet.getDamage();
 			if (enemy.type == SHIELD && bullet.facing != enemy.facing) {
 				dmg *= 0.1;
 			}
-			enemy.hurt(bullet.getDamage());
+			_enemiesMap.get(enemy).updateDamage(dmg);
+			enemy.hurt(dmg);
 			playerBullets.remove(bullet);
 			bullet.destroy();
 		}

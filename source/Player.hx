@@ -11,7 +11,7 @@ import flixel.FlxObject;
 import weapons.*;
 
 class Player extends FlxSprite {
-	public var speed:Float = 200;
+	public var speed:Float = 250;
 	private var GRAVITY:Float;
 	private var jumped:Bool = false;
 	private var jump:Float = 0.0;
@@ -42,7 +42,8 @@ class Player extends FlxSprite {
 	private var swordTimer:Float = -1;
 	private var curConfig:String;
 
-	public function new(?X:Float = 0, ?Y:Float = 0, playerBulletArray:FlxTypedGroup<Bullet>,
+	public function new(?X:Float = 0, ?Y:Float = 0,
+						playerBulletArray:FlxTypedGroup<Bullet>,
 						gravity:Float) {
 		super(X, Y);
 		GRAVITY = gravity;
@@ -51,12 +52,12 @@ class Player extends FlxSprite {
 		loadGraphic(AssetPaths.player__png, true, cast(4745 / 5, Int), cast(11109 / 21, Int));
 		setFacingFlip(FlxObject.LEFT, true, false);
 		setFacingFlip(FlxObject.RIGHT, false, false);
-		scale.set(0.25, 0.25);
+		scale.set(0.35, 0.35);
 		
 		addAnimation();
 		
-		setSize(31, 80);
-		offset.set(460, 220);
+		setSize(48, 115);
+		offset.set(450, 198);
 		acceleration.y = GRAVITY;
 		
 		bulletArray = playerBulletArray;

@@ -23,8 +23,9 @@ class ShieldEnemy extends Enemy {
 	private var healthLevel = [for (i in 1...4) 50 * i + 20];
 	
 	
-	public function new(X:Float = 0, Y:Float = 0, bulletArray:FlxTypedGroup<Bullet>,
-						gravity:Float, level:Int = 1) {
+	public function new(X:Float = 0, Y:Float = 0,
+						bulletArray:FlxTypedGroup<EnemyBullet>,
+						gravity:Float, level:Int = 0) {
 		super(X, Y, bulletArray, gravity, SHIELD);
 		
 		this.level = level;
@@ -85,8 +86,10 @@ class ShieldEnemy extends Enemy {
 			animation.play("lr");
 		}
 		if (rateTimer > 0.66 && !attacked) {
-			bulletArray.add(new MeleeBullet(x + 7, y + 10, 1000, facing,
-							damageLevel[level], range));
+			var curBullet:EnemyBullet = bulletArray.recycle(EnemyBullet);
+			curBullet.setBullet(x + 7, y + 10, 1000, facing,
+							damageLevel[level], range, 
+							Melee);
 			attacked = true;
 		}
 		
@@ -105,7 +108,7 @@ class ShieldEnemy extends Enemy {
 	
 	override public function hurt(damage:Float):Void {
 		seesPlayer = true;
-		if (health - damage < 0) {
+		if (health - damage <= 0) {
 			animation.play("die");
 			alive = false;
 		} else if (rateTimer == -1) {
