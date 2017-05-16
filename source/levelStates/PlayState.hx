@@ -158,7 +158,7 @@ class PlayState extends FlxState {
 		}
 		
 		enemiesGroup.add(en);
-		if (entityName != "RIFLEDEAD") {
+		if (en.health > 0) {
 			var eh:EnemyHUD;
 			eh = new EnemyHUD(en);
 			_enemiesMap.set(en, eh);

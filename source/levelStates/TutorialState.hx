@@ -71,10 +71,10 @@ class TutorialState extends PlayState {
 		}
 
 		Main.LOGGER.logLevelStart(1);
-		super.create();
 		add(_keys);
 		add(shield);
 		add(texts);
+		super.create();
     }
 
 	override public function update(elapsed:Float):Void  {
