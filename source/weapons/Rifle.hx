@@ -8,7 +8,7 @@ class Rifle extends Weapon {
         this.name = "rifle";
         this.damage = new Array<Int>();
         for(i in 1...6) {
-            this.damage.push(i * 10);
+            this.damage.push(i * 6);
         }
         this.damageIndex = 0;
         this.type = "ballistic";
@@ -17,8 +17,8 @@ class Rifle extends Weapon {
         this.speed = 1500;
         this.bulletArray = playerBulletArray;
 
-        this.magCapacity = 20;
-        this.curAmmo = 20;
+        this.magCapacity = 15;
+        this.curAmmo = 15;
         this.reloadTime = 1.5;
     }
 

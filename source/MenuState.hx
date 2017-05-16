@@ -14,12 +14,15 @@ class MenuState extends FlxState {
 	private var _btnPlay:FlxButton;
 	private var _btnContinue:FlxButton;
 	private var _title:FlxText;
+	private var _subtitle:FlxText;
 	
 	var spritesheet:FlxSprite;
 		
 	override public function create():Void {
 		_title = new FlxText(200, 100, 600, "That Titanium Guy", 50);
 		_title.setFormat(AssetPaths.FONT, _title.size);
+		_subtitle = new FlxText(220, 175, 500, "あのチタンな人", 40);
+		_subtitle.setFormat(AssetPaths.FONT, _subtitle.size);
 		_btnPlay = new FlxButton(385, 250, "New Game", clickPlay);
 		_btnContinue = new FlxButton(385, 300, "Continue", clickContinue);
 		//_btnContinue.screenCenter();
@@ -42,6 +45,7 @@ class MenuState extends FlxState {
 		// spritesheet.animation.play("lr");
 		
 		add(_title);
+		add(_subtitle);
 		add(_btnPlay);
 		add(_btnContinue);
 		FlxG.camera.fade(FlxColor.BLACK, .33, true);

@@ -52,14 +52,19 @@ class EnemyHUD extends FlxTypedGroup<FlxSprite>
 	 }
 
      public function updateDamage(damage:Float):Void {
+        var dstr:String = Std.string(damage);
+        if(damage < 1) {
+            dstr = dstr.substring(0, 3);
+        }
         if(dmgCounter == 0) {
             _damage1.visible = true;
-            _damage1.text = "- " + Std.string(damage);
+            
+            _damage1.text = "- " + dstr;
             FlxTween.tween(_damage1, {alpha: 0}, .25, { ease: FlxEase.circOut, onComplete: finishFade });
             dmgCounter = 1;
         } else {
             _damage2.visible = true;
-            _damage2.text = "- " + Std.string(damage);
+            _damage2.text = "- " + dstr;
             FlxTween.tween(_damage2, {alpha: 0}, .25, { ease: FlxEase.circOut, onComplete: finishFade });
             dmgCounter = 0;
         }
