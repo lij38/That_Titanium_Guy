@@ -11,7 +11,7 @@ class Arrow extends FlxSprite
     public function new(X:Float=0, Y:Float=0) 
 	{
 	    super(X, Y);
-	    loadGraphic(AssetPaths.arrow__png, true, 32, 20);
+	    loadGraphic(AssetPaths.arrow__png, true, 40, 25);
 	}
     
 }
