@@ -26,7 +26,7 @@ class MeleeEnemy extends Enemy {
 	public function new(X:Float = 0, Y:Float = 0, 
 						bulletArray:FlxTypedGroup<EnemyBullet>,
 						gravity:Float, level:Int = 0) {
-		super(X, Y, bulletArray, gravity, "Melee");
+		super(X, Y, bulletArray, gravity, MELEE);
 		
 		this.level = level;
 		

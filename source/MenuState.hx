@@ -48,8 +48,7 @@ class MenuState extends FlxState {
 	}
 	
 	private function clickPlay():Void {
-		FlxG.camera.fade(FlxColor.BLACK,.25, false, function()
-		{
+		FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
 			Main.SAVE.erase();
 			Main.SAVE.bind(Main.LOGGER.getSavedUserId());
 			FlxG.switchState(new OpeningState());
@@ -59,8 +58,7 @@ class MenuState extends FlxState {
 	}
 	
 	private function clickContinue():Void {
-		FlxG.camera.fade(FlxColor.BLACK,.25, false, function()
-		{
+		FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
 			if(Main.SAVE.data.tutComplete == null || Main.SAVE.data.tutComplete == false) {
 				FlxG.switchState(new OpeningState());
 			} else {

@@ -35,6 +35,7 @@ class EnemyBullet extends Bullet{
 		ypos = Y;
 		x = X;
 		y = Y;
+		facing = direction;
 		exists = true;
 		
 		if (direction == FlxObject.LEFT) {

@@ -26,7 +26,7 @@ class RifleEnemy extends Enemy {
 	public function new(X:Float = 0, Y:Float = 0, 
 						bulletArray:FlxTypedGroup<EnemyBullet>,
 						gravity:Float, level:Int = 0) {
-		super(X, Y, bulletArray, gravity, "RIFLE");
+		super(X, Y, bulletArray, gravity, RIFLE);
 		this.level = level;
 		
 		loadGraphic(AssetPaths.enemy_rifle__png, true, 552, 383);
