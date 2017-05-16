@@ -1,0 +1,121 @@
+package;
+
+import flixel.FlxState;
+import flixel.FlxSprite;
+import flixel.group.FlxGroup;
+import flixel.FlxObject;
+import flixel.FlxG;
+import flixel.addons.editors.tiled.TiledMap;
+import flixel.tile.FlxTilemap;
+import flixel.addons.editors.tiled.TiledTileLayer;
+import flixel.tile.FlxBaseTilemap;
+import flixel.addons.editors.tiled.TiledObjectLayer;
+import flixel.text.FlxText;
+import flixel.util.FlxColor;
+import weapons.*;
+
+class HomeState extends FlxState
+{
+	private var _map:TiledMap;
+	private var _bg:FlxTilemap;
+	private var _platform:FlxObject;
+	private var _player:Player;
+	private var playerBullets:FlxTypedGroup<Bullet>;
+	private var tutorial_map:Bool;
+	private var _mapbutton:MapIcon;
+	private var _arrow:Arrow;
+	private var _text:FlxText;
+
+	override public function create():Void
+	{
+
+		// load map and set a platform that player can stand on (row 17th)
+		_map = new TiledMap(AssetPaths.home__tmx);
+		_bg = new FlxTilemap();
+		_bg.loadMapFromArray(cast(_map.getLayer("map1"), TiledTileLayer).tileArray, _map.width, _map.height, 
+			AssetPaths.home__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 3);
+		add(_bg);
+		_bg.follow();
+
+		for (j in 0...25){
+			for (i in 0...44){
+				_bg.setTileProperties(i + j*44 + 1, FlxObject.NONE);
+			}
+		}
+		for (i in 0...44){
+			_bg.setTileProperties(i + 17*44 + 1, FlxObject.ANY);
+		}
+
+		_bg.x = 0;
+		_bg.y = 0;
+
+		playerBullets = new FlxTypedGroup<Bullet>();
+		_player = new Player(playerBullets, 1000);
+
+		var tmpMap:TiledObjectLayer = cast _map.getLayer("entities");
+		 for (e in tmpMap.objects)
+		 {
+		     placeEntities(e.type, e.xmlData.x);
+		 }
+		 add(_player);
+
+		 _mapbutton = new MapIcon();
+		 _mapbutton.x = 31;
+		 _mapbutton.y = 26;
+		 add(_mapbutton);
+
+		 tutorial_map = true;
+		 if (tutorial_map) {
+		 	_bg.color = 0x777777;
+		 	_player.color = 0x777777;
+		 	_arrow = new Arrow();
+			 _arrow.x = 102;
+			 _arrow.y = 41;
+			 add(_arrow);
+			 _text = new FlxText(0, 0, 300, 15);
+			 _text.x = 168;
+			 _text.y = 39;
+        	_text.text = "This is your home! You can move and try your weapons. " + 
+            	"This is the map, you can click here to go back to the map and challenge new levels. (Click Anywhere to continue)";
+        	_text.setFormat(AssetPaths.FONT, 15);
+        	add(_text);
+		 }
+
+		 FlxG.camera.follow(_player, LOCKON, 1);
+
+		super.create();
+		
+	}
+
+	override public function update(elapsed:Float):Void
+	{
+		if (tutorial_map) {
+			if (FlxG.mouse.justPressed) {
+            	tutorial_map = false;
+            	_arrow.visible = false;
+            	_text.visible = false;
+            	_bg.color = 0xffffff;
+            	_player.color = 0xffffff;
+            	_mapbutton._onclick = switchMapState;
+        	}	
+		}
+		FlxG.collide(_player, _bg);
+		super.update(elapsed);
+	}
+
+	private function placeEntities(entityName:String, entityData:Xml):Void
+	{
+	    var x:Int = Std.parseInt(entityData.get("x"));
+	    var y:Int = Std.parseInt(entityData.get("y"));
+
+	    if (entityName == "player")
+	    {
+	        _player.x = x;
+	        _player.y = y;
+		} 
+	}
+
+	private function switchMapState():Void {
+        FlxG.switchState(new MapState());
+    }
+}
