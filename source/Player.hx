@@ -424,8 +424,8 @@ class Player extends FlxSprite {
 	
 	public function pickUpRifle() {
 		if(Main.SAVE.data.riflePickUp == null || Main.SAVE.data.riflePickUp == false) {
-			this.j2ndWeapon = new Rifle(bulletArray);
-			Main.SAVE.data.riflePickUp == true;
+			j2ndWeapon = new Rifle(bulletArray);
+			Main.SAVE.data.riflePickUp = true;
 			Main.SAVE.flush();
 		}
 	}
