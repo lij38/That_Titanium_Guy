@@ -154,6 +154,13 @@ class Player extends FlxSprite {
 			}
 		}
 
+		if(FlxG.keys.anyPressed([R])) {
+			jReloadTimer = 0.0;
+			kReloadTimer = 0.0;
+			jWeapon.reload();
+			kWeapon.reload();
+		}
+
 		if (!isSwording() && !isTumbling()) {
 			tumbleTimer = -1;
 			up = FlxG.keys.anyPressed([UP, W]);

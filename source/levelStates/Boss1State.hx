@@ -25,6 +25,7 @@ class Boss1State extends FlxState {
 	private var _enemy:Boss1;
 	private var _boss_hud:Boss1HUD;
 	private var _hurt_count:Int;
+	private var logged:Bool;
 	
 	//private var enemiesGroup:FlxTypedGroup<Enemy>;
 	private var playerBullets:FlxTypedGroup<Bullet>;
@@ -83,6 +84,7 @@ class Boss1State extends FlxState {
 		add(_player);
         add(_hud);
 		//Main.LEVELS.set(3, this);
+		logged = false;
         Main.LOGGER.logLevelStart(3);
 	}
 
@@ -126,14 +128,17 @@ class Boss1State extends FlxState {
 		
 		bulletsRangeUpdate();
 
-		if (!_player.exists) {
+		if (!_player.exists && !logged) {
 			//Player died, so set our label to YOU LOST
+			Main.LOGGER.logLevelEnd({won: false});
+			logged = true;
 			FlxG.switchState(new OverState());
 		}
 
-		if (!_enemy.exists) {
+		if (!_enemy.exists && !logged) {
 			Main.SAVE.data.end = true;
 			Main.SAVE.flush();
+			Main.LOGGER.logLevelEnd({won: true});
 			FlxG.switchState(new FinishState());
 		}
 	}

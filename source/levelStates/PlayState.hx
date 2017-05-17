@@ -32,6 +32,7 @@ class PlayState extends FlxState {
 	private var enemiesBullets:FlxTypedGroup<EnemyBullet>;
 	
 	private var GRAVITY:Float = 1000;
+	private var logged:Bool = false;
 	public var LEVELID:Int;
 	
 	override public function create():Void {
@@ -102,15 +103,16 @@ class PlayState extends FlxState {
 		FlxG.collide(enemiesGroup, _plat);
 
 		bulletsRangeUpdate();
-        if (!_player.exists) {
+        if (!_player.exists && !logged) {
 			//Player died, so set our label to YOU LOST
 			Main.LOGGER.logLevelEnd({won: false});
+			logged = true;
 			FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
 				FlxG.switchState(new OverState());
 			});
 		}
 		
-		if (enemiesGroup.countLiving() == -1) {
+		if (enemiesGroup.countLiving() == -1 && !logged) {
 			if(Main.SAVE.data.levelCompleted != null) {
 				var old:Int = Main.SAVE.data.levelCompleted;
 				Main.SAVE.data.levelCompleted = Math.max(old, LEVELID);
@@ -124,6 +126,7 @@ class PlayState extends FlxState {
 				Main.SAVE.flush();
 			}
 			Main.LOGGER.logLevelEnd({won: true});
+			logged = true;
 			FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
 				FlxG.switchState(new FinishState());
 			});
