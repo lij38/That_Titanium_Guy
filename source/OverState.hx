@@ -10,13 +10,16 @@ import flixel.util.FlxColor;
 class OverState extends FlxState
 {
     private var _btnPlay:FlxButton;
+    private var _from:Int;
+    private var text:FlxText;
+
     override public function create():Void
     {
-        var text = new flixel.text.FlxText(0, 0, 0, "GAME OVER", 64);
+        text = new FlxText(0, 0, 0, "GAME OVER", 64);
+        text.setFormat(AssetPaths.FONT, text.size);
         text.screenCenter();
         add(text);
-        _btnPlay = new FlxButton(0, 0, "Play", clickPlay);
-		_btnPlay.screenCenter();
+        _btnPlay = new FlxButton(390, 400, "Try Again", clickPlay);
         add(_btnPlay);
 		
 		FlxG.camera.fade(FlxColor.BLACK, .25, true);
@@ -30,7 +33,11 @@ class OverState extends FlxState
 
     private function clickPlay():Void {
 		FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
-			FlxG.switchState(new TutorialState());
+            if(Main.SAVE.data.tutComplete == false) {
+			    FlxG.switchState(new TutorialState());
+            } else {
+                FlxG.switchState(new HomeState());
+            }
 		});
 	}
 }

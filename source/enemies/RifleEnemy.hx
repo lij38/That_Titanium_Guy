@@ -26,13 +26,13 @@ class RifleEnemy extends Enemy {
 	public function new(X:Float = 0, Y:Float = 0, 
 						bulletArray:FlxTypedGroup<EnemyBullet>,
 						gravity:Float, level:Int = 0) {
-		super(X, Y, bulletArray, gravity, "RIFLE");
+		super(X, Y, bulletArray, gravity, RIFLE);
 		this.level = level;
 		
 		loadGraphic(AssetPaths.enemy_rifle__png, true, 552, 383);
-		scale.set(0.3, 0.3);
-		setSize(35, 105);
-		offset.set(260, 133);
+		scale.set(0.35, 0.35);
+		setSize(35, 120);
+		offset.set(260, 125);
 		
 		setFacingFlip(FlxObject.LEFT, false, false);
 		setFacingFlip(FlxObject.RIGHT, true, false);

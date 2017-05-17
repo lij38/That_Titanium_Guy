@@ -11,7 +11,7 @@ import flixel.FlxObject;
 import weapons.*;
 
 class Player extends FlxSprite {
-	public var speed:Float = 200;
+	public var speed:Float = 250;
 	private var GRAVITY:Float;
 	private var jumped:Bool = false;
 	private var jump:Float = 0.0;
@@ -42,7 +42,8 @@ class Player extends FlxSprite {
 	private var swordTimer:Float = -1;
 	private var curConfig:String;
 
-	public function new(?X:Float = 0, ?Y:Float = 0, playerBulletArray:FlxTypedGroup<Bullet>,
+	public function new(?X:Float = 0, ?Y:Float = 0,
+						playerBulletArray:FlxTypedGroup<Bullet>,
 						gravity:Float) {
 		super(X, Y);
 		GRAVITY = gravity;
@@ -51,12 +52,12 @@ class Player extends FlxSprite {
 		loadGraphic(AssetPaths.player__png, true, cast(4745 / 5, Int), cast(11109 / 21, Int));
 		setFacingFlip(FlxObject.LEFT, true, false);
 		setFacingFlip(FlxObject.RIGHT, false, false);
-		scale.set(0.25, 0.25);
+		scale.set(0.35, 0.35);
 		
 		addAnimation();
 		
-		setSize(31, 80);
-		offset.set(460, 220);
+		setSize(48, 115);
+		offset.set(450, 198);
 		acceleration.y = GRAVITY;
 		
 		bulletArray = playerBulletArray;
@@ -66,17 +67,21 @@ class Player extends FlxSprite {
 			kWeapon = new Weapon(playerBulletArray);
 			k2ndWeapon = new Weapon(playerBulletArray);
 			curConfig = "sword";
-			Main.SAVE.data.jWeapon = jWeapon;
-			Main.SAVE.data.j2ndWeapon = j2ndWeapon;
-			Main.SAVE.data.kWeapon = kWeapon;
-			Main.SAVE.data.k2ndWeapon = k2ndWeapon;
+			Main.SAVE.data.jWeapon = jWeapon.getName();
+			Main.SAVE.data.j2ndWeapon = j2ndWeapon.getName();
+			Main.SAVE.data.kWeapon = kWeapon.getName();
+			Main.SAVE.data.k2ndWeapon = k2ndWeapon.getName();
 			Main.SAVE.data.curConfig = curConfig;
 			Main.SAVE.flush();
 		} else {
-			jWeapon = Main.SAVE.data.jWeapon;
-			j2ndWeapon = Main.SAVE.data.j2ndWeapon;
-			kWeapon = Main.SAVE.data.kWeapon;
-			k2ndWeapon = Main.SAVE.data.k2ndWeapon;
+			var jn:String = Main.SAVE.data.jWeapon;
+			var j2n:String = Main.SAVE.data.j2ndWeapon;
+			var kn:String = Main.SAVE.data.kWeapon;
+			var k2n:String = Main.SAVE.data.k2ndWeapon;
+			jWeapon = WeaponFactory.getWeapon(jn, playerBulletArray);
+			j2ndWeapon = WeaponFactory.getWeapon(j2n, playerBulletArray);
+			kWeapon = WeaponFactory.getWeapon(kn, playerBulletArray);
+			k2ndWeapon = WeaponFactory.getWeapon(k2n, playerBulletArray);
 			curConfig = Main.SAVE.data.curConfig;
 		}
 		shielding = false;
@@ -147,6 +152,13 @@ class Player extends FlxSprite {
 				shielding = false;
 				//trace("unshielded");
 			}
+		}
+
+		if(FlxG.keys.anyPressed([R])) {
+			jReloadTimer = 0.0;
+			kReloadTimer = 0.0;
+			jWeapon.reload();
+			kWeapon.reload();
 		}
 
 		if (!isSwording() && !isTumbling()) {
@@ -401,8 +413,23 @@ class Player extends FlxSprite {
 	}
 
 	public function pickUpShield() {
-		kWeapon = new Shield(bulletArray);
-		curConfig = "swsh";
+		trace(Std.string(Main.SAVE.data.tutComplete));
+		if(Main.SAVE.data.tutComplete == null || Main.SAVE.data.tutComplete == false) {
+			kWeapon = new Shield(bulletArray);
+			Main.SAVE.data.kWeapon = kWeapon.getName();
+			curConfig = "swsh";
+			Main.SAVE.data.curConfig = curConfig;
+			Main.SAVE.flush();
+		}
+	}
+	
+	public function pickUpRifle() {
+		trace(Std.string(Main.SAVE.data.riflePickUp));
+		if(Main.SAVE.data.riflePickUp == null || Main.SAVE.data.riflePickUp == false) {
+			this.j2ndWeapon = new Rifle(bulletArray);
+			Main.SAVE.data.riflePickUp = true;
+			Main.SAVE.flush();
+		}
 	}
 
 	private function playRun(option:String) {
@@ -427,6 +454,12 @@ class Player extends FlxSprite {
 		} else {
 			curConfig = jWeapon.getName();
 		}
+		Main.SAVE.data.jWeapon = jWeapon.getName();
+		Main.SAVE.data.j2ndWeapon = j2ndWeapon.getName();
+		Main.SAVE.data.kWeapon = kWeapon.getName();
+		Main.SAVE.data.k2ndWeapon = k2ndWeapon.getName();
+		Main.SAVE.data.curConfig = curConfig;
+		Main.SAVE.flush();
 	}
 
 	// //helper for checking condition in changeWeaponConfig
@@ -461,9 +494,9 @@ class Player extends FlxSprite {
 			}
 		}
 		if (facing == FlxObject.NONE) {
-			return w.attack(x, y, faced);
+			return w.attack(getMidpoint().x, y, faced);
 		} else {
-			return w.attack(x, y, facing);
+			return w.attack(getMidpoint().x, y, facing);
 		}
 	}
 

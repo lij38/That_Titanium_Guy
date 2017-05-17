@@ -9,7 +9,7 @@ class Revolver extends Weapon {
         for(i in 1...6) {
             this.damage.push(i * 10);
         }
-
+        this.damageIndex = 0;
         this.type = "ballistic";
         this.range = 1000;
         this.fireRate = 0.0;

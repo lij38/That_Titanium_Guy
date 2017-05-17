@@ -10,6 +10,12 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import weapons.*;
 
+enum EnemyType {
+	SHIELD;
+	MELEE;
+	RIFLE;
+}
+
 class Enemy extends FlxSprite {
 	private var bulletArray:FlxTypedGroup<EnemyBullet>;
 	
@@ -23,11 +29,11 @@ class Enemy extends FlxSprite {
 	private var hurtColorTimer:Float = -1;
 	
 	private var hurtTimer:Float = -1;
-	public var TYPE:String;
+	public var type:EnemyType;
 	
 	public function new(X:Float = 0, Y:Float = 0, 
 						enemiesBulletArray:FlxTypedGroup<EnemyBullet>,
-						gravity:Float, type:String) {
+						gravity:Float, type:EnemyType) {
 		super(X, Y);
 		GRAVITY = gravity;
 		bulletArray = enemiesBulletArray;
@@ -35,12 +41,12 @@ class Enemy extends FlxSprite {
 		acceleration.y = GRAVITY;
 		playerPos = FlxPoint.get();
 		
-		TYPE = type;
+		this.type = type;
 	}
 	
 	override public function update(elapsed:Float):Void {
 		if (!seesPlayer &&
-			Math.abs(playerPos.x - getMidpoint().x) < 100 &&
+			Math.abs(playerPos.x - getMidpoint().x) < 350 &&
 			Math.abs(playerPos.y - getMidpoint().y) < 50) {
 			seesPlayer = true;
 		}

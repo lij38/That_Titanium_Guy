@@ -3,6 +3,7 @@ package levelStates;
 import enemies.*;
 import flixel.FlxG;
 import flixel.FlxObject;
+import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.text.FlxText;
@@ -14,6 +15,7 @@ import flixel.tile.FlxBaseTilemap;
 import flixel.addons.editors.tiled.TiledMap;
 import weapons.*;
 import enemies.*;
+import flixel.util.FlxColor;
 
 class PlayState extends FlxState {
 	private var _player:Player;
@@ -30,9 +32,11 @@ class PlayState extends FlxState {
 	private var enemiesBullets:FlxTypedGroup<EnemyBullet>;
 	
 	private var GRAVITY:Float = 1000;
+	private var logged:Bool = false;
+	public var LEVELID:Int;
 	
 	override public function create():Void {
-
+		//FlxG.debugger.drawDebug = true;
 		//////////////////
         //LOAD PLAYER
 		//////////////////
@@ -69,19 +73,19 @@ class PlayState extends FlxState {
 		add(enemiesBullets);
         add(enemiesGroup);
         add(playerBullets);
-        add(_player);
-        add(_hud);
 		add(_enemiesHUD);
 		
 		 _hud.updateHUD(_player.getAmmo(0), _player.getAmmo(1), _player.isReloading(0), _player.isReloading(1),
 		 				_player.getWeaponName(0), _player.getWeaponName(1));
         FlxG.camera.follow(_player, TOPDOWN, 1);
+		FlxG.camera.fade(FlxColor.BLACK, .25, true);
 		super.create();
 	}
 
 	override public function update(elapsed:Float):Void {
 		super.update(elapsed);
 		enemiesGroup.forEach(enemiesUpdate);
+		updateEnemyHud();
 		_hud.updateXY();
 
         FlxG.collide(_player, _plat);
@@ -99,15 +103,33 @@ class PlayState extends FlxState {
 		FlxG.collide(enemiesGroup, _plat);
 
 		bulletsRangeUpdate();
-        if (!_player.exists) {
-			// Player died, so set our label to YOU LOST
+        if (!_player.exists && !logged) {
+			//Player died, so set our label to YOU LOST
 			Main.LOGGER.logLevelEnd({won: false});
-			FlxG.switchState(new OverState());
+			logged = true;
+			FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
+				FlxG.switchState(new OverState());
+			});
 		}
 		
-		if (enemiesGroup.countLiving() == -1) {
+		if (enemiesGroup.countLiving() == -1 && !logged) {
+			if(Main.SAVE.data.levelCompleted != null) {
+				var old:Int = Main.SAVE.data.levelCompleted;
+				Main.SAVE.data.levelCompleted = Math.max(old, LEVELID);
+				Main.SAVE.flush();
+			} else {
+				Main.SAVE.data.levelCompleted = LEVELID;
+				Main.SAVE.flush();
+			}
+			if(LEVELID == 3) {
+				Main.SAVE.data.end = true;
+				Main.SAVE.flush();
+			}
 			Main.LOGGER.logLevelEnd({won: true});
-			FlxG.switchState(new FinishState());
+			logged = true;
+			FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
+				FlxG.switchState(new FinishState());
+			});
 		}
 	}
 
@@ -135,28 +157,40 @@ class PlayState extends FlxState {
 
 	}
 
-    	//Place enemies individually
+    //Place enemies individually
 	private function placeEnemies(entityName:String, entityData:Xml):Void {
 		var x:Int = Std.parseInt(entityData.get("x"));
 		var y:Int = Std.parseInt(entityData.get("y"));
-		var eh:EnemyHUD;
+		
 		var en:Enemy;
+
 		if (entityName == "MELEE") {
 			en = new MeleeEnemy(x, y, enemiesBullets, GRAVITY);
-		} else {
+		} else if (entityName == "RIFLE"){
 			en = new RifleEnemy(x, y, enemiesBullets, GRAVITY);
+		} else if (entityName == "SHIELD") {
+			en = new ShieldEnemy(x, y, enemiesBullets, GRAVITY, 1);
+		} else {
+		 	en = new RifleEnemy(x, y-55, enemiesBullets, GRAVITY);
+		 	en.hurt(en.health);
 		}
-		eh = new EnemyHUD(en);
+		
 		enemiesGroup.add(en);
-		_enemiesMap.set(en, eh);
-		_enemiesHUD.add(eh);
+		if (en.health > 0) {
+			var eh:EnemyHUD;
+			eh = new EnemyHUD(en);
+			_enemiesMap.set(en, eh);
+			_enemiesHUD.add(eh);
+		} else {
+			en.hurt(en.health);
+		}
 	}
 
 
-	private function bulletsHitPlayer(bullet:Bullet, player:Player):Void {
+	private function bulletsHitPlayer(bullet:EnemyBullet, player:Player):Void {
 		if (player.alive) {
 			var damage:Float = bullet.getDamage();
-			if (player.isShielding()) {
+			if (player.isShielding() && player.faced != bullet.facing) {
 				damage /= 10;
 			}
 			player.hurt(damage);
@@ -168,13 +202,13 @@ class PlayState extends FlxState {
 	private function bulletsRangeUpdate():Void {
 		for (pb in playerBullets) {
 			//destroyed?
-			if (pb.outOfRange(pb.x)){
+			if (pb.outOfRange()){
 				playerBullets.remove(pb);
 				pb.destroy();
 			}
 		}
 		for (eb in enemiesBullets) {
-			if (eb.outOfRange(eb.x)) {
+			if (eb.outOfRange()) {
 				eb.kill();
 			}
 		}
@@ -193,12 +227,15 @@ class PlayState extends FlxState {
 	}
 	
 	public function bulletsHitEnemies(bullet:Bullet, enemy:Enemy):Void {
-		_enemiesMap.get(enemy).updateDamage(bullet.getDamage());
 		if (enemy.alive) {
-			enemy.hurt(bullet.getDamage());
+			var dmg:Float = bullet.getDamage();
+			if (enemy.type == SHIELD && bullet.facing != enemy.facing) {
+				dmg *= 0.1;
+			}
+			_enemiesMap.get(enemy).updateDamage(dmg);
+			enemy.hurt(dmg);
 			playerBullets.remove(bullet);
 			bullet.destroy();
-			
 		}
 	}
 	

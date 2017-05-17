@@ -22,7 +22,7 @@ class Bullet extends FlxSprite {
 		range = Range;
 		xpos = X;
 		ypos = Y;
-		
+		facing = direction;
 		if (direction == FlxObject.LEFT) {
 			velocity.x = -speed;
 		}
@@ -31,8 +31,8 @@ class Bullet extends FlxSprite {
 		}
 	}
 	
-	public function outOfRange(pbx:Float):Bool {
-		if((pbx > xpos + range) || (pbx < xpos - range)) {
+	public function outOfRange():Bool {
+		if((x > xpos + range) || (x < xpos - range)) {
 			return true;
 		}
 		return false;

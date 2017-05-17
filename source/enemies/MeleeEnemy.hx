@@ -26,14 +26,14 @@ class MeleeEnemy extends Enemy {
 	public function new(X:Float = 0, Y:Float = 0, 
 						bulletArray:FlxTypedGroup<EnemyBullet>,
 						gravity:Float, level:Int = 0) {
-		super(X, Y, bulletArray, gravity, "Melee");
+		super(X, Y, bulletArray, gravity, MELEE);
 		
 		this.level = level;
 		
-		loadGraphic(AssetPaths.enemy_melee__png, true, 492, 476);
-		scale.set(0.3, 0.3);
-		setSize(35, 105);
-		offset.set(230, 186);
+		loadGraphic(AssetPaths.enemy_melee__png, true, 683, 478);
+		scale.set(0.35, 0.35);
+		setSize(40, 125);
+		offset.set(320, 175);
 		
 		setFacingFlip(FlxObject.LEFT, false, false);
 		setFacingFlip(FlxObject.RIGHT, true, false);
@@ -48,7 +48,7 @@ class MeleeEnemy extends Enemy {
 		health = healthLevel[level];
 		facing = FlxObject.LEFT;
 		brain = new EnemyFSM(idle);
-		range = 90;
+		range = 100;
 	}
 	
 	public function idle(elapsed:Float):Void {

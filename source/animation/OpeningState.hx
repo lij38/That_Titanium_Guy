@@ -16,12 +16,10 @@ import levelStates.*;
 
 class OpeningState extends FlxState
 {
-	private var _map:TiledMap;
-	private var _bg:FlxTilemap;
-	private var _platform:FlxObject;
 	private var _player:PlayerAnimation;
 	private var count:Int = 0;
 	private var _dialog:Dialog;
+	private var _bg:FlxSprite;
 	private var _text:FlxText;
 	private var _enemy:RifleEnemyAnimation;
 	private var _helptext:FlxText;
@@ -47,27 +45,8 @@ class OpeningState extends FlxState
 		_stage3 = false;
 		_stage4 = false;
 
-		FlxG.camera.x = 0;
-		FlxG.camera.y = 0;
-
-		// load map and set a platform that player can stand on (row 17th)
-		_map = new TiledMap(Path.BGTMX);
-		_bg = new FlxTilemap();
-		_bg.loadMapFromArray(cast(_map.getLayer("map1"), TiledTileLayer).tileArray, _map.width, _map.height, 
-			Path.BG, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 3);
-		add(_bg);
-		_bg.follow();
-		for (j in 0...25){
-			for (i in 0...44){
-				_bg.setTileProperties(i + j*44 + 1, FlxObject.NONE);
-			}
-		}
-		for (i in 0...44){
-			_bg.setTileProperties(i + 17*44 + 1, FlxObject.ANY);
-		}
-
-		_bg.x = 0;
-		_bg.y = 0;
+		_bg = new FlxSprite();
+		_bg.loadGraphic(AssetPaths.home__png, false, 1060, 600);
 
 		// initialize with all conversations
 		_text_array = new Array<String>();
@@ -77,26 +56,23 @@ class OpeningState extends FlxState
 		_text_array.push("Hypin: WHAT?! You can’t just take my land from me and my family! We have rights to this land and I will defend my rights!");
 		_text_array.push("FA Soldiers: Resistance detected, deadly force is now authorized.");
 
-		_player = new PlayerAnimation(0,0, 1000);
-		_dialog = new Dialog();
-		_dialog.width = 500;
-		_dialog.height = 120;
+		_player = new PlayerAnimation(100,320,0);
+		_dialog = new Dialog(39, 431);
+		_dialog.width = 720;
+		_dialog.height = 145;
 		_skiptext = new FlxText(FlxG.width / 2 - 120, 20, 250, "Press ESC to skip", 30);
 		_skiptext.setFormat(AssetPaths.FONT, _skiptext.size);
 
-		_text = new FlxText(0, 0, 300, 15);
+		_text = new FlxText(200, 450, 530, 23);
 		_text.setFormat(AssetPaths.FONT, _text.size);
-		_helptext = new FlxText(0, 0, 300, "Press ENTER to continue", 17);
+		_helptext = new FlxText(300, 540, 300, "Press ENTER to continue", 20);
 		_helptext.setFormat(AssetPaths.FONT, _helptext.size);
 		_helptext.visible = false;
 		_text.width = 300;
 		_text.height = 100;
-		_enemy = new RifleEnemyAnimation(0, 0, 0);
-		var tmpMap:TiledObjectLayer = cast _map.getLayer("entities");
-		 for (e in tmpMap.objects)
-		 {
-		     placeEntities(e.type, e.xmlData.x);
-		 }
+		_enemy = new RifleEnemyAnimation(688, 300, 0);
+
+		 add(_bg);
 		 add(_player);
 		 add(_dialog);
 		 add(_text);
@@ -110,9 +86,7 @@ class OpeningState extends FlxState
 		
 	}
 
-	override public function update(elapsed:Float):Void
-	{
-		FlxG.collide(_player, _bg);
+	override public function update(elapsed:Float):Void {
 		
 		if(FlxG.keys.anyJustPressed([ESCAPE])) {
 			Main.LOGGER.logLevelEnd({won: false});
@@ -122,8 +96,6 @@ class OpeningState extends FlxState
 		if (_stage1) {
 			count++;
 		    if(count > 10 && count < 100 && count % 3 == 0) {
-		     	//_player.animation.play("lr");
-		     	//_player.x += 4;
 		     	// enemy enter from the right side of screen
 		     	_enemy.animation.play("lr");
 		     	_enemy.x -= 4;
@@ -198,8 +170,7 @@ class OpeningState extends FlxState
 		     	_enemy.animation.play("lr");
 		     	_enemy.x -= 4;
 		    } else if (count > 100) {
-				FlxG.camera.fade(FlxColor.BLACK,.25, false, function()
-				{
+				FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
 					Main.LOGGER.logLevelEnd({won: true});
 					FlxG.switchState(new TutorialState());
 				});
@@ -207,30 +178,5 @@ class OpeningState extends FlxState
 	 	}
 
 		super.update(elapsed);
-	}
-
-	private function placeEntities(entityName:String, entityData:Xml):Void
-	{
-	    var x:Int = Std.parseInt(entityData.get("x"));
-	    var y:Int = Std.parseInt(entityData.get("y"));
-	    //var width:Int = Std.parseInt(entityData.get("width"));
-	    //var height:Int = Std.parseInt(entityData.get("height"));
-	    if (entityName == "player")
-	    {
-	        _player.x = x;
-	        _player.y = y;
-		} else if (entityName == "dialog") {
-		 	_dialog.x = x;
-	        _dialog.y = y;
-		} else if (entityName == "text") {
-			_text.x = x;
-			_text.y = y;
-		} else if (entityName == "enemy") {
-			_enemy.x = x;
-			_enemy.y = y;
-		} else if (entityName == "helptext") {
-			_helptext.x = x;
-			_helptext.y = y;
-		}
 	}
 }

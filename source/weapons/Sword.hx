@@ -8,12 +8,15 @@ class Sword extends Weapon {
         for(i in 1...6) {
             this.damage.push(i * 20);
         }
-        
+        this.damageIndex = 0;
         this.name = "sword";
         this.type = "melee";
-        this.range = 132;
+        this.range = 145;
         this.fireRate = 0.25;
         this.speed = 1000;
+        this.magCapacity = -1;
+        this.curAmmo = -1;
+        this.reloadTime = -1;
         this.bulletArray = playerBulletArray;
     }
 
