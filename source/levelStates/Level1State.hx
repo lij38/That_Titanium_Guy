@@ -109,6 +109,10 @@ class Level1State extends PlayState {
 			case "KILL": var k:FlxText = new FlxText(x, y, 0, "KILL ALL THE ENEMIES FOR VICTORY", 40);
 						k.setFormat(AssetPaths.FONT, k.size, FlxColor.RED);
 						texts.add(k);
+
+            case "R": var r:FlxText = new FlxText(x, y, 250, "R to reload for rifles", 19);
+                        r.setFormat(AssetPaths.FONT, r.size);
+                        texts.add(r);
        }
     }
 }
