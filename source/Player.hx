@@ -423,7 +423,10 @@ class Player extends FlxSprite {
 	}
 	
 	public function pickUpRifle() {
-		this.j2ndWeapon = new Rifle(bulletArray);
+		if(Main.SAVE.data.riflePickUp == null) {
+			this.j2ndWeapon = new Rifle(bulletArray);
+			Main.SAVE.data.riflePickUp == true;
+		}
 	}
 
 	private function playRun(option:String) {
