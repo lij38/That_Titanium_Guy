@@ -10,6 +10,7 @@ import flixel.addons.editors.tiled.TiledObjectLayer;
 import flixel.tile.FlxBaseTilemap;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.text.FlxText;
+import flixel.util.FlxColor;
 import weapons.*;
 import enemies.*;
 
@@ -97,13 +98,17 @@ class Level1State extends PlayState {
 		var x:Int = Std.parseInt(entityData.get("x"));
 		var y:Int = Std.parseInt(entityData.get("y"));
 		switch entityName {
-           case "WW":  var ww:FlxText = new FlxText(x, y, 120, "DoubleJump", 19); 
-                       ww.setFormat(AssetPaths.FONT, ww.size); 
-                       texts.add(ww);
+           	case "WW":  var ww:FlxText = new FlxText(x, y, 120, "DoubleJump", 19); 
+                       	ww.setFormat(AssetPaths.FONT, ww.size); 
+                       	texts.add(ww);
 
-           case "Q":   var q:FlxText = new FlxText(x, y, 250, "Switch Weapon Configuration", 19);
-		               q.setFormat(AssetPaths.FONT, q.size);
-                       texts.add(q);
+           	case "Q":   var q:FlxText = new FlxText(x, y, 250, "Switch Weapon Configuration", 19);
+		               	q.setFormat(AssetPaths.FONT, q.size);
+                       	texts.add(q);
+					   
+			case "KILL": var k:FlxText = new FlxText(x, y, 0, "KILL ALL THE ENEMIES FOR VICTORY", 40);
+						k.setFormat(AssetPaths.FONT, k.size, FlxColor.RED);
+						texts.add(k);
        }
     }
 }
