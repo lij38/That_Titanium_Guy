@@ -78,7 +78,9 @@ class Level1State extends PlayState {
         Main.LOGGER.logLevelStart(2);
         add(_keys);
 		add(texts);
-		add(rifle);
+		if(Main.SAVE.data.riflePickUp == null || Main.SAVE.data.riflePickUp == false) {
+			add(rifle);
+		}
 		add(_player);
         add(_hud);
     }
