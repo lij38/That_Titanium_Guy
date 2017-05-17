@@ -195,6 +195,7 @@ class PlayState extends FlxState {
 			}
 			player.hurt(damage);
 			_hud.updateDamage(damage);
+			bullet.kill();
 		}
 	}
 	
