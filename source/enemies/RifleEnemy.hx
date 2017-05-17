@@ -10,6 +10,7 @@ import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import weapons.*;
+import haxe.CallStack;
 
 class RifleEnemy extends Enemy {
 	
@@ -17,7 +18,6 @@ class RifleEnemy extends Enemy {
 	private var fireTimer:Float = -1;
 	private var fireTime:Float = 2.0;
 	private var rate:Float = 0.1;
-	private var rateTimer:Float = 0;
 	
 	private var level:Int;
 	private var damageLevel = [for (i in 1...4) i];	
@@ -56,11 +56,14 @@ class RifleEnemy extends Enemy {
 	}
 	
 	public function attack(elapsed:Float):Void {
+		if (fireTimer >= 0) {
+			fireTimer += elapsed;
+		}
 		if (fireTimer > fireTime) {
 			fireTimer = -1;
 			bulletCount = 0;
 		}
-		if (rateTimer == 0 && fireTimer == -1) {
+		if (fireTimer == -1) {
 			if (playerPos.x <= getMidpoint().x) {
 				velocity.x = -speed;
 				facing = FlxObject.LEFT;
@@ -71,38 +74,25 @@ class RifleEnemy extends Enemy {
 		}
 		if (playerInRange()) {
 			velocity.x = 0;
-			shoot(facing, elapsed);
+			if (fireTimer < 0) {
+				fireTimer = 0;
+			}
 			animation.play("stop");
-		} else {
+		} else if (fireTimer < 0) {
 			animation.play("lr");
-			rateTimer = -1;
+		}
+		
+		if (bulletCount < 3 && fireTimer > rate * bulletCount) {
+			bulletCount++;
+			var curBullet:EnemyBullet = bulletArray.recycle(EnemyBullet, true);
+			curBullet.setBullet(x, y + 45, 250, facing, 
+							damageLevel[level], range,
+							Ranged);
 		}
 	}
 	
 	private function playerInRange():Bool {
 		return Math.abs(playerPos.x - getMidpoint().x) < range;
-	}
-	
-	private function shoot(dir:Int, elapsed:Float):Void {
-		if (bulletCount < 3) {
-			rateTimer += elapsed;
-			if (rateTimer > rate * bulletCount) {
-				var curBullet:EnemyBullet = bulletArray.recycle(EnemyBullet, true);
-				curBullet.setBullet(x, y + 45, 250, dir, 
-								damageLevel[level], range,
-								Ranged);
-				bulletCount++;
-			}
-				
-		} else {
-			rateTimer = 0;
-			if (fireTimer >= 0) {
-				fireTimer += elapsed;
-			} else {
-				fireTimer = 0.0;
-			}
-		}
-		
 	}
 	
 }

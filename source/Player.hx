@@ -9,6 +9,7 @@ import flixel.FlxG;
 import flixel.math.FlxPoint;
 import flixel.FlxObject;
 import weapons.*;
+import haxe.CallStack;
 
 class Player extends FlxSprite {
 	public var speed:Float = 250;

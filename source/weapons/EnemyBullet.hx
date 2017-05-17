@@ -17,8 +17,6 @@ class EnemyBullet extends Bullet {
 						bulletType:BulletType) {
         super(X, Y, Speed, Direction, Damage, Range);
 		if (bulletType == Ranged) {
-			//trace("Load ranged bullet graphics");
-			this.type = "ballistic";
 			loadGraphic(AssetPaths.enemybullet__png);
 		} else if (bulletType == Melee) {
 			this.type = "melee";
@@ -35,10 +33,8 @@ class EnemyBullet extends Bullet {
 		range = Range;
 		xpos = X;
 		ypos = Y;
-		x = X;
-		y = Y;
+		reset(X, Y);
 		facing = direction;
-		exists = true;
 		
 		if (direction == FlxObject.LEFT) {
 			velocity.set(-speed, 0);
@@ -47,8 +43,6 @@ class EnemyBullet extends Bullet {
 			velocity.set(speed, 0);
 		}
 		if (bulletType == Ranged) {
-			//trace("Load ranged bullet graphics");
-			this.type = "ballistic";
 			loadGraphic(AssetPaths.enemybullet__png);
 		} else if (bulletType == Melee) {
 			this.type = "melee";

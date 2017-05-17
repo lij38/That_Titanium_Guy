@@ -188,14 +188,13 @@ class PlayState extends FlxState {
 
 
 	private function bulletsHitPlayer(bullet:EnemyBullet, player:Player):Void {
-		if (player.alive) {
+		if (player.alive && bullet.alive) {
 			var damage:Float = bullet.getDamage();
 			if (player.isShielding() && player.faced != bullet.facing) {
 				damage /= 10;
 			}
 			player.hurt(damage);
 			_hud.updateDamage(damage);
-			bullet.kill();
 		}
 	}
 	

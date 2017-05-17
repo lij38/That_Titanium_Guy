@@ -20,7 +20,7 @@ class PlayerAnimation extends FlxSprite {
 		loadGraphic(AssetPaths.player__png, true, cast(4745 / 5, Int), cast(11109 / 21, Int));
 		setFacingFlip(FlxObject.LEFT, true, false);
 		setFacingFlip(FlxObject.RIGHT, false, false);
-		scale.set(0.25, 0.25);
+		scale.set(0.4, 0.4);
 		
 		//addAnimation();
 		animation.add("Run", [2, 3, 4, 5, 6, 7, 8, 9], 12, false);

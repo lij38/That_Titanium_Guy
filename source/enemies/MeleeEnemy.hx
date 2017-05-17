@@ -79,7 +79,9 @@ class MeleeEnemy extends Enemy {
 
 		if (playerInRange()) {
 			velocity.x = 0;
-			shoot(facing, elapsed);
+			if (rateTimer == -1) {
+				rateTimer = 0;
+			}
 			animation.play("attack");
 		} else if (rateTimer < 0) {
 			animation.play("lr");
@@ -96,13 +98,6 @@ class MeleeEnemy extends Enemy {
 	
 	private function playerInRange():Bool {
 		return Math.abs(playerPos.x - getMidpoint().x) < range;
-	}
-	
-	private function shoot(dir:Int, elapsed:Float):Void {
-		if (rateTimer == -1) {
-			rateTimer = 0;
-		}
-		
 	}
 	
 	override public function hurt(damage:Float):Void {

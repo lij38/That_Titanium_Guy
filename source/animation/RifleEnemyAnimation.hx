@@ -17,7 +17,7 @@ class RifleEnemyAnimation extends FlxSprite {
 		super(X, Y);
 		
 		loadGraphic(AssetPaths.enemy_rifle__png, true, 552, 383);
-		scale.set(0.3, 0.3);
+		scale.set(0.4, 0.4);
 		setSize(35, 105);
 		offset.set(260, 133);
 		
