@@ -413,6 +413,7 @@ class Player extends FlxSprite {
 	}
 
 	public function pickUpShield() {
+		trace(Std.string(Main.SAVE.data.tutComplete));
 		if(Main.SAVE.data.tutComplete == null || Main.SAVE.data.tutComplete == false) {
 			kWeapon = new Shield(bulletArray);
 			Main.SAVE.data.kWeapon = kWeapon.getName();
@@ -423,9 +424,10 @@ class Player extends FlxSprite {
 	}
 	
 	public function pickUpRifle() {
+		trace(Std.string(Main.SAVE.data.riflePickUp));
 		if(Main.SAVE.data.riflePickUp == null || Main.SAVE.data.riflePickUp == false) {
 			this.j2ndWeapon = new Rifle(bulletArray);
-			Main.SAVE.data.riflePickUp == true;
+			Main.SAVE.data.riflePickUp = true;
 			Main.SAVE.flush();
 		}
 	}
