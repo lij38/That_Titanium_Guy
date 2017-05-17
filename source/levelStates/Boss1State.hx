@@ -139,6 +139,7 @@ class Boss1State extends FlxState {
 			Main.SAVE.data.end = true;
 			Main.SAVE.flush();
 			Main.LOGGER.logLevelEnd({won: true});
+			logged = true;
 			FlxG.switchState(new FinishState());
 		}
 	}
