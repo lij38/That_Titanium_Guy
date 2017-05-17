@@ -76,7 +76,9 @@ class TutorialState extends PlayState {
 		Main.LEVELS.set(1, this);
 		super.create();
 		add(_keys);
-		add(shield);
+		if(Main.SAVE.data.tutComplete == null || Main.SAVE.data.tutComplete == false) {
+			add(shield);
+		}
 		add(texts);
 		add(_player);
         add(_hud);
