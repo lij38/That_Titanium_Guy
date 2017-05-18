@@ -126,10 +126,10 @@ class HUD extends FlxTypedGroup<FlxSprite>
      private function finishFade(_):Void {
          if(dmgCounter == 0) {
             _damage1.visible = false;
-            FlxTween.tween(_damage1, {alpha: 1});
+            _damage1.alpha = 1;
          } else {
             _damage2.visible = false;
-            FlxTween.tween(_damage2, {alpha: 1});
+            _damage2.alpha = 1;
          }
      }
 }
