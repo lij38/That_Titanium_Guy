@@ -20,6 +20,7 @@ class Boss1State extends PlayState {
 	//private var _boss_hud:Boss1HUD;
 	
 	override public function create():Void {
+		LEVELID = 3;
 		_is_boss = true;
 		
 		_map = new TiledMap(AssetPaths.boss1__tmx);
@@ -33,11 +34,11 @@ class Boss1State extends PlayState {
 
 		_plat.follow();
 		_background.follow();
-		add(_player);
 		
 		FlxG.camera.follow(_player, LOCKON, 1);
 
 		super.create();
+		add(_hud);
 	}
 
 	override public function update(elapsed:Float):Void {

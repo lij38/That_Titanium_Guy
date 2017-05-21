@@ -4,11 +4,11 @@ import flixel.FlxGame;
 import openfl.display.Sprite;
 import flixel.util.FlxSave;
 import levelStates.*;
+import otherStates.*;
 
 class Main extends Sprite {
 	public static var LOGGER:CapstoneLogger;
 	public static var SAVE:FlxSave;
-	public static var LEVELS:Map<Int, PlayState>;
 
 	public function new() {
 		super();
@@ -17,7 +17,7 @@ class Main extends Sprite {
 		var gameKey:String = "d4e860f67de231c35cf54c2e3f27e466";
 		var gameName:String = "fullmecha";
 		var categoryId:Int = 1;
-		Main.LOGGER = new CapstoneLogger(gameId, gameName, gameKey, categoryId, 1, false);
+		Main.LOGGER = new CapstoneLogger(gameId, gameName, gameKey, categoryId, 1, true);
 		
 		//Retrieve the user (saved in local storage for later)
 		var userId:String = Main.LOGGER.getSavedUserId();
@@ -28,7 +28,6 @@ class Main extends Sprite {
 		}
 		Main.SAVE = new FlxSave();
 		Main.SAVE.bind(userId);	
-		LEVELS = new Map<Int, PlayState>();
 		Main.LOGGER.startNewSession(userId, this.onSessionReady);	
 	}
 	

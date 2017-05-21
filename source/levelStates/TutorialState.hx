@@ -73,7 +73,6 @@ class TutorialState extends PlayState {
 
 		Main.LOGGER.logLevelStart(1);
 
-		Main.LEVELS.set(1, this);
 		super.create();
 		add(_keys);
 		if(Main.SAVE.data.tutComplete == null || Main.SAVE.data.tutComplete == false) {

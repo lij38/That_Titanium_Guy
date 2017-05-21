@@ -74,7 +74,6 @@ class Level1State extends PlayState {
 		}
 
         super.create();
-		Main.LEVELS.set(2, this);
         Main.LOGGER.logLevelStart(2);
         add(_keys);
 		add(texts);
