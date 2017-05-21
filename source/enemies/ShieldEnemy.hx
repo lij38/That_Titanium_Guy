@@ -13,13 +13,12 @@ import weapons.*;
 
 class ShieldEnemy extends Enemy {
 	
-	private var bulletCount:Int = 0;
 	private var rate:Float = 2.0;
 	private var rateTimer:Float = -1;
 	private var attacked:Bool = false;
 	
 	private var level:Int;
-	private var damageLevel = [for (i in 1...4) i];	
+	private var damageLevel = [for (i in 1...4) i / 2];	
 	private var healthLevel = [for (i in 1...4) 50 * i + 20];
 	
 	
@@ -27,7 +26,6 @@ class ShieldEnemy extends Enemy {
 						bulletArray:FlxTypedGroup<EnemyBullet>,
 						gravity:Float, level:Int = 0) {
 		super(X, Y, bulletArray, gravity, SHIELD);
-		
 		this.level = level;
 		
 		loadGraphic(AssetPaths.enemy_shield__png, true, 568, 481);
@@ -50,15 +48,26 @@ class ShieldEnemy extends Enemy {
 		facing = FlxObject.LEFT;
 		brain = new EnemyFSM(idle);
 		range = 90;
+		originalColor = 0xffcc00;
+		color = originalColor;
+		
 	}
 	
 	public function idle(elapsed:Float):Void {
 		if (seesPlayer) {
 			brain.activeState = attack;
 		}
+		randomFacing(elapsed);
+		velocity.set(0, 0);
+		animation.play("stop");
+		rateTimer = -1;
+		attacked = false;
 	}
 	
 	public function attack(elapsed:Float):Void {
+		if (!seesPlayer) {
+			brain.activeState = idle;
+		}
 		//trace(rateTimer);
 		if (rateTimer >= 0) {
 			rateTimer += elapsed;
@@ -80,7 +89,9 @@ class ShieldEnemy extends Enemy {
 
 		if (playerInRange()) {
 			velocity.x = 0;
-			shoot(facing, elapsed);
+			if (rateTimer == -1) {
+				rateTimer = 0;
+			}
 			animation.play("attack");
 		} else if (rateTimer < 0) {
 			animation.play("lr");
@@ -91,17 +102,6 @@ class ShieldEnemy extends Enemy {
 							damageLevel[level], range, 
 							Melee);
 			attacked = true;
-		}
-		
-	}
-	
-	private function playerInRange():Bool {
-		return Math.abs(playerPos.x - getMidpoint().x) < range;
-	}
-	
-	private function shoot(dir:Int, elapsed:Float):Void {
-		if (rateTimer == -1) {
-			rateTimer = 0;
 		}
 		
 	}

@@ -38,7 +38,7 @@ class PlayState extends FlxState {
 	public var LEVELID:Int;
 	
 	override public function create():Void {
-		//FlxG.debugger.drawDebug = true;
+		FlxG.debugger.drawDebug = true;
 		//////////////////
         //LOAD PLAYER
 		//////////////////
@@ -90,6 +90,10 @@ class PlayState extends FlxState {
 
 	override public function update(elapsed:Float):Void {
 		super.update(elapsed);
+		if (FlxG.keys.anyPressed([MINUS])) {
+			// kill all enemies
+			enemiesGroup.forEach(killAllEnemies);
+		}
 		enemiesGroup.forEach(enemiesUpdate);
 		if (!_is_boss) {
 			updateEnemyHud();
@@ -182,6 +186,7 @@ class PlayState extends FlxState {
 		}  else {
 		 	en = new RifleEnemy(x, y-55, enemiesBullets, GRAVITY);
 		 	en.hurt(en.health);
+			//en = new TruckEnemy(x + 5000, y - 100, enemiesBullets, GRAVITY);
 		}
 		
 		if (entityName == "boss1") {
@@ -271,5 +276,11 @@ class PlayState extends FlxState {
 	
 	public function enemiesBulletsHitWalls(wall:FlxObject, b:Bullet):Void {
 		b.kill();
+	}
+	
+	public function killAllEnemies(e:Enemy) {
+		if (e.alive/* && e.type != TRUCK*/) {
+			e.hurt(e.health);
+		}
 	}
 }
