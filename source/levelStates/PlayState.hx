@@ -253,15 +253,15 @@ class PlayState extends FlxState {
 	public function bulletsHitEnemies(bullet:Bullet, enemy:Enemy):Void {
 		if (enemy.alive) {
 			var dmg:Float = bullet.getDamage();
+			playerBullets.remove(bullet);
+			bullet.destroy();
 			if (enemy.type == SHIELD && bullet.facing != enemy.facing) {
-				dmg *= 0.1;
+				dmg = 0;
 			}
 			if (!_is_boss) {
 				_enemiesMap.get(enemy).updateDamage(dmg);
 			}
 			enemy.hurt(dmg);
-			playerBullets.remove(bullet);
-			bullet.destroy();
 		}
 	}
 	

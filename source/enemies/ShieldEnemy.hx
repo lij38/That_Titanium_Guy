@@ -13,7 +13,7 @@ import weapons.*;
 
 class ShieldEnemy extends Enemy {
 	
-	private var rate:Float = 2.0;
+	private var rate:Float = 3.0;
 	private var rateTimer:Float = -1;
 	private var attacked:Bool = false;
 	
@@ -38,10 +38,10 @@ class ShieldEnemy extends Enemy {
 		
 		animation.add("stop", [6], 1, false);
 		animation.add("lr", [0, 1, 2, 3, 4, 5], 9, false);
-		animation.add("hurt", [10, 10, 10, 10, 6], 12, false);
+		animation.add("shield", [10, 10, 10, 10, 6], 12, false);
+		animation.add("hurt", [11, 11, 11, 11, 6], 12, false);
 		animation.add("die", [11, 12, 13, 13, 13, 13, 13, 13, 13, 13, 13], 9, false);
-		animation.add("attack", [7, 7, 7, 8, 8, 8, 9, 9, 9,
-								 6, 6, 6, 6, 6, 6, 6, 6, 6], 9, false);
+		animation.add("attack", [7, 7, 7, 8, 8, 8, 9, 9, 9], 9, false);
 		animation.play("stop");
 		
 		health = healthLevel[level];
@@ -92,7 +92,11 @@ class ShieldEnemy extends Enemy {
 			if (rateTimer == -1) {
 				rateTimer = 0;
 			}
-			animation.play("attack");
+			if (rateTimer <= 1.0) {
+				animation.play("attack");
+			} else {
+				animation.play("stop");
+			}
 		} else if (rateTimer < 0) {
 			animation.play("lr");
 		}
@@ -111,12 +115,16 @@ class ShieldEnemy extends Enemy {
 		if (health - damage <= 0) {
 			animation.play("die");
 			alive = false;
-		} else if (rateTimer == -1) {
-			animation.play("hurt");
+		} else if (rateTimer == -1 || rateTimer > 1) {
+			if (damage <= 0) {
+				animation.play("shield");
+			} else {
+				animation.play("hurt");
+				color = 0xff0000;
+			}
 			hurtTimer = 0;
 		}
 		health -= damage;
-		color = 0xff0000;
 		hurtColorTimer = 0.0;
 	}
 	
