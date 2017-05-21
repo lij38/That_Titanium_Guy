@@ -17,9 +17,11 @@ import weapons.*;
 import enemies.*;
 import flixel.util.FlxColor;
 
-class PlayState extends FlxState {
+class PlayState extends FlxState {	
 	private var _player:Player;
 	private var _hud:HUD;
+	private var _boss_hud:Boss1HUD;
+	private var _is_boss:Bool = false;
 
 	private var _map:TiledMap;
     private var _background:FlxTilemap;
@@ -36,7 +38,7 @@ class PlayState extends FlxState {
 	public var LEVELID:Int;
 	
 	override public function create():Void {
-		//FlxG.debugger.drawDebug = true;
+		FlxG.debugger.drawDebug = true;
 		//////////////////
         //LOAD PLAYER
 		//////////////////
@@ -51,7 +53,6 @@ class PlayState extends FlxState {
         //LOAD HUD
 		///////////////////////
         _hud = new HUD(_player);
-
 		/////////////////////////
 		//LOAD ENEMIES
 		////////////////////////
@@ -74,6 +75,11 @@ class PlayState extends FlxState {
         add(enemiesGroup);
         add(playerBullets);
 		add(_enemiesHUD);
+		add(_player);
+
+		if (_is_boss) {
+			add(_boss_hud);
+		}
 		
 		 _hud.updateHUD(_player.getAmmo(0), _player.getAmmo(1), _player.isReloading(0), _player.isReloading(1),
 		 				_player.getWeaponName(0), _player.getWeaponName(1));
@@ -84,9 +90,15 @@ class PlayState extends FlxState {
 
 	override public function update(elapsed:Float):Void {
 		super.update(elapsed);
+		if (FlxG.keys.anyPressed([MINUS])) {
+			// kill all enemies
+			enemiesGroup.forEach(killAllEnemies);
+		}
 		enemiesGroup.forEach(enemiesUpdate);
-		updateEnemyHud();
-		_hud.updateXY();
+		if (!_is_boss) {
+			updateEnemyHud();
+			_hud.updateXY();
+		}
 
         FlxG.collide(_player, _plat);
 		
@@ -163,6 +175,7 @@ class PlayState extends FlxState {
 		var y:Int = Std.parseInt(entityData.get("y"));
 		
 		var en:Enemy;
+		var boss:Boss1;
 
 		if (entityName == "MELEE") {
 			en = new MeleeEnemy(x, y, enemiesBullets, GRAVITY);
@@ -170,19 +183,30 @@ class PlayState extends FlxState {
 			en = new RifleEnemy(x, y, enemiesBullets, GRAVITY);
 		} else if (entityName == "SHIELD") {
 			en = new ShieldEnemy(x, y, enemiesBullets, GRAVITY, 1);
-		} else {
+		}  else {
 		 	en = new RifleEnemy(x, y-55, enemiesBullets, GRAVITY);
 		 	en.hurt(en.health);
+			//en = new TruckEnemy(x + 5000, y - 100, enemiesBullets, GRAVITY);
 		}
 		
-		enemiesGroup.add(en);
-		if (en.health > 0) {
-			var eh:EnemyHUD;
-			eh = new EnemyHUD(en);
-			_enemiesMap.set(en, eh);
-			_enemiesHUD.add(eh);
+		if (entityName == "boss1") {
+			boss = new Boss1(x, y, enemiesBullets, 0);
+			enemiesGroup.add(boss);
+			if (boss.health > 0) {
+				_boss_hud = new Boss1HUD(boss);
+			} else {
+				boss.hurt(boss.health);
+			}
 		} else {
-			en.hurt(en.health);
+			enemiesGroup.add(en);
+			if (en.health > 0) {
+				var eh:EnemyHUD;
+				eh = new EnemyHUD(en);
+				_enemiesMap.set(en, eh);
+				_enemiesHUD.add(eh);
+			} else {
+				en.hurt(en.health);
+			}
 		}
 	}
 
@@ -228,13 +252,15 @@ class PlayState extends FlxState {
 	public function bulletsHitEnemies(bullet:Bullet, enemy:Enemy):Void {
 		if (enemy.alive) {
 			var dmg:Float = bullet.getDamage();
-			if (enemy.type == SHIELD && bullet.facing != enemy.facing) {
-				dmg *= 0.1;
-			}
-			_enemiesMap.get(enemy).updateDamage(dmg);
-			enemy.hurt(dmg);
 			playerBullets.remove(bullet);
 			bullet.destroy();
+			if (enemy.type == SHIELD && bullet.facing != enemy.facing) {
+				dmg = 0;
+			}
+			if (!_is_boss) {
+				_enemiesMap.get(enemy).updateDamage(dmg);
+			}
+			enemy.hurt(dmg);
 		}
 	}
 	
@@ -249,5 +275,11 @@ class PlayState extends FlxState {
 	
 	public function enemiesBulletsHitWalls(wall:FlxObject, b:Bullet):Void {
 		b.kill();
+	}
+	
+	public function killAllEnemies(e:Enemy) {
+		if (e.alive/* && e.type != TRUCK*/) {
+			e.hurt(e.health);
+		}
 	}
 }
