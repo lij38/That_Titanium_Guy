@@ -42,6 +42,7 @@ class Player extends FlxSprite {
 	private var swordTime:Float = 0.25;
 	private var swordTimer:Float = -1;
 	private var curConfig:String;
+	private var dmgTaken:Float;
 
 	public function new(?X:Float = 0, ?Y:Float = 0,
 						playerBulletArray:FlxTypedGroup<Bullet>,
@@ -49,6 +50,7 @@ class Player extends FlxSprite {
 		super(X, Y);
 		GRAVITY = gravity;
 		health = 100;
+		dmgTaken = 0.0;
 
 		loadGraphic(AssetPaths.player__png, true, cast(4745 / 5, Int), cast(11109 / 21, Int));
 		setFacingFlip(FlxObject.LEFT, true, false);
@@ -164,24 +166,21 @@ class Player extends FlxSprite {
 
 		if (!isSwording() && !isTumbling()) {
 			tumbleTimer = -1;
-			up = FlxG.keys.anyPressed([UP, W]);
-			down = FlxG.keys.anyPressed([DOWN, S]);
-			left = FlxG.keys.anyPressed([LEFT, A]);
-			right = FlxG.keys.anyPressed([RIGHT, D]);
-			doubleJump = FlxG.keys.anyJustPressed([UP, W]);
+			up = FlxG.keys.anyPressed([SPACE, W]);
+			left = FlxG.keys.anyPressed([A]);
+			right = FlxG.keys.anyPressed([D]);
+			doubleJump = FlxG.keys.anyJustPressed([SPACE, W]);
 			
 			//leftP = FlxG.keys.anyJustPressed([LEFT, A]);
 			//rightP = FlxG.keys.anyJustPressed([RIGHT, D]);
 			
 			jetpack = FlxG.keys.anyPressed([SHIFT]);
 			
-			roll = FlxG.keys.anyJustPressed([SPACE]);
+			roll = FlxG.keys.anyJustPressed([S]);
 		} else if (isTumbling()){
 			tumble(FlxObject.NONE, elapsed);
 		}
 		
-		if (up && down)
-			up = down = false;
 		if (left && right)
 			left = right = false;
 		
@@ -433,6 +432,10 @@ class Player extends FlxSprite {
 		}
 	}
 
+	public function getDamageTaken() {
+		return this.dmgTaken;
+	}
+
 	private function playRun(option:String) {
 		switch (facing) {
 			case FlxObject.LEFT, FlxObject.RIGHT:
@@ -572,6 +575,7 @@ class Player extends FlxSprite {
 	
 	override public function hurt(damage:Float):Void {
 		super.hurt(damage);
+		this.dmgTaken += damage;
 		FlxFlicker.flicker(this, 0.5, 0.10);
 	}
 }

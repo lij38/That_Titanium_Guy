@@ -36,6 +36,8 @@ class PlayState extends FlxState {
 	
 	private var GRAVITY:Float = 1000;
 	private var logged:Bool = false;
+	private var startTime:Float;
+	private var numEnemies:Int;
 	public var LEVELID:Int;
 	
 	override public function create():Void {
@@ -66,7 +68,9 @@ class PlayState extends FlxState {
 		for (e in enemyLayer.objects) {
 			placeEnemies(e.name, e.xmlData.x);
 		}
-		
+		numEnemies = enemiesGroup.countLiving();
+		trace(Std.string(numEnemies));
+		Main.SAVE.data.numEnemies = numEnemies;
 		/////////////////////////
 		//ADD EVERY COMPONENT
 		////////////////////////
@@ -87,6 +91,8 @@ class PlayState extends FlxState {
         FlxG.camera.follow(_player, TOPDOWN, 1);
 		FlxG.camera.fade(FlxColor.BLACK, .25, true);
 		Main.SAVE.data.curLevel = LEVELID;
+		Main.SAVE.flush();
+		startTime = Date.now().getTime();
 		super.create();
 	}
 
@@ -130,17 +136,21 @@ class PlayState extends FlxState {
 			if(Main.SAVE.data.levelCompleted != null) {
 				var old:Int = Main.SAVE.data.levelCompleted;
 				Main.SAVE.data.levelCompleted = Math.max(old, LEVELID);
-				Main.SAVE.flush();
 			} else {
 				Main.SAVE.data.levelCompleted = LEVELID;
-				Main.SAVE.flush();
 			}
 			if(LEVELID == 3) {
 				Main.SAVE.data.end = true;
-				Main.SAVE.flush();
 			}
 			Main.LOGGER.logLevelEnd({won: true});
 			logged = true;
+			Main.SAVE.data.dmgTaken = _player.getDamageTaken();
+			Main.SAVE.data.timeTaken = (Date.now().getTime() - startTime) / 1000;
+			Main.SAVE.data.enemiesKilled = numEnemies - enemiesGroup.countLiving();
+			Main.SAVE.flush();
+			trace("damage taken: " + Main.SAVE.data.dmgTaken);
+			trace("time: " + Main.SAVE.data.timeTaken);
+			trace("enemies: " + Main.SAVE.data.enemiesKilled);
 			FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
 				FlxG.switchState(new FinishState());
 			});
