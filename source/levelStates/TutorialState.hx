@@ -34,14 +34,14 @@ class TutorialState extends PlayState {
             _map.height, AssetPaths.tutorialBG__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 7209);
         //load platform
          _plat.loadMapFromArray(cast(_map.getLayer("plat"), TiledTileLayer).tileArray, _map.width,
-             _map.height, AssetPaths.green__jpg, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 7209, 7208, 7209);
+             _map.height, AssetPaths.city__jpg, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 7209, 7208, 7209);
 		//load keys
          _keys.loadMapFromArray(cast(_map.getLayer("keys"), TiledTileLayer).tileArray, _map.width,
-             _map.height, AssetPaths.keys__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 7210, 7209, 8085);
+             _map.height, AssetPaths.keyboard__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 7245, 7244, 10052);
         
          _background.setTileProperties(1, FlxObject.NONE);
          _plat.setTileProperties(7209, FlxObject.ANY);
-		 _keys.setTileProperties(7210, FlxObject.ANY);
+		 _keys.setTileProperties(7245, FlxObject.NONE);
          _background.follow();
 		 _plat.follow();
 		 _keys.follow();
@@ -85,8 +85,8 @@ class TutorialState extends PlayState {
 
 	override public function update(elapsed:Float):Void  {
 		if (enemiesGroup.countLiving() == -1) {
-			Main.SAVE.data.tutComplete = true;
-			Main.SAVE.flush();
+		 	Main.SAVE.data.tutComplete = true;
+		 	Main.SAVE.flush();
 		}
 	 	super.update(elapsed);
 		FlxG.overlap(shield, _player, onPickup);
@@ -99,13 +99,13 @@ class TutorialState extends PlayState {
 		var y:Int = Std.parseInt(entityData.get("y"));
 		var k:FlxText = new FlxText(x, y, 100, "Hold to Shield", 19);
 		k.setFormat(AssetPaths.FONT, k.size);
-		var space:FlxText = new FlxText(x, y, 250, "Space to Roll through enemies", 19);
-		space.setFormat(AssetPaths.FONT, k.size);
+		var s:FlxText = new FlxText(x, y, 250, "S to Roll through enemies", 19);
+		s.setFormat(AssetPaths.FONT, s.size);
 		var rb:FlxText = new FlxText(x, y, 250, "Roll to dodge bullets", 19);
-		rb.setFormat(AssetPaths.FONT, k.size);
+		rb.setFormat(AssetPaths.FONT, rb.size);
 		switch entityName {
            case "K": texts.add(k);
-           case "SPACE": texts.add(space);
+           case "S": texts.add(s);
 		   case "RB": texts.add(rb);
        }
     }

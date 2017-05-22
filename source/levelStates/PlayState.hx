@@ -40,7 +40,7 @@ class PlayState extends FlxState {
 	public var LEVELID:Int;
 	
 	override public function create():Void {
-		FlxG.debugger.drawDebug = true;
+		//FlxG.debugger.drawDebug = true;
 		//////////////////
         //LOAD PLAYER
 		//////////////////
@@ -157,7 +157,7 @@ class PlayState extends FlxState {
 	//////////////////////////////////////////////////////////
 	///EXITING...
 	//////////////////////////////////////////////////////////
-	private function detination() {
+	private function destination(o1:FlxSprite, o2:FlxSprite):Void {
 		if (FlxG.keys.anyPressed([UP, W]) && _exit.visible) {
 			FlxG.switchState(new FinishState());
 		}
