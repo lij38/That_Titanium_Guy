@@ -5,6 +5,7 @@ import flixel.FlxState;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import levelStates.*;
+import items.*;
 import flixel.util.FlxColor;
 import flixel.tile.FlxTilemap;
 import flixel.addons.editors.tiled.TiledTileLayer;

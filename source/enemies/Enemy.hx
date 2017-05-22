@@ -10,16 +10,21 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import weapons.*;
 import flixel.util.FlxColor;
+import items.Coin;
 
 enum EnemyType {
 	SHIELD;
 	MELEE;
 	RIFLE;
 	TRUCK;
+	BOSS;
 }
 
 class Enemy extends FlxSprite {
 	private var bulletArray:FlxTypedGroup<EnemyBullet>;
+	private var coinsGroup:FlxTypedGroup<Coin>;
+	private var dropCoin:Bool = false;
+	private var coinCount:Int = 0;
 	
 	private var GRAVITY:Float;
 	private var brain:EnemyFSM;
@@ -35,15 +40,17 @@ class Enemy extends FlxSprite {
 	private var hurtTimer:Float = -1;
 	public var type:EnemyType;
 	
-	private var idleTime:Int = 5;
+	private var idleTime:Int = Std.random(3) + 3;
 	private var idleTimer:Float = 0.0;
 	
 	public function new(X:Float = 0, Y:Float = 0, 
 						enemiesBulletArray:FlxTypedGroup<EnemyBullet>,
+						coinsGroup:FlxTypedGroup<Coin>,
 						gravity:Float, type:EnemyType) {
 		super(X, Y);
 		GRAVITY = gravity;
 		bulletArray = enemiesBulletArray;
+		this.coinsGroup = coinsGroup;
 		
 		acceleration.y = GRAVITY;
 		playerPos = FlxPoint.get();
@@ -68,6 +75,18 @@ class Enemy extends FlxSprite {
 			velocity.set(0, 0);
 			super.update(elapsed);
 			color = originalColor;
+			if (!dropCoin) {
+				if (type == BOSS) {
+					var rx:Float = Math.random() * 600 - 75;
+					if (coinCount < 50 && rx < 75) {
+						coinsGroup.add(new Coin(getMidpoint().x + rx, getMidpoint().y + 45));
+						coinCount++;
+					}
+				} else {
+					coinsGroup.add(new Coin(getMidpoint().x, getMidpoint().y));
+					dropCoin = true;
+				}
+			}
 			return;
 		} else {
 			if (hurtTimer >= 0) {

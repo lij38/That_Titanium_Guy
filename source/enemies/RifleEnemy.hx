@@ -11,6 +11,7 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import weapons.*;
 import haxe.CallStack;
+import items.Coin;
 
 class RifleEnemy extends Enemy {
 	
@@ -25,8 +26,9 @@ class RifleEnemy extends Enemy {
 	
 	public function new(X:Float = 0, Y:Float = 0, 
 						bulletArray:FlxTypedGroup<EnemyBullet>,
+						coinsGroup:FlxTypedGroup<Coin>,
 						gravity:Float, level:Int = 0) {
-		super(X, Y, bulletArray, gravity, RIFLE);
+		super(X, Y, bulletArray, coinsGroup, gravity, RIFLE);
 		this.level = level;
 		hurtTime = 0.5;
 		
@@ -55,7 +57,6 @@ class RifleEnemy extends Enemy {
 			brain.activeState = attack;
 		}
 		randomFacing(elapsed);
-		velocity.set(0, 0);
 		animation.play("stop");
 		rateTimer = -1;
 		bulletCount = 0;
@@ -63,6 +64,7 @@ class RifleEnemy extends Enemy {
 	
 	public function attack(elapsed:Float):Void {
 		if (!seesPlayer) {
+			velocity.set(0, 0);
 			brain.activeState = idle;
 		}
 		if (rateTimer >= 0) {

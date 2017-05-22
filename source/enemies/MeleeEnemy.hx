@@ -10,6 +10,7 @@ import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import weapons.*;
+import items.Coin;
 
 class MeleeEnemy extends Enemy {
 	
@@ -24,8 +25,9 @@ class MeleeEnemy extends Enemy {
 	
 	public function new(X:Float = 0, Y:Float = 0, 
 						bulletArray:FlxTypedGroup<EnemyBullet>,
+						coinsGroup:FlxTypedGroup<Coin>,
 						gravity:Float, level:Int = 0) {
-		super(X, Y, bulletArray, gravity, MELEE);
+		super(X, Y, bulletArray, coinsGroup, gravity, MELEE);
 		
 		this.level = level;
 		
@@ -55,7 +57,6 @@ class MeleeEnemy extends Enemy {
 			brain.activeState = attack;
 		}
 		randomFacing(elapsed);
-		velocity.set(0, 0);
 		animation.play("stop");
 		rateTimer = -1;
 		attacked = false;
@@ -63,6 +64,7 @@ class MeleeEnemy extends Enemy {
 	
 	public function attack(elapsed:Float):Void {
 		if (!seesPlayer) {
+			velocity.set(0, 0);
 			brain.activeState = idle;
 		}
 		//trace(rateTimer);
