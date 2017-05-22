@@ -60,7 +60,6 @@ class TruckEnemy extends Enemy {
 		if (seesPlayer) {
 			brain.activeState = attack;
 		}
-		velocity.set(0, 0);
 		animation.play("stop");
 		rateTimer = -1;
 		bulletCount = 0;
@@ -68,6 +67,7 @@ class TruckEnemy extends Enemy {
 	
 	public function attack(elapsed:Float):Void {
 		if (!seesPlayer) {
+			velocity.set(0, 0);
 			brain.activeState = idle;
 		}
 		if (rateTimer >= 0) {

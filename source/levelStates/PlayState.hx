@@ -76,8 +76,8 @@ class PlayState extends FlxState {
         add(_background);
         add(_plat); 
 		add(enemiesBullets);
-		add(coinsGroup);
         add(enemiesGroup);
+		add(coinsGroup);
         add(playerBullets);
 		add(_enemiesHUD);
 		add(_player);
@@ -188,16 +188,7 @@ class PlayState extends FlxState {
 		var en:Enemy;
 		var boss:Boss1;
 		
-		if (entityName == "RIFLEDEAD") {
-			en = new RifleEnemy(x, y-55, enemiesBullets, coinsGroup, GRAVITY);
-		 	en.hurt(en.health);
-			//en = new TruckEnemy(x + 5000, y - 100, enemiesBullets, GRAVITY);
-		} else {
-			en = EnemyFactory.getEnemy(entityName, x, y, enemiesBullets, coinsGroup, GRAVITY);
-			if (en == null) {
-				trace("Invalide entity name: " + entityName);
-			}
-		}
+		
 		/*if (entityName == "MELEE") {
 			en = new MeleeEnemy(x, y, enemiesBullets, GRAVITY);
 		} else if (entityName == "RIFLE"){
@@ -211,7 +202,7 @@ class PlayState extends FlxState {
 		}*/
 		
 		if (entityName == "boss1") {
-			boss = new Boss1(x, y, enemiesBullets, 0);
+			boss = new Boss1(x, y, enemiesBullets, coinsGroup, 0);
 			enemiesGroup.add(boss);
 			if (boss.health > 0) {
 				_boss_hud = new Boss1HUD(boss);
@@ -219,6 +210,16 @@ class PlayState extends FlxState {
 				boss.hurt(boss.health);
 			}
 		} else {
+			if (entityName == "RIFLEDEAD") {
+				en = new RifleEnemy(x, y-55, enemiesBullets, coinsGroup, GRAVITY);
+				en.hurt(en.health);
+				//en = new TruckEnemy(x + 5000, y - 100, enemiesBullets, GRAVITY);
+			} else {
+				en = EnemyFactory.getEnemy(entityName, x, y, enemiesBullets, coinsGroup, GRAVITY);
+				if (en == null) {
+					trace("Invalide entity name: " + entityName);
+				}
+			}
 			enemiesGroup.add(en);
 			if (en.health > 0) {
 				var eh:EnemyHUD;

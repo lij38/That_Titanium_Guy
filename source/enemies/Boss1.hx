@@ -7,6 +7,7 @@ import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import weapons.*;
+import items.Coin;
 
 class Boss1 extends Enemy {
 	//public var stuck:Bool;
@@ -23,8 +24,11 @@ class Boss1 extends Enemy {
 	private var rate:Float = 0.1;
 	private var rateTimer:Float = 0;
 
-	public function new(X:Float=0, Y:Float=0, bulletArray:FlxTypedGroup<EnemyBullet>, gravity:Float) {
-		super(X, Y, bulletArray, coinsGroup, gravity, MELEE);
+	public function new(X:Float = 0, Y:Float = 0, 
+					bulletArray:FlxTypedGroup<EnemyBullet>, 
+					coinsGroup:FlxTypedGroup<Coin>,
+					gravity:Float) {
+		super(X, Y, bulletArray, coinsGroup, gravity, BOSS);
 		GRAVITY = gravity;
 
 		loadGraphic(AssetPaths.abc__png, true, 1007, 702);
@@ -45,7 +49,8 @@ class Boss1 extends Enemy {
 		animation.add("stuck", [18], 1, false);
 		animation.add("stuck_stop", [18, 19, 20], 3, false);
 		animation.add("attack", [0, 1, 2, 3, 4, 13, 14, 15, 16, 17], 9, false);
-		animation.add("die", [20, 21, 22, 22, 22, 22, 22, 22], 3, false);
+		animation.add("die", [20, 21, 22, 22, 22, 22, 22, 22, 22, 22, 22,
+							22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22], 3, false);
 		animation.play("stop");
 
 		acceleration.y = GRAVITY;
@@ -205,7 +210,7 @@ class Boss1 extends Enemy {
 	}
 
 	override public function hurt(damage:Float):Void {
-		if (health - damage < 0) {
+		if (health - damage <= 0) {
 			animation.play("die");
 			alive = false;
 		} //else {

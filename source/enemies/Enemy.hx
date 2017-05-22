@@ -17,12 +17,14 @@ enum EnemyType {
 	MELEE;
 	RIFLE;
 	TRUCK;
+	BOSS;
 }
 
 class Enemy extends FlxSprite {
 	private var bulletArray:FlxTypedGroup<EnemyBullet>;
 	private var coinsGroup:FlxTypedGroup<Coin>;
 	private var dropCoin:Bool = false;
+	private var coinCount:Int = 0;
 	
 	private var GRAVITY:Float;
 	private var brain:EnemyFSM;
@@ -74,8 +76,16 @@ class Enemy extends FlxSprite {
 			super.update(elapsed);
 			color = originalColor;
 			if (!dropCoin) {
-				coinsGroup.add(new Coin(getMidpoint().x, getMidpoint().y));
-				dropCoin = true;
+				if (type == BOSS) {
+					var rx:Float = Math.random() * 600 - 75;
+					if (coinCount < 50 && rx < 75) {
+						coinsGroup.add(new Coin(getMidpoint().x + rx, getMidpoint().y + 45));
+						coinCount++;
+					}
+				} else {
+					coinsGroup.add(new Coin(getMidpoint().x, getMidpoint().y));
+					dropCoin = true;
+				}
 			}
 			return;
 		} else {

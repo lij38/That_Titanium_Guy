@@ -22,7 +22,6 @@ class ShieldEnemy extends Enemy {
 	private var damageLevel = [for (i in 1...4) i / 2];	
 	private var healthLevel = [for (i in 1...4) 50 * i + 20];
 	
-	
 	public function new(X:Float = 0, Y:Float = 0,
 						bulletArray:FlxTypedGroup<EnemyBullet>,
 						coinsGroup:FlxTypedGroup<Coin>,
@@ -60,7 +59,6 @@ class ShieldEnemy extends Enemy {
 			brain.activeState = attack;
 		}
 		randomFacing(elapsed);
-		velocity.set(0, 0);
 		animation.play("stop");
 		rateTimer = -1;
 		attacked = false;
@@ -68,6 +66,7 @@ class ShieldEnemy extends Enemy {
 	
 	public function attack(elapsed:Float):Void {
 		if (!seesPlayer) {
+			velocity.set(0, 0);
 			brain.activeState = idle;
 		}
 		//trace(rateTimer);

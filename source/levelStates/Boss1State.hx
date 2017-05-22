@@ -48,7 +48,7 @@ class Boss1State extends PlayState {
 	private function bulletsHitEnemy(bullet:Bullet, small_boss:Boss1):Void {
 		if (small_boss.alive) {
 			var damage:Float = bullet.getDamage();
-			trace(damage);
+			//trace(damage);
 			small_boss.hurt(damage);
 			playerBullets.remove(bullet);
 			bullet.destroy();

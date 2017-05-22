@@ -57,7 +57,6 @@ class MeleeEnemy extends Enemy {
 			brain.activeState = attack;
 		}
 		randomFacing(elapsed);
-		velocity.set(0, 0);
 		animation.play("stop");
 		rateTimer = -1;
 		attacked = false;
@@ -65,6 +64,7 @@ class MeleeEnemy extends Enemy {
 	
 	public function attack(elapsed:Float):Void {
 		if (!seesPlayer) {
+			velocity.set(0, 0);
 			brain.activeState = idle;
 		}
 		//trace(rateTimer);
