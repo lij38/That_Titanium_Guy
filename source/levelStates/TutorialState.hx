@@ -97,16 +97,28 @@ class TutorialState extends PlayState {
     private function placeInstructions(entityName:String, entityData:Xml):Void {
 		var x:Int = Std.parseInt(entityData.get("x"));
 		var y:Int = Std.parseInt(entityData.get("y"));
-		var k:FlxText = new FlxText(x, y, 100, "Hold to Shield", 19);
+		var k:FlxText = new FlxText(x, y, 250, "Hold to Shield", 19);
 		k.setFormat(AssetPaths.FONT, k.size);
 		var s:FlxText = new FlxText(x, y, 250, "S to Roll through enemies", 19);
 		s.setFormat(AssetPaths.FONT, s.size);
 		var rb:FlxText = new FlxText(x, y, 250, "Roll to dodge bullets", 19);
 		rb.setFormat(AssetPaths.FONT, rb.size);
+		var ad:FlxText = new FlxText(x, y, 250, "To Move", 19);
+		ad.setFormat(AssetPaths.FONT, ad.size);
+		var space:FlxText = new FlxText(x, y, 250, "Jump", 19);
+		space.setFormat(AssetPaths.FONT, space.size);
+		var j:FlxText = new FlxText(x, y, 250, "Attack", 19);
+		j.setFormat(AssetPaths.FONT, j.size);
+		var w:FlxText = new FlxText(x, y, 250, "Exit", 19);
+		w.setFormat(AssetPaths.FONT, w.size);
 		switch entityName {
            case "K": texts.add(k);
            case "S": texts.add(s);
 		   case "RB": texts.add(rb);
+		   case "AD": texts.add(ad);
+		   case "SPACE": texts.add(space);
+		   case "J": texts.add(j);
+		   case "W": texts.add(w);
        }
     }
 

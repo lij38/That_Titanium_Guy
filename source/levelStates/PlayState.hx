@@ -234,9 +234,7 @@ class PlayState extends FlxState {
 		} else if (entityName == "SHIELD") {
 			en = new ShieldEnemy(x, y, enemiesBullets, GRAVITY, lvl);
 		}  else {
-		 	en = new RifleEnemy(x, y-55, enemiesBullets, GRAVITY);
-		 	en.hurt(en.health);
-			//en = new TruckEnemy(x + 5000, y - 100, enemiesBullets, GRAVITY);
+			en = new TruckEnemy(x, y, enemiesBullets, GRAVITY);
 
 		}
 		
