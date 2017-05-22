@@ -74,7 +74,7 @@ class Level1State extends PlayState {
 		var x:Int = Std.parseInt(entityData.get("x"));
 		var y:Int = Std.parseInt(entityData.get("y"));
 		switch entityName {
-           	case "DJ":  var dj:FlxText = new FlxText(x, y, 250, "DoubleJump", 19); 
+           	case "DJ":  var dj:FlxText = new FlxText(x, y, 150, "Press Twice", 19); 
                        	dj.setFormat(AssetPaths.FONT, dj.size); 
                        	texts.add(dj);
 
