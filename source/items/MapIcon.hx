@@ -1,4 +1,4 @@
-package;
+package items;
 
 import flixel.FlxSprite;
 import flixel.tweens.FlxTween;
@@ -8,14 +8,14 @@ import flixel.text.FlxText;
 import flixel.FlxG;
 import flash.events.MouseEvent;
 
-class HomeIcon extends FlxSprite
+class MapIcon extends FlxSprite
 {
 	public var _onclick:Dynamic;
 
     public function new(X:Float=0, Y:Float=0, ?OnClick:Void->Void) 
 	{
 	    super(X, Y);
-	    loadGraphic(AssetPaths.shield_imageicon__png, false, 65, 65);
+	    loadGraphic(AssetPaths.map_icon__png, false, 70, 70);
 
 	    _onclick = OnClick;
 

@@ -10,6 +10,7 @@ import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import weapons.*;
+import items.Coin;
 
 class TruckEnemy extends Enemy {
 	
@@ -25,8 +26,9 @@ class TruckEnemy extends Enemy {
 	
 	public function new(X:Float = 0, Y:Float = 0, 
 						bulletArray:FlxTypedGroup<EnemyBullet>,
+						coinsGroup:FlxTypedGroup<Coin>,
 						gravity:Float, level:Int = 0) {
-		super(X, Y, bulletArray, gravity, TRUCK);
+		super(X, Y, bulletArray, coinsGroup, gravity, TRUCK);
 		
 		this.level = level;
 		

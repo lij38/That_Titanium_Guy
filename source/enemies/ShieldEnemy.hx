@@ -10,6 +10,7 @@ import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import weapons.*;
+import items.Coin;
 
 class ShieldEnemy extends Enemy {
 	
@@ -24,8 +25,9 @@ class ShieldEnemy extends Enemy {
 	
 	public function new(X:Float = 0, Y:Float = 0,
 						bulletArray:FlxTypedGroup<EnemyBullet>,
+						coinsGroup:FlxTypedGroup<Coin>,
 						gravity:Float, level:Int = 0) {
-		super(X, Y, bulletArray, gravity, SHIELD);
+		super(X, Y, bulletArray, coinsGroup, gravity, SHIELD);
 		this.level = level;
 		
 		loadGraphic(AssetPaths.enemy_shield__png, true, 568, 481);

@@ -15,6 +15,7 @@ import flixel.tile.FlxBaseTilemap;
 import flixel.addons.editors.tiled.TiledMap;
 import weapons.*;
 import enemies.*;
+import items.*;
 import otherStates.*;
 import flixel.util.FlxColor;
 
@@ -33,6 +34,7 @@ class PlayState extends FlxState {
 	private var _enemiesHUD:FlxTypedGroup<EnemyHUD>;
 	private var playerBullets:FlxTypedGroup<Bullet>;
 	private var enemiesBullets:FlxTypedGroup<EnemyBullet>;
+	private var coinsGroup:FlxTypedGroup<Coin>;
 	
 	private var GRAVITY:Float = 1000;
 	private var logged:Bool = false;
@@ -60,6 +62,7 @@ class PlayState extends FlxState {
 		enemiesBullets = new FlxTypedGroup<EnemyBullet>();
 		
 		enemiesGroup = new FlxTypedGroup<Enemy>();
+		coinsGroup = new FlxTypedGroup<Coin>();
 		_enemiesMap = new Map<Enemy, EnemyHUD>();
 		_enemiesHUD = new FlxTypedGroup<EnemyHUD>();
 		var enemyLayer:TiledObjectLayer = cast _map.getLayer("enemies");
@@ -73,6 +76,7 @@ class PlayState extends FlxState {
         add(_background);
         add(_plat); 
 		add(enemiesBullets);
+		add(coinsGroup);
         add(enemiesGroup);
         add(playerBullets);
 		add(_enemiesHUD);
@@ -112,9 +116,14 @@ class PlayState extends FlxState {
 	 		FlxG.overlap(enemiesBullets, _player, bulletsHitPlayer);
 	 	}
 		
+		// Bullets collide walls
 		FlxG.collide(_plat, playerBullets, bulletsHitWalls);
 		FlxG.collide(_plat, enemiesBullets, enemiesBulletsHitWalls);
 		FlxG.collide(enemiesGroup, _plat);
+		
+		// Coins
+		FlxG.collide(coinsGroup, _plat);
+		FlxG.overlap(coinsGroup, _player, pickUpCoin);
 
 		bulletsRangeUpdate();
         if (!_player.exists && !logged) {
@@ -178,8 +187,18 @@ class PlayState extends FlxState {
 		
 		var en:Enemy;
 		var boss:Boss1;
-
-		if (entityName == "MELEE") {
+		
+		if (entityName == "RIFLEDEAD") {
+			en = new RifleEnemy(x, y-55, enemiesBullets, coinsGroup, GRAVITY);
+		 	en.hurt(en.health);
+			//en = new TruckEnemy(x + 5000, y - 100, enemiesBullets, GRAVITY);
+		} else {
+			en = EnemyFactory.getEnemy(entityName, x, y, enemiesBullets, coinsGroup, GRAVITY);
+			if (en == null) {
+				trace("Invalide entity name: " + entityName);
+			}
+		}
+		/*if (entityName == "MELEE") {
 			en = new MeleeEnemy(x, y, enemiesBullets, GRAVITY);
 		} else if (entityName == "RIFLE"){
 			en = new RifleEnemy(x, y, enemiesBullets, GRAVITY);
@@ -189,7 +208,7 @@ class PlayState extends FlxState {
 		 	en = new RifleEnemy(x, y-55, enemiesBullets, GRAVITY);
 		 	en.hurt(en.health);
 			//en = new TruckEnemy(x + 5000, y - 100, enemiesBullets, GRAVITY);
-		}
+		}*/
 		
 		if (entityName == "boss1") {
 			boss = new Boss1(x, y, enemiesBullets, 0);
@@ -277,6 +296,10 @@ class PlayState extends FlxState {
 	
 	public function enemiesBulletsHitWalls(wall:FlxObject, b:Bullet):Void {
 		b.kill();
+	}
+	
+	public function pickUpCoin(coin:Coin, player:Player):Void {
+		coin.kill();
 	}
 	
 	public function killAllEnemies(e:Enemy) {

@@ -28,7 +28,9 @@ class Player extends FlxSprite {
 	private var TumbleTime:Float = 0.3;
 	
 	private var bulletArray:FlxTypedGroup<Bullet>;
-
+	
+	private var money:Int;
+	
 	private var jWeapon:Weapon;
 	private var kWeapon:Weapon;
 	private var j2ndWeapon:Weapon;

@@ -24,7 +24,7 @@ class Boss1 extends Enemy {
 	private var rateTimer:Float = 0;
 
 	public function new(X:Float=0, Y:Float=0, bulletArray:FlxTypedGroup<EnemyBullet>, gravity:Float) {
-		super(X, Y, bulletArray, gravity, MELEE);
+		super(X, Y, bulletArray, coinsGroup, gravity, MELEE);
 		GRAVITY = gravity;
 
 		loadGraphic(AssetPaths.abc__png, true, 1007, 702);
