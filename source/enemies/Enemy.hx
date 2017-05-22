@@ -9,11 +9,13 @@ import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import weapons.*;
+import flixel.util.FlxColor;
 
 enum EnemyType {
 	SHIELD;
 	MELEE;
 	RIFLE;
+	TRUCK;
 }
 
 class Enemy extends FlxSprite {
@@ -26,10 +28,15 @@ class Enemy extends FlxSprite {
 	public var seesPlayer:Bool = false;
 	public var hurtTime:Float = 0.25;
 	private var range:Float;
+	private var detectRange:Float = 500;
 	private var hurtColorTimer:Float = -1;
+	private var originalColor:FlxColor = 0xffffff;
 	
 	private var hurtTimer:Float = -1;
 	public var type:EnemyType;
+	
+	private var idleTime:Int = 5;
+	private var idleTimer:Float = 0.0;
 	
 	public function new(X:Float = 0, Y:Float = 0, 
 						enemiesBulletArray:FlxTypedGroup<EnemyBullet>,
@@ -41,6 +48,8 @@ class Enemy extends FlxSprite {
 		acceleration.y = GRAVITY;
 		playerPos = FlxPoint.get();
 		
+		color = originalColor;
+		
 		this.type = type;
 	}
 	
@@ -50,10 +59,15 @@ class Enemy extends FlxSprite {
 			Math.abs(playerPos.y - getMidpoint().y) < 50) {
 			seesPlayer = true;
 		}
+		if (seesPlayer &&
+			(Math.abs(playerPos.x - getMidpoint().x) > detectRange ||
+			Math.abs(playerPos.y - getMidpoint().y) > 300)) {
+			seesPlayer = false;
+		}
 		if (!alive) {
 			velocity.set(0, 0);
 			super.update(elapsed);
-			color = 0xffffff;
+			color = originalColor;
 			return;
 		} else {
 			if (hurtTimer >= 0) {
@@ -73,7 +87,7 @@ class Enemy extends FlxSprite {
 		}
 		if (hurtColorTimer > hurtTime) {
 			hurtColorTimer = -1;
-			color = 0xffffff;
+			color = originalColor;
 		}
 		super.update(elapsed);
 	}
@@ -94,5 +108,23 @@ class Enemy extends FlxSprite {
 	
 	public function isHurting():Bool {
 		return hurtTimer > 0 && hurtTimer < hurtTime;
+	}
+	
+	public function randomFacing(elapse:Float):Void {
+		if (idleTimer < idleTime) {
+			idleTimer += elapse;
+		} else {
+			if (facing == FlxObject.LEFT) {
+				facing = FlxObject.RIGHT;
+			} else {
+				facing = FlxObject.LEFT;
+			}
+			idleTimer = 0.0;
+			idleTime = Std.random(3) + 3;
+		}
+	}
+	
+	public function playerInRange():Bool {
+		return Math.abs(playerPos.x - getMidpoint().x) < range;
 	}
 }

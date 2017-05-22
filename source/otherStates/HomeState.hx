@@ -1,4 +1,4 @@
-package;
+package otherStates;
 
 import flixel.FlxState;
 import flixel.FlxSprite;

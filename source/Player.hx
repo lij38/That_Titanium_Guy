@@ -233,7 +233,7 @@ class Player extends FlxSprite {
 					mA = 90;
 				}
 				// determine our velocity based on the angle and speed
-				velocity.set(speed * 2, 0);
+				velocity.set(speed * 3, 0);
 				velocity.rotate(FlxPoint.weak(0, 0), mA);
 			} else {
 				velocity.set(0, 0);

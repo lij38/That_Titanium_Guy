@@ -27,8 +27,8 @@ class HUD extends FlxTypedGroup<FlxSprite>
          super();
          _player = player;
         //ammo
-        _txtjAmmo = new FlxText(FlxG.width - 150, 55, 0, "", 24);
-        _txtkAmmo = new FlxText(FlxG.width - 75, 55, 0, "", 24);
+        _txtjAmmo = new FlxText(FlxG.width - 230, 55, 0, "", 24);
+        _txtkAmmo = new FlxText(FlxG.width - 115, 55, 0, "", 24);
         _txtjAmmo.setFormat(AssetPaths.FONT, _txtjAmmo.size);
         _txtkAmmo.setFormat(AssetPaths.FONT, _txtkAmmo.size);
 
@@ -40,8 +40,8 @@ class HUD extends FlxTypedGroup<FlxSprite>
         _healthbar.createFilledBar(FlxColor.TRANSPARENT, FlxColor.RED, true, FlxColor.BLACK);
 
         //weapons
-        _jWeapon = new FlxSprite(_txtjAmmo.x - 8, 4);
-        _kWeapon = new FlxSprite(_txtkAmmo.x - 8, 4);
+        _jWeapon = new FlxSprite(_txtjAmmo.x + 20, 4);
+        _kWeapon = new FlxSprite(_txtkAmmo.x + 20, 4);
 
         //damage
         _damage1 = new FlxText(_player.x + 30, _player.y - 50, 0, "1", 30);
@@ -87,7 +87,7 @@ class HUD extends FlxTypedGroup<FlxSprite>
             _txtjAmmo.text = "";
             _txtjAmmo.size = 24;
         } else {
-            _txtjAmmo.text = Std.string(jAmmo);
+            _txtjAmmo.text = Std.string(jAmmo) + " / inf";
             _txtjAmmo.size = 24;
         }
         if(kReloading) {
@@ -97,7 +97,7 @@ class HUD extends FlxTypedGroup<FlxSprite>
             _txtkAmmo.text = "";
             _txtkAmmo.size = 24;
         } else {
-            _txtkAmmo.text = Std.string(kAmmo);
+            _txtkAmmo.text = Std.string(kAmmo) + " / " + "inf";
             _txtkAmmo.size = 24;
         }
      }

@@ -13,7 +13,6 @@ import weapons.*;
 
 class MeleeEnemy extends Enemy {
 	
-	private var bulletCount:Int = 0;
 	private var rate:Float = 1.66;
 	private var rateTimer:Float = -1;
 	private var attacked:Bool = false;
@@ -55,9 +54,17 @@ class MeleeEnemy extends Enemy {
 		if (seesPlayer) {
 			brain.activeState = attack;
 		}
+		randomFacing(elapsed);
+		velocity.set(0, 0);
+		animation.play("stop");
+		rateTimer = -1;
+		attacked = false;
 	}
 	
 	public function attack(elapsed:Float):Void {
+		if (!seesPlayer) {
+			brain.activeState = idle;
+		}
 		//trace(rateTimer);
 		if (rateTimer >= 0) {
 			rateTimer += elapsed;
@@ -94,10 +101,6 @@ class MeleeEnemy extends Enemy {
 			attacked = true;
 		}
 		
-	}
-	
-	private function playerInRange():Bool {
-		return Math.abs(playerPos.x - getMidpoint().x) < range;
 	}
 	
 	override public function hurt(damage:Float):Void {

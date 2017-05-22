@@ -15,6 +15,7 @@ import flixel.tile.FlxBaseTilemap;
 import flixel.addons.editors.tiled.TiledMap;
 import weapons.*;
 import enemies.*;
+import otherStates.*;
 import flixel.util.FlxColor;
 
 class PlayState extends FlxState {	
@@ -39,7 +40,7 @@ class PlayState extends FlxState {
 	public var LEVELID:Int;
 	
 	override public function create():Void {
-		//FlxG.debugger.drawDebug = true;
+		FlxG.debugger.drawDebug = true;
 		//////////////////
         //LOAD PLAYER
 		//////////////////
@@ -89,11 +90,16 @@ class PlayState extends FlxState {
 		 				_player.getWeaponName(0), _player.getWeaponName(1));
         FlxG.camera.follow(_player, TOPDOWN, 1);
 		FlxG.camera.fade(FlxColor.BLACK, .25, true);
+		Main.SAVE.data.curLevel = LEVELID;
 		super.create();
 	}
 
 	override public function update(elapsed:Float):Void {
 		super.update(elapsed);
+		if (FlxG.keys.anyPressed([MINUS])) {
+			// kill all enemies
+			enemiesGroup.forEach(killAllEnemies);
+		}
 		enemiesGroup.forEach(enemiesUpdate);
 		if (!_is_boss) {
 			updateEnemyHud();
@@ -198,7 +204,10 @@ class PlayState extends FlxState {
 		} else if (entityName == "SHIELD") {
 			en = new ShieldEnemy(x, y, enemiesBullets, GRAVITY, lvl);
 		}  else {
-			en = new TruckEnemy(x, y, enemiesBullets, GRAVITY, lvl);
+		 	en = new RifleEnemy(x, y-55, enemiesBullets, GRAVITY);
+		 	en.hurt(en.health);
+			//en = new TruckEnemy(x + 5000, y - 100, enemiesBullets, GRAVITY);
+
 		}
 		
 		if (entityName == "boss1") {
@@ -226,11 +235,10 @@ class PlayState extends FlxState {
 	private function bulletsHitPlayer(bullet:EnemyBullet, player:Player):Void {
 		if (player.alive && bullet.alive) {
 			var damage:Float = bullet.getDamage();
-			if (player.isShielding() && player.faced != bullet.facing) {
-				damage /= 10;
+			if (!player.isShielding() || (player.isShielding() && player.faced == bullet.facing)) {
+				player.hurt(damage);
+				_hud.updateDamage(damage);
 			}
-			player.hurt(damage);
-			_hud.updateDamage(damage);
 			bullet.kill();
 		}
 	}
@@ -265,15 +273,15 @@ class PlayState extends FlxState {
 	public function bulletsHitEnemies(bullet:Bullet, enemy:Enemy):Void {
 		if (enemy.alive) {
 			var dmg:Float = bullet.getDamage();
+			playerBullets.remove(bullet);
+			bullet.destroy();
 			if (enemy.type == SHIELD && bullet.facing != enemy.facing) {
-				dmg *= 0.1;
+				dmg = 0;
 			}
 			if (!_is_boss) {
 				_enemiesMap.get(enemy).updateDamage(dmg);
 			}
 			enemy.hurt(dmg);
-			playerBullets.remove(bullet);
-			bullet.destroy();
 		}
 	}
 	
@@ -288,5 +296,11 @@ class PlayState extends FlxState {
 	
 	public function enemiesBulletsHitWalls(wall:FlxObject, b:Bullet):Void {
 		b.kill();
+	}
+	
+	public function killAllEnemies(e:Enemy) {
+		if (e.alive/* && e.type != TRUCK*/) {
+			e.hurt(e.health);
+		}
 	}
 }
