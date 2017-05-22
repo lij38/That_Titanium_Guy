@@ -168,8 +168,28 @@ class PlayState extends FlxState {
 	///EXITING...
 	//////////////////////////////////////////////////////////
 	private function destination(o1:FlxSprite, o2:FlxSprite):Void {
-		if (FlxG.keys.anyPressed([UP, W]) && _exit.visible) {
-			FlxG.switchState(new FinishState());
+		if (FlxG.keys.anyPressed([W]) && _exit.visible && !logged) {
+			if(Main.SAVE.data.levelCompleted != null) {
+				var old:Int = Main.SAVE.data.levelCompleted;
+				Main.SAVE.data.levelCompleted = Math.max(old, LEVELID);
+			} else {
+				Main.SAVE.data.levelCompleted = LEVELID;
+			}
+			if(LEVELID == 3) {
+				Main.SAVE.data.end = true;
+			}
+			Main.LOGGER.logLevelEnd({won: true});
+			logged = true;
+			Main.SAVE.data.dmgTaken = _player.getDamageTaken();
+			Main.SAVE.data.timeTaken = (Date.now().getTime() - startTime) / 1000;
+			Main.SAVE.data.enemiesKilled = numEnemies - enemiesGroup.countLiving();
+			Main.SAVE.flush();
+			trace("damage taken: " + Main.SAVE.data.dmgTaken);
+			trace("time: " + Main.SAVE.data.timeTaken);
+			trace("enemies: " + Main.SAVE.data.enemiesKilled);
+			FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
+				FlxG.switchState(new FinishState());
+			});
 		}
 	}
 
