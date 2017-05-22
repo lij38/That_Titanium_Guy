@@ -23,6 +23,7 @@ class PlayState extends FlxState {
 	private var _hud:HUD;
 	private var _boss_hud:Boss1HUD;
 	private var _is_boss:Bool = false;
+	private var _exit:Exit;
 
 	private var _map:TiledMap;
     private var _background:FlxTilemap;
@@ -41,12 +42,13 @@ class PlayState extends FlxState {
 	public var LEVELID:Int;
 	
 	override public function create():Void {
-		FlxG.debugger.drawDebug = true;
+		//FlxG.debugger.drawDebug = true;
 		//////////////////
         //LOAD PLAYER
 		//////////////////
         playerBullets = new FlxTypedGroup<Bullet>();
         _player = new Player(playerBullets, GRAVITY);
+		_exit = new Exit();
 		var tmpMap:TiledObjectLayer = cast _map.getLayer("player");
         for (e in tmpMap.objects) {
             placeEntities(e.name, e.xmlData.x);
@@ -75,7 +77,8 @@ class PlayState extends FlxState {
 		//ADD EVERY COMPONENT
 		////////////////////////
         add(_background);
-        add(_plat); 
+        add(_plat);
+		add(_exit);
 		add(enemiesBullets);
         add(enemiesGroup);
         add(playerBullets);
@@ -84,6 +87,7 @@ class PlayState extends FlxState {
 
 		if (_is_boss) {
 			add(_boss_hud);
+			_exit.visible = false;
 		}
 		
 		 _hud.updateHUD(_player.getAmmo(0), _player.getAmmo(1), _player.isReloading(0), _player.isReloading(1),
@@ -155,6 +159,18 @@ class PlayState extends FlxState {
 				FlxG.switchState(new FinishState());
 			});
 		}
+
+
+		FlxG.overlap(_player, _exit, destination);
+	}
+
+	//////////////////////////////////////////////////////////
+	///EXITING...
+	//////////////////////////////////////////////////////////
+	private function destination(o1:FlxSprite, o2:FlxSprite):Void {
+		if (FlxG.keys.anyPressed([UP, W]) && _exit.visible) {
+			FlxG.switchState(new FinishState());
+		}
 	}
 
 	private function updateEnemyHud() {
@@ -176,7 +192,8 @@ class PlayState extends FlxState {
 			_player.x = x;
 			_player.y = y;
 		} else if (entityName == "END") {
-
+			_exit.x = x;
+			_exit.y = y;
         }
 
 	}
@@ -185,20 +202,22 @@ class PlayState extends FlxState {
 	private function placeEnemies(entityName:String, entityData:Xml):Void {
 		var x:Int = Std.parseInt(entityData.get("x"));
 		var y:Int = Std.parseInt(entityData.get("y"));
+		var lvl:Int = Std.parseInt(entityData.get("type"));
 		
 		var en:Enemy;
 		var boss:Boss1;
 
 		if (entityName == "MELEE") {
-			en = new MeleeEnemy(x, y, enemiesBullets, GRAVITY);
+			en = new MeleeEnemy(x, y, enemiesBullets, GRAVITY, lvl);
 		} else if (entityName == "RIFLE"){
-			en = new RifleEnemy(x, y, enemiesBullets, GRAVITY);
+			en = new RifleEnemy(x, y, enemiesBullets, GRAVITY, lvl);
 		} else if (entityName == "SHIELD") {
-			en = new ShieldEnemy(x, y, enemiesBullets, GRAVITY, 1);
+			en = new ShieldEnemy(x, y, enemiesBullets, GRAVITY, lvl);
 		}  else {
 		 	en = new RifleEnemy(x, y-55, enemiesBullets, GRAVITY);
 		 	en.hurt(en.health);
 			//en = new TruckEnemy(x + 5000, y - 100, enemiesBullets, GRAVITY);
+
 		}
 		
 		if (entityName == "boss1") {
