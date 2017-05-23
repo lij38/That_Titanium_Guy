@@ -22,7 +22,7 @@ class RifleEnemy extends Enemy {
 	
 	private var level:Int;
 	private var damageLevel = [for (i in 1...4) i];	
-	private var healthLevel = [for (i in 1...4) 50 * i];
+	private var healthLevel = [for (i in 0...4) 20 * i + 30];
 	
 	public function new(X:Float = 0, Y:Float = 0, id:Int = -1,
 						bulletArray:FlxTypedGroup<EnemyBullet>,
@@ -63,10 +63,6 @@ class RifleEnemy extends Enemy {
 	}
 	
 	public function attack(elapsed:Float):Void {
-		if (!seesPlayer) {
-			velocity.set(0, 0);
-			brain.activeState = idle;
-		}
 		if (rateTimer >= 0) {
 			rateTimer += elapsed;
 		}
@@ -99,6 +95,10 @@ class RifleEnemy extends Enemy {
 			curBullet.setBullet(x, y + 45, 200, facing, 
 							damageLevel[level], range,
 							Ranged);
+		}
+		if (!seesPlayer) {
+			velocity.set(0, 0);
+			brain.activeState = idle;
 		}
 	}
 	

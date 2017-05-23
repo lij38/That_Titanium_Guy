@@ -20,7 +20,7 @@ class MeleeEnemy extends Enemy {
 	
 	private var level:Int;
 	private var damageLevel = [for (i in 1...4) i];	
-	private var healthLevel = [for (i in 1...4) 50 * i + 20];
+	private var healthLevel = [for (i in 0...4) 20 * i + 50];
 	
 	
 	public function new(X:Float = 0, Y:Float = 0, id:Int = -1,
@@ -63,10 +63,6 @@ class MeleeEnemy extends Enemy {
 	}
 	
 	public function attack(elapsed:Float):Void {
-		if (!seesPlayer) {
-			velocity.set(0, 0);
-			brain.activeState = idle;
-		}
 		//trace(rateTimer);
 		if (rateTimer >= 0) {
 			rateTimer += elapsed;
@@ -103,6 +99,10 @@ class MeleeEnemy extends Enemy {
 			attacked = true;
 		}
 		
+		if (!seesPlayer) {
+			velocity.set(0, 0);
+			brain.activeState = idle;
+		}
 	}
 	
 	override public function hurt(damage:Float):Void {
