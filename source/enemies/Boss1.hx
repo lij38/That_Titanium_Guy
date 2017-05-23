@@ -64,6 +64,7 @@ class Boss1 extends Enemy {
 		attack_count = 0;
 		stay_count = 0;
 		range = 180;
+		hurtTime = 0.15;
 	}
 
 	override public function update(elapsed:Float):Void {
@@ -218,6 +219,8 @@ class Boss1 extends Enemy {
 			//hurtTimer = 0;
 		//}
 		health -= damage;
+		color = 0xff0000;
+		hurtColorTimer = 0.0;
 	}
 	
 }
