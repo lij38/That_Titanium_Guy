@@ -69,15 +69,17 @@ class MapState extends FlxState
          }
 
          for (i in 0...(level - 1)) {
-            var rating:Int = Main.SAVE.data.stararr[i];
-            if (rating == 3) {
-                _stararr[i].loadGraphic(AssetPaths.threeStar2__png, false, 80, 30);
-            } else if (rating == 2) {
-                _stararr[i].loadGraphic(AssetPaths.twoStar2__png, false, 80, 30);
-            } else {
-                _stararr[i].loadGraphic(AssetPaths.oneStar2__png, false, 80, 30);
-            }
-            add(_stararr[i]);
+			 if (Main.SAVE.data.stararr != null) {
+				var rating:Int = Main.SAVE.data.stararr[i];
+				if (rating == 3) {
+					_stararr[i].loadGraphic(AssetPaths.threeStar2__png, false, 80, 30);
+				} else if (rating == 2) {
+					_stararr[i].loadGraphic(AssetPaths.twoStar2__png, false, 80, 30);
+				} else {
+					_stararr[i].loadGraphic(AssetPaths.oneStar2__png, false, 80, 30);
+				}
+				add(_stararr[i]);
+			 }
          }
 
         // unlocked states

@@ -22,11 +22,11 @@ class ShieldEnemy extends Enemy {
 	private var damageLevel = [for (i in 1...4) i / 2];	
 	private var healthLevel = [for (i in 1...4) 50 * i + 20];
 	
-	public function new(X:Float = 0, Y:Float = 0,
+	public function new(X:Float = 0, Y:Float = 0, id:Int = -1,
 						bulletArray:FlxTypedGroup<EnemyBullet>,
 						coinsGroup:FlxTypedGroup<Coin>,
 						gravity:Float, level:Int = 0) {
-		super(X, Y, bulletArray, coinsGroup, gravity, SHIELD);
+		super(X, Y, id, bulletArray, coinsGroup, gravity, SHIELD);
 		this.level = level;
 		
 		loadGraphic(AssetPaths.enemy_shield__png, true, 568, 481);

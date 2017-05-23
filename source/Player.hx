@@ -136,6 +136,7 @@ class Player extends FlxSprite {
 			//rightTimer = -1;
 		//}
 		
+		var jumpKey:Bool = false;
 		var up:Bool = false;
 		var down:Bool = false;
 		var left:Bool = false;
@@ -168,10 +169,12 @@ class Player extends FlxSprite {
 
 		if (!isSwording() && !isTumbling()) {
 			tumbleTimer = -1;
-			up = FlxG.keys.anyPressed([SPACE, W]);
+			up = FlxG.keys.anyPressed([W]);
+			jumpKey = FlxG.keys.anyPressed([SPACE]);
 			left = FlxG.keys.anyPressed([A]);
 			right = FlxG.keys.anyPressed([D]);
-			doubleJump = FlxG.keys.anyJustPressed([SPACE, W]);
+			down = FlxG.keys.anyPressed([S]);
+			doubleJump = FlxG.keys.anyJustPressed([SPACE]);
 			
 			//leftP = FlxG.keys.anyJustPressed([LEFT, A]);
 			//rightP = FlxG.keys.anyJustPressed([RIGHT, D]);
@@ -183,6 +186,8 @@ class Player extends FlxSprite {
 			tumble(FlxObject.NONE, elapsed);
 		}
 		
+		if (up && down)
+			up = down = false;
 		if (left && right)
 			left = right = false;
 		
@@ -259,7 +264,7 @@ class Player extends FlxSprite {
 			}
 			
 			
-			if (jumped && !up) {
+			if (jumped && !jumpKey) {
 				jumped = false;
 			}
 			
@@ -274,7 +279,7 @@ class Player extends FlxSprite {
 				jump = 0;
 			}
 			
-			if (jump >= 0 && up) {
+			if (jump >= 0 && jumpKey) {
 				jumped = true;
 				jump += elapsed;
 				if (jump > 0.33) {
@@ -414,7 +419,7 @@ class Player extends FlxSprite {
 		}
 	}
 
-	public function pickUpShield() {
+	public function pickUpShield():Void {
 		trace(Std.string(Main.SAVE.data.tutComplete));
 		if(Main.SAVE.data.tutComplete == null || Main.SAVE.data.tutComplete == false) {
 			kWeapon = new Shield(bulletArray);
@@ -425,13 +430,18 @@ class Player extends FlxSprite {
 		}
 	}
 	
-	public function pickUpRifle() {
+	public function pickUpRifle():Void {
 		trace(Std.string(Main.SAVE.data.riflePickUp));
 		if(Main.SAVE.data.riflePickUp == null || Main.SAVE.data.riflePickUp == false) {
 			this.j2ndWeapon = new Rifle(bulletArray);
 			Main.SAVE.data.riflePickUp = true;
 			Main.SAVE.flush();
 		}
+	}
+	
+	// TODO: implement player pick up coin
+	public function pickUpCoin(value:Int):Void {
+		trace("pick up coin: " + value);
 	}
 
 	public function getDamageTaken() {

@@ -24,11 +24,11 @@ class RifleEnemy extends Enemy {
 	private var damageLevel = [for (i in 1...4) i];	
 	private var healthLevel = [for (i in 1...4) 50 * i];
 	
-	public function new(X:Float = 0, Y:Float = 0, 
+	public function new(X:Float = 0, Y:Float = 0, id:Int = -1,
 						bulletArray:FlxTypedGroup<EnemyBullet>,
 						coinsGroup:FlxTypedGroup<Coin>,
 						gravity:Float, level:Int = 0) {
-		super(X, Y, bulletArray, coinsGroup, gravity, RIFLE);
+		super(X, Y, id, bulletArray, coinsGroup, gravity, RIFLE);
 		this.level = level;
 		hurtTime = 0.5;
 		

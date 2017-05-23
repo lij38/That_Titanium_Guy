@@ -24,11 +24,11 @@ class TruckEnemy extends Enemy {
 	private var healthLevel = [for (i in 1...4) 50 * i + 40];
 	
 	
-	public function new(X:Float = 0, Y:Float = 0, 
+	public function new(X:Float = 0, Y:Float = 0, id:Int = -1,
 						bulletArray:FlxTypedGroup<EnemyBullet>,
 						coinsGroup:FlxTypedGroup<Coin>,
 						gravity:Float, level:Int = 0) {
-		super(X, Y, bulletArray, coinsGroup, gravity, TRUCK);
+		super(X, Y, id, bulletArray, coinsGroup, gravity, TRUCK);
 		
 		this.level = level;
 		
