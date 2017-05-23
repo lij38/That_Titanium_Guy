@@ -28,6 +28,9 @@ class HomeState extends FlxState
 	private var _arrow:Arrow;
 	private var _text:FlxText;
 	private var tutState:Bool;
+	private var _workshop:FlxSprite;
+	private var _maptext:FlxText;
+	private var _workshoptext:FlxText;
 
 	override public function create():Void
 	{
@@ -48,6 +51,24 @@ class HomeState extends FlxState
 
 		playerBullets = new FlxTypedGroup<Bullet>();
 		_player = new Player(playerBullets, 1000);
+
+		_workshop = new FlxSprite();
+		_workshop.loadGraphic(AssetPaths.workshop__png, false, 350, 290);
+		add(_workshop);
+		_workshop.color = 0xdddddd;
+
+		_maptext = new FlxText(0, 0, 200, 20);
+        _maptext.text = "CLICK or PRESS M to Open MAP";
+        _maptext.setFormat(AssetPaths.FONT, 20);
+        _maptext.scrollFactor.set(0.0);
+        _maptext.visible = false;
+        add(_maptext);
+
+        _workshoptext = new FlxText(0, 0, 500, 24);
+        _workshoptext.text = "PRESS W to ENTER WORKSHOP";
+        _workshoptext.setFormat(AssetPaths.FONT, 24);
+        _workshoptext.visible = false;
+        add(_workshoptext);
 
 		var tmpMap:TiledObjectLayer = cast _map.getLayer("entities");
 		 for (e in tmpMap.objects)
@@ -96,6 +117,10 @@ class HomeState extends FlxState
 
 	override public function update(elapsed:Float):Void
 	{
+		if (FlxG.keys.anyPressed([M])) {
+			switchMapState();
+		}
+		checkEnter(_player, _workshop);
 		FlxG.collide(_player, _fg);
 		if (tutorial_map) {
 			if (FlxG.mouse.justPressed) {
@@ -106,10 +131,24 @@ class HomeState extends FlxState
             	_player.color = 0xffffff;
             	_fg.color = 0xffffff;
             	_mapbutton.active = true;
+            	_maptext.visible = true;
         	}	
 		}
 		FlxG.collide(_player, _bg);
 		super.update(elapsed);
+	}
+
+	private function checkEnter(player:Player, workshop:FlxSprite) {
+		if (player.x + player.width >= workshop.x && player.x <= workshop.x + workshop.width) {
+			_workshop.color = 0xffffff;
+			_workshoptext.visible = true;
+			if (FlxG.keys.anyPressed([W])) {
+				switchWorkshopState();
+			}
+		} else {
+			_workshop.color = 0xdddddd;
+			_workshoptext.visible = false;
+		}
 	}
 
 	private function placeEntities(entityName:String, entityData:Xml):Void
@@ -121,8 +160,23 @@ class HomeState extends FlxState
 	    {
 	        _player.x = x;
 	        _player.y = y;
-		} 
+		} else if (entityName == "workshop") {
+			_workshop.x = x;
+			_workshop.y = y;
+		} else if (entityName == "maptxt") {
+			_maptext.x = x;
+			_maptext.y = y;
+		} else if (entityName == "workshoptxt") {
+			_workshoptext.x = x;
+			_workshoptext.y = y;
+		}
 	}
+
+	private function switchWorkshopState():Void {
+		//FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
+			//FlxG.switchState(new MapTutorialState());
+		//});
+    }
 
 	private function switchMapState():Void {
 		FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
