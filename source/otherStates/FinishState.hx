@@ -7,10 +7,12 @@ import flixel.FlxSprite;
 import flixel.ui.FlxButton;
 import levelStates.*;
 import flixel.util.FlxColor;
+import items.*;
+
 class FinishState extends FlxState
 {
-	private var _btnPlay:FlxButton;
-    private var _btnHome:FlxButton;
+	private var _btnPlay:ImageButton;
+    private var _btnHome:ImageButton;
     private var text:FlxText;
     private var timeNum:Int;
     private var time:FlxText;
@@ -103,9 +105,11 @@ class FinishState extends FlxState
         add(killedRating);
         add(overall);
         add(overallRating);
-		_btnPlay = new FlxButton(390, 530, "Next", clickPlay);
+		_btnPlay = new ImageButton(300, 440, "Next", clickPlay);
+        _btnPlay.loadGraphic(AssetPaths.next__png, false, 200, 40);
         add(_btnPlay);
-        _btnHome = new FlxButton(390, 560, "Go Home", clickHome);
+        _btnHome = new ImageButton(300, 500, "Go Home", clickHome);
+        _btnHome.loadGraphic(AssetPaths.gohome__png, false, 200, 40);
         if(Main.SAVE.data.levelCompleted > 1) {
             add(_btnHome);
         }

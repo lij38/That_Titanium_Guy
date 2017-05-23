@@ -14,6 +14,7 @@ import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import weapons.*;
 import flixel.ui.FlxButton;
+import items.*;
 
 class HomeState extends FlxState
 {
@@ -23,7 +24,7 @@ class HomeState extends FlxState
 	private var _player:Player;
 	private var playerBullets:FlxTypedGroup<Bullet>;
 	private var tutorial_map:Bool;
-	private var _mapbutton:FlxButton;
+	private var _mapbutton:ImageButton;
 	private var _arrow:Arrow;
 	private var _text:FlxText;
 	private var tutState:Bool;
@@ -55,7 +56,7 @@ class HomeState extends FlxState
 		 }
 		 add(_player);
 
-		 _mapbutton = new FlxButton(31, 26, switchMapState);
+		 _mapbutton = new ImageButton(31, 26, switchMapState);
 		 _mapbutton.scrollFactor.set(0.0);
 		 _mapbutton.loadGraphic(AssetPaths.map_icon__png, false, 70, 70);
 		 add(_mapbutton);

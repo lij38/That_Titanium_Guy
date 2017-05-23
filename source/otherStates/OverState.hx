@@ -6,11 +6,12 @@ import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import levelStates.*;
 import flixel.util.FlxColor;
+import items.*;
 
 class OverState extends FlxState
 {
-    private var _btnPlay:FlxButton;
-    private var _btnHome:FlxButton;
+    private var _btnPlay:ImageButton;
+    private var _btnHome:ImageButton;
     private var _from:Int;
     private var text:FlxText;
     private var _level:Int;
@@ -20,9 +21,11 @@ class OverState extends FlxState
         text = new FlxText(270, 150, 0, "GAME OVER", 64);
         text.setFormat(AssetPaths.FONT, text.size);
         add(text);
-        _btnPlay = new FlxButton(370, 250, "Try Again", clickPlay);
+        _btnPlay = new ImageButton(300, 300, "Try Again", clickPlay);
+        _btnPlay.loadGraphic(AssetPaths.tryagain__png, false, 200, 40);
         add(_btnPlay);
-        _btnHome = new FlxButton(370, 300, "Go Home", clickHome);
+        _btnHome = new ImageButton(300, 380, "Go Home", clickHome);
+        _btnHome.loadGraphic(AssetPaths.gohome__png, false, 200, 40);
         add(_btnHome);
 		_level = Main.SAVE.data.curLevel;
 

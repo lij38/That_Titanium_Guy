@@ -6,13 +6,14 @@ import flixel.FlxState;
 import flixel.ui.FlxButton;
 import animation.*;
 import levelStates.*;
+import items.*;
 import flixel.util.FlxColor;
 import flixel.util.FlxSave;
 import flixel.text.FlxText;
 
 class MenuState extends FlxState {
-	private var _btnPlay:FlxButton;
-	private var _btnContinue:FlxButton;
+	private var _btnPlay:ImageButton;
+	private var _btnContinue:ImageButton;
 	private var _title:FlxText;
 	private var _subtitle:FlxText;
 	
@@ -23,8 +24,10 @@ class MenuState extends FlxState {
 		_title.setFormat(AssetPaths.FONT, _title.size);
 		_subtitle = new FlxText(220, 175, 500, "あのチタンな人", 40);
 		_subtitle.setFormat(AssetPaths.FONT, _subtitle.size);
-		_btnPlay = new FlxButton(385, 250, "New Game", clickPlay);
-		_btnContinue = new FlxButton(385, 300, "Continue", clickContinue);
+		_btnPlay = new ImageButton(300, 300, "New Game", clickPlay);
+		_btnPlay.loadGraphic(AssetPaths.newgame__png, false, 200, 40);
+		_btnContinue = new ImageButton(300, 380, "Continue", clickContinue);
+		_btnContinue.loadGraphic(AssetPaths.continue__png, false, 200, 40);
 		//_btnContinue.screenCenter();
 		// spritesheet = new FlxSprite(0, 0);
 
@@ -60,7 +63,7 @@ class MenuState extends FlxState {
 		FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
 			Main.SAVE.erase();
 			Main.SAVE.bind(Main.LOGGER.getSavedUserId());
-			FlxG.switchState(new OpeningState());
+			FlxG.switchState(new HomeState());
 			//FlxG.switchState(new TutorialState());
 			//FlxG.switchState(new Boss1State());
 		});
