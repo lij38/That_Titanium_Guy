@@ -97,6 +97,13 @@ class FinishState extends FlxState
             overallRating.loadGraphic(AssetPaths.oneStar__png);
         }
 
+        var currentAvg:Int = avg;
+        if (Main.SAVE.data.stararr[_level - 1] != null) {
+            currentAvg = cast(Math.max(cast(Main.SAVE.data.stararr[_level - 1], Float), cast(currentAvg, Float)), Int);
+        }
+        trace(currentAvg);
+        Main.SAVE.data.stararr[_level - 1] = currentAvg;
+
         add(time);
         add(timeRating);
         add(dmg);

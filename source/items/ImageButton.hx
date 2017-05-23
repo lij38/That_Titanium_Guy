@@ -12,7 +12,7 @@ class ImageButton extends FlxButton {
 		//setSize(200, 40);
 		onOver.callback = flash;
 		onOut.callback = unflash;
-		color = 0xbbbbbb;
+		color = 0xdddddd;
 		//text2 = new FlxText(x, y, 500, Text, 36);
 		//text2.color = 0x999999;
 		//text2.setFormat(AssetPaths.FONT, text2.size);
@@ -26,7 +26,7 @@ class ImageButton extends FlxButton {
     }
 
     private function unflash():Void {
-        color = 0xbbbbbb;
+        color = 0xdddddd;
         //text2.color = 0x999999;
     }
 

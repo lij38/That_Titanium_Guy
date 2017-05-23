@@ -12,6 +12,7 @@ import flixel.tile.FlxBaseTilemap;
 import flixel.addons.editors.tiled.TiledObjectLayer;
 import flixel.FlxG;
 import flixel.addons.editors.tiled.TiledMap;
+import flixel.FlxSprite;
 
 class MapTutorialState extends FlxState
 {
@@ -28,6 +29,7 @@ class MapTutorialState extends FlxState
     private var _levelarr:Array<FlxButton>;
     private var _level_index:Int;
     private var _arrow:Arrow;
+    private var _stararr:Array<FlxSprite>;
 
     // stage1 is home button
     private var _stage1:Bool;
@@ -71,8 +73,27 @@ class MapTutorialState extends FlxState
         _level_index = 0;
         _arrow = new Arrow();
 
-        var level:Int = 2;
+        _stararr = new Array<FlxSprite>();
+        var tmpMap2:TiledObjectLayer = cast _map.getLayer("stars");
+         for (e in tmpMap2.objects)
+         {
+             placeStars(e.type, e.xmlData.x);
+         }
+
+        var level:Int = 3;
          _home.loadGraphic(AssetPaths.shield_imageicon__png, false, 65, 65);
+
+         for (i in 0...(level - 1)) {
+            var rating:Int = Main.SAVE.data.stararr[i];
+            if (rating == 3) {
+                _stararr[i].loadGraphic(AssetPaths.threeStar2__png, false, 80, 30);
+            } else if (rating == 2) {
+                _stararr[i].loadGraphic(AssetPaths.twoStar2__png, false, 80, 30);
+            } else {
+                _stararr[i].loadGraphic(AssetPaths.oneStar2__png, false, 80, 30);
+            }
+            add(_stararr[i]);
+         }
 
         // unlocked states
         for (i in 0...level) {
@@ -211,5 +232,13 @@ class MapTutorialState extends FlxState
             icon.x = x;
             icon.y = y;
         }
+    }
+
+    private function placeStars(entityName:String, entityData:Xml):Void
+    {
+        var x:Int = Std.parseInt(entityData.get("x"));
+        var y:Int = Std.parseInt(entityData.get("y"));
+        var star:FlxSprite = new FlxSprite(x, y);
+        _stararr.push(star);
     }
 }
