@@ -107,7 +107,9 @@ class FinishState extends FlxState
         add(overallRating);
 		_btnPlay = new ImageButton(300, 440, "Next", clickPlay);
         _btnPlay.loadGraphic(AssetPaths.next__png, false, 200, 40);
-        add(_btnPlay);
+        if(Main.SAVE.data.curLevel != 1 || Main.SAVE.data.homeTut == true) {
+            add(_btnPlay);
+        }
         _btnHome = new ImageButton(300, 500, "Go Home", clickHome);
         _btnHome.loadGraphic(AssetPaths.gohome__png, false, 200, 40);
         if(Main.SAVE.data.levelCompleted > 1) {

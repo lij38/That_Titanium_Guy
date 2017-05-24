@@ -63,9 +63,10 @@ class MenuState extends FlxState {
 		FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
 			Main.SAVE.erase();
 			Main.SAVE.bind(Main.LOGGER.getSavedUserId());
-			FlxG.switchState(new HomeState());
+			//FlxG.switchState(new HomeState());
 			//FlxG.switchState(new TutorialState());
 			//FlxG.switchState(new Boss1State());
+			FlxG.switchState(new OpeningState());
 		});
 	}
 	
@@ -74,8 +75,8 @@ class MenuState extends FlxState {
 			if(Main.SAVE.data.tutComplete == null || Main.SAVE.data.tutComplete == false) {
 				FlxG.switchState(new OpeningState());
 			} else {
-				//TODO: switch to homeState
-				FlxG.switchState(new HomeState());
+				FlxG.switchState(new WorkshopState());
+				//FlxG.switchState(new HomeState());
 			}
 		});
 	}

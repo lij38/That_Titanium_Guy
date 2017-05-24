@@ -28,6 +28,10 @@ class Weapon {
         this.bulletArray = playerBulletArray;
     }
 
+    public function getImagePath():String {
+        return AssetPaths.IMAGE + this.name + ".png";
+    }
+
     public function reload() {
         curAmmo = magCapacity;
         //TODO: PLAY RELOAD ANIMATION

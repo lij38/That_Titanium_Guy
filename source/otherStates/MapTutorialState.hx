@@ -96,8 +96,8 @@ class MapTutorialState extends FlxState
         }
 
         _text = new FlxText(0, 0, 330, 18);
-        _text.text = "Congradulations! You just passed the tutorial level! Here is the map. " + 
-            "This is your home, where you can configure your weapons and get equipped. (Click Anywhere to continue)";
+        _text.text = "Welcome to the Map! This is your home, where you can equip and switch out your"
+            + " weapon configurations. (Click Anywhere to continue)";
         _text.setFormat(AssetPaths.FONT, 18);
 
         for (i in 3...7) {
@@ -140,8 +140,8 @@ class MapTutorialState extends FlxState
                 _arrow.y = 263;
                 _text.x = 187;
                 _text.y = 241;
-                _text.text = "This is the tutorial level you just finished. You can re-do any finished level " +
-                    "with new weapons to achieve higher scores. (Click Anywhere to continue)";
+                _text.text = "This is the tutorial level that you cleared. You can re-do any finished level " +
+                    "with new weapons to achieve higher ratings. (Click Anywhere to continue)";
             }
         } else if (_stage2) {
             if (click) {
@@ -151,7 +151,7 @@ class MapTutorialState extends FlxState
                 _arrow.y = 441;
                 _text.x = 179;
                 _text.y = 424;
-                _text.text = "This is a newly unlocked level. Once you finish a level, the next level will be unlocked. " +
+                _text.text = "This is the level that you just cleared. Once you finish a level, the next level will be unlocked. " +
                     "(Click Anywhere to continue)";
             }
         } else if (_stage3) {
@@ -162,8 +162,7 @@ class MapTutorialState extends FlxState
                 _arrow.y = 376;
                 _text.x = 307;
                 _text.y = 365;
-                _text.text = "The red stars are boss levels. You should be well-equipped before challenging those levels. " +
-                    "It is currently locked, to unlock, you need to finish the previous level. (Click Anywhere to continue)";
+                _text.text = "This is a newly unlocked level, the red star means that it's a boss level. (Click Anywhere to continue)";
             }
         } else if (_stage4) {
             if (click) {

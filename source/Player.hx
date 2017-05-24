@@ -68,7 +68,7 @@ class Player extends FlxSprite {
 		bulletArray = playerBulletArray;
 		if(Main.SAVE.data.tutComplete == null || Main.SAVE.data.tutComplete == false) {
 			jWeapon = new Sword(playerBulletArray);
-			j2ndWeapon = new Weapon(playerBulletArray);
+			j2ndWeapon = new Sword(playerBulletArray);
 			kWeapon = new Weapon(playerBulletArray);
 			k2ndWeapon = new Weapon(playerBulletArray);
 			curConfig = "sword";
@@ -418,7 +418,9 @@ class Player extends FlxSprite {
 		trace(Std.string(Main.SAVE.data.tutComplete));
 		if(Main.SAVE.data.tutComplete == null || Main.SAVE.data.tutComplete == false) {
 			kWeapon = new Shield(bulletArray);
+			k2ndWeapon = new Shield(bulletArray);
 			Main.SAVE.data.kWeapon = kWeapon.getName();
+			Main.SAVE.data.k2ndWeapon = k2ndWeapon.getName();
 			curConfig = "swsh";
 			Main.SAVE.data.curConfig = curConfig;
 			Main.SAVE.flush();
@@ -429,8 +431,12 @@ class Player extends FlxSprite {
 		trace(Std.string(Main.SAVE.data.riflePickUp));
 		if(Main.SAVE.data.riflePickUp == null || Main.SAVE.data.riflePickUp == false) {
 			this.j2ndWeapon = new Rifle(bulletArray);
+			this.k2ndWeapon = new Weapon(bulletArray);
 			Main.SAVE.data.riflePickUp = true;
+			Main.SAVE.data.j2ndWeapon = j2ndWeapon.getName();
+			Main.SAVE.data.k2ndWeapon = k2ndWeapon.getName();
 			Main.SAVE.flush();
+			changeWeaponConfig();
 		}
 	}
 
