@@ -429,7 +429,7 @@ class PlayState extends FlxState {
 		_menubutton.active = true;
 		_resumebutton.visible = true;
 		_resumebutton.active = true;
-		if (LEVELID > 2) {
+		if (Main.SAVE.data.levelCompleted != null && Main.SAVE.data.levelCompleted >= 2) {
 			_homebutton.visible = true;
 			_homebutton.active = true;
 		}
