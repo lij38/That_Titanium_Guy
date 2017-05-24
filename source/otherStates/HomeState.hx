@@ -31,6 +31,9 @@ class HomeState extends FlxState
 	private var _workshop:FlxSprite;
 	private var _maptext:FlxText;
 	private var _workshoptext:FlxText;
+	private var _stage1:Bool;
+	private var _stage2:Bool;
+	private var _stage3:Bool;
 
 	override public function create():Void
 	{
@@ -85,6 +88,9 @@ class HomeState extends FlxState
 		 if(Main.SAVE.data.homeTut == null ||Main.SAVE.data.homeTut == false) {
 			 tutorial_map = true;
 			 tutState = true;
+			 _stage1 = true;
+			 _stage2 = false;
+			 _stage3 = false;
 			 _mapbutton.active = false;
 			 Main.SAVE.data.homeTut = true;
 			 Main.SAVE.flush();
@@ -92,19 +98,21 @@ class HomeState extends FlxState
 			 tutorial_map = false;
 			 tutState = false;
 		 }
+
 		 if (tutorial_map) {
 		 	_fg.color = 0x777777;
 		 	_bg.color = 0x777777;
 		 	_player.color = 0x777777;
+		 	_workshop.color = 0x777777;
 		 	_arrow = new Arrow();
 			 _arrow.x = 120;
 			 _arrow.y = 50;
 			 add(_arrow);
+			 _arrow.visible = false;
 			 _text = new FlxText(0, 0, 330, 20);
-			 _text.x = 175;
-			 _text.y = 35;
-        	_text.text = "This is your home! You can move and try your weapons. " + 
-            	"This is the map, you can click here to go back to the map and challenge new levels. (Click Anywhere to continue)";
+			 _text.x = 450;
+			 _text.y = 36;
+        	_text.text = "This is your home! You can move and try your weapons. (Click Anywhere to continue)";
         	_text.setFormat(AssetPaths.FONT, 20);
         	add(_text);
 		 }
@@ -117,22 +125,54 @@ class HomeState extends FlxState
 
 	override public function update(elapsed:Float):Void
 	{
-		if (FlxG.keys.anyPressed([M])) {
-			switchMapState();
+		if (!tutorial_map) {
+			if (FlxG.keys.anyPressed([M])) {
+				switchMapState();
+			}
+			checkEnter(_player, _workshop);
 		}
-		checkEnter(_player, _workshop);
 		FlxG.collide(_player, _fg);
 		if (tutorial_map) {
-			if (FlxG.mouse.justPressed) {
-            	tutorial_map = false;
-            	_arrow.visible = false;
-            	_text.visible = false;
-            	_bg.color = 0xffffff;
-            	_player.color = 0xffffff;
-            	_fg.color = 0xffffff;
-            	_mapbutton.active = true;
-            	_maptext.visible = true;
-        	}	
+			var click:Bool = false;
+	        if (FlxG.mouse.justPressed) {
+	            click = true;
+	        }
+			
+			if (_stage1) {
+				if (click) {
+					_stage1 = false;
+					_stage2 = true;
+					_arrow.visible = true;
+					_text.x = 175;
+		 			_text.y = 35;
+    				_text.text = "This is the map, you can click here to go back to the map and challenge new levels. (Click Anywhere to continue)";
+				}
+			} else if (_stage2) {
+				if (click) {
+					_stage2 = false;
+					_stage3 = true;
+					_arrow.x = 295;
+					_arrow.y = 350;
+					_arrow.loadGraphic(AssetPaths.arrow2__png, false, 25, 40);
+					_text.x = 177;
+					_text.y = 415;
+					_text.text = "This is workshop, you can change weapon configurations here! Equip and Nail all enemies!";
+				}
+			} else if (_stage3) {
+				if (click) {
+					_stage3 = false;
+					tutorial_map = false;
+		        	_arrow.visible = false;
+		        	_text.visible = false;
+		        	_bg.color = 0xffffff;
+		        	_player.color = 0xffffff;
+		        	_fg.color = 0xffffff;
+		        	_workshop.color = 0xdddddd;
+		        	_mapbutton.active = true;
+		        	_maptext.visible = true;
+	        	}
+			}
+        	
 		}
 		FlxG.collide(_player, _bg);
 		super.update(elapsed);
