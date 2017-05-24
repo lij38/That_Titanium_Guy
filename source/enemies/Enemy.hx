@@ -53,6 +53,8 @@ class Enemy extends FlxSprite {
 	public var hasJetpack:Bool = false;
 	public var hasShield:Bool = false;
 	
+	private var bulletSpeedLevel = [for (i in 0...4) 50 * i + 250];
+	
 	public function new(X:Float = 0, Y:Float = 0, id:Int = -1,
 						enemiesBulletArray:FlxTypedGroup<EnemyBullet>,
 						coinsGroup:FlxTypedGroup<Coin>,

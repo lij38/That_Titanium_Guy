@@ -22,8 +22,8 @@ class TruckEnemy extends Enemy {
 	private var bulletXOffset:Float = 200;
 	
 	private var level:Int;
-	private var damageLevel = [for (i in 1...4) i];	
-	private var healthLevel = [for (i in 0...4) 20 * i + 70];
+	private var damageLevel = [for (i in 1...4) i * 3];
+	private var healthLevel = [for (i in 0...4) 20 * i + 200];
 	
 	
 	public function new(X:Float = 0, Y:Float = 0, id:Int = -1,
@@ -86,9 +86,9 @@ class TruckEnemy extends Enemy {
 			velocity.x = 0;
 			if (playerTooClose()) {
 				if (playerPos.x <= getMidpoint().x) {
-					velocity.x = speed / 1.66;
+					velocity.x = speed;
 				} else {
-					velocity.x = -speed / 1.66;
+					velocity.x = -speed;
 				}
 			}
 			if (rateTimer < 0) {
@@ -122,8 +122,9 @@ class TruckEnemy extends Enemy {
 				offset = -offset;
 			}
 			var curBullet:EnemyBullet = bulletArray.recycle(EnemyBullet, true);
-			curBullet.setBullet(getMidpoint().x + offset, y + 42, 250, facing, 
-							/*damageLevel[level]*/0 , range,
+			curBullet.setBullet(getMidpoint().x + offset, y + 42, 
+							bulletSpeedLevel[level], facing, 
+							damageLevel[level] , range,
 							Ranged);
 			
 		}
