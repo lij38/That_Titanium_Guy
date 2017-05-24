@@ -122,7 +122,7 @@ class FinishState extends FlxState
         if(Main.SAVE.data.levelCompleted > 1) {
             add(_btnHome);
         }
-        ending = new FlxText(100, 400, 500, "Thanks for playing! You've beat all of the levels we have so far but more levels are coming soon!", 20);
+        ending = new FlxText(100, 400, 0, "Thanks for playing! You've beat all of the levels we have so far but more levels are coming soon!", 20);
         ending.setFormat(AssetPaths.FONT, ending.size);
         if(Main.SAVE.data.end != null) {
             add(ending);
