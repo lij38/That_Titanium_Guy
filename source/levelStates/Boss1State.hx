@@ -39,6 +39,8 @@ class Boss1State extends PlayState {
 
 		super.create();
 		add(_hud);
+
+		addTopLayer();
 	}
 
 	override public function update(elapsed:Float):Void {

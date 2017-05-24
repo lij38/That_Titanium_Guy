@@ -149,25 +149,21 @@ class WorkshopState extends FlxState {
     }
 
     private function jClick() {
-        trace("jClick");
         showSelect();
         curSelect = "j";
     }
 
     private function kClick() {
-        trace("kClick");
         showSelect();
         curSelect = "k";
     }
 
     private function j2ndClick() {
-        trace("j2ndClick");
         showSelect();
         curSelect = "j2";
     }
 
     private function k2ndClick() {
-        trace("k2ndClick");
         showSelect();
         curSelect = "k2";
     }

@@ -114,7 +114,7 @@ class FinishState extends FlxState
         add(overallRating);
 		_btnPlay = new ImageButton(300, 440, "Next", clickPlay);
         _btnPlay.loadGraphic(AssetPaths.next__png, false, 200, 40);
-        if(Main.SAVE.data.curLevel != 1 || Main.SAVE.data.homeTut == true) {
+        if(Main.SAVE.data.curLevel != 2) {
             add(_btnPlay);
         }
         _btnHome = new ImageButton(300, 500, "Go Home", clickHome);
@@ -122,7 +122,7 @@ class FinishState extends FlxState
         if(Main.SAVE.data.levelCompleted > 1) {
             add(_btnHome);
         }
-        ending = new FlxText(150, 400, 500, "Thanks for playing! This is only a beta so more levels are coming soon!", 20);
+        ending = new FlxText(100, 400, 500, "Thanks for playing! You've beat all of the levels we have so far but more levels are coming soon!", 20);
         ending.setFormat(AssetPaths.FONT, ending.size);
         if(Main.SAVE.data.end != null) {
             add(ending);

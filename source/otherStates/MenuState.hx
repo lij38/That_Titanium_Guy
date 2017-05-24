@@ -16,7 +16,7 @@ class MenuState extends FlxState {
 	private var _btnContinue:ImageButton;
 	private var _title:FlxText;
 	private var _subtitle:FlxText;
-	private var _clicktostart:FlxText;
+	private var _btnCredits:ImageButton;
 	
 	var spritesheet:FlxSprite;
 		
@@ -29,9 +29,9 @@ class MenuState extends FlxState {
 		_btnPlay.loadGraphic(AssetPaths.newgame__png, false, 200, 40);
 		_btnContinue = new ImageButton(300, 380, "Continue", clickContinue);
 		_btnContinue.loadGraphic(AssetPaths.continue__png, false, 200, 40);
-		_clicktostart = new FlxText(260, 500, 500, "Click New Game/Continue to Begin", 20);
-		_clicktostart.setFormat(AssetPaths.FONT, _clicktostart.size);
-		add(_clicktostart);
+		_btnCredits = new ImageButton(300, 460, clickCredits);
+		_btnCredits.loadGraphic(AssetPaths.creditsbtn__png, false, 200, 40);
+		add(_btnCredits);
 		//_btnContinue.screenCenter();
 		// spritesheet = new FlxSprite(0, 0);
 
@@ -68,7 +68,7 @@ class MenuState extends FlxState {
 			Main.SAVE.erase();
 			Main.SAVE.bind(Main.LOGGER.getSavedUserId());
 
-			//FlxG.switchState(new HomeState());
+			//FlxG.switchState(nullew HomeState());
 			//FlxG.switchState(new TutorialState());
 			//FlxG.switchState(new Boss1State());
 			FlxG.switchState(new OpeningState());
@@ -83,6 +83,12 @@ class MenuState extends FlxState {
 				//FlxG.switchState(new WorkshopState());
 				FlxG.switchState(new HomeState());
 			}
+		});
+	}
+
+	private function clickCredits():Void {
+		FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
+			FlxG.switchState(new CreditState());
 		});
 	}
 }

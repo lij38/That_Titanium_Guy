@@ -82,6 +82,8 @@ class TutorialState extends PlayState {
 		add(_player);
         add(_hud);
 
+        addTopLayer();
+
         Main.SAVE.data.stararr = [null, null, null, null, null, null, null];
     }
 

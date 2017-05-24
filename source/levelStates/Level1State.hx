@@ -62,6 +62,8 @@ class Level1State extends PlayState {
 		add(texts);
 		add(_player);
         add(_hud);
+        
+        addTopLayer();
     }
 	
 	override public function update(elapsed:Float):Void {
