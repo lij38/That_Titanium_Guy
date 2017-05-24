@@ -55,7 +55,19 @@ class Boss1State extends PlayState {
 		}
 	}
 
+/*
 	public function stopPlayer(player:Player, enemy:Boss1):Void {
+		if(!player.isTumbling()) {
+			if (player.facing == FlxObject.LEFT) {
+				player.x += 2;
+			} else {
+				player.x -= 2;	
+			}
+		}
+	}
+	*/
+
+	override public function playerCollidesEnemies(player:Player, enemy:Enemy):Void {
 		if(!player.isTumbling()) {
 			if (player.facing == FlxObject.LEFT) {
 				player.x += 2;

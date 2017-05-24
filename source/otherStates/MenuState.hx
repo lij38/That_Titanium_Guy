@@ -16,6 +16,7 @@ class MenuState extends FlxState {
 	private var _btnContinue:ImageButton;
 	private var _title:FlxText;
 	private var _subtitle:FlxText;
+	private var _clicktostart:FlxText;
 	
 	var spritesheet:FlxSprite;
 		
@@ -28,6 +29,9 @@ class MenuState extends FlxState {
 		_btnPlay.loadGraphic(AssetPaths.newgame__png, false, 200, 40);
 		_btnContinue = new ImageButton(300, 380, "Continue", clickContinue);
 		_btnContinue.loadGraphic(AssetPaths.continue__png, false, 200, 40);
+		_clicktostart = new FlxText(260, 500, 500, "Click New Game/Continue to Begin", 20);
+		_clicktostart.setFormat(AssetPaths.FONT, _clicktostart.size);
+		add(_clicktostart);
 		//_btnContinue.screenCenter();
 		// spritesheet = new FlxSprite(0, 0);
 
@@ -63,7 +67,7 @@ class MenuState extends FlxState {
 		FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
 			Main.SAVE.erase();
 			Main.SAVE.bind(Main.LOGGER.getSavedUserId());
-			FlxG.switchState(new OpeningState());
+			FlxG.switchState(new TutorialState());
 			//FlxG.switchState(new TutorialState());
 			//FlxG.switchState(new Boss1State());
 		});
