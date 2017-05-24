@@ -67,6 +67,7 @@ class Level2State extends PlayState {
         add(_cloud);
         add(_keys);
 		add(texts);
+        add(_hud);
 		add(_player);
 
 
@@ -84,7 +85,7 @@ class Level2State extends PlayState {
 		var x:Int = Std.parseInt(entityData.get("x"));
 		var y:Int = Std.parseInt(entityData.get("y"));
 		switch entityName {
-           	case "JP":  var jp:FlxText = new FlxText(x, y, 150, "Hold Shift + One of                 to jet pack", 19); 
+           	case "JP":  var jp:FlxText = new FlxText(x, y, 650, "Hold Shift with One of                       to steer jet pack", 25); 
                        	jp.setFormat(AssetPaths.FONT, jp.size); 
                        	texts.add(jp);
        }
