@@ -493,6 +493,8 @@ class Player extends FlxSprite {
 			curConfig = "ds";
 		} else if(jWeapon.getName() == "rifle" && kWeapon.getName() == "rifle") {
 			curConfig = "dr";
+		} else {
+			curConfig = jWeapon.getName();
 		}
 		Main.SAVE.data.jWeapon = jWeapon.getName();
 		Main.SAVE.data.j2ndWeapon = j2ndWeapon.getName();
