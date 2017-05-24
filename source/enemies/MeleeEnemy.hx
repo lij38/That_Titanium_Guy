@@ -102,6 +102,7 @@ class MeleeEnemy extends Enemy {
 		if (!seesPlayer) {
 			velocity.set(0, 0);
 			brain.activeState = idle;
+			animation.play("stop");
 		}
 	}
 	

@@ -31,6 +31,9 @@ class Player extends FlxSprite {
 	
 	private var money:Int;
 	
+	public var jetpackFieldMax:Float = 3;
+	public var jetpackField:Float = 3;
+	
 	private var jWeapon:Weapon;
 	private var kWeapon:Weapon;
 	private var j2ndWeapon:Weapon;
@@ -45,6 +48,7 @@ class Player extends FlxSprite {
 	private var swordTimer:Float = -1;
 	private var curConfig:String;
 	private var dmgTaken:Float;
+	private var jetpack:Bool = false;
 
 	public function new(?X:Float = 0, ?Y:Float = 0,
 						playerBulletArray:FlxTypedGroup<Bullet>,
@@ -54,7 +58,7 @@ class Player extends FlxSprite {
 		health = 100;
 		dmgTaken = 0.0;
 
-		loadGraphic(AssetPaths.player__png, true, cast(4745 / 5, Int), cast(11109 / 21, Int));
+		loadGraphic(AssetPaths.player__png, true, 970, 529);
 		setFacingFlip(FlxObject.LEFT, true, false);
 		setFacingFlip(FlxObject.RIGHT, false, false);
 		scale.set(0.35, 0.35);
@@ -62,13 +66,13 @@ class Player extends FlxSprite {
 		addAnimation();
 		
 		setSize(48, 115);
-		offset.set(450, 198);
+		offset.set(460, 198);
 		acceleration.y = GRAVITY;
 		
 		bulletArray = playerBulletArray;
 		if(Main.SAVE.data.tutComplete == null || Main.SAVE.data.tutComplete == false) {
 			jWeapon = new Sword(playerBulletArray);
-			j2ndWeapon = new Weapon(playerBulletArray);
+			j2ndWeapon = new Sword(playerBulletArray);
 			kWeapon = new Weapon(playerBulletArray);
 			k2ndWeapon = new Weapon(playerBulletArray);
 			curConfig = "sword";
@@ -88,6 +92,7 @@ class Player extends FlxSprite {
 			kWeapon = WeaponFactory.getWeapon(kn, playerBulletArray);
 			k2ndWeapon = WeaponFactory.getWeapon(k2n, playerBulletArray);
 			curConfig = Main.SAVE.data.curConfig;
+			trace(curConfig);
 		}
 		shielding = false;
 	}
@@ -121,21 +126,7 @@ class Player extends FlxSprite {
 		super.update(elapsed);
 	}
 	
-	private function movement(elapsed:Float):Void {
-		
-		//if (leftTimer >= 0) {
-			//leftTimer += elapsed;
-		//}
-		//if (leftTimer > TumblePressedBetween) {
-			//leftTimer = -1;
-		//}
-		//if (rightTimer >= 0) {
-			//rightTimer += elapsed;
-		//}
-		//if (rightTimer > TumblePressedBetween) {
-			//rightTimer = -1;
-		//}
-		
+	private function movement(elapsed:Float):Void {		
 		var jumpKey:Bool = false;
 		var up:Bool = false;
 		var down:Bool = false;
@@ -144,7 +135,7 @@ class Player extends FlxSprite {
 		var doubleJump:Bool = false;
 		//var leftP:Bool = false;
 		//var rightP:Bool = false;
-		var jetpack:Bool = false;
+		jetpack = false;
 		var roll:Bool = false;
 		
 		//change weapon configuration
@@ -191,29 +182,15 @@ class Player extends FlxSprite {
 		if (left && right)
 			left = right = false;
 		
-		// double tap rip
-		/*if (!up && !down && !jetpack) {
-			if (leftP && leftTimer < 0) {
-				leftTimer = 0.0;
-			} else if (leftTimer >= 0 && leftP) {
-				trace(leftTimer);
-				if (leftTimer <= TumblePressedBetween) {
-					tumble(FlxObject.LEFT, elapsed);
-					leftTimer = -1;
-					trace("Tumble!!!");
-				}
+		if (jetpack) {
+			if (jetpackField < 0) {
+				jetpack = false;
+			} else {
+				jetpackField -= elapsed;
 			}
-			if (rightP && rightTimer < 0) {
-				rightTimer = 0.0;
-			} else if (rightTimer >= 0 && rightP) {
-				trace(rightTimer);
-				if (rightTimer <= TumblePressedBetween) {
-					tumble(FlxObject.RIGHT, elapsed);
-					rightTimer = -1;
-					trace("Tumble!!!");
-				}
-			}
-		}*/
+		} else if (jetpackField < jetpackFieldMax) {
+			jetpackField += elapsed / 2;
+		}
 		
 		if (jetpack) {
 			numJump = numJumpLimit;
@@ -268,7 +245,7 @@ class Player extends FlxSprite {
 				jumped = false;
 			}
 			
-			if (touching == FlxObject.DOWN && !jumped) {
+			if (isTouching(FlxObject.DOWN) && !jumped) {
 				jump = 0;
 				numJump = 0;
 			}
@@ -301,6 +278,9 @@ class Player extends FlxSprite {
 			animation.play("tumble");
 		} else if (jetpack) {
 			animation.play(curConfig + "JP");
+			if(isShielding()) {
+				animation.play(curConfig + "JPShield");
+			}
 		} else if (!isTouching(FlxObject.DOWN) && !isSwording()) {
 			animation.play(curConfig + "Jump");
 		} else if (isShielding()) {
@@ -309,14 +289,33 @@ class Player extends FlxSprite {
 			playRun(curConfig);
 		}
 		if (!isTumbling() && !isSwording() && !isShielding()) {
-			if(FlxG.keys.anyPressed([J])) {
+			if(curConfig == "ds" && FlxG.keys.justPressed.J && FlxG.keys.justPressed.K) {
+				if (facing == FlxObject.NONE) {
+					jWeapon.attack(getMidpoint().x, y, faced);
+					kWeapon.attack(getMidpoint().x, y, faced);
+				} else {
+					jWeapon.attack(getMidpoint().x, y, facing);
+					kWeapon.attack(getMidpoint().x, y, facing);
+				}
+				if(jetpack) {
+					animation.play(curConfig + "JPDC");
+				} else {
+					animation.play(curConfig + "DC");
+				}
+			} else if(FlxG.keys.anyPressed([J])) {
 				//RIFLE fully automatic, can hold to fire
 				if(jWeapon.getName() == "rifle") {
 					if((jWeaponTimer == -0.1 || jWeaponTimer > jWeapon.getRate())
 						&& jReloadTimer == -0.1) {
-						if(!fireWeapon(jWeapon)) {
-							jReloadTimer = 0.0;
-						} 
+						if(curConfig != "dr") {
+							if(!fireWeapon(jWeapon)) {
+								jReloadTimer = 0.0;
+							} 
+						} else {
+							if(!fireJRifle()) {
+								jReloadTimer = 0.0;
+							}
+						}
 						jWeaponTimer = 0.0;
 					} 
 				} else if(jWeapon.getName() == "shield") { //engage shield
@@ -340,9 +339,15 @@ class Player extends FlxSprite {
 				if(kWeapon.getName() == "rifle") {
 					if((kWeaponTimer == -0.1 || kWeaponTimer > kWeapon.getRate())
 						&& kReloadTimer == -0.1) {
-						if(!fireWeapon(kWeapon)) {
-							kReloadTimer = 0.0;
-						} 
+						if(curConfig != "dr") {
+							if(!fireWeapon(kWeapon)) {
+								kReloadTimer = 0.0;
+							} 
+						} else {
+							if(!fireJRifle()) {
+								kReloadTimer = 0.0;
+							}
+						}
 						kWeaponTimer = 0.0;
 					} 
 				} else if(kWeapon.getName() == "shield") { //engage shield
@@ -397,20 +402,6 @@ class Player extends FlxSprite {
 		}
 	}
 
-	public function getAmmoCap(which:Int):Int {
-		if(which == 0) {
-			if(jWeapon == null) {
-				return -1;
-			}
-			return jWeapon.getMaxAmmo();
-		} else {
-			if(kWeapon == null) {
-				return -1;
-			}
-			return kWeapon.getMaxAmmo();
-		}
-	}
-
 	public function isReloading(which:Int):Bool {
 		if(which == 0) {
 			return jReloadTimer != -0.1;
@@ -423,7 +414,9 @@ class Player extends FlxSprite {
 		trace(Std.string(Main.SAVE.data.tutComplete));
 		if(Main.SAVE.data.tutComplete == null || Main.SAVE.data.tutComplete == false) {
 			kWeapon = new Shield(bulletArray);
+			k2ndWeapon = new Shield(bulletArray);
 			Main.SAVE.data.kWeapon = kWeapon.getName();
+			Main.SAVE.data.k2ndWeapon = k2ndWeapon.getName();
 			curConfig = "swsh";
 			Main.SAVE.data.curConfig = curConfig;
 			Main.SAVE.flush();
@@ -434,8 +427,12 @@ class Player extends FlxSprite {
 		trace(Std.string(Main.SAVE.data.riflePickUp));
 		if(Main.SAVE.data.riflePickUp == null || Main.SAVE.data.riflePickUp == false) {
 			this.j2ndWeapon = new Rifle(bulletArray);
+			this.k2ndWeapon = new Weapon(bulletArray);
 			Main.SAVE.data.riflePickUp = true;
+			Main.SAVE.data.j2ndWeapon = j2ndWeapon.getName();
+			Main.SAVE.data.k2ndWeapon = k2ndWeapon.getName();
 			Main.SAVE.flush();
+			changeWeaponConfig();
 		}
 	}
 	
@@ -467,8 +464,16 @@ class Player extends FlxSprite {
 		if(jWeapon.getName() == "sword" && kWeapon.getName() == "shield" ||
 			kWeapon.getName() == "sword" && jWeapon.getName() == "shield") {
 			curConfig = "swsh";
-		} else {
-			curConfig = jWeapon.getName();
+		} else if(jWeapon.getName() == "rifle" && kWeapon.getName() == "shield" ||
+				kWeapon.getName() == "rifle" && jWeapon.getName() == "shield"){
+			curConfig = "rsh";
+		} else if(jWeapon.getName() == "sword" && kWeapon.getName() == "rifle" ||
+				kWeapon.getName() == "sword" && jWeapon.getName() == "rifle") {
+			curConfig = "swr";
+		} else if(jWeapon.getName() == "sword" && kWeapon.getName() == "sword") {
+			curConfig = "ds";
+		} else if(jWeapon.getName() == "rifle" && kWeapon.getName() == "rifle") {
+			curConfig = "dr";
 		}
 		Main.SAVE.data.jWeapon = jWeapon.getName();
 		Main.SAVE.data.j2ndWeapon = j2ndWeapon.getName();
@@ -478,41 +483,54 @@ class Player extends FlxSprite {
 		Main.SAVE.flush();
 	}
 
-	// //helper for checking condition in changeWeaponConfig
-	// private function checkConfig(w1:String, w2:String):Bool {
-	// 	if(jWeapon.getName() == w1 && kWeapon.getName() == w2 ||
-	// 		kWeapon.getName() == w1 && jWeapon.getName() == w2) {
-	// 		return true;
-	// 	}
-	// 	return false;
-	// }
-
-	// //helper single arg
-	// private function singleCheckConfig(w:String):Bool {
-	// 	if(jWeapon.getName() == w || kWeapon.getName() == w) {
-	// 		return true;
-	// 	}
-	// 	return false;
-	// }
-
 	private function fireWeapon(w: Weapon):Bool {
 		if(w.getName() == "sword") {
 			swordTimer = 0;
 			if(swordNum % 2 == 0) {
-				animation.play(curConfig + "Stab");
+				if(jetpack) {
+					animation.play(curConfig + "JPStab");
+				} else {
+					animation.play(curConfig + "Stab");
+				}
 			} else {
-				animation.play(curConfig + "Cut");
+				if(jetpack) {
+					animation.play(curConfig + "JPCut");
+				} else {
+					animation.play(curConfig + "Cut");
+				}
 			}
 			//trace(swordNum);
 			swordNum++;
-			if(swordNum > 2) {
-				swordNum = 0;
+			if(curConfig != "ds") {
+				if(swordNum > 2) {
+					swordNum = 0;
+				}
+			} else {
+				if(swordNum > 1) {
+					swordNum = 0;
+				}
 			}
 		}
 		if (facing == FlxObject.NONE) {
 			return w.attack(getMidpoint().x, y, faced);
 		} else {
 			return w.attack(getMidpoint().x, y, facing);
+		}
+	}
+
+	private function fireJRifle():Bool {
+		if (facing == FlxObject.NONE) {
+			return jWeapon.attack(getMidpoint().x, y + 5, faced);
+		} else {
+			return jWeapon.attack(getMidpoint().x, y + 5, facing);
+		}
+	}
+
+	private function fireKRifle():Bool {
+		if (facing == FlxObject.NONE) {
+			return kWeapon.attack(getMidpoint().x, y - 5, faced);
+		} else {
+			return kWeapon.attack(getMidpoint().x, y - 5, facing);
 		}
 	}
 
@@ -547,6 +565,7 @@ class Player extends FlxSprite {
 		animation.add("Jump", [14], 1, false);
 		animation.add("tumble", [10, 11, 12, 13], 12, false);
 		
+		//SWORD
 		//sword run
 		animation.add("swordRun", [33, 34, 35, 36, 37, 38, 39, 40], 12, false);
 		//sword standing
@@ -560,6 +579,7 @@ class Player extends FlxSprite {
 		//sword cut
 		animation.add("swordCut", [17, 18, 19, 20], 16, false);
 		
+		//RIFLE
 		//rifle standing
 		animation.add("rifleStop", [41], 1, false);
 		//rifle run
@@ -569,6 +589,7 @@ class Player extends FlxSprite {
 		//rifle jetpack
 		animation.add("rifleJP", [51, 52], 12, false);
 
+		//SWORD SHIELD
 		//sword shield run
 		animation.add("swshRun", [96, 97, 98, 99, 100, 101, 102, 103], 12, false);
 		//sword shield standing
@@ -581,8 +602,67 @@ class Player extends FlxSprite {
 		animation.add("swshCut", [79, 80, 81, 82], 16, false);
 		//sword shield jetpack
 		animation.add("swshJP", [93, 94], 12, false);
-		//engage shield
+		animation.add("swshJPCut", [86, 87, 88, 89], 16, false);
+		animation.add("swshJPStab", [90, 91, 91, 90], 16, false);
+		animation.add("swshJPShield", [95], 1, false);
+		//shield
 		animation.add("swshShield", [104], 3, false);
+
+		//SWORD RIFLE
+		//standing
+		animation.add("swrStop", [106], 1, false);
+		//jumping
+		animation.add("swrJump", [107], 1, false);
+		//run
+		animation.add("swrRun", [71, 72, 73, 74, 75, 76, 77, 78], 12, false);
+		//stab
+		animation.add("swrStab", [57, 58, 58, 57], 16, false);
+		//cut
+		animation.add("swrCut", [53, 54, 55, 56], 16, false);
+		//jetpack
+		animation.add("swrJP", [108, 109], 12, false);
+		animation.add("swrJPStab", [90, 91, 91, 90], 16, false);
+		animation.add("swrJPCut", [86, 87, 88, 89], 16, false);
+
+		//RIFLE SHIELD
+		//standing
+		animation.add("rshStop", [110], 1, false);
+		//jumping
+		animation.add("rshJump", [120], 1, false);
+		//running
+		animation.add("rshRun", [111, 112, 113, 114, 115, 116, 117, 118], 12, false);
+		//jetpack
+		animation.add("rshJP", [121, 122], 12, false);
+		animation.add("rshJPShield", [123], 1, false);
+
+		//DOUBLE RIFLE
+		//standing
+		animation.add("drStop", [124], 1, false);
+		//jumping
+		animation.add("drJump", [134], 1, false);
+		//running
+		animation.add("drRun", [125, 126, 127, 128, 129, 130, 131, 132], 12, false);
+		//jetpack
+		animation.add("drJP", [135, 136], 12, false);
+
+		//DOUBLE SWORD
+		//standing 
+		animation.add("dsStop", [143], 1, false);
+		//jumping
+		animation.add("dsJump", [155], 1, false);
+		//run
+		animation.add("dsRun", [147, 148, 149, 150, 151, 152, 153, 154], 12, false);
+		//stab
+		animation.add("dsStab", [141, 142, 142, 141], 16, false);
+		//cut 
+		animation.add("dsCut", [144, 145, 146, 146], 16, false);
+		//double cut
+		animation.add("dsDC", [137, 138, 139, 140], 16, false);
+		//jet pack
+		animation.add("dsJP", [156, 157], 12, false);
+		animation.add("dsJPDC", [158, 159, 160, 161], 16, false);
+		animation.add("dsJPStab", [162, 163, 163, 162], 16, false);
+		animation.add("dsJPCut", [165, 166, 167, 167], 16, false);
 	}
 	
 	override public function hurt(damage:Float):Void {

@@ -49,7 +49,7 @@ class RifleEnemy extends Enemy {
 		health = healthLevel[level];
 		facing = FlxObject.LEFT;
 		brain = new EnemyFSM(idle);
-		range = 500;
+		range = 400;
 	}
 	
 	public function idle(elapsed:Float):Void {
@@ -92,7 +92,8 @@ class RifleEnemy extends Enemy {
 		if (!isHurting() && bulletCount < 3 && rateTimer > rate * bulletCount) {
 			bulletCount++;
 			var curBullet:EnemyBullet = bulletArray.recycle(EnemyBullet, true);
-			curBullet.setBullet(x, y + 45, 200, facing, 
+			curBullet.setBullet(x, y + 45, 
+							bulletSpeedLevel[level], facing, 
 							damageLevel[level], range,
 							Ranged);
 		}

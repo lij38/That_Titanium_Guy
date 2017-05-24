@@ -373,7 +373,7 @@ class PlayState extends FlxState {
 			var dmg:Float = bullet.getDamage();
 			playerBullets.remove(bullet);
 			bullet.destroy();
-			if (enemy.type == SHIELD && bullet.facing != enemy.facing) {
+			if (enemy.hasShield && bullet.facing != enemy.facing) {
 				dmg = 0;
 			}
 			if (!_is_boss) {
@@ -397,7 +397,7 @@ class PlayState extends FlxState {
 	}
 	
 	public function pickUpCoin(player:Player, coin:Coin):Void {
-		if (coin.alive) {
+		if (coin.alive && coin.velocity.y >= 0) {
 			coin.onPickUp(player, coin);
 			coin.kill();
 		}
