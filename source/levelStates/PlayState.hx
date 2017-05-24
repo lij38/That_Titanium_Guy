@@ -154,7 +154,7 @@ class PlayState extends FlxState {
 			} else {
 				Main.SAVE.data.levelCompleted = LEVELID;
 			}
-			if(LEVELID == 3) {
+			if(LEVELID == 4) {
 				Main.SAVE.data.end = true;
 			}
 			Main.LOGGER.logLevelEnd({won: true});

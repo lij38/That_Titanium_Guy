@@ -54,7 +54,7 @@ class Boss1 extends Enemy {
 		animation.play("stop");
 
 		acceleration.y = GRAVITY;
-		health = 1000;
+		health = 800;
 		facing = FlxObject.LEFT;
 		playerPos = FlxPoint.get();
 		brain = new EnemyFSM(turn);

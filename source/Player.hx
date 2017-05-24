@@ -89,7 +89,7 @@ class Player extends FlxSprite {
 			kWeapon = WeaponFactory.getWeapon(kn, playerBulletArray);
 			k2ndWeapon = WeaponFactory.getWeapon(k2n, playerBulletArray);
 			curConfig = Main.SAVE.data.curConfig;
-			trace(curConfig);
+			//trace(curConfig);
 		}
 		shielding = false;
 	}
@@ -141,10 +141,19 @@ class Player extends FlxSprite {
 		}
 
 		//unshield if shielding
-		if(FlxG.keys.anyJustReleased([K])) {
-			if(shielding) {
-				shielding = false;
-				//trace("unshielded");
+		if(kWeapon.getName() == "shield") {
+			if(FlxG.keys.anyJustReleased([K])) {
+				if(shielding) {
+					shielding = false;
+					//trace("unshielded");
+				}
+			}
+		} else if(jWeapon.getName() == "shield") {
+			if(FlxG.keys.anyJustReleased([J])) {
+				if(shielding) {
+					shielding = false;
+					//trace("unshielded");
+				}
 			}
 		}
 
@@ -276,20 +285,27 @@ class Player extends FlxSprite {
 			playRun(curConfig);
 		}
 		if (!isTumbling() && !isSwording() && !isShielding()) {
-			if(curConfig == "ds" && FlxG.keys.justPressed.J && FlxG.keys.justPressed.K) {
-				if (facing == FlxObject.NONE) {
-					jWeapon.attack(getMidpoint().x, y, faced);
-					kWeapon.attack(getMidpoint().x, y, faced);
-				} else {
-					jWeapon.attack(getMidpoint().x, y, facing);
-					kWeapon.attack(getMidpoint().x, y, facing);
-				}
-				if(jetpack) {
-					animation.play(curConfig + "JPDC");
-				} else {
-					animation.play(curConfig + "DC");
-				}
-			} else if(FlxG.keys.anyPressed([J])) {
+			// if(curConfig == "ds" && FlxG.keys.anyJustPressed([J]) && FlxG.keys.anyJustPressed([K])
+			// 	&& (jWeaponTimer == -0.1 || jWeaponTimer > jWeapon.getRate()
+			// 	&& (kWeaponTimer == -0.1 || kWeaponTimer > kWeapon.getRate()))) {
+			// 	swordTimer = 0;
+			// 	if (facing == FlxObject.NONE) {
+			// 		jWeapon.attack(getMidpoint().x, y, faced);
+			// 		kWeapon.attack(getMidpoint().x, y, faced);
+			// 	} else {
+			// 		jWeapon.attack(getMidpoint().x, y, facing);
+			// 		kWeapon.attack(getMidpoint().x, y, facing);
+			// 	}
+			// 	if(jetpack) {
+			// 		animation.play(curConfig + "JPDC");
+			// 	} else {
+			// 		animation.play(curConfig + "DC");
+			// 		//trace("doublecut");
+			// 	}
+			// 	jWeaponTimer = 0.0;
+			// 	kWeaponTimer = 0.0;
+			// } else {
+			if(FlxG.keys.anyPressed([J])) {
 				//RIFLE fully automatic, can hold to fire
 				if(jWeapon.getName() == "rifle") {
 					if((jWeaponTimer == -0.1 || jWeaponTimer > jWeapon.getRate())
@@ -308,7 +324,7 @@ class Player extends FlxSprite {
 				} else if(jWeapon.getName() == "shield") { //engage shield
 					if(!shielding) {
 						shielding = true;
-						trace("shielding");
+						//trace("shielding");
 					}
 				}
 				//Other weapons that cannot hold to fire
@@ -321,39 +337,42 @@ class Player extends FlxSprite {
 						jWeaponTimer = 0.0;
 					}
 				}
-			} else if(FlxG.keys.anyPressed([K])) {
-				//RIFLE fully automatic, can hold to fire
-				if(kWeapon.getName() == "rifle") {
-					if((kWeaponTimer == -0.1 || kWeaponTimer > kWeapon.getRate())
-						&& kReloadTimer == -0.1) {
-						if(curConfig != "dr") {
+			} 
+			if(!isSwording() && !isShielding()){
+				if(FlxG.keys.anyPressed([K])) {
+					//RIFLE fully automatic, can hold to fire
+					if(kWeapon.getName() == "rifle") {
+						if((kWeaponTimer == -0.1 || kWeaponTimer > kWeapon.getRate())
+							&& kReloadTimer == -0.1) {
+							if(curConfig != "dr") {
+								if(!fireWeapon(kWeapon)) {
+									kReloadTimer = 0.0;
+								} 
+							} else {
+								if(!fireKRifle()) {
+									kReloadTimer = 0.0;
+								}
+							}
+							kWeaponTimer = 0.0;
+						} 
+					} else if(kWeapon.getName() == "shield") { //engage shield
+						if(!shielding) {
+							shielding = true;
+							//trace("shielding");
+						}
+					}
+					//Other weapons that cannot hold to fire
+					if(FlxG.keys.anyJustPressed([K])) {
+						if((kWeaponTimer == -0.1 || kWeaponTimer > kWeapon.getRate())
+							&& kReloadTimer == -0.1) {
 							if(!fireWeapon(kWeapon)) {
 								kReloadTimer = 0.0;
 							} 
-						} else {
-							if(!fireJRifle()) {
-								kReloadTimer = 0.0;
-							}
+							kWeaponTimer = 0.0;
 						}
-						kWeaponTimer = 0.0;
-					} 
-				} else if(kWeapon.getName() == "shield") { //engage shield
-					if(!shielding) {
-						shielding = true;
-						//trace("shielding");
 					}
-				}
-				//Other weapons that cannot hold to fire
-				if(FlxG.keys.anyJustPressed([K])) {
-					if((kWeaponTimer == -0.1 || kWeaponTimer > kWeapon.getRate())
-						&& kReloadTimer == -0.1) {
-						if(!fireWeapon(kWeapon)) {
-							kReloadTimer = 0.0;
-						} 
-						kWeaponTimer = 0.0;
-					}
-				}
-			}		
+				}	
+			}
 		}
 	}
 
@@ -471,7 +490,27 @@ class Player extends FlxSprite {
 	}
 
 	private function fireWeapon(w: Weapon):Bool {
-		if(w.getName() == "sword") {
+		if(curConfig == "ds" && swordNum == 2) {
+			swordTimer = 0;
+			if (facing == FlxObject.NONE) {
+				jWeapon.attack(getMidpoint().x, y, faced);
+				kWeapon.attack(getMidpoint().x, y, faced);
+			} else {
+				jWeapon.attack(getMidpoint().x, y, facing);
+				kWeapon.attack(getMidpoint().x, y, facing);
+			}
+			if(jetpack) {
+				animation.play(curConfig + "JPDC");
+			} else {
+				animation.play(curConfig + "DC");
+				//trace("doublecut");
+			}
+			swordNum++;
+			if(swordNum > 2) {
+				swordNum = 0;
+			}
+			return true;
+		} else if(w.getName() == "sword") {
 			swordTimer = 0;
 			if(swordNum % 2 == 0) {
 				if(jetpack) {
@@ -488,36 +527,30 @@ class Player extends FlxSprite {
 			}
 			//trace(swordNum);
 			swordNum++;
-			if(curConfig != "ds") {
-				if(swordNum > 2) {
-					swordNum = 0;
-				}
-			} else {
-				if(swordNum > 1) {
-					swordNum = 0;
-				}
+			if(swordNum > 2) {
+				swordNum = 0;
 			}
 		}
 		if (facing == FlxObject.NONE) {
 			return w.attack(getMidpoint().x, y, faced);
 		} else {
 			return w.attack(getMidpoint().x, y, facing);
-		}
+		}	
 	}
 
 	private function fireJRifle():Bool {
 		if (facing == FlxObject.NONE) {
-			return jWeapon.attack(getMidpoint().x, y + 5, faced);
+			return jWeapon.attack(getMidpoint().x, y, faced);
 		} else {
-			return jWeapon.attack(getMidpoint().x, y + 5, facing);
+			return jWeapon.attack(getMidpoint().x, y, facing);
 		}
 	}
 
 	private function fireKRifle():Bool {
 		if (facing == FlxObject.NONE) {
-			return kWeapon.attack(getMidpoint().x, y - 5, faced);
+			return kWeapon.attack(getMidpoint().x, y - 15, faced);
 		} else {
-			return kWeapon.attack(getMidpoint().x, y - 5, facing);
+			return kWeapon.attack(getMidpoint().x, y - 15, facing);
 		}
 	}
 
@@ -618,6 +651,8 @@ class Player extends FlxSprite {
 		animation.add("rshJump", [120], 1, false);
 		//running
 		animation.add("rshRun", [111, 112, 113, 114, 115, 116, 117, 118], 12, false);
+		//shielding
+		animation.add("rshShield", [123], 1, false);
 		//jetpack
 		animation.add("rshJP", [121, 122], 12, false);
 		animation.add("rshJPShield", [123], 1, false);
@@ -642,14 +677,14 @@ class Player extends FlxSprite {
 		//stab
 		animation.add("dsStab", [141, 142, 142, 141], 16, false);
 		//cut 
-		animation.add("dsCut", [144, 145, 146, 146], 16, false);
+		animation.add("dsCut", [144, 145, 146], 16, false);
 		//double cut
 		animation.add("dsDC", [137, 138, 139, 140], 16, false);
 		//jet pack
 		animation.add("dsJP", [156, 157], 12, false);
 		animation.add("dsJPDC", [158, 159, 160, 161], 16, false);
 		animation.add("dsJPStab", [162, 163, 163, 162], 16, false);
-		animation.add("dsJPCut", [165, 166, 167, 167], 16, false);
+		animation.add("dsJPCut", [165, 166, 167], 16, false);
 	}
 	
 	override public function hurt(damage:Float):Void {
