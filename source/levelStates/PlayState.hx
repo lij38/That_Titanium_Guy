@@ -42,6 +42,15 @@ class PlayState extends FlxState {
 	private var startTime:Float;
 	private var numEnemies:Int;
 	public var LEVELID:Int;
+
+	// pause state and menu
+	private var _pause:Bool;
+	private var _menu_bg:FlxSprite;
+	private var _menubutton:ImageButton;
+	private var _resumebutton:ImageButton;
+	private var _homebutton:ImageButton;
+	private var _pausebutton:FlxText;
+	private var _pausetxt:FlxText;
 	
 	override public function create():Void {
 		//FlxG.debugger.drawDebug = true;
@@ -101,10 +110,56 @@ class PlayState extends FlxState {
 		Main.SAVE.data.curLevel = LEVELID;
 		Main.SAVE.flush();
 		startTime = Date.now().getTime();
+
+		// pause part and whole pause menu
+		_pause = false;
+
+		_menu_bg = new FlxSprite(0, 0);
+		_menu_bg.makeGraphic(800, 600, FlxColor.BLACK);
+		_menu_bg.scrollFactor.set(0.0);
+
+		_homebutton = new ImageButton(300, 200, clickHome);
+		_homebutton.loadGraphic(AssetPaths.gohome__png, false, 200, 40);
+		_homebutton.scrollFactor.set(0.0);
+		_menubutton = new ImageButton(300, 310, clickMenu);
+		_menubutton.loadGraphic(AssetPaths.menu__png, false, 200, 40);
+		_menubutton.scrollFactor.set(0.0);
+		_resumebutton = new ImageButton(300, 420, clickResume);
+		_resumebutton.loadGraphic(AssetPaths.resume__png, false, 200, 40);
+		_resumebutton.scrollFactor.set(0.0);
+		
+		_pausebutton = new FlxText(31, 100, 600, "Press ESC to PAUSE", 20);
+		_pausebutton.setFormat(AssetPaths.FONT, _pausebutton.size);
+		_pausebutton.scrollFactor.set(0.0);
+		if (LEVELID > 1) {
+			_pausebutton.visible = false;
+		}
+
+		_pausetxt = new FlxText(240, 85, 600, "Game Paused", 50);
+		_pausetxt.setFormat(AssetPaths.FONT, _pausetxt.size);
+		_pausetxt.scrollFactor.set(0.0);
+
 		super.create();
 	}
 
+
+
+
+
 	override public function update(elapsed:Float):Void {
+		if (FlxG.keys.justPressed.ESCAPE) {
+			_pause = true;
+		}
+		if (_pause) {
+			activeButtons();
+			_homebutton.update(elapsed);
+			_menubutton.update(elapsed);
+			_resumebutton.update(elapsed);
+			return;
+		} else {
+			disableButtons();
+		}
+
 		super.update(elapsed);
 		if (FlxG.keys.anyPressed([MINUS])) {
 			// kill all enemies
@@ -318,7 +373,7 @@ class PlayState extends FlxState {
 			var dmg:Float = bullet.getDamage();
 			playerBullets.remove(bullet);
 			bullet.destroy();
-			if (enemy.type == SHIELD && bullet.facing != enemy.facing) {
+			if (enemy.hasShield && bullet.facing != enemy.facing) {
 				dmg = 0;
 			}
 			if (!_is_boss) {
@@ -342,7 +397,7 @@ class PlayState extends FlxState {
 	}
 	
 	public function pickUpCoin(player:Player, coin:Coin):Void {
-		if (coin.alive) {
+		if (coin.alive && coin.velocity.y >= 0) {
 			coin.onPickUp(player, coin);
 			coin.kill();
 		}
@@ -357,4 +412,58 @@ class PlayState extends FlxState {
 			e.hurt(e.health);
 		}
 	}
+
+	public function addTopLayer():Void {
+		add(_pausebutton);
+		add(_menu_bg);
+		add(_homebutton);
+		add(_menubutton);
+		add(_resumebutton);
+		add(_pausetxt);
+	}
+
+	private function activeButtons():Void {
+		_menu_bg.visible = true;
+		_menu_bg.alpha = 0.8;
+		_menubutton.visible = true;
+		_menubutton.active = true;
+		_resumebutton.visible = true;
+		_resumebutton.active = true;
+		if (LEVELID > 2) {
+			_homebutton.visible = true;
+			_homebutton.active = true;
+		}
+		_pausetxt.visible = true;
+	}
+
+	private function disableButtons():Void {
+		_menu_bg.visible = false;
+		_homebutton.visible = false;
+		_homebutton.active = false;
+		_menubutton.visible = false;
+		_menubutton.active = false;
+		_resumebutton.visible = false;
+		_resumebutton.active = false;
+		_pausetxt.visible = false;
+	}
+
+	private function clickHome():Void {
+        FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
+			FlxG.switchState(new HomeState());
+		});
+    }
+
+    private function clickMenu():Void {
+        FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
+			FlxG.switchState(new MenuState());
+		});
+    }
+
+    private function clickResume():Void {
+    	_pause = false;
+    }
+
+    private function clickPause():Void {
+    	_pause = true;
+    }
 }

@@ -10,48 +10,48 @@ import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import weapons.*;
+import haxe.CallStack;
 import items.Coin;
 
-class ShieldEnemy extends Enemy {
+class JetpackShieldEnemy extends Enemy {
 	
-	private var rate:Float = 3.0;
+	private var rate:Float = 1.66;
 	private var rateTimer:Float = -1;
 	private var attacked:Bool = false;
 	
 	private var level:Int;
-	private var damageLevel = [for (i in 1...4) i / 2];	
-	private var healthLevel = [for (i in 0...4) 20 * i + 60];
+	private var damageLevel = [for (i in 1...4) i];
+	private var healthLevel = [for (i in 0...4) 20 * i + 30];
 	
 	public function new(X:Float = 0, Y:Float = 0, id:Int = -1,
 						bulletArray:FlxTypedGroup<EnemyBullet>,
 						coinsGroup:FlxTypedGroup<Coin>,
 						gravity:Float, level:Int = 0) {
-		super(X, Y, id, bulletArray, coinsGroup, gravity, SHIELD);
+		super(X, Y, id, bulletArray, coinsGroup, gravity, JPSHIELD);
 		this.level = level;
+		hurtTime = 0.5;
 		
-		loadGraphic(AssetPaths.enemy_shield__png, true, 568, 481);
+		loadGraphic(AssetPaths.jp_enemy_shield__png, true, 602, 453);
 		scale.set(0.35, 0.35);
-		setSize(35, 122);
-		offset.set(265, 176);
+		setSize(35, 120);
+		offset.set(282, 162);
 		
 		setFacingFlip(FlxObject.LEFT, false, false);
 		setFacingFlip(FlxObject.RIGHT, true, false);
 		
-		animation.add("stop", [6], 1, false);
-		animation.add("lr", [0, 1, 2, 3, 4, 5], 9, false);
-		animation.add("shield", [10, 10, 10, 10, 6], 12, false);
-		animation.add("hurt", [11, 11, 11, 11, 6], 12, false);
-		animation.add("die", [11, 12, 13, 13, 13, 13, 13, 13, 13, 13, 13], 9, false);
-		animation.add("attack", [7, 7, 7, 8, 8, 8, 9, 9, 9], 9, false);
+		animation.add("stop", [0, 1], 9, true);
+		animation.add("lr", [0, 1], 9, true);
+		animation.add("shield", [5, 5, 5, 5, 0], 12, false);
+		animation.add("hurt", [6, 6, 6, 6, 0], 12, false);
+		animation.add("die", [6, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8], 9, false);
+		animation.add("attack", [2, 2, 2, 3, 3, 3, 4, 4, 4, 0, 1, 0, 1, 0, 1], 9, false);
 		animation.play("stop");
 		
 		health = healthLevel[level];
 		facing = FlxObject.LEFT;
 		brain = new EnemyFSM(idle);
+		speed = 300;
 		range = 90;
-		originalColor = 0xffcc00;
-		color = originalColor;
-		
 	}
 	
 	public function idle(elapsed:Float):Void {
@@ -65,7 +65,6 @@ class ShieldEnemy extends Enemy {
 	}
 	
 	public function attack(elapsed:Float):Void {
-		//trace(rateTimer);
 		if (rateTimer >= 0) {
 			rateTimer += elapsed;
 		}
@@ -74,18 +73,24 @@ class ShieldEnemy extends Enemy {
 			attacked = false;
 		}
 		if (rateTimer == -1) {
-			//trace("turn");
 			if (playerPos.x <= getMidpoint().x) {
-				velocity.x = -speed;
 				facing = FlxObject.LEFT;
-			} else {
+			} else if (playerPos.x > getMidpoint().x) {
 				facing = FlxObject.RIGHT;
+			}
+			velocity.set(0, 0);
+			if (getMidpoint().y - playerPos.y > 7) {
+				velocity.y = -speed;
+			} else if (getMidpoint().y - playerPos.y < -7) {
+				velocity.y = speed;
+			} else if (playerPos.x < getMidpoint().x) {
+				velocity.x = -speed;
+			} else if (playerPos.x > getMidpoint().x) {
 				velocity.x = speed;
 			}
 		}
-
 		if (playerInRange()) {
-			velocity.x = 0;
+			velocity.set(0, 0);
 			if (rateTimer == -1) {
 				rateTimer = 0;
 			}

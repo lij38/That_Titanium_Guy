@@ -13,6 +13,9 @@ import flixel.util.FlxColor;
 import items.Coin;
 
 enum EnemyType {
+	JPRIFLE;
+	JPMELEE;
+	JPSHIELD;
 	SHIELD;
 	MELEE;
 	RIFLE;
@@ -37,7 +40,7 @@ class Enemy extends FlxSprite {
 	public var seesPlayer:Bool = false;
 	public var hurtTime:Float = 0.25;
 	private var range:Float;
-	private var detectRange:Float = 500;
+	private var detectRange:Float = 700;
 	private var hurtColorTimer:Float = -1;
 	private var originalColor:FlxColor = 0xffffff;
 	
@@ -47,6 +50,11 @@ class Enemy extends FlxSprite {
 	private var idleTime:Int = Std.random(3) + 3;
 	private var idleTimer:Float = 0.0;
 	
+	public var hasJetpack:Bool = false;
+	public var hasShield:Bool = false;
+	
+	private var bulletSpeedLevel = [for (i in 0...4) 50 * i + 250];
+	
 	public function new(X:Float = 0, Y:Float = 0, id:Int = -1,
 						enemiesBulletArray:FlxTypedGroup<EnemyBullet>,
 						coinsGroup:FlxTypedGroup<Coin>,
@@ -55,29 +63,36 @@ class Enemy extends FlxSprite {
 		GRAVITY = gravity;
 		bulletArray = enemiesBulletArray;
 		this.coinsGroup = coinsGroup;
+		this.type = type;
+		this.id = id;
 		
-		acceleration.y = GRAVITY;
+		if (type == JPMELEE || type == JPRIFLE || type == JPSHIELD) {
+			hasJetpack = true;
+		}
+		if (type == SHIELD || type == JPSHIELD) {
+			hasShield = true;
+		}
+		
+		acceleration.y = hasJetpack ? 0 : GRAVITY;
 		playerPos = FlxPoint.get();
 		
 		color = originalColor;
-		
-		this.type = type;
-		this.id = id;
 	}
 	
 	override public function update(elapsed:Float):Void {
 		if (!seesPlayer &&
-			Math.abs(playerPos.x - getMidpoint().x) < 350 &&
-			Math.abs(playerPos.y - getMidpoint().y) < 50) {
+			Math.abs(playerPos.x - getMidpoint().x) < detectRange / 2 &&
+			Math.abs(playerPos.y - getMidpoint().y) < detectRange / 2) {
 			seesPlayer = true;
 		}
 		if (seesPlayer &&
 			(Math.abs(playerPos.x - getMidpoint().x) > detectRange ||
-			Math.abs(playerPos.y - getMidpoint().y) > 300)) {
+			Math.abs(playerPos.y - getMidpoint().y) > detectRange)) {
 			seesPlayer = false;
 		}
 		if (!alive) {
 			velocity.set(0, 0);
+			acceleration.y = GRAVITY;
 			super.update(elapsed);
 			color = originalColor;
 			// spawn coins when die
@@ -86,7 +101,7 @@ class Enemy extends FlxSprite {
 					var rx:Float = Math.random() * 600 - 75;
 					if (coinCount < 50 && rx < 75) {
 						var coin:Coin = 
-								new Coin(getMidpoint().x + rx, getMidpoint().y + 45);
+							new Coin(getMidpoint().x + rx, getMidpoint().y + 45);
 						coin.loadCoinGraphic();
 						coinsGroup.add(coin);
 						coinCount++;
@@ -162,6 +177,9 @@ class Enemy extends FlxSprite {
 	}
 	
 	public function playerInRange():Bool {
-		return Math.abs(playerPos.x - getMidpoint().x) < range;
+		var diffX:Float = playerPos.x - getMidpoint().x;
+		var diffY:Float = playerPos.y - getMidpoint().y;
+		return Math.abs(diffX) < range &&
+				(!hasJetpack || diffY < 15 && diffY > -15);
 	}
 }
