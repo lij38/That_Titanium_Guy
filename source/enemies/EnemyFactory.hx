@@ -15,8 +15,13 @@ class EnemyFactory {
 			return new RifleEnemy(X, Y, id,bulletArray, coinsGroup,gravity, level);
 		} else if (enType == "SHIELD") {
 			return new ShieldEnemy(X, Y, id, bulletArray, coinsGroup,gravity, level);
-		} else if (enType == "TRUCK") {
+		} else// if (enType == "TRUCK") {
+			{
 			return new TruckEnemy(X, Y, id, bulletArray, coinsGroup, gravity, level);
+		//} else if (enType == "JPMELEE") {
+
+		//} else if (enType == "JPRIFLE") {
+
 		}
 		return null;
 	}
