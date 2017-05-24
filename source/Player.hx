@@ -457,7 +457,7 @@ class Player extends FlxSprite {
 	
 	// TODO: implement player pick up coin
 	public function pickUpCoin(value:Int):Void {
-		trace("pick up coin: " + value);
+		//trace("pick up coin: " + value);
 	}
 
 	public function getDamageTaken() {

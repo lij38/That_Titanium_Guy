@@ -68,7 +68,8 @@ class Level2State extends PlayState {
         add(_keys);
 		add(texts);
 		add(_player);
-
+        add(_hud);
+        addTopLayer();
 
         Main.LOGGER.logLevelStart(3);
 
