@@ -142,7 +142,8 @@ class FinishState extends FlxState
 			switch _level {
                 case 1: FlxG.switchState(new Level1State());
                 case 2: FlxG.switchState(new Boss1State());
-                case 3: FlxG.switchState(new HomeState());
+                case 3: FlxG.switchState(new Level2State());
+                case 4: FlxG.switchState(new HomeState());
             }
 		});
 	}
