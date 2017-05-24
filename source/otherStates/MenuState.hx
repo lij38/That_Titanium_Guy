@@ -63,6 +63,7 @@ class MenuState extends FlxState {
 		FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
 			Main.SAVE.erase();
 			Main.SAVE.bind(Main.LOGGER.getSavedUserId());
+
 			//FlxG.switchState(new HomeState());
 			//FlxG.switchState(new TutorialState());
 			//FlxG.switchState(new Boss1State());

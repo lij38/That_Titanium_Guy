@@ -21,10 +21,14 @@ enum EnemyType {
 }
 
 class Enemy extends FlxSprite {
+	private var id:Int;
+	
 	private var bulletArray:FlxTypedGroup<EnemyBullet>;
 	private var coinsGroup:FlxTypedGroup<Coin>;
 	private var dropCoin:Bool = false;
+	private var dropItem:Bool = false;
 	private var coinCount:Int = 0;
+	public var onPickUpItem:Dynamic->Dynamic->Void;
 	
 	private var GRAVITY:Float;
 	private var brain:EnemyFSM;
@@ -43,7 +47,7 @@ class Enemy extends FlxSprite {
 	private var idleTime:Int = Std.random(3) + 3;
 	private var idleTimer:Float = 0.0;
 	
-	public function new(X:Float = 0, Y:Float = 0, 
+	public function new(X:Float = 0, Y:Float = 0, id:Int = -1,
 						enemiesBulletArray:FlxTypedGroup<EnemyBullet>,
 						coinsGroup:FlxTypedGroup<Coin>,
 						gravity:Float, type:EnemyType) {
@@ -58,6 +62,7 @@ class Enemy extends FlxSprite {
 		color = originalColor;
 		
 		this.type = type;
+		this.id = id;
 	}
 	
 	override public function update(elapsed:Float):Void {
@@ -75,17 +80,30 @@ class Enemy extends FlxSprite {
 			velocity.set(0, 0);
 			super.update(elapsed);
 			color = originalColor;
-			if (!dropCoin) {
+			// spawn coins when die
+			if (id != 34 && !dropCoin) {
 				if (type == BOSS) {
 					var rx:Float = Math.random() * 600 - 75;
 					if (coinCount < 50 && rx < 75) {
-						coinsGroup.add(new Coin(getMidpoint().x + rx, getMidpoint().y + 45));
+						var coin:Coin = 
+								new Coin(getMidpoint().x + rx, getMidpoint().y + 45);
+						coin.loadCoinGraphic();
+						coinsGroup.add(coin);
 						coinCount++;
 					}
 				} else {
-					coinsGroup.add(new Coin(getMidpoint().x, getMidpoint().y));
+					var coin:Coin = new Coin(getMidpoint().x, getMidpoint().y);
+					coin.loadCoinGraphic();
+					coinsGroup.add(coin);
 					dropCoin = true;
 				}
+			}
+			if (id == 34 && !dropItem) {
+				var rifle:Coin = new Coin(getMidpoint().x, getMidpoint().y);
+				rifle.loadGraphic(AssetPaths.rifle__png);
+				rifle.onPickUp = onPickUpItem;
+				coinsGroup.add(rifle);
+				dropItem = true;
 			}
 			return;
 		} else {

@@ -81,6 +81,8 @@ class TutorialState extends PlayState {
 		add(texts);
 		add(_player);
         add(_hud);
+
+        Main.SAVE.data.stararr = [null, null, null, null, null, null, null];
     }
 
 	override public function update(elapsed:Float):Void  {

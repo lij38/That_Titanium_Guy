@@ -133,7 +133,7 @@ class PlayState extends FlxState {
 		
 		// Coins
 		FlxG.collide(coinsGroup, _plat);
-		FlxG.overlap(coinsGroup, _player, pickUpCoin);
+		FlxG.overlap(_player, coinsGroup, pickUpCoin);
 
 		bulletsRangeUpdate();
         if (!_player.exists && !logged) {
@@ -232,12 +232,13 @@ class PlayState extends FlxState {
 		var x:Int = Std.parseInt(entityData.get("x"));
 		var y:Int = Std.parseInt(entityData.get("y"));
 		var lvl:Int = Std.parseInt(entityData.get("type"));
+		var enId:Int = Std.parseInt(entityData.get("id"));
 		
 		var en:Enemy;
 		var boss:Boss1;
 		
 		if (entityName == "boss1") {
-			boss = new Boss1(x, y, enemiesBullets, coinsGroup, 0);
+			boss = new Boss1(x, y, enId, enemiesBullets, coinsGroup, 0);
 			enemiesGroup.add(boss);
 			if (boss.health > 0) {
 				_boss_hud = new Boss1HUD(boss);
@@ -245,16 +246,15 @@ class PlayState extends FlxState {
 				boss.hurt(boss.health);
 			}
 		} else {
-			if (entityName == "RIFLEDEAD") {
-				en = new RifleEnemy(x, y-55, enemiesBullets, coinsGroup, GRAVITY);
-				en.hurt(en.health);
-				//en = new TruckEnemy(x + 5000, y - 100, enemiesBullets, GRAVITY);
-			} else {
-				en = EnemyFactory.getEnemy(entityName, x, y, enemiesBullets, coinsGroup,
-											GRAVITY, lvl);
-				if (en == null) {
-					trace("Invalide entity name: " + entityName);
-				}
+			en = EnemyFactory.getEnemy(entityName, x, y, enId,
+										enemiesBullets, coinsGroup,
+										GRAVITY, lvl);
+			if (en == null) {
+				trace("Invalide entity name: " + entityName);
+			}
+			
+			if (enId == 34) {
+				en.onPickUpItem = pickUpRifle;
 			}
 			enemiesGroup.add(en);
 			if (en.health > 0) {
@@ -335,8 +335,15 @@ class PlayState extends FlxState {
 		b.kill();
 	}
 	
-	public function pickUpCoin(coin:Coin, player:Player):Void {
-		coin.kill();
+	public function pickUpCoin(player:Player, coin:Coin):Void {
+		if (coin.alive) {
+			coin.onPickUp(player, coin);
+			coin.kill();
+		}
+	}
+	
+	public function pickUpRifle(player:Player, rifle:Coin):Void {
+		player.pickUpRifle();
 	}
 	
 	public function killAllEnemies(e:Enemy) {

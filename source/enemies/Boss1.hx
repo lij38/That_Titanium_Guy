@@ -24,11 +24,11 @@ class Boss1 extends Enemy {
 	private var rate:Float = 0.1;
 	private var rateTimer:Float = 0;
 
-	public function new(X:Float = 0, Y:Float = 0, 
+	public function new(X:Float = 0, Y:Float = 0, id:Int = -1,
 					bulletArray:FlxTypedGroup<EnemyBullet>, 
 					coinsGroup:FlxTypedGroup<Coin>,
 					gravity:Float) {
-		super(X, Y, bulletArray, coinsGroup, gravity, BOSS);
+		super(X, Y, id, bulletArray, coinsGroup, gravity, BOSS);
 		GRAVITY = gravity;
 
 		loadGraphic(AssetPaths.abc__png, true, 1007, 702);
@@ -64,6 +64,7 @@ class Boss1 extends Enemy {
 		attack_count = 0;
 		stay_count = 0;
 		range = 180;
+		hurtTime = 0.15;
 	}
 
 	override public function update(elapsed:Float):Void {
@@ -218,6 +219,8 @@ class Boss1 extends Enemy {
 			//hurtTimer = 0;
 		//}
 		health -= damage;
+		color = 0xff0000;
+		hurtColorTimer = 0.0;
 	}
 	
 }
