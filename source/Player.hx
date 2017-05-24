@@ -55,7 +55,7 @@ class Player extends FlxSprite {
 		health = 100;
 		dmgTaken = 0.0;
 
-		loadGraphic(AssetPaths.player__png, true, cast(4745 / 5, Int), cast(11109 / 21, Int));
+		loadGraphic(AssetPaths.player__png, true, 970, 529);
 		setFacingFlip(FlxObject.LEFT, true, false);
 		setFacingFlip(FlxObject.RIGHT, false, false);
 		scale.set(0.35, 0.35);
@@ -63,7 +63,7 @@ class Player extends FlxSprite {
 		addAnimation();
 		
 		setSize(48, 115);
-		offset.set(450, 198);
+		offset.set(460, 198);
 		acceleration.y = GRAVITY;
 		
 		bulletArray = playerBulletArray;
