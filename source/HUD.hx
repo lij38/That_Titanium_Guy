@@ -16,6 +16,7 @@ class HUD extends FlxTypedGroup<FlxSprite>
     private var _txtjAmmo:FlxText;
     private var _txtkAmmo:FlxText;
     private var _healthbar:FlxBar;
+	private var _jetpackBar:FlxBar;
     private var _jWeapon:FlxSprite;
     private var _kWeapon:FlxSprite;
     private var _damage1:FlxText;
@@ -39,6 +40,11 @@ class HUD extends FlxTypedGroup<FlxSprite>
         _healthbar = new FlxBar(60, 4, LEFT_TO_RIGHT, 400, 20, _player, "health", 0, _player.health);
         _healthbar.createFilledBar(FlxColor.TRANSPARENT, FlxColor.RED, true, FlxColor.BLACK);
 
+		//jetpack bar
+		_jetpackBar = new FlxBar(60, 29, LEFT_TO_RIGHT, 400, 10, _player,
+									"jetpackField", 0, _player.jetpackFieldMax);
+		_jetpackBar.createFilledBar(FlxColor.TRANSPARENT, FlxColor.CYAN, true, FlxColor.BLACK);
+		
         //weapons
         _jWeapon = new FlxSprite(_txtjAmmo.x + 20, 4);
         _kWeapon = new FlxSprite(_txtkAmmo.x + 20, 4);
@@ -60,6 +66,8 @@ class HUD extends FlxTypedGroup<FlxSprite>
          _txtkAmmo.scrollFactor.set(0.0);
          add(_healthbar);
          _healthbar.scrollFactor.set(0.0);
+		 add(_jetpackBar);
+		 _jetpackBar.scrollFactor.set(0.0);
          add(_jWeapon);
          _jWeapon.scrollFactor.set(0.0);
          add(_kWeapon);

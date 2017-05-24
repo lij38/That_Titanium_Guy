@@ -13,12 +13,11 @@ import weapons.*;
 import haxe.CallStack;
 import items.Coin;
 
-class RifleEnemy extends Enemy {
+class JetpackMeleeEnemy extends Enemy {
 	
-	private var bulletCount:Int = 0;
+	private var rate:Float = 1.66;
 	private var rateTimer:Float = -1;
-	private var rateTime:Float = 2.0;
-	private var rate:Float = 0.1;
+	private var attacked:Bool = false;
 	
 	private var level:Int;
 	private var damageLevel = [for (i in 1...4) i];	
@@ -28,28 +27,30 @@ class RifleEnemy extends Enemy {
 						bulletArray:FlxTypedGroup<EnemyBullet>,
 						coinsGroup:FlxTypedGroup<Coin>,
 						gravity:Float, level:Int = 0) {
-		super(X, Y, id, bulletArray, coinsGroup, gravity, RIFLE);
+		super(X, Y, id, bulletArray, coinsGroup, gravity, JPMELEE);
 		this.level = level;
 		hurtTime = 0.5;
 		
-		loadGraphic(AssetPaths.enemy_rifle__png, true, 552, 383);
+		loadGraphic(AssetPaths.jp_enemy_melee__png, true, 598, 460);
 		scale.set(0.35, 0.35);
 		setSize(35, 120);
-		offset.set(260, 125);
+		offset.set(280, 165);
 		
 		setFacingFlip(FlxObject.LEFT, false, false);
 		setFacingFlip(FlxObject.RIGHT, true, false);
 		
-		animation.add("stop", [6], 1, false);
-		animation.add("lr", [0, 1, 2, 3, 4, 5], 9, false);
-		animation.add("hurt", [8, 8, 8, 8, 6], 12, false);
-		animation.add("die", [8, 9, 10, 10, 10, 10, 10, 10, 10, 10, 10], 9, false);
+		animation.add("stop", [0, 1], 9, true);
+		animation.add("lr", [0, 1], 9, true);
+		animation.add("hurt", [5, 5, 5, 5, 0], 12, false);
+		animation.add("die", [5, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7], 9, false);
+		animation.add("attack", [2, 2, 2, 3, 3, 3, 4, 4, 4, 0, 1, 0, 1, 0, 1], 9, false);
 		animation.play("stop");
 		
 		health = healthLevel[level];
 		facing = FlxObject.LEFT;
 		brain = new EnemyFSM(idle);
-		range = 400;
+		speed = 400;
+		range = 100;
 	}
 	
 	public function idle(elapsed:Float):Void {
@@ -59,47 +60,70 @@ class RifleEnemy extends Enemy {
 		randomFacing(elapsed);
 		animation.play("stop");
 		rateTimer = -1;
-		bulletCount = 0;
+		attacked = false;
 	}
 	
 	public function attack(elapsed:Float):Void {
 		if (rateTimer >= 0) {
 			rateTimer += elapsed;
 		}
-		if (rateTimer > rateTime) {
+		if (rateTimer > rate) {
 			rateTimer = -1;
-			bulletCount = 0;
+			attacked = false;
 		}
 		if (rateTimer == -1) {
 			if (playerPos.x <= getMidpoint().x) {
-				velocity.x = -speed;
 				facing = FlxObject.LEFT;
-			} else {
+			} else if (playerPos.x > getMidpoint().x) {
 				facing = FlxObject.RIGHT;
+			}
+			velocity.set(0, 0);
+			if (getMidpoint().y - playerPos.y > 7) {
+				velocity.y = -speed;
+			} else if (getMidpoint().y - playerPos.y < -7) {
+				velocity.y = speed;
+			} else if (playerPos.x < getMidpoint().x) {
+				velocity.x = -speed;
+			} else if (playerPos.x > getMidpoint().x) {
 				velocity.x = speed;
 			}
 		}
 		if (playerInRange()) {
-			velocity.x = 0;
-			if (rateTimer < 0) {
+			velocity.set(0, 0);
+			if (rateTimer == -1) {
 				rateTimer = 0;
 			}
-			animation.play("stop");
+			animation.play("attack");
 		} else if (rateTimer < 0) {
 			animation.play("lr");
 		}
-		
-		if (!isHurting() && bulletCount < 3 && rateTimer > rate * bulletCount) {
-			bulletCount++;
-			var curBullet:EnemyBullet = bulletArray.recycle(EnemyBullet, true);
-			curBullet.setBullet(x, y + 45, 200, facing, 
-							damageLevel[level], range,
-							Ranged);
+		if (rateTimer > 0.66 && !attacked) {
+			var curBullet:EnemyBullet = bulletArray.recycle(EnemyBullet);
+			curBullet.setBullet(x + 7, y + 10, 1000, facing,
+							damageLevel[level], range, 
+							Melee);
+			attacked = true;
 		}
+		
 		if (!seesPlayer) {
 			velocity.set(0, 0);
 			brain.activeState = idle;
+			animation.play("stop");
 		}
+	}
+	
+	override public function hurt(damage:Float):Void {
+		seesPlayer = true;
+		if (health - damage <= 0) {
+			animation.play("die");
+			alive = false;
+		} else if (rateTimer == -1) {
+			animation.play("hurt");
+			hurtTimer = 0;
+		}
+		health -= damage;
+		color = 0xff0000;
+		hurtColorTimer = 0.0;
 	}
 	
 }

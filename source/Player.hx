@@ -31,6 +31,9 @@ class Player extends FlxSprite {
 	
 	private var money:Int;
 	
+	public var jetpackFieldMax:Float = 3;
+	public var jetpackField:Float = 3;
+	
 	private var jWeapon:Weapon;
 	private var kWeapon:Weapon;
 	private var j2ndWeapon:Weapon;
@@ -214,6 +217,15 @@ class Player extends FlxSprite {
 				}
 			}
 		}*/
+		if (jetpack) {
+			if (jetpackField < 0) {
+				jetpack = false;
+			} else {
+				jetpackField -= elapsed;
+			}
+		} else if (jetpackField < jetpackFieldMax) {
+			jetpackField += elapsed / 2;
+		}
 		
 		if (jetpack) {
 			numJump = numJumpLimit;
@@ -268,7 +280,7 @@ class Player extends FlxSprite {
 				jumped = false;
 			}
 			
-			if (touching == FlxObject.DOWN && !jumped) {
+			if (isTouching(FlxObject.DOWN) && !jumped) {
 				jump = 0;
 				numJump = 0;
 			}
