@@ -76,8 +76,8 @@ class MenuState extends FlxState {
 			if(Main.SAVE.data.tutComplete == null || Main.SAVE.data.tutComplete == false) {
 				FlxG.switchState(new OpeningState());
 			} else {
-				FlxG.switchState(new WorkshopState());
-				//FlxG.switchState(new HomeState());
+				//FlxG.switchState(new WorkshopState());
+				FlxG.switchState(new HomeState());
 			}
 		});
 	}

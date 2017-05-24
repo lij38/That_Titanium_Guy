@@ -96,7 +96,8 @@ class WorkshopState extends FlxState {
         shield.kill();
 
         //load the confirm button
-        confirm = new ImageButton(390, 550, "CONFIRM", clickPlay);
+        confirm = new ImageButton(300, 550, "CONFIRM", clickPlay);
+        confirm.loadGraphic(AssetPaths.confirm__png, false, 200, 40);
         add(confirm);
     }
 
@@ -125,7 +126,26 @@ class WorkshopState extends FlxState {
     }
 
     private function clickPlay() {
-        trace("clicked confirm button");
+        var curConfig:String = "";
+        if(Main.SAVE.data.jWeapon == "sword" && Main.SAVE.data.kWeapon == "shield" ||
+			Main.SAVE.data.kWeapon == "sword" && Main.SAVE.data.jWeapon == "shield") {
+			curConfig = "swsh";
+		} else if(Main.SAVE.data.jWeapon == "rifle" && Main.SAVE.data.kWeapon == "shield" ||
+				Main.SAVE.data.kWeapon == "rifle" && Main.SAVE.data.jWeapon == "shield"){
+			curConfig = "rsh";
+		} else if(Main.SAVE.data.jWeapon == "sword" && Main.SAVE.data.kWeapon == "rifle" ||
+				Main.SAVE.data.kWeapon == "sword" && Main.SAVE.data.jWeapon == "rifle") {
+			curConfig = "swr";
+		} else if(Main.SAVE.data.jWeapon == "sword" && Main.SAVE.data.kWeapon == "sword") {
+			curConfig = "ds";
+		} else if(Main.SAVE.data.jWeapon == "rifle" && Main.SAVE.data.kWeapon == "rifle") {
+			curConfig = "dr";
+		}
+        Main.SAVE.data.curConfig = curConfig;
+        Main.SAVE.flush();
+        FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
+			FlxG.switchState(new HomeState());
+		});
     }
 
     private function jClick() {
