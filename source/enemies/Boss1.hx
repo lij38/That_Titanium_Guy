@@ -64,7 +64,7 @@ class Boss1 extends Enemy {
 		attack_count = 0;
 		stay_count = 0;
 		range = 180;
-		hurtTime = 0.15;
+		hurtTime = 0.10;
 	}
 
 	override public function update(elapsed:Float):Void {

@@ -129,7 +129,9 @@ class PlayState extends FlxState {
 		// Bullets collide walls
 		FlxG.collide(_plat, playerBullets, bulletsHitWalls);
 		FlxG.collide(_plat, enemiesBullets, enemiesBulletsHitWalls);
-		FlxG.collide(enemiesGroup, _plat);
+		if(!_is_boss) {
+			FlxG.collide(enemiesGroup, _plat);
+		}
 		
 		// Coins
 		FlxG.collide(coinsGroup, _plat);
@@ -302,7 +304,11 @@ class PlayState extends FlxState {
 		} else if (e.alive) {
 			e.playerPos.copyFrom(_player.getMidpoint());
 			if (!_player.isTumbling()) {
-				FlxG.collide(_player, e, playerCollidesEnemies);
+				if (_is_boss) {
+					FlxG.overlap(_player, e, playerCollidesEnemies);
+				} else {
+					FlxG.collide(_player, e, playerCollidesEnemies);
+				}
 			}
 		}
 	}
