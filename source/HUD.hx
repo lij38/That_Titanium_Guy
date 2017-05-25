@@ -9,8 +9,7 @@ package ;
  import flixel.tweens.*;
  using flixel.util.FlxSpriteUtil;
 
-class HUD extends FlxTypedGroup<FlxSprite>
-{
+class HUD extends FlxTypedGroup<FlxSprite> {
     private var _player:Player;
     private var _sprHealth:FlxSprite;
     private var _txtjAmmo:FlxText;
@@ -21,10 +20,11 @@ class HUD extends FlxTypedGroup<FlxSprite>
     private var _kWeapon:FlxSprite;
     private var _damage1:FlxText;
     private var _damage2:FlxText;
+    private var _damage3:FlxText;
+    private var _damage4:FlxText;
     private var dmgCounter:Int;
 
-    public function new(player:Player)
-     {
+    public function new(player:Player) {
          super();
          _player = player;
         //ammo
@@ -56,6 +56,12 @@ class HUD extends FlxTypedGroup<FlxSprite>
         _damage2 = new FlxText(_player.x + 30, _player.y - 50, 0, "2", 30);
         _damage2.setFormat(AssetPaths.FONT, _damage2.size, FlxColor.RED);
         _damage2.visible = false;
+		_damage3 = new FlxText(_player.x + 30, _player.y - 50, 0, "3", 30);
+        _damage3.setFormat(AssetPaths.FONT, _damage3.size, FlxColor.RED);
+        _damage3.visible = false;
+		_damage4 = new FlxText(_player.x + 30, _player.y - 50, 0, "4", 30);
+        _damage4.setFormat(AssetPaths.FONT, _damage3.size, FlxColor.RED);
+        _damage4.visible = false;
         dmgCounter = 0;
          
          add(_sprHealth);
@@ -74,10 +80,12 @@ class HUD extends FlxTypedGroup<FlxSprite>
          _kWeapon.scrollFactor.set(0.0);
          add(_damage1);
          add(_damage2);
-     }
+         add(_damage3);
+         add(_damage4);
+    }
 
-     public function updateHUD(jAmmo:Int=0, kAmmo:Int=0, jReloading:Bool, kReloading:Bool, jName:String, kName:String):Void
-     {  
+    public function updateHUD(jAmmo:Int = 0, kAmmo:Int = 0, jReloading:Bool, 
+								kReloading:Bool, jName:String, kName:String):Void {  
         if(jName != "") {
             _jWeapon.loadGraphic(AssetPaths.IMAGE + jName + ".png");
         } else {
@@ -112,32 +120,55 @@ class HUD extends FlxTypedGroup<FlxSprite>
 
      public function updateXY():Void {
          _damage1.x = _player.x;
-         _damage1.y = _player.y - 65;
+         //_damage1.y = _player.y - 65;
          _damage2.x = _player.x;
-         _damage2.y = _player.y - 40;
+         _damage3.x = _player.x;
+         _damage4.x = _player.x;
+         //_damage2.y = _player.y - 40;
 	 }
 
-     public function updateDamage(damage:Float):Void {
-        if(dmgCounter == 0) {
+    public function updateDamage(damage:Float):Void {
+        if (dmgCounter == 0) {
             _damage1.visible = true;
+			_damage1.y = _player.y - 65;
             _damage1.text = "- " + Std.string(damage);
-            FlxTween.tween(_damage1, {alpha: 0}, .25, { ease: FlxEase.circOut, onComplete: finishFade });
-            dmgCounter = 1;
-        } else {
+            FlxTween.tween(_damage1, {alpha: 0, y: _damage1.y - 25 }, 
+				.5, { ease: FlxEase.circOut, onComplete: finishFade.bind(_, dmgCounter) });
+        } else if (dmgCounter == 1) {
+			_damage2.y = _player.y - 55;
             _damage2.visible = true;
             _damage2.text = "- " + Std.string(damage);
-            FlxTween.tween(_damage2, {alpha: 0}, .25, { ease: FlxEase.circOut, onComplete: finishFade });
-            dmgCounter = 0;
+            FlxTween.tween(_damage2, {alpha: 0, y: _damage2.y - 25}, 
+				.5, { ease: FlxEase.circOut, onComplete: finishFade.bind(_, dmgCounter) });
+        } else if (dmgCounter == 2) {
+			_damage3.y = _player.y - 50;
+            _damage3.visible = true;
+            _damage3.text = "- " + Std.string(damage);
+            FlxTween.tween(_damage3, {alpha: 0, y: _damage3.y - 25}, 
+				.5, { ease: FlxEase.circOut, onComplete: finishFade.bind(_, dmgCounter) });
+        } else {
+			_damage4.y = _player.y - 45;
+            _damage4.visible = true;
+            _damage4.text = "- " + Std.string(damage);
+            FlxTween.tween(_damage4, {alpha: 0, y: _damage4.y - 25}, 
+				.5, { ease: FlxEase.circOut, onComplete: finishFade.bind(_, dmgCounter) });
         }
-     }
+		dmgCounter = (dmgCounter + 1) % 4;
+    }
 
-     private function finishFade(_):Void {
-         if(dmgCounter == 0) {
+     private function finishFade(_, dc:Int):Void {
+         if (dc == 0) {
             _damage1.visible = false;
             _damage1.alpha = 1;
-         } else {
+         } else if (dc == 1) {
             _damage2.visible = false;
             _damage2.alpha = 1;
+         } else if (dc == 2) {
+            _damage3.visible = false;
+            _damage3.alpha = 1;
+         } else {
+            _damage4.visible = false;
+            _damage4.alpha = 1;
          }
      }
 }
