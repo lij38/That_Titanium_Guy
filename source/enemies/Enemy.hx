@@ -101,20 +101,29 @@ class Enemy extends FlxSprite {
 					var rx:Float = Math.random() * 600 - 75;
 					if (coinCount < 50 && rx < 75) {
 						var coin:Coin = 
-							new Coin(getMidpoint().x + rx, getMidpoint().y + 45);
+							new Coin(getMidpoint().x + rx, getMidpoint().y + 45, COIN);
 						coin.loadCoinGraphic();
 						coinsGroup.add(coin);
 						coinCount++;
 					}
 				} else {
-					var coin:Coin = new Coin(getMidpoint().x, getMidpoint().y);
-					coin.loadCoinGraphic();
-					coinsGroup.add(coin);
-					dropCoin = true;
+					var randP:Int = Std.random(10);
+					trace(randP);
+					if (randP > 1) {
+						var coin:Coin = new Coin(getMidpoint().x, getMidpoint().y, COIN);
+						coin.loadCoinGraphic();
+						coinsGroup.add(coin);
+						dropCoin = true;
+					} else {
+						var potion:Coin = new Coin(getMidpoint().x, getMidpoint().y, POTION);
+						potion.loadPotionGrahpic();
+						coinsGroup.add(potion);
+						dropCoin = true;
+					}
 				}
 			}
 			if (id == 34 && !dropItem) {
-				var rifle:Coin = new Coin(getMidpoint().x, getMidpoint().y);
+				var rifle:Coin = new Coin(getMidpoint().x, getMidpoint().y, OTHER);
 				rifle.loadGraphic(AssetPaths.rifle__png);
 				rifle.onPickUp = onPickUpItem;
 				coinsGroup.add(rifle);

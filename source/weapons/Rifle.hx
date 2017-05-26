@@ -8,7 +8,7 @@ class Rifle extends Weapon {
         this.name = "rifle";
         this.damage = new Array<Int>();
         for(i in 1...6) {
-            this.damage.push(i * 6);
+            this.damage.push(i * 5);
         }
         this.damageIndex = 0;
         this.type = "ballistic";

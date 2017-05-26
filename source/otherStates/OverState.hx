@@ -44,6 +44,7 @@ class OverState extends FlxState
                 case 1: FlxG.switchState(new TutorialState());
                 case 2: FlxG.switchState(new Level1State());
                 case 3: FlxG.switchState(new Boss1State());
+                case 4: FlxG.switchState(new Level2State());
             }
 		});
 	}

@@ -156,7 +156,7 @@ class HomeState extends FlxState
 					_arrow.loadGraphic(AssetPaths.arrow2__png, false, 25, 40);
 					_text.x = 177;
 					_text.y = 415;
-					_text.text = "This is workshop, you can change weapon configurations here! Equip and Nail all enemies!";
+					_text.text = "This is the workshop, you can equip and change your weapon configurations here!";
 				}
 			} else if (_stage3) {
 				if (click) {
@@ -169,11 +169,14 @@ class HomeState extends FlxState
 		        	_fg.color = 0xffffff;
 		        	_workshop.color = 0xdddddd;
 		        	_mapbutton.active = true;
-		        	_maptext.visible = true;
+					_maptext.visible = true;
 	        	}
 			}
         	
+		} else {
+			_maptext.visible = true;
 		}
+		
 		FlxG.collide(_player, _bg);
 		super.update(elapsed);
 	}
@@ -213,9 +216,9 @@ class HomeState extends FlxState
 	}
 
 	private function switchWorkshopState():Void {
-		//FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
-			//FlxG.switchState(new MapTutorialState());
-		//});
+		FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
+			FlxG.switchState(new WorkshopState());
+		});
     }
 
 	private function switchMapState():Void {
