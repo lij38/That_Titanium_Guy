@@ -102,6 +102,7 @@ class PlayState extends FlxState {
 			add(_boss_hud);
 			_exit.visible = false;
 		}
+		FlxG.sound.playMusic(AssetPaths.fighting__mp3);
 		
 		 _hud.updateHUD(_player.getAmmo(0), _player.getAmmo(1), _player.isReloading(0), _player.isReloading(1),
 		 				_player.getWeaponName(0), _player.getWeaponName(1));
@@ -141,10 +142,6 @@ class PlayState extends FlxState {
 
 		super.create();
 	}
-
-
-
-
 
 	override public function update(elapsed:Float):Void {
 		if (FlxG.keys.justPressed.ESCAPE) {
@@ -449,12 +446,14 @@ class PlayState extends FlxState {
 
 	private function clickHome():Void {
         FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
+			FlxG.sound.music.destroy();
 			FlxG.switchState(new HomeState());
 		});
     }
 
     private function clickMenu():Void {
         FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
+			FlxG.sound.music.destroy();
 			FlxG.switchState(new MenuState());
 		});
     }

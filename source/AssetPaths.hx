@@ -6,5 +6,5 @@ class AssetPaths {
 	public static inline var SHIELD:String = "assets/images/shield.png";
     public static inline var RIFLE:String = "assets/images/rifle.png";
     public static inline var IMAGE:String = "assets/images/";
-    public static inline var FONT:String = "assets/data/SF_Wonder_Comic.ttf";
+    public static inline var FONT:String = "assets/data/day_roman/dayrom.ttf";
 }

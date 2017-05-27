@@ -108,8 +108,8 @@ class Enemy extends FlxSprite {
 					}
 				} else {
 					var randP:Int = Std.random(10);
-					trace(randP);
-					if (randP > 1) {
+					//trace(randP);
+					if (randP != 1) {
 						var coin:Coin = new Coin(getMidpoint().x, getMidpoint().y, COIN);
 						coin.loadCoinGraphic();
 						coinsGroup.add(coin);

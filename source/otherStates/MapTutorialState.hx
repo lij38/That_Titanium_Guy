@@ -190,24 +190,29 @@ class MapTutorialState extends FlxState
                 _stage4 = false;
                 _stage5 = true;
                 _arrow.visible = false;
-                _text.x = 293;
-                _text.y = 76;
-                _text.text = "Now that you've finished the tutorial, you are free to challenge the next level "
-                    + "or go home. Remember, this is only your first step on your journey to reach the FA Supreme "
-                    + "Leader in the Capital Hills, good luck! (Click Anywhere to continue)";
-            }
-        } else if (_stage5) {
-            if (click) {
-                _stage5 = false;
-                _arrow.visible = false;
-                _text.visible = false;
+                // _text.x = 293;
+                // _text.y = 76;
+                // _text.text = "Now that you've finished the tutorial, you are free to challenge the next level "
+                //     + "or go home. Remember, this is only your first step on your journey to reach the FA Supreme "
+                //     + "Leader in the Capital Hills, good luck! (Click Anywhere to continue)";
                 _bg.color = 0xffffff;
                 for (i in 3...7) {
                     _levelarr[i].color = 0xffffff;
                 }
                 FlxG.switchState(new MapState());
             }
-        } 
+         }// else if (_stage5) {
+        //     if (click) {
+        //         _stage5 = false;
+        //         _arrow.visible = false;
+        //         _text.visible = false;
+        //         _bg.color = 0xffffff;
+        //         for (i in 3...7) {
+        //             _levelarr[i].color = 0xffffff;
+        //         }
+        //         FlxG.switchState(new MapState());
+        //     }
+        // } 
         super.update(elapsed);
     }
 

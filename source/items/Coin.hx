@@ -73,7 +73,10 @@ class Coin extends FlxSprite {
 	}
 	
 	public function pickUpPotion(player:Player, coin:Coin):Void {
-		player.health += 20;
+		player.health += 30;
+		if (player.health > 100) {
+			player.health = 100;
+		}
 	}
 	
 }

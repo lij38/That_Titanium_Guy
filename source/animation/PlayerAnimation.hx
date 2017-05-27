@@ -17,17 +17,17 @@ class PlayerAnimation extends FlxSprite {
 		super(X, Y);
 		GRAVITY = gravity;
 
-		loadGraphic(AssetPaths.player__png, true, cast(4745 / 5, Int), cast(11109 / 21, Int));
+		loadGraphic(AssetPaths.player__png, true, 334, 182);
 		setFacingFlip(FlxObject.LEFT, true, false);
 		setFacingFlip(FlxObject.RIGHT, false, false);
-		scale.set(0.4, 0.4);
+		scale.set(1.2, 1.2);
 		
 		//addAnimation();
 		animation.add("Run", [2, 3, 4, 5, 6, 7, 8, 9], 12, false);
 		animation.add("Stop", [1], 1, false);
 		
 		setSize(31, 80);
-		offset.set(460, 220);
+		offset.set(142, 40);
 		acceleration.y = GRAVITY;
 	}
 	

@@ -75,7 +75,7 @@ class TutorialState extends PlayState {
 
 		super.create();
 		add(_keys);
-		if(Main.SAVE.data.tutComplete == null || Main.SAVE.data.tutComplete == false) {
+		if(Main.SAVE.data.levelCompleted == null || Main.SAVE.data.levelCompleted < 1) {
 			add(shield);
 		}
 		add(texts);
@@ -88,10 +88,6 @@ class TutorialState extends PlayState {
     }
 
 	override public function update(elapsed:Float):Void  {
-		if (enemiesGroup.countLiving() == -1) {
-		 	Main.SAVE.data.tutComplete = true;
-		 	Main.SAVE.flush();
-		}
 	 	super.update(elapsed);
 		FlxG.overlap(shield, _player, onPickup);
 		FlxG.collide(shield, _plat);
