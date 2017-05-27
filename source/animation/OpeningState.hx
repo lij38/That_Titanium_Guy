@@ -82,6 +82,9 @@ class OpeningState extends FlxState
 
 		FlxG.camera.fade(FlxColor.BLACK, .25, true);
 		Main.LOGGER.logLevelStart(0);
+
+		FlxG.sound.playMusic(AssetPaths.dramatic__mp3);
+
 		super.create();
 		
 	}

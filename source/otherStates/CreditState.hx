@@ -23,7 +23,7 @@ class CreditState extends FlxState
         _txt.setFormat(AssetPaths.FONT, _txt.size);
         add(_txt);
 
-		//FlxG.camera.fade(FlxColor.BLACK, .25, true);
+		FlxG.sound.playMusic(AssetPaths.introspection__mp3);
         super.create(); 
     }
 
@@ -46,7 +46,7 @@ class CreditState extends FlxState
 
     private function switchMenuState():Void {
         FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
-        FlxG.switchState(new MenuState());
+            FlxG.switchState(new MenuState());
         });
     }
 }

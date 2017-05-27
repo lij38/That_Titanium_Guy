@@ -58,19 +58,19 @@ class Player extends FlxSprite {
 		health = 100;
 		dmgTaken = 0.0;
 
-		loadGraphic(AssetPaths.player__png, true, 970, 529);
+		loadGraphic(AssetPaths.player__png, true, 334, 182);
 		setFacingFlip(FlxObject.LEFT, true, false);
 		setFacingFlip(FlxObject.RIGHT, false, false);
-		scale.set(0.35, 0.35);
+		//scale.set(0.35, 0.35);
 		
 		addAnimation();
 		
-		setSize(48, 115);
-		offset.set(460, 198);
+		setSize(48, 112);
+		offset.set(130, 30);
 		acceleration.y = GRAVITY;
 		
 		bulletArray = playerBulletArray;
-		if(Main.SAVE.data.tutComplete == null || Main.SAVE.data.tutComplete == false) {
+		if(Main.SAVE.data.levelCompleted == null || Main.SAVE.data.levelCompleted < 1) {
 			jWeapon = new Sword(playerBulletArray);
 			j2ndWeapon = new Sword(playerBulletArray);
 			kWeapon = new Weapon(playerBulletArray);
@@ -430,8 +430,8 @@ class Player extends FlxSprite {
 	}
 
 	public function pickUpShield():Void {
-		trace(Std.string(Main.SAVE.data.tutComplete));
-		if(Main.SAVE.data.tutComplete == null || Main.SAVE.data.tutComplete == false) {
+		//trace(Std.string(Main.SAVE.data.tutComplete));
+		if(Main.SAVE.data.levelCompleted == null || Main.SAVE.data.levelCompleted < 1) {
 			kWeapon = new Shield(bulletArray);
 			k2ndWeapon = new Shield(bulletArray);
 			Main.SAVE.data.kWeapon = kWeapon.getName();
@@ -476,6 +476,9 @@ class Player extends FlxSprite {
 	private function changeWeaponConfig():Void {
 		var temp1:Weapon = jWeapon;
 		var temp2:Weapon = kWeapon;
+		if(shielding) {
+			shielding = false;
+		}
 		jWeapon = j2ndWeapon;
 		j2ndWeapon = temp1;
 		kWeapon = k2ndWeapon;

@@ -26,7 +26,9 @@ class OverState extends FlxState
         add(_btnPlay);
         _btnHome = new ImageButton(300, 380, "Go Home", clickHome);
         _btnHome.loadGraphic(AssetPaths.gohome__png, false, 200, 40);
-        add(_btnHome);
+        if(Main.SAVE.data.levelCompleted > 1) {
+            add(_btnHome);
+        }
 		_level = Main.SAVE.data.curLevel;
 
 		FlxG.camera.fade(FlxColor.BLACK, .25, true);

@@ -61,14 +61,14 @@ class HomeState extends FlxState
 		_workshop.color = 0xdddddd;
 
 		_maptext = new FlxText(0, 0, 200, 20);
-        _maptext.text = "CLICK or PRESS M to Open MAP";
+        _maptext.text = "CLICK or PRESS M to open map";
         _maptext.setFormat(AssetPaths.FONT, 20);
         _maptext.scrollFactor.set(0.0);
         _maptext.visible = false;
         add(_maptext);
 
         _workshoptext = new FlxText(0, 0, 500, 24);
-        _workshoptext.text = "PRESS W to ENTER WORKSHOP";
+        _workshoptext.text = "PRESS W to enter workshop";
         _workshoptext.setFormat(AssetPaths.FONT, 24);
         _workshoptext.visible = false;
         add(_workshoptext);
@@ -118,8 +118,13 @@ class HomeState extends FlxState
 		 }
 
 		 FlxG.camera.follow(_player, LOCKON, 1);
+		 
+		 //trace(FlxG.sound.music);
+		 if(FlxG.sound.music.playing == false) {
+		 	FlxG.sound.playMusic(AssetPaths.dramatic__mp3);
+		 }
 
-		super.create();
+		 super.create();
 		
 	}
 
@@ -185,7 +190,7 @@ class HomeState extends FlxState
 		if (player.x + player.width >= workshop.x && player.x <= workshop.x + workshop.width) {
 			_workshop.color = 0xffffff;
 			_workshoptext.visible = true;
-			if (FlxG.keys.anyPressed([W])) {
+			if (FlxG.keys.anyJustPressed([W])) {
 				switchWorkshopState();
 			}
 		} else {

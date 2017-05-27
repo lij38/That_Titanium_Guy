@@ -35,19 +35,13 @@ class MenuState extends FlxState {
 		//_btnContinue.screenCenter();
 		// spritesheet = new FlxSprite(0, 0);
 
-		// spritesheet.loadGraphic(AssetPaths.abc__png, true, cast(5035 / 5, Int), cast(3510 / 5, Int));
-		// spritesheet.animation.add("lr", [0, 0, 0, 0, 20, 20, 20, 20,
-		// 								 0, 0, 0, 0, 20, 20, 20, 20,
-		// 								 1, 2, 3, 4, 4, 5, 5, 6, 6, 7, 7, 7, 7, 7, 
-		// 								 8, 9, 10, 11, 12, 13, 14,
-		// 								 15, 16, 16, 17, 18, 18, 19, 19, 19, 19,
-		// 								 18, 18, 19, 19, 19, 19, 19,
-		// 								 20, 20, 21, 21, 22, 22, 22, 22, 22, 22], 12, true);
+		// spritesheet.loadGraphic(AssetPaths.player__png, true, 334, 182);
+		// spritesheet.animation.add("lr", [2, 3, 4, 5, 6, 7,8,9], 12, true);
 		// //spritesheet.animation.add("stop", [0], 1, false);
 		// add(spritesheet);
-		// spritesheet.scale.set(0.25, 0.25);
-		// spritesheet.setSize(102, 109);
-		// spritesheet.offset.set(250, 250);
+		// //spritesheet.scale.set(0.25, 0.25);
+		// spritesheet.setSize(48, 115);
+		// spritesheet.offset.set(120, 30);
 
 		// spritesheet.animation.play("lr");
 		
@@ -56,11 +50,15 @@ class MenuState extends FlxState {
 		add(_btnPlay);
 		add(_btnContinue);
 		FlxG.camera.fade(FlxColor.BLACK, .33, true);
+		FlxG.sound.playMusic(AssetPaths.theme__mp3);
 		super.create();
 	}
 	
 	override public function update(elapsed:Float):Void {
 		super.update(elapsed);
+		if(FlxG.keys.anyPressed([ENTER])) {
+			clickContinue();
+		}
 	}
 	
 	private function clickPlay():Void {
@@ -77,10 +75,13 @@ class MenuState extends FlxState {
 	
 	private function clickContinue():Void {
 		FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
-			if(Main.SAVE.data.tutComplete == null || Main.SAVE.data.tutComplete == false) {
+			if(Main.SAVE.data.levelCompleted == null || Main.SAVE.data.levelCompleted < 1) {
 				FlxG.switchState(new OpeningState());
+			} else if(Main.SAVE.data.levelCompleted == 1) {
+				FlxG.switchState(new Level1State());
 			} else {
 				//FlxG.switchState(new WorkshopState());
+				FlxG.sound.music.destroy();
 				FlxG.switchState(new HomeState());
 			}
 		});

@@ -17,7 +17,7 @@ class PlayerAnimation extends FlxSprite {
 		super(X, Y);
 		GRAVITY = gravity;
 
-		loadGraphic(AssetPaths.player__png, true, cast(4745 / 5, Int), cast(11109 / 21, Int));
+		loadGraphic(AssetPaths.player__png, true, 970, 529);
 		setFacingFlip(FlxObject.LEFT, true, false);
 		setFacingFlip(FlxObject.RIGHT, false, false);
 		scale.set(0.4, 0.4);

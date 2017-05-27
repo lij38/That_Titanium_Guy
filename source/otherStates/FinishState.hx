@@ -39,9 +39,9 @@ class FinishState extends FlxState
         // add(rating);
         //time rating
         timeNum = RatingCalc.getTimeRating(_level);
-        time = new FlxText(210, 150, 0, "Time Used: ", 35);
+        time = new FlxText(200, 150, 0, "Time Used: ", 35);
         time.setFormat(AssetPaths.FONT, time.size);
-        timeRating = new FlxSprite(440, 140);
+        timeRating = new FlxSprite(450, 140);
         if(timeNum == 3) {
             timeRating.loadGraphic(AssetPaths.threeStar__png);
         } else if(timeNum == 2) {
@@ -52,9 +52,9 @@ class FinishState extends FlxState
 
         //dmg rating
         dmgNum = RatingCalc.getDmgRating(_level);
-        dmg = new FlxText(210, 200, 0, "Damage Taken: ", 35);
+        dmg = new FlxText(200, 200, 0, "Damage Taken: ", 35);
         dmg.setFormat(AssetPaths.FONT, dmg.size);
-        dmgRating = new FlxSprite(440, 190);
+        dmgRating = new FlxSprite(450, 190);
         if(dmgNum == 3) {
             dmgRating.loadGraphic(AssetPaths.threeStar__png);
         } else if(dmgNum == 2) {
@@ -64,9 +64,9 @@ class FinishState extends FlxState
         }
 
         //enemies killed
-        killed = new FlxText(210, 250, 0, "Enemies Killed: ", 35);
+        killed = new FlxText(200, 250, 0, "Enemies Killed: ", 35);
         killed.setFormat(AssetPaths.FONT, killed.size);
-        killedRating = new FlxSprite(440, 240);
+        killedRating = new FlxSprite(450, 240);
         if(Main.SAVE.data.enemiesKilled - 1 == Main.SAVE.data.numEnemies) {
             killNum = 3;
         } else if(Main.SAVE.data.enemiesKilled >= Main.SAVE.data.numEnemies / 2) {
@@ -85,9 +85,9 @@ class FinishState extends FlxState
 
         //overall
         var avg:Int = cast(Math.fround((killNum * 1.0 + dmgNum + timeNum) / 3), Int);
-        overall = new FlxText(210, 300, 0, "Overall: ", 35);
+        overall = new FlxText(200, 300, 0, "Overall: ", 35);
         overall.setFormat(AssetPaths.FONT, overall.size);
-        overallRating = new FlxSprite(440, 290);
+        overallRating = new FlxSprite(450, 290);
 
         if(avg == 3) {
             overallRating.loadGraphic(AssetPaths.threeStar__png);
@@ -114,15 +114,13 @@ class FinishState extends FlxState
         add(overallRating);
 		_btnPlay = new ImageButton(300, 440, "Next", clickPlay);
         _btnPlay.loadGraphic(AssetPaths.next__png, false, 200, 40);
-        if(Main.SAVE.data.curLevel != 2) {
-            add(_btnPlay);
-        }
+        add(_btnPlay);
         _btnHome = new ImageButton(300, 500, "Go Home", clickHome);
         _btnHome.loadGraphic(AssetPaths.gohome__png, false, 200, 40);
-        if(Main.SAVE.data.levelCompleted > 1) {
+        if(Main.SAVE.data.wsTut != null) {
             add(_btnHome);
         }
-        ending = new FlxText(100, 400, 0, "Thanks for playing! You've beat all of the levels we have so far but more levels are coming soon!", 20);
+        ending = new FlxText(100, 400, 600, "Thanks for playing! You've beat all of the levels we have so far but more levels are coming soon!", 20);
         ending.setFormat(AssetPaths.FONT, ending.size);
         if(Main.SAVE.data.end != null) {
             add(ending);
@@ -133,23 +131,34 @@ class FinishState extends FlxState
     }
 
     override public function update(elapsed:Float):Void
-    {
+    {   
+        if (FlxG.keys.anyJustPressed([ENTER])) {
+				clickPlay();
+		}
         super.update(elapsed);
     }
 	
 	private function clickPlay():Void {
 		FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
+            FlxG.sound.music.destroy();
 			switch _level {
                 case 1: FlxG.switchState(new Level1State());
-                case 2: FlxG.switchState(new Boss1State());
                 case 3: FlxG.switchState(new Level2State());
-                case 4: FlxG.switchState(new HomeState());
+                case 4: FlxG.switchState(new CreditState());
+            }
+            if( _level == 2) {
+                if(Main.SAVE.data.levelCompleted < 3) {
+                    FlxG.switchState(new WorkshopState());
+                } else {
+                    FlxG.switchState(new Boss1State());
+                }
             }
 		});
 	}
 
     private function clickHome():Void {
         FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
+            FlxG.sound.music.destroy();
 			FlxG.switchState(new HomeState());
 		});
     }
