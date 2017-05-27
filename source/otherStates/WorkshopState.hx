@@ -170,7 +170,7 @@ class WorkshopState extends FlxState {
         add(rifle);
         rifleT = new FlxText(200, 15, 500);
         rifleT.text = "\t           The Standard Issue \n"
-            + "Federal Army's standard fully-automatic weapon \n"
+            + "The Old Federal Army's standard fully-automatic weapon \n"
             + "\"look at that G.I. with his S.I.\"";
         rifleT.setFormat(AssetPaths.FONT, 20);
         add(rifleT);
@@ -180,8 +180,8 @@ class WorkshopState extends FlxState {
         add(sword);
         swordT = new FlxText(200, 140, 500);
         swordT.text = "\t           The Glower \n"
-            + "A fine piece of weaponry made with the matrimony of steel and energy \n"
-            + "\"The glowing Glower glowers at the enemy\"";
+            + "A fine piece of weaponry made with the matrimony of titanium and energy \n"
+            + "\"They say the glowing Glower glowers at the enemy.\"";
         swordT.setFormat(AssetPaths.FONT, 20);
         add(swordT);
         //shield
@@ -190,8 +190,8 @@ class WorkshopState extends FlxState {
         add(shield);
         shieldT = new FlxText(200, 265, 500);
         shieldT.text = "\t           The Cower \n"
-            + "The guardians of the line infantrymen back in the Great War \n"
-            + "\"Ain't all who cower behind The Cower cowards?\"";
+            + "The shield that saved countless line infantrymen's lives back in the Great Wars \n"
+            + "\"Not all who cower behind The Cower are cowards.\"";
         shieldT.setFormat(AssetPaths.FONT, 20);
         add(shieldT);
         noShowSelect();
