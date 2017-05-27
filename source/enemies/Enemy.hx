@@ -106,6 +106,12 @@ class Enemy extends FlxSprite {
 						coinsGroup.add(coin);
 						coinCount++;
 					}
+				} else if (type == TRUCK) {
+					// always drop potion if this is truck enemy
+					var potion:Coin = new Coin(getMidpoint().x, getMidpoint().y, POTION);
+					potion.loadPotionGrahpic();
+					coinsGroup.add(potion);
+					dropCoin = true;
 				} else {
 					var randP:Int = Std.random(10);
 					//trace(randP);
