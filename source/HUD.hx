@@ -130,24 +130,24 @@ class HUD extends FlxTypedGroup<FlxSprite> {
     public function updateDamage(damage:Float):Void {
         if (dmgCounter == 0) {
             _damage1.visible = true;
-			_damage1.y = _player.y - 65;
+			_damage1.y = _player.y - 55;
             _damage1.text = "- " + Std.string(damage);
             FlxTween.tween(_damage1, {alpha: 0, y: _damage1.y - 25 }, 
 				.5, { ease: FlxEase.circOut, onComplete: finishFade.bind(_, dmgCounter) });
         } else if (dmgCounter == 1) {
-			_damage2.y = _player.y - 55;
+			_damage2.y = _player.y - 45;
             _damage2.visible = true;
             _damage2.text = "- " + Std.string(damage);
             FlxTween.tween(_damage2, {alpha: 0, y: _damage2.y - 25}, 
 				.5, { ease: FlxEase.circOut, onComplete: finishFade.bind(_, dmgCounter) });
         } else if (dmgCounter == 2) {
-			_damage3.y = _player.y - 50;
+			_damage3.y = _player.y - 40;
             _damage3.visible = true;
             _damage3.text = "- " + Std.string(damage);
             FlxTween.tween(_damage3, {alpha: 0, y: _damage3.y - 25}, 
 				.5, { ease: FlxEase.circOut, onComplete: finishFade.bind(_, dmgCounter) });
         } else {
-			_damage4.y = _player.y - 45;
+			_damage4.y = _player.y - 35;
             _damage4.visible = true;
             _damage4.text = "- " + Std.string(damage);
             FlxTween.tween(_damage4, {alpha: 0, y: _damage4.y - 25}, 
