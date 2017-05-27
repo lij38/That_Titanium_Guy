@@ -708,6 +708,11 @@ class Player extends FlxSprite {
 	override public function hurt(damage:Float):Void {
 		super.hurt(damage);
 		this.dmgTaken += damage;
-		FlxFlicker.flicker(this, 0.5, 0.10);
+		color = 0xff0000;
+		FlxFlicker.flicker(this, 0.5, 0.10, true, true, hurtComplete);
+	}
+	
+	private function hurtComplete(_):Void {
+		color = 0xffffff;
 	}
 }
