@@ -473,7 +473,7 @@
  </objectgroup>
  <objectgroup name="player">
   <object id="1" name="START" x="41.3333" y="1394.67" width="80" height="168"/>
-  <object id="2" name="END" x="7292" y="29.8182" width="186.667" height="232"/>
+  <object id="2" name="END" x="7292" y="57.0909" width="186.667" height="232"/>
  </objectgroup>
  <objectgroup name="enemies">
   <object id="4" name="RIFLE" type="2" x="892" y="1462.67" width="72" height="170.667"/>
