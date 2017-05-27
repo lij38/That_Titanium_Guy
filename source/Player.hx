@@ -66,7 +66,7 @@ class Player extends FlxSprite {
 		addAnimation();
 		
 		setSize(48, 112);
-		offset.set(130, 30);
+		offset.set(142, 28);
 		acceleration.y = GRAVITY;
 		
 		bulletArray = playerBulletArray;
