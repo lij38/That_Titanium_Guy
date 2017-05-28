@@ -52,6 +52,7 @@ class Boss1 extends Enemy {
 		animation.add("die", [20, 21, 22, 22, 22, 22, 22, 22, 22, 22, 22,
 							22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22], 3, false);
 		animation.play("stop");
+		this.level = 1;
 
 		acceleration.y = GRAVITY;
 		health = 800;
@@ -162,7 +163,7 @@ class Boss1 extends Enemy {
 		stuck_count++;
 		if (stuck_count == 15) {
 			var curBullet:EnemyBullet = bulletArray.recycle(EnemyBullet);
-			curBullet.setBullet(x, y + 120, 250, facing, 30, range, Melee);
+			curBullet.setBullet(getMidpoint().x, y + 120, 250, facing, 30, range, Melee);
 		}
 		if (stuck_count > 30) {
 			stuck_count = 0;

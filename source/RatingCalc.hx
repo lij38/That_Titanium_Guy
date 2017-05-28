@@ -7,6 +7,8 @@ class RatingCalc {
         private static var dmg2:Float = 22;
         private static var time3:Float = 43;
         private static var dmg3:Float = 0;
+        private static var time4:Float = 150;
+        private static var dmg4:Float = 40;
 
         public static function getTimeRating(level:Int):Int {
             switch level {
@@ -94,6 +96,31 @@ class RatingCalc {
                 dmg3 = 15;
             } 
             if(dmg <= dmg3 + dmg3){
+                return 2;
+            } 
+            return 1;
+        }
+
+        public static function Time4Rating():Int {
+            var seg:Float = time4 / 2;
+            var time:Float = Main.SAVE.data.timeTaken;
+            if(time <= time4) {
+                return 3;
+            } else if(time <= (time + seg)) {
+                return 2;
+            } else {
+                return 1;
+            }
+        }
+
+        public static function Dmg4Rating():Int {
+            var dmg:Float = Main.SAVE.data.dmgTaken;
+            if(dmg <= dmg4) {
+                return 3;
+            } else if(dmg4 == 0) {
+                dmg4 = 15;
+            } 
+            if(dmg <= dmg4 + dmg4){
                 return 2;
             } 
             return 1;

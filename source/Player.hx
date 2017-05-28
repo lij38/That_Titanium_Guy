@@ -15,21 +15,17 @@ class Player extends FlxSprite {
 	public var speed:Float = 250;
 	private var GRAVITY:Float;
 	private var jumped:Bool = false;
-	private var jump:Float = 0.0;
+	private var jump:Float = -1;
 	public var faced:Int = FlxObject.RIGHT;
 	private var numJump:Int = 0;
 	public var numJumpLimit:Int = 2;
 	
-	//private var leftTimer:Float = -1;
-	//private var rightTimer:Float = -1;
 	private var tumbleTimer:Float = -1;
-	
-	//private var TumblePressedBetween:Float = 0.3;
 	private var TumbleTime:Float = 0.3;
 	
 	private var bulletArray:FlxTypedGroup<Bullet>;
 	
-	private var money:Int;
+	public var money:Int;
 	
 	public var jetpackFieldMax:Float = 3;
 	public var jetpackField:Float = 3;
@@ -81,6 +77,9 @@ class Player extends FlxSprite {
 			Main.SAVE.data.kWeapon = kWeapon.getName();
 			Main.SAVE.data.k2ndWeapon = k2ndWeapon.getName();
 			Main.SAVE.data.curConfig = curConfig;
+			if (Main.SAVE.data.money == null) {
+				money = 0;
+			}
 			Main.SAVE.flush();
 		} else {
 			var jn:String = Main.SAVE.data.jWeapon;
@@ -92,6 +91,7 @@ class Player extends FlxSprite {
 			kWeapon = WeaponFactory.getWeapon(kn, playerBulletArray);
 			k2ndWeapon = WeaponFactory.getWeapon(k2n, playerBulletArray);
 			curConfig = Main.SAVE.data.curConfig;
+			money = Main.SAVE.data.money;
 			//trace(curConfig);
 		}
 		shielding = false;
@@ -127,14 +127,12 @@ class Player extends FlxSprite {
 	}
 	
 	private function movement(elapsed:Float):Void {		
-		var jumpKey:Bool = false;
+		//var jumpKey:Bool = false;
 		var up:Bool = false;
 		var down:Bool = false;
 		var left:Bool = false;
 		var right:Bool = false;
 		var doubleJump:Bool = false;
-		//var leftP:Bool = false;
-		//var rightP:Bool = false;
 		jetpack = false;
 		var roll:Bool = false;
 		
@@ -170,14 +168,11 @@ class Player extends FlxSprite {
 		if (!isSwording() && !isTumbling()) {
 			tumbleTimer = -1;
 			up = FlxG.keys.anyPressed([W]);
-			jumpKey = FlxG.keys.anyPressed([SPACE]);
+			//jumpKey = FlxG.keys.anyPressed([SPACE]);
 			left = FlxG.keys.anyPressed([A]);
 			right = FlxG.keys.anyPressed([D]);
 			down = FlxG.keys.anyPressed([S]);
 			doubleJump = FlxG.keys.anyJustPressed([SPACE]);
-			
-			//leftP = FlxG.keys.anyJustPressed([LEFT, A]);
-			//rightP = FlxG.keys.anyJustPressed([RIGHT, D]);
 			
 			jetpack = FlxG.keys.anyPressed([SHIFT]);
 			
@@ -191,16 +186,18 @@ class Player extends FlxSprite {
 		if (left && right)
 			left = right = false;
 		
+		// jetpack field
 		if (jetpack) {
 			if (jetpackField < 0) {
 				jetpack = false;
 			} else {
 				jetpackField -= elapsed;
 			}
-		} else if (jetpackField < jetpackFieldMax) {
+		} else if (jetpackField < jetpackFieldMax && isTouching(FlxObject.DOWN)) {
 			jetpackField += elapsed / 2;
 		}
 		
+		// facing and movement
 		if (jetpack) {
 			numJump = numJumpLimit;
 			if (up || down || left || right) {
@@ -232,6 +229,7 @@ class Player extends FlxSprite {
 			}
 		} else if (roll) {
 			tumble(faced, elapsed);
+			jump = -1;
 		} else if (!isTumbling()) {
 			acceleration.y = GRAVITY;
 			if (left) {
@@ -249,22 +247,37 @@ class Player extends FlxSprite {
 				facing = FlxObject.NONE;
 			}
 			
-			
-			if (jumped && !jumpKey) {
-				jumped = false;
-			}
-			
-			if (isTouching(FlxObject.DOWN) && !jumped) {
-				jump = 0;
+			// jumping
+			if (isTouching(FlxObject.DOWN)) {
+				jump = -1;
 				numJump = 0;
 			}
 			
 			if (doubleJump && numJump < numJumpLimit) {
 				numJump++;
+				jump = 0;
+			}
+			if (jump >= 0) {
+				jump += elapsed;
+				if (jump > 0.33) {
+					jump = -1;
+				}
+			}
+			if (jump > 0) {
+				velocity.y = -speed * 1.5;
+			}
+			/*if (jumped && !jumpKey) {
+				jumped = false;
+			}
+			if (isTouching(FlxObject.DOWN) && !jumped) {
+				jump = 0;
+				numJump = 0;
+			}
+			if (doubleJump && numJump < numJumpLimit) {
+				numJump++;
 				jumped = false;
 				jump = 0;
 			}
-			
 			if (jump >= 0 && jumpKey) {
 				jumped = true;
 				jump += elapsed;
@@ -274,10 +287,9 @@ class Player extends FlxSprite {
 			} else {
 				jump = -1;
 			}
-			
 			if (jump > 0) {
 				velocity.y = -speed * 1.5;
-			}
+			}*/
 			
 		}
 		
@@ -458,6 +470,7 @@ class Player extends FlxSprite {
 	// TODO: implement player pick up coin
 	public function pickUpCoin(value:Int):Void {
 		//trace("pick up coin: " + value);
+		money += value;
 	}
 
 	public function getDamageTaken() {

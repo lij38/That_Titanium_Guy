@@ -59,6 +59,8 @@ class WorkshopState extends FlxState {
         add(config1);
         jWeapon = new ImageButton(190, 100, jClick);
         kWeapon = new ImageButton(500, 100, kClick);
+        jWeapon.loadGraphic(AssetPaths.emptyslot__png);
+        kWeapon.loadGraphic(AssetPaths.emptyslot__png);
         add(jWeapon);
         add(kWeapon);
         j1 = new FlxText(240, 260, 0, "J SLOT", 25);
@@ -74,6 +76,8 @@ class WorkshopState extends FlxState {
         add(config2);
         j2ndWeapon = new ImageButton(190, 340, j2ndClick);
         k2ndWeapon = new ImageButton(500, 340, k2ndClick);
+        j2ndWeapon.loadGraphic(AssetPaths.emptyslot__png);
+        k2ndWeapon.loadGraphic(AssetPaths.emptyslot__png);
         add(j2ndWeapon);
         add(k2ndWeapon);
         j2 = new FlxText(240, 500, 0, "J2 SLOT", 25);
@@ -170,7 +174,7 @@ class WorkshopState extends FlxState {
         add(rifle);
         rifleT = new FlxText(200, 15, 500);
         rifleT.text = "\t           The Standard Issue \n"
-            + "Federal Army's standard fully-automatic weapon \n"
+            + "The Old Federal Army's standard fully-automatic weapon \n"
             + "\"look at that G.I. with his S.I.\"";
         rifleT.setFormat(AssetPaths.FONT, 20);
         add(rifleT);
@@ -180,8 +184,8 @@ class WorkshopState extends FlxState {
         add(sword);
         swordT = new FlxText(200, 140, 500);
         swordT.text = "\t           The Glower \n"
-            + "A fine piece of weaponry made with the matrimony of steel and energy \n"
-            + "\"The glowing Glower glowers at the enemy\"";
+            + "A fine piece of weaponry made with the matrimony of titanium and energy \n"
+            + "\"They say the glowing Glower glowers at the enemy.\"";
         swordT.setFormat(AssetPaths.FONT, 20);
         add(swordT);
         //shield
@@ -190,8 +194,8 @@ class WorkshopState extends FlxState {
         add(shield);
         shieldT = new FlxText(200, 265, 500);
         shieldT.text = "\t           The Cower \n"
-            + "The guardians of the line infantrymen back in the Great War \n"
-            + "\"Ain't all who cower behind The Cower cowards?\"";
+            + "The shield that saved countless line infantrymen's lives back in the Great Wars \n"
+            + "\"Not all who cower behind The Cower are cowards.\"";
         shieldT.setFormat(AssetPaths.FONT, 20);
         add(shieldT);
         noShowSelect();

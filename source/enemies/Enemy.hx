@@ -43,6 +43,7 @@ class Enemy extends FlxSprite {
 	private var detectRange:Float = 700;
 	private var hurtColorTimer:Float = -1;
 	private var originalColor:FlxColor = 0xffffff;
+	private var level:Int;
 	
 	private var hurtTimer:Float = -1;
 	public var type:EnemyType;
@@ -96,12 +97,23 @@ class Enemy extends FlxSprite {
 			super.update(elapsed);
 			color = originalColor;
 			// spawn coins when die
-			if (id != 34 && !dropCoin) {
+			if (id == 34 && level == 1 && !dropItem) {
+				// drop rifle in level 1
+				var rifle:Coin = new Coin(getMidpoint().x, getMidpoint().y, OTHER);
+				rifle.loadGraphic(AssetPaths.rifle__png);
+				rifle.onPickUp = onPickUpItem;
+				coinsGroup.add(rifle);
+				dropItem = true;
+			} else if (id != 34 && !dropCoin) {
+				var lowB:Int = level * 2 + 1;
+				var upB:Int = level * 2 + 3;
 				if (type == BOSS) {
 					var rx:Float = Math.random() * 600 - 75;
 					if (coinCount < 50 && rx < 75) {
+						var ry:Float = Math.random() * 15 - 7;
 						var coin:Coin = 
-							new Coin(getMidpoint().x + rx, getMidpoint().y + 45, COIN);
+							new Coin(getMidpoint().x + rx, getMidpoint().y + 45 + ry,
+									COIN, lowB, upB);
 						coin.loadCoinGraphic();
 						coinsGroup.add(coin);
 						coinCount++;
@@ -114,9 +126,9 @@ class Enemy extends FlxSprite {
 					dropCoin = true;
 				} else {
 					var randP:Int = Std.random(10);
-					//trace(randP);
 					if (randP != 1) {
-						var coin:Coin = new Coin(getMidpoint().x, getMidpoint().y, COIN);
+						var coin:Coin = new Coin(getMidpoint().x, getMidpoint().y, 
+												COIN, lowB, upB);
 						coin.loadCoinGraphic();
 						coinsGroup.add(coin);
 						dropCoin = true;
@@ -128,13 +140,6 @@ class Enemy extends FlxSprite {
 					}
 				}
 			}
-			if (id == 34 && !dropItem) {
-				var rifle:Coin = new Coin(getMidpoint().x, getMidpoint().y, OTHER);
-				rifle.loadGraphic(AssetPaths.rifle__png);
-				rifle.onPickUp = onPickUpItem;
-				coinsGroup.add(rifle);
-				dropItem = true;
-			}
 			return;
 		} else {
 			if (hurtTimer >= 0) {
@@ -144,7 +149,7 @@ class Enemy extends FlxSprite {
 				hurtTimer = -1;
 			}
 			if (isHurting()) {
-				velocity.set(0, 0);
+				velocity.x = 0;
 			} else {
 				brain.update(elapsed);
 			}

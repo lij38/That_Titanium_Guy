@@ -20,7 +20,6 @@ class JetpackRifleEnemy extends Enemy {
 	private var rateTime:Float = 2.0;
 	private var rate:Float = 0.1;
 	
-	private var level:Int;
 	private var damageLevel = [for (i in 1...4) i];	
 	private var healthLevel = [for (i in 0...4) 20 * i + 30];
 	

@@ -7,11 +7,14 @@ package ;
  import flixel.util.FlxColor;
  import flixel.ui.FlxBar;
  import flixel.tweens.*;
+ import flixel.util.FlxStringUtil;
  using flixel.util.FlxSpriteUtil;
 
 class HUD extends FlxTypedGroup<FlxSprite> {
     private var _player:Player;
     private var _sprHealth:FlxSprite;
+	private var _moneySprite:FlxSprite;
+	private var _money:FlxText;
     private var _txtjAmmo:FlxText;
     private var _txtkAmmo:FlxText;
     private var _healthbar:FlxBar;
@@ -41,11 +44,22 @@ class HUD extends FlxTypedGroup<FlxSprite> {
          _sprHealth = new FlxSprite(35, 4, AssetPaths.health__png);
 
          //health bar
-        _healthbar = new FlxBar(60, 4, LEFT_TO_RIGHT, 400, 20, _player, "health", 0, _player.health);
+        _healthbar = new FlxBar(60, 4, LEFT_TO_RIGHT, 370, 20, _player, "health", 0, _player.health);
         _healthbar.createFilledBar(FlxColor.TRANSPARENT, FlxColor.RED, true, FlxColor.BLACK);
-
+		
+		// money icon
+		_moneySprite = new FlxSprite(430, -10);
+		_moneySprite.loadGraphic(AssetPaths.coins__png, true, 45, 48);
+		_moneySprite.animation.add("spin", [0, 1, 2, 3, 4, 5, 6, 7], 6, true);
+		_moneySprite.animation.play("spin");
+		_moneySprite.scale.set(0.3, 0.3);
+		// money
+		var moneyText:String = FlxStringUtil.formatMoney(_player.money, false, true);
+		_money = new FlxText(462, -4, 0, moneyText, 20);
+		_money.setFormat(AssetPaths.FONT, _money.size, FlxColor.YELLOW);
+		
 		//jetpack bar
-		_jetpackBar = new FlxBar(60, 29, LEFT_TO_RIGHT, 400, 10, _player,
+		_jetpackBar = new FlxBar(60, 29, LEFT_TO_RIGHT, 370, 10, _player,
 									"jetpackField", 0, _player.jetpackFieldMax);
 		_jetpackBar.createFilledBar(FlxColor.TRANSPARENT, FlxColor.CYAN, true, FlxColor.BLACK);
 		
@@ -70,6 +84,10 @@ class HUD extends FlxTypedGroup<FlxSprite> {
          
          add(_sprHealth);
          _sprHealth.scrollFactor.set(0.0);
+		 add(_moneySprite);
+		 _moneySprite.scrollFactor.set(0.0);
+		 add(_money);
+		 _money.scrollFactor.set(0.0);
          add(_txtjAmmo);
          _txtjAmmo.scrollFactor.set(0.0);
          add(_txtkAmmo);
@@ -120,15 +138,14 @@ class HUD extends FlxTypedGroup<FlxSprite> {
             _txtkAmmo.text = Std.string(kAmmo) + " / " + "inf";
             _txtkAmmo.size = 24;
         }
+		_money.text = FlxStringUtil.formatMoney(_player.money, false, true);
      }
 
      public function updateXY():Void {
          _damage1.x = _player.x + _xOffset1;
-         //_damage1.y = _player.y - 65;
          _damage2.x = _player.x + _xOffset2;
          _damage3.x = _player.x + _xOffset3;
          _damage4.x = _player.x + _xOffset4;
-         //_damage2.y = _player.y - 40;
 	 }
 
     public function updateDamage(damage:Float):Void {
