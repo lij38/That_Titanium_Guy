@@ -9,7 +9,6 @@ import flixel.addons.editors.tiled.TiledTileLayer;
 import flixel.addons.editors.tiled.TiledObjectLayer;
 import flixel.tile.FlxBaseTilemap;
 import flixel.group.FlxGroup.FlxTypedGroup;
-import flixel.FlxSprite;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import weapons.*;
@@ -18,7 +17,7 @@ import enemies.*;
 
 class TutorialState extends PlayState {
 	private var shield:FlxSprite;   //Shield in this map
-	private var texts:FlxTypedGroup<FlxSprite>;    //Instructions present in them map
+	private var texts:FlxTypedGroup<FlxText>;    //Instructions present in them map
 	private var _keys:FlxTilemap;   //
 
     override public function create():Void {
@@ -51,7 +50,7 @@ class TutorialState extends PlayState {
 		/////////////////////////////////////////////
         //LOAD INSTRUCTIONS
 		////////////////////////////////////////////
-		texts = new FlxTypedGroup<FlxSprite>();
+		texts = new FlxTypedGroup<FlxText>();
 		var instructLayer:TiledObjectLayer = cast _map.getLayer("instruction");
 		for (e in instructLayer.objects) {
 			placeInstructions(e.name, e.xmlData.x);
@@ -99,7 +98,8 @@ class TutorialState extends PlayState {
     private function placeInstructions(entityName:String, entityData:Xml):Void {
 		var x:Int = Std.parseInt(entityData.get("x"));
 		var y:Int = Std.parseInt(entityData.get("y"));
-		var k:FlxText = new Instruction(x, y, "Hold to Shield");
+		var k:FlxText = new FlxText(x, y, 250, "Hold to Shield", 19);
+		k.setFormat(AssetPaths.FONT, k.size);
 		var s:FlxText = new FlxText(x, y, 250, "S to Roll through enemies", 19);
 		s.setFormat(AssetPaths.FONT, s.size);
 		var rb:FlxText = new FlxText(x, y, 250, "Roll to dodge bullets", 19);
