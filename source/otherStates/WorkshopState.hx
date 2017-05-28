@@ -59,6 +59,8 @@ class WorkshopState extends FlxState {
         add(config1);
         jWeapon = new ImageButton(190, 100, jClick);
         kWeapon = new ImageButton(500, 100, kClick);
+        jWeapon.loadGraphic(AssetPaths.emptyslot__png);
+        kWeapon.loadGraphic(AssetPaths.emptyslot__png);
         add(jWeapon);
         add(kWeapon);
         j1 = new FlxText(240, 260, 0, "J SLOT", 25);
@@ -74,6 +76,8 @@ class WorkshopState extends FlxState {
         add(config2);
         j2ndWeapon = new ImageButton(190, 340, j2ndClick);
         k2ndWeapon = new ImageButton(500, 340, k2ndClick);
+        j2ndWeapon.loadGraphic(AssetPaths.emptyslot__png);
+        k2ndWeapon.loadGraphic(AssetPaths.emptyslot__png);
         add(j2ndWeapon);
         add(k2ndWeapon);
         j2 = new FlxText(240, 500, 0, "J2 SLOT", 25);
