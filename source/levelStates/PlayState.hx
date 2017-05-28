@@ -145,7 +145,7 @@ class PlayState extends FlxState {
 
 	override public function update(elapsed:Float):Void {
 		if (FlxG.keys.justPressed.ESCAPE) {
-			_pause = true;
+			_pause = !_pause;
 		}
 		if (_pause) {
 			activeButtons();
@@ -206,6 +206,7 @@ class PlayState extends FlxState {
 			} else {
 				Main.SAVE.data.levelCompleted = LEVELID;
 			}
+			Main.SAVE.data.money = _player.money;
 			if(LEVELID == 4) {
 				Main.SAVE.data.end = true;
 			}
@@ -241,6 +242,7 @@ class PlayState extends FlxState {
 			if(LEVELID == 3) {
 				Main.SAVE.data.end = true;
 			}
+			Main.SAVE.data.money = _player.money;
 			Main.LOGGER.logLevelEnd({won: true});
 			logged = true;
 			Main.SAVE.data.dmgTaken = _player.getDamageTaken();

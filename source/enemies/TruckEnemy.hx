@@ -21,8 +21,7 @@ class TruckEnemy extends Enemy {
 	
 	private var bulletXOffset:Float = 200;
 	
-	private var level:Int;
-	private var damageLevel = [for (i in 1...4) i * 3];
+	private var damageLevel = [for (i in 1...4) i * 2];
 	private var healthLevel = [for (i in 0...4) 20 * i + 400];
 	
 	

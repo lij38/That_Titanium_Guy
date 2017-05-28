@@ -52,6 +52,7 @@ class Boss1 extends Enemy {
 		animation.add("die", [20, 21, 22, 22, 22, 22, 22, 22, 22, 22, 22,
 							22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22], 3, false);
 		animation.play("stop");
+		this.level = 1;
 
 		acceleration.y = GRAVITY;
 		health = 800;
