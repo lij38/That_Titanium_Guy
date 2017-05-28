@@ -28,6 +28,9 @@ class FinishState extends FlxState
     private var ending:FlxText;
     private var _level:Int;
 
+    //money
+    private var reward:FlxText;
+
     override public function create():Void
     {   
         _level = Main.SAVE.data.curLevel;
@@ -112,20 +115,29 @@ class FinishState extends FlxState
         add(killedRating);
         add(overall);
         add(overallRating);
-		_btnPlay = new ImageButton(300, 440, "Next", clickPlay);
+		_btnPlay = new ImageButton(300, 500, "Next", clickPlay);
         _btnPlay.loadGraphic(AssetPaths.next__png, false, 200, 40);
         add(_btnPlay);
-        _btnHome = new ImageButton(300, 500, "Go Home", clickHome);
+        _btnHome = new ImageButton(300, 550, "Go Home", clickHome);
         _btnHome.loadGraphic(AssetPaths.gohome__png, false, 200, 40);
         if(Main.SAVE.data.wsTut != null) {
             add(_btnHome);
         }
-        ending = new FlxText(100, 400, 600, "Thanks for playing! You've beat all of the levels we have so far but more levels are coming soon!", 20);
+        ending = new FlxText(100, 450, 600, "Thanks for playing! You've beat all of the levels we have so far but more levels are coming soon!", 20);
         ending.setFormat(AssetPaths.FONT, ending.size);
         if(Main.SAVE.data.end != null) {
             add(ending);
         }
 		
+        //Money
+        var percent:Int = timeNum + killedNum + dmgNum;
+        reward = new FlxText(200, 350, 0);
+        var money = Main.SAVE.data.money;
+        Main.SAVE.data.money += cast(money * percent / 100.0, Int);
+        reward.text = "Rating Reward Coins: " + Std.String(Main.SAVE.data.money);
+        Main.SAVE.flush();
+        add(reward);
+
 		FlxG.camera.fade(FlxColor.BLACK, .25, true);
         super.create();
     }

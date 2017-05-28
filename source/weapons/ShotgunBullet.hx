@@ -8,6 +8,7 @@ import flixel.math.FlxPoint;
 
 class ShotgunBullet extends BallBullet {
     override public function new(X:Float=0, Y:Float=0, Speed:Float, Direction:Int, Damage:Float, Range:Float) {
+        this.type = "shotgun";
         super(X, Y, Speed, Direction, Damage, Range);
     }
 
