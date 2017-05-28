@@ -101,6 +101,8 @@ class WorkshopState extends FlxState {
             tutorial();
             confirm.kill();
         }
+        Main.LOGGER.logLevelStart(0);
+        super.create();
     }
 
     override public function update(elapsed:Float):Void {
@@ -152,6 +154,7 @@ class WorkshopState extends FlxState {
 		}
         Main.SAVE.data.curConfig = curConfig;
         Main.SAVE.flush();
+        Main.LOGGER.logLevelEnd({won: true});
         FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
 			FlxG.switchState(new HomeState());
 		});
@@ -213,6 +216,10 @@ class WorkshopState extends FlxState {
         tButton.loadGraphic(AssetPaths.next__png, false, 200, 40);
         add(tButton);
         Main.SAVE.data.wsTut = true;
+        jWeapon.kill();
+        kWeapon.kill();
+        j2ndWeapon.kill();
+        k2ndWeapon.kill();
     }
 
     private function killTut() {
@@ -222,6 +229,10 @@ class WorkshopState extends FlxState {
         tButton.destroy();
         confirm.revive();
         inTut = false;
+        jWeapon.kill();
+        kWeapon.kill();
+        j2ndWeapon.kill();
+        k2ndWeapon.kill();
     }
 
     private function jClick() {
