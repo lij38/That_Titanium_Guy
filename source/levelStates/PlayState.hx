@@ -19,7 +19,10 @@ import items.*;
 import otherStates.*;
 import flixel.util.FlxColor;
 
-class PlayState extends FlxState {	
+class PlayState extends FlxState {
+	// update this when new level added
+	private var LAST_LEVEL:Int = 4;
+	
 	private var _player:Player;
 	private var _hud:HUD;
 	private var _boss_hud:Boss1HUD;
@@ -42,6 +45,7 @@ class PlayState extends FlxState {
 	private var startTime:Float;
 	private var numEnemies:Int;
 	public var LEVELID:Int;
+	private var levelMoney:Int = 0;
 
 	// pause state and menu
 	private var _pause:Bool;
@@ -200,30 +204,8 @@ class PlayState extends FlxState {
 		}
 		
 		if (enemiesGroup.countLiving() == -1 && !logged) {
-			if(Main.SAVE.data.levelCompleted != null) {
-				var old:Int = Main.SAVE.data.levelCompleted;
-				Main.SAVE.data.levelCompleted = Math.max(old, LEVELID);
-			} else {
-				Main.SAVE.data.levelCompleted = LEVELID;
-			}
-			Main.SAVE.data.money = _player.money;
-			if(LEVELID == 4) {
-				Main.SAVE.data.end = true;
-			}
-			Main.LOGGER.logLevelEnd({won: true});
-			logged = true;
-			Main.SAVE.data.dmgTaken = _player.getDamageTaken();
-			Main.SAVE.data.timeTaken = (Date.now().getTime() - startTime) / 1000;
-			Main.SAVE.data.enemiesKilled = numEnemies - enemiesGroup.countLiving();
-			Main.SAVE.flush();
-			trace("damage taken: " + Main.SAVE.data.dmgTaken);
-			trace("time: " + Main.SAVE.data.timeTaken);
-			trace("enemies: " + Main.SAVE.data.enemiesKilled);
-			FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
-				FlxG.switchState(new FinishState());
-			});
+			endLevel();
 		}
-
 
 		FlxG.overlap(_player, _exit, destination);
 	}
@@ -233,29 +215,34 @@ class PlayState extends FlxState {
 	//////////////////////////////////////////////////////////
 	private function destination(o1:FlxSprite, o2:FlxSprite):Void {
 		if (FlxG.keys.anyPressed([W]) && _exit.visible && !logged) {
-			if(Main.SAVE.data.levelCompleted != null) {
-				var old:Int = Main.SAVE.data.levelCompleted;
-				Main.SAVE.data.levelCompleted = Math.max(old, LEVELID);
-			} else {
-				Main.SAVE.data.levelCompleted = LEVELID;
-			}
-			if(LEVELID == 3) {
-				Main.SAVE.data.end = true;
-			}
-			Main.SAVE.data.money = _player.money;
-			Main.LOGGER.logLevelEnd({won: true});
-			logged = true;
-			Main.SAVE.data.dmgTaken = _player.getDamageTaken();
-			Main.SAVE.data.timeTaken = (Date.now().getTime() - startTime) / 1000;
-			Main.SAVE.data.enemiesKilled = numEnemies - enemiesGroup.countLiving();
-			Main.SAVE.flush();
-			trace("damage taken: " + Main.SAVE.data.dmgTaken);
-			trace("time: " + Main.SAVE.data.timeTaken);
-			trace("enemies: " + Main.SAVE.data.enemiesKilled);
-			FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
-				FlxG.switchState(new FinishState());
-			});
+			endLevel();
 		}
+	}
+	
+	private function endLevel():Void {
+		if (Main.SAVE.data.levelCompleted != null) {
+			var old:Int = Main.SAVE.data.levelCompleted;
+			Main.SAVE.data.levelCompleted = Math.max(old, LEVELID);
+		} else {
+			Main.SAVE.data.levelCompleted = LEVELID;
+		}
+		if (LEVELID == LAST_LEVEL) {
+			Main.SAVE.data.end = true;
+		}
+		Main.SAVE.data.money = _player.money;
+		Main.SAVE.data.levelMoney = levelMoney;
+		Main.LOGGER.logLevelEnd({won: true});
+		logged = true;
+		Main.SAVE.data.dmgTaken = _player.getDamageTaken();
+		Main.SAVE.data.timeTaken = (Date.now().getTime() - startTime) / 1000;
+		Main.SAVE.data.enemiesKilled = numEnemies - enemiesGroup.countLiving();
+		Main.SAVE.flush();
+		trace("damage taken: " + Main.SAVE.data.dmgTaken);
+		trace("time: " + Main.SAVE.data.timeTaken);
+		trace("enemies: " + Main.SAVE.data.enemiesKilled);
+		FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
+			FlxG.switchState(new FinishState());
+		});
 	}
 
 	private function updateEnemyHud() {
@@ -398,6 +385,9 @@ class PlayState extends FlxState {
 	public function pickUpCoin(player:Player, coin:Coin):Void {
 		if (coin.alive && coin.velocity.y >= 0) {
 			coin.onPickUp(player, coin);
+			if (coin.type == COIN) {
+				levelMoney += coin.getValue();
+			}
 			coin.kill();
 		}
 	}

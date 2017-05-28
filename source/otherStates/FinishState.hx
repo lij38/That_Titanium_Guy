@@ -130,11 +130,11 @@ class FinishState extends FlxState
         }
 		
         //Money
-        var percent:Int = timeNum + killedNum + dmgNum;
+        var percent:Int = timeNum + killNum + dmgNum;
         reward = new FlxText(200, 350, 0);
         var money = Main.SAVE.data.money;
         Main.SAVE.data.money += cast(money * percent / 100.0, Int);
-        reward.text = "Rating Reward Coins: " + Std.String(Main.SAVE.data.money);
+        reward.text = "Rating Reward Coins: " + Std.string(Main.SAVE.data.money);
         Main.SAVE.flush();
         add(reward);
 
