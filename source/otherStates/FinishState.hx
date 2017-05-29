@@ -135,7 +135,7 @@ class FinishState extends FlxState
         var money:Int = Main.SAVE.data.levelMoney;
         money = cast(money * percent / 10.0, Int);
         Main.SAVE.data.money += money;
-        reward.text = "Rating Reward Coins: " + Std.string(money);
+        reward.text = "Star Reward Coins: +" + Std.string(money);
         reward.setFormat(AssetPaths.FONT, 35);
         Main.SAVE.flush();
         add(reward);

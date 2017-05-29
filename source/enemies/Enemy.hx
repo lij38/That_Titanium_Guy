@@ -113,7 +113,7 @@ class Enemy extends FlxSprite {
 						var ry:Float = Math.random() * 15 - 7;
 						var coin:Coin = 
 							new Coin(getMidpoint().x + rx, getMidpoint().y + 45 + ry,
-									COIN, lowB, upB);
+									COIN, 1, 2);
 						coin.loadCoinGraphic();
 						coinsGroup.add(coin);
 						coinCount++;

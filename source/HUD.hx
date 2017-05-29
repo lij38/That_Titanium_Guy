@@ -15,6 +15,8 @@ class HUD extends FlxTypedGroup<FlxSprite> {
     private var _sprHealth:FlxSprite;
 	private var _moneySprite:FlxSprite;
 	private var _money:FlxText;
+    private var _potion:FlxSprite;
+    private var _potionNum:FlxText;
     private var _txtjAmmo:FlxText;
     private var _txtkAmmo:FlxText;
     private var _healthbar:FlxBar;
@@ -48,15 +50,25 @@ class HUD extends FlxTypedGroup<FlxSprite> {
         _healthbar.createFilledBar(FlxColor.TRANSPARENT, FlxColor.RED, true, FlxColor.BLACK);
 		
 		// money icon
-		_moneySprite = new FlxSprite(430, -10);
+		_moneySprite = new FlxSprite(430, 13);
 		_moneySprite.loadGraphic(AssetPaths.coins__png, true, 45, 48);
 		_moneySprite.animation.add("spin", [0, 1, 2, 3, 4, 5, 6, 7], 6, true);
 		_moneySprite.animation.play("spin");
 		_moneySprite.scale.set(0.3, 0.3);
 		// money
 		var moneyText:String = FlxStringUtil.formatMoney(_player.money, false, true);
-		_money = new FlxText(462, -4, 0, moneyText, 20);
+		_money = new FlxText(462, 18, 0, moneyText, 20);
 		_money.setFormat(AssetPaths.FONT, _money.size, FlxColor.YELLOW);
+
+        //Potion icon
+        _potion = new FlxSprite(427, -17);
+        _potion.loadGraphic(AssetPaths.healthPotion__png, true, 50, 63);
+        _potion.animation.add("aroma", [0, 1, 2, 3, 4, 5, 6], 6, true);
+        _potion.animation.play("aroma");
+        _potion.scale.set(0.27, 0.27);
+        //potion number
+        _potionNum = new FlxText(462, -6, 0, Std.string(_player.potionCount), 23);
+        _potionNum.setFormat(AssetPaths.FONT, _potionNum.size, FlxColor.RED);
 		
 		//jetpack bar
 		_jetpackBar = new FlxBar(60, 29, LEFT_TO_RIGHT, 370, 10, _player,
@@ -88,6 +100,10 @@ class HUD extends FlxTypedGroup<FlxSprite> {
 		 _moneySprite.scrollFactor.set(0.0);
 		 add(_money);
 		 _money.scrollFactor.set(0.0);
+         add(_potion);
+         _potion.scrollFactor.set(0.0);
+         add(_potionNum);
+         _potionNum.scrollFactor.set(0.0);
          add(_txtjAmmo);
          _txtjAmmo.scrollFactor.set(0.0);
          add(_txtkAmmo);

@@ -53,7 +53,7 @@ class OpeningState extends FlxState
 		_conv_index = 0;
 		_text_array.push("Federal Army Soldiers: This land is now confiscated under the authority of the Federal Government for our Supreme Leader");
 		_text_array.push("FA Soldiers: You have 24 hours to vacate the premises. Failure to do so will result in the use of deadly forces.");
-		_text_array.push("Hypin: WHAT?! You can’t just take my land from me and my family! We have rights to this land and I will defend my rights!");
+		_text_array.push("J. Hypin: WHAT?! You can’t just take my land from me and my family! We have rights to this land and I will defend my rights!");
 		_text_array.push("FA Soldiers: Resistance detected, deadly force is now authorized.");
 
 		_player = new PlayerAnimation(100,320,0);
@@ -81,7 +81,6 @@ class OpeningState extends FlxState
 		 add(_skiptext);
 
 		FlxG.camera.fade(FlxColor.BLACK, .25, true);
-		Main.LOGGER.logLevelStart(0);
 
 		FlxG.sound.playMusic(AssetPaths.dramatic__mp3);
 
@@ -92,7 +91,6 @@ class OpeningState extends FlxState
 	override public function update(elapsed:Float):Void {
 		
 		if(FlxG.keys.anyJustPressed([ESCAPE])) {
-			Main.LOGGER.logLevelEnd({won: false});
 			FlxG.switchState(new TutorialState());
 		}
 
@@ -174,7 +172,6 @@ class OpeningState extends FlxState
 		     	_enemy.x -= 4;
 		    } else if (count > 100) {
 				FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
-					Main.LOGGER.logLevelEnd({won: true});
 					FlxG.switchState(new TutorialState());
 				});
 			}

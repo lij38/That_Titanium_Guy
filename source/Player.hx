@@ -26,7 +26,8 @@ class Player extends FlxSprite {
 	private var bulletArray:FlxTypedGroup<Bullet>;
 	
 	public var money:Int;
-	
+	public var potionCount:Int;
+
 	public var jetpackFieldMax:Float = 3;
 	public var jetpackField:Float = 3;
 	
@@ -81,6 +82,9 @@ class Player extends FlxSprite {
 			if (Main.SAVE.data.money == null) {
 				money = 0;
 			}
+			if(Main.SAVE.data.potionCount == null) {
+				potionCount = 0;
+			}
 			Main.SAVE.flush();
 		} else {
 			var jn:String = Main.SAVE.data.jWeapon;
@@ -93,6 +97,7 @@ class Player extends FlxSprite {
 			k2ndWeapon = WeaponFactory.getWeapon(k2n, playerBulletArray);
 			curConfig = Main.SAVE.data.curConfig;
 			money = Main.SAVE.data.money;
+			potionCount = Main.SAVE.data.potionCount;
 			//trace(curConfig);
 		}
 		shielding = false;
