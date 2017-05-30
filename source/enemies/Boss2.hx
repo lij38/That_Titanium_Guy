@@ -49,7 +49,7 @@ class Boss2 extends Enemy {
 		//debugBoundingBoxColor = FlxColor.RED;
 		
 
-		cast(this, FlxObject).debugBoundingBoxColor = FlxColor.RED;
+		//cast(this, FlxObject).debugBoundingBoxColor = FlxColor.RED;
 		//makeGraphic(120, 200, FlxColor.WHITE);
 		
 		
@@ -164,7 +164,7 @@ class Boss2 extends Enemy {
 		attack_count++;
 		if (attack_count == 54) {
 			var curBullet:EnemyBullet = bulletArray.recycle(EnemyBullet);
-			curBullet.setBullet(x, y + 120, 250, facing, 15, range, Melee);
+			curBullet.setBullet(x, y + 120, 250, facing, 15, range, Melee, this);
 		}
 		if (attack_count > 67) {
 			//animation.finish();
@@ -183,7 +183,8 @@ class Boss2 extends Enemy {
 	            var angle:Int = 165;
 	            for(i in 0...5) {
 	            	var curBullet:EnemyBullet = bulletArray.recycle(EnemyBullet);
-	                curBullet.setBullet(x - 125, y + 120, 250, angle, 15, range, SHOTGUN);
+	                curBullet.setBullet(x - 125, y + 120, 250, angle, 
+														15, range, SHOTGUN, this);
 	                angle += 6;
 	            }
 	        }
@@ -191,7 +192,8 @@ class Boss2 extends Enemy {
 	            var angle:Int = 345;
 	            for(i in 0...5) {
 	            	var curBullet:EnemyBullet = bulletArray.recycle(EnemyBullet);
-	                curBullet.setBullet(x + 125, y + 120, 250, angle % 360, 15, range, SHOTGUN);
+	                curBullet.setBullet(x + 125, y + 120, 250, angle % 360,
+														15, range, SHOTGUN, this);
 	                angle += 6;
 	            }
 	        }
