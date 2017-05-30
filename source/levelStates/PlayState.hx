@@ -40,7 +40,7 @@ class PlayState extends FlxState {
 	private var enemiesBullets:FlxTypedGroup<EnemyBullet>;
 	private var coinsGroup:FlxTypedGroup<Coin>;
 	
-	private var GRAVITY:Float = 1000;
+	private var GRAVITY:Float = 1500;
 	private var logged:Bool = false;
 	private var startTime:Float;
 	private var numEnemies:Int;
@@ -173,6 +173,11 @@ class PlayState extends FlxState {
 		if (!_is_boss) {
 			updateEnemyHud();
 			_hud.updateXY();
+		}
+
+		//use potion
+		if(FlxG.keys.anyPressed([H])) {
+			_player.usePotion();
 		}
 
         FlxG.collide(_player, _plat);

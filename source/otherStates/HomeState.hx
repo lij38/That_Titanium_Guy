@@ -32,7 +32,7 @@ class HomeState extends FlxState {
 	private var _workshoptext:FlxText;
 	private var _stage1:Bool;
 	private var _stage2:Bool;
-	private var _stage3:Bool;
+	//private var _stage3:Bool;
 	
 	// pause state and menu
 	private var _pause:Bool;
@@ -42,7 +42,7 @@ class HomeState extends FlxState {
 	private var _homebutton:ImageButton;
 	private var _pausebutton:FlxText;
 	private var _pausetxt:FlxText;
-	private var _blackmarket:FlxSprite;
+	private var _blackmarket:ImageButton;
 	private var _bmtxt:FlxText;
 
 	override public function create():Void {
@@ -83,8 +83,9 @@ class HomeState extends FlxState {
         _workshoptext.visible = false;
         add(_workshoptext);
 
-        _blackmarket = new FlxSprite();
+        _blackmarket = new ImageButton(0, 0, switchBlackMarketState);
         _blackmarket.loadGraphic(AssetPaths.blackmarket__png, false, 470, 372);
+		_blackmarket.scrollFactor.set(1);
         add(_blackmarket);
         _blackmarket.visible = false;
         _blackmarket.active = false;
@@ -115,7 +116,7 @@ class HomeState extends FlxState {
 			 tutState = true;
 			 _stage1 = true;
 			 _stage2 = false;
-			 _stage3 = false;
+			 //_stage3 = false;
 			 _mapbutton.active = false;
 			 _workshop.active = false;
 			 Main.SAVE.data.homeTut = true;
@@ -178,7 +179,7 @@ class HomeState extends FlxState {
 		addTopLayer();
 
 		 //Main.SAVE.data.levelCompleted = 4;
-		 if (Main.SAVE.data.levelCompleted > 3) {
+		 if (Main.SAVE.data.levelCompleted >= 3) {
 		 	_blackmarket.visible = true;
         	_blackmarket.active = true;
 		 }
@@ -228,18 +229,14 @@ class HomeState extends FlxState {
 				}
 			} else if (_stage2) {
 				if (click) {
-					_stage2 = false;
-					_stage3 = true;
-					_arrow.x = 295;
-					_arrow.y = 350;
-					_arrow.loadGraphic(AssetPaths.arrow2__png, false, 25, 40);
-					_text.x = 177;
-					_text.y = 415;
-					_text.text = "This is the workshop, you can equip and change your weapon configurations here!";
-				}
-			} else if (_stage3) {
-				if (click) {
-					_stage3 = false;
+					// _stage2 = false;
+					// _stage3 = true;
+					// _arrow.x = 295;
+					// _arrow.y = 350;
+					// _arrow.loadGraphic(AssetPaths.arrow2__png, false, 25, 40);
+					// _text.x = 177;
+					// _text.y = 415;
+					// _text.text = "This is the workshop, you can equip and change your weapon configurations here!";
 					tutorial_map = false;
 		        	_arrow.visible = false;
 		        	_text.visible = false;
@@ -250,8 +247,22 @@ class HomeState extends FlxState {
 		        	_mapbutton.active = true;
 					_workshop.active = true;
 					_maptext.visible = true;
-	        	}
-			}
+				}
+			} //else if (_stage3) {
+			// 	if (click) {
+			// 		_stage3 = false;
+			// 		tutorial_map = false;
+		    //     	_arrow.visible = false;
+		    //     	_text.visible = false;
+		    //     	_bg.color = 0xffffff;
+		    //     	_player.color = 0xffffff;
+		    //     	_fg.color = 0xffffff;
+		    //     	_workshop.color = 0xdddddd;
+		    //     	_mapbutton.active = true;
+			// 		_workshop.active = true;
+			// 		_maptext.visible = true;
+	        // 	}
+			// }
         	
 		} else {
 			_maptext.visible = true;
@@ -306,7 +317,7 @@ class HomeState extends FlxState {
 
     private function switchBlackMarketState():Void {
     	FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
-			//FlxG.switchState(new BlackMarketState());
+			FlxG.switchState(new MarketState());
 		});
     }
 

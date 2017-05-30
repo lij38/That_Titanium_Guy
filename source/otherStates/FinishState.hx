@@ -157,7 +157,6 @@ class FinishState extends FlxState
             FlxG.sound.music.destroy();
 			switch _level {
                 case 1: FlxG.switchState(new Level1State());
-                case 3: FlxG.switchState(new Level2State());
                 case 4: FlxG.switchState(new CreditState());
             }
             if( _level == 2) {
@@ -165,6 +164,13 @@ class FinishState extends FlxState
                     FlxG.switchState(new WorkshopState());
                 } else {
                     FlxG.switchState(new Boss1State());
+                }
+            }
+            if(_level == 3) {
+                if(Main.SAVE.data.levelCompleted < 4) {
+                    FlxG.switchState(new MarketState());
+                } else {
+                    FlxG.switchState(new Level2State());
                 }
             }
 		});
