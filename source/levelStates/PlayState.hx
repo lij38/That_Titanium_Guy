@@ -325,8 +325,11 @@ class PlayState extends FlxState {
 			if (bullet.bulletType == SHOTGUN) {
 				if (bullet.velocity.x < 0) {
 					player.x -= 5;
+					player.x = Math.max(player.x, 20);
 				} else {
 					player.x += 5;
+					player.x = Math.min(player.x,
+								_map.width * _map.tileWidth - player.width - 20);
 				}
 			}
 			bullet.kill();

@@ -124,7 +124,7 @@ class TruckEnemy extends Enemy {
 			curBullet.setBullet(getMidpoint().x + offset, y + 42, 
 							bulletSpeedLevel[level], facing, 
 							damageLevel[level] , range,
-							Ranged);
+							Ranged, this);
 			
 		}
 		if (!seesPlayer) {
