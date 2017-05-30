@@ -28,8 +28,8 @@ class Player extends FlxSprite {
 	public var money:Int;
 	public var potionCount:Int;
 
-	public var jetpackFieldMax:Float = 3;
-	public var jetpackField:Float = 3;
+	public var jetpackFieldMax:Float;
+	public var jetpackField:Float;
 	
 	private var jWeapon:Weapon;
 	private var kWeapon:Weapon;
@@ -52,7 +52,20 @@ class Player extends FlxSprite {
 						gravity:Float) {
 		super(X, Y);
 		GRAVITY = gravity;
-		health = 100;
+		if(Main.SAVE.data.maxHealth == null) {
+			health = 100;
+			Main.SAVE.data.maxHealth = health;
+		} else {
+			health = Main.SAVE.data.maxHealth;
+		}
+		if(Main.SAVE.data.maxFuel == null) {
+			jetpackFieldMax = 3;
+			jetpackField = 3;
+			Main.SAVE.data.maxFuel = jetpackFieldMax;
+		} else {
+			jetpackFieldMax = Main.SAVE.data.maxFuel;
+			jetpackField = jetpackFieldMax;
+		}
 		dmgTaken = 0.0;
 
 		loadGraphic(AssetPaths.player__png, true, 334, 182);

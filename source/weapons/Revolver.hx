@@ -5,20 +5,35 @@ class Revolver extends Weapon {
     override public function new(playerBulletArray:FlxTypedGroup<Bullet>) {
         super(playerBulletArray);
         this.name = "revolver";
-        this.damage = new Array<Int>();
-        for(i in 1...6) {
-            this.damage.push(i * 10);
+        //damage
+        if(Main.SAVE.data.rvDmg == null) {
+            this.damage = 13;
+            Main.SAVE.data.rvDmg = this.damage;
+        } else {
+            this.damage = Main.SAVE.data.rvDmg;
         }
-        this.damageIndex = 0;
         this.type = "ballistic";
         this.range = 1000;
         this.fireRate = 0.0;
         this.speed = 2000;
         this.bulletArray = playerBulletArray;
 
-        this.magCapacity = 6;
-        this.curAmmo = 6;
-        this.reloadTime = 1.8;
+        //mag capacity
+        if(Main.SAVE.data.rvMag == null) {
+            this.magCapacity = 6;
+            Main.SAVE.data.rvMag = this.magCapacity;
+        } else {
+            this.magCapacity = Main.SAVE.data.rvMag;
+        }
+        this.curAmmo = this.magCapacity;
+        //reload time
+        if(Main.SAVE.data.rvRtime == null) {
+            this.reloadTime = 2.5;
+            Main.SAVE.data.rvRtime = this.reloadTime;
+        } else {
+            this.reloadTime = Main.SAVE.data.rvRtime;
+        }
+        Main.SAVE.flush();
     }
 
     public override function attack(x:Float, y:Float, direction:Int):Bool {
@@ -26,7 +41,7 @@ class Revolver extends Weapon {
             reload();            
             return false;
         }
-        var newBullet = new RevolverBullet(x + 20, y + 20, speed, direction, this.damage[damageIndex], range);
+        var newBullet = new RevolverBullet(x + 20, y + 20, speed, direction, this.damage, range);
 		this.bulletArray.add(newBullet);
         curAmmo--;
         return true;

@@ -12,6 +12,7 @@ import flixel.util.FlxSave;
 import flixel.text.FlxText;
 
 class MenuState extends FlxState {
+	private var _bg:FlxSprite;
 	private var _btnPlay:ImageButton;
 	private var _btnContinue:ImageButton;
 	private var _title:FlxText;
@@ -28,17 +29,19 @@ class MenuState extends FlxState {
 	var spritesheet:FlxSprite;
 		
 	override public function create():Void {
-		_title = new FlxText(200, 100, 600, "That Titanium Guy", 50);
-		_title.setFormat(AssetPaths.FONT, _title.size);
-		_subtitle = new FlxText(220, 175, 500, "あのチタンな人", 40);
-		_subtitle.setFormat(AssetPaths.FONT, _subtitle.size);
-		_btnPlay = new ImageButton(300, 300, "New Game", clickPlay);
+		// _title = new FlxText(200, 100, 600, "That Titanium Guy", 50);
+		// _title.setFormat(AssetPaths.FONT, _title.size);
+		// _subtitle = new FlxText(220, 175, 500, "あのチタンな人", 40);
+		// _subtitle.setFormat(AssetPaths.FONT, _subtitle.size);
+
+		_bg = new FlxSprite(0, 0).loadGraphic(AssetPaths.menuBG__png);
+		_btnPlay = new ImageButton(0, 230, "New Game", clickPlay);
 		_btnPlay.loadGraphic(AssetPaths.newgame__png, false, 200, 40);
-		_btnContinue = new ImageButton(300, 380, "Continue", clickContinue);
+		_btnContinue = new ImageButton(0, 325, "Continue", clickContinue);
 		_btnContinue.loadGraphic(AssetPaths.continue__png, false, 200, 40);
-		_btnCredits = new ImageButton(300, 460, clickCredits);
+		_btnCredits = new ImageButton(0, 420, clickCredits);
 		_btnCredits.loadGraphic(AssetPaths.creditsbtn__png, false, 200, 40);
-		add(_btnCredits);
+		
 		//_btnContinue.screenCenter();
 		// spritesheet = new FlxSprite(0, 0);
 
@@ -68,10 +71,12 @@ class MenuState extends FlxState {
 		_cancel.kill();
 		_cText.kill();
 
-		add(_title);
-		add(_subtitle);
+		// add(_title);
+		// add(_subtitle);
+		add(_bg);
 		add(_btnPlay);
 		add(_btnContinue);
+		add(_btnCredits);
 		add(_mask);
 		add(_cWindow);
 		add(_cButton);
@@ -139,9 +144,9 @@ class MenuState extends FlxState {
 				FlxG.switchState(new Level1State());
 			} else {
 				//FlxG.switchState(new WorkshopState());
-				//FlxG.switchState(new MarketState());
+				FlxG.switchState(new MarketState());
 				FlxG.sound.music.destroy();
-				FlxG.switchState(new HomeState());
+				//FlxG.switchState(new HomeState());
 			}
 		});
 	}

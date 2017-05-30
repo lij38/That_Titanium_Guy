@@ -40,7 +40,7 @@ class PlayState extends FlxState {
 	private var enemiesBullets:FlxTypedGroup<EnemyBullet>;
 	private var coinsGroup:FlxTypedGroup<Coin>;
 	
-	private var GRAVITY:Float = 1000;
+	private var GRAVITY:Float = 1500;
 	private var logged:Bool = false;
 	private var startTime:Float;
 	private var numEnemies:Int;
