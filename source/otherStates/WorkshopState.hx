@@ -37,6 +37,12 @@ class WorkshopState extends FlxState {
     private var shieldT:FlxText;
     private var sword:ImageButton;
     private var swordT:FlxText;
+    private var shotgun:ImageButton;
+    private var shotgunT:FlxText;
+    private var revolver:ImageButton;
+    private var revolverT:FlxText;
+    private var sgshow:Bool;
+    private var rvshow:Bool;
     private var curSelect:String;
 
     //tutorial
@@ -63,10 +69,10 @@ class WorkshopState extends FlxState {
         kWeapon.loadGraphic(AssetPaths.emptyslot__png);
         add(jWeapon);
         add(kWeapon);
-        j1 = new FlxText(240, 260, 0, "J SLOT", 25);
+        j1 = new FlxText(220, 260, 0, "J SLOT", 25);
         j1.setFormat(AssetPaths.FONT, j1.size);
         add(j1);
-        k1 = new FlxText(540, 260, 0, "K SLOT", 25);
+        k1 = new FlxText(520, 260, 0, "K SLOT", 25);
         k1.setFormat(AssetPaths.FONT, k1.size);
         add(k1);
 
@@ -80,10 +86,10 @@ class WorkshopState extends FlxState {
         k2ndWeapon.loadGraphic(AssetPaths.emptyslot__png);
         add(j2ndWeapon);
         add(k2ndWeapon);
-        j2 = new FlxText(240, 500, 0, "J2 SLOT", 25);
+        j2 = new FlxText(220, 500, 0, "J2 SLOT", 25);
         j2.setFormat(AssetPaths.FONT, j2.size);
         add(j2);
-        k2 = new FlxText(540, 500, 0, "K2 SLOT", 25);
+        k2 = new FlxText(520, 500, 0, "K2 SLOT", 25);
         k2.setFormat(AssetPaths.FONT, k2.size);
         add(k2);
 
@@ -91,6 +97,19 @@ class WorkshopState extends FlxState {
         confirm = new ImageButton(300, 550, "CONFIRM", clickPlay);
         confirm.loadGraphic(AssetPaths.confirm__png, false, 200, 40);
         add(confirm);
+
+        //show shotgun or not
+        if(Main.SAVE.data.levelCompleted >= 6) {
+            sgshow = true;
+        } else {
+            sgshow = false;
+        }
+        //show revolver or not
+        if(Main.SAVE.data.levelCompleted >= 7 || Main.SAVE.data.revolverPickup) {
+            rvshow = true;
+        } else {
+            rvshow = false;
+        }
 
         //load the select panel
         loadSP();
@@ -119,22 +138,22 @@ class WorkshopState extends FlxState {
             }
         }
         if(Main.SAVE.data.jWeapon == "") {
-            jWeapon.makeGraphic(150, 150, FlxColor.BLUE);
+            jWeapon.loadGraphic(AssetPaths.emptyslot__png);
         } else {
             jWeapon.loadGraphic(AssetPaths.IMAGE + Main.SAVE.data.jWeapon + "Button.png");
         }
         if(Main.SAVE.data.kWeapon == "") {
-            kWeapon.makeGraphic(150, 150, FlxColor.BLUE);
+            kWeapon.loadGraphic(AssetPaths.emptyslot__png);
         } else {
             kWeapon.loadGraphic(AssetPaths.IMAGE + Main.SAVE.data.kWeapon + "Button.png");
         }
         if(Main.SAVE.data.j2ndWeapon == "") {
-            j2ndWeapon.makeGraphic(150, 150, FlxColor.BLUE);
+            j2ndWeapon.loadGraphic(AssetPaths.emptyslot__png);
         } else {
             j2ndWeapon.loadGraphic(AssetPaths.IMAGE + Main.SAVE.data.j2ndWeapon + "Button.png");
         }
         if(Main.SAVE.data.k2ndWeapon == "") {
-            k2ndWeapon.makeGraphic(150, 150, FlxColor.BLUE);
+            k2ndWeapon.loadGraphic(AssetPaths.emptyslot__png);
         } else {
             k2ndWeapon.loadGraphic(AssetPaths.IMAGE + Main.SAVE.data.k2ndWeapon + "Button.png");
         }
@@ -165,42 +184,69 @@ class WorkshopState extends FlxState {
     }
 
     private function loadSP() {
-        sWindow = new FlxSprite(100, 10).makeGraphic(600, 590, FlxColor.BLACK);
+        sWindow = new FlxSprite(50, 10).makeGraphic(700, 590, FlxColor.BLACK);
         wMask = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
         add(wMask);
         wMask.alpha = 0;
         add(sWindow);
         curSelect = "";
         //rifle
-        rifle = new ImageButton(100, 15, rifleClick);
+        rifle = new ImageButton(50, 15, rifleClick);
         rifle.loadGraphic(AssetPaths.riflebm__png);
         add(rifle);
-        rifleT = new FlxText(200, 15, 500);
-        rifleT.text = "\t           The Standard Issue \n"
+        rifleT = new FlxText(150, 15, 600);
+        rifleT.text = "\t               The Standard Issue \n"
             + "The Old Federal Army's standard fully-automatic weapon \n"
             + "\"look at that G.I. with his S.I.\"";
         rifleT.setFormat(AssetPaths.FONT, 20);
         add(rifleT);
         //sword
-        sword = new ImageButton(100, 140, swordClick);
+        sword = new ImageButton(50, 140, swordClick);
         sword.loadGraphic(AssetPaths.swordbm__png);
         add(sword);
-        swordT = new FlxText(200, 140, 500);
-        swordT.text = "\t           The Glower \n"
+        swordT = new FlxText(150, 125, 600);
+        swordT.text = "\t               The Glower \n"
             + "A fine piece of weaponry made with the matrimony of titanium and energy \n"
             + "\"They say the glowing Glower glowers at the enemy.\"";
         swordT.setFormat(AssetPaths.FONT, 20);
         add(swordT);
         //shield
-        shield = new ImageButton(100, 265, shieldClick);
+        shield = new ImageButton(50, 265, shieldClick);
         shield.loadGraphic(AssetPaths.shieldbm__png);
         add(shield);
-        shieldT = new FlxText(200, 265, 500);
-        shieldT.text = "\t           The Cower \n"
+        shieldT = new FlxText(150, 250, 600);
+        shieldT.text = "\t                The Cower \n"
             + "The shield that saved countless line infantrymen's lives back in the Great Wars \n"
             + "\"Not all who cower behind The Cower are cowards.\"";
         shieldT.setFormat(AssetPaths.FONT, 20);
         add(shieldT);
+
+        //shotgun
+        if(sgshow) {
+            shotgun = new ImageButton(50, 390, shotgunClick);
+            shotgun.loadGraphic(AssetPaths.shotgunbm__png);
+            add(shotgun);
+            shotgunT = new FlxText(150, 375, 600);
+            shotgunT.text = "\t               The Musher \n"
+                + "Deadly when upclose and personal. A favorite of the Sappers.\n"
+                + "\"Being hit with The Musher is like tying your limbs to a group of huskies and yelling \'MUSH!\'.\"";
+            shotgunT.setFormat(AssetPaths.FONT, 20);
+            add(shotgunT);
+        }
+
+        //revolver
+        if(rvshow) {
+            revolver = new ImageButton(50, 515, revolverClick);
+            revolver.loadGraphic(AssetPaths.revolverbm__png);
+            add(revolver);
+            revolverT = new FlxText(150, 500, 600);
+            revolverT.text = "\t        The Single-Action PewPew \n"
+                + "Space cowboys like to charge 'em up for extra hell.\n"
+                + "\"You telling me that I can fire 'em as fast as I can cock 'em?\"";
+            revolverT.setFormat(AssetPaths.FONT, 20);
+            add(revolverT);
+        }
+
         noShowSelect();
     }
 
@@ -233,10 +279,10 @@ class WorkshopState extends FlxState {
         tButton.destroy();
         confirm.revive();
         inTut = false;
-        jWeapon.kill();
-        kWeapon.kill();
-        j2ndWeapon.kill();
-        k2ndWeapon.kill();
+        jWeapon.revive();
+        kWeapon.revive();
+        j2ndWeapon.revive();
+        k2ndWeapon.revive();
     }
 
     private function jClick() {
@@ -267,6 +313,14 @@ class WorkshopState extends FlxState {
         rifleT.revive();
         swordT.revive();
         shieldT.revive();
+        if(sgshow) {
+            shotgun.revive();
+            shotgunT.revive();
+        }
+        if(rvshow) {
+            revolver.revive();
+            revolverT.revive();
+        }
         wMask.alpha = 0.75;
         confirm.kill();
         jWeapon.kill();
@@ -322,6 +376,32 @@ class WorkshopState extends FlxState {
         noShowSelect();
     }
 
+    private function shotgunClick() {
+        if(curSelect == "j") {
+            Main.SAVE.data.jWeapon = "shotgun";
+        } else if(curSelect == "k") {
+            Main.SAVE.data.kWeapon = "shotgun";
+        } else if(curSelect == "j2") {
+            Main.SAVE.data.j2ndWeapon = "shotgun";
+        } else {
+            Main.SAVE.data.k2ndWeapon = "shotgun";
+        }
+        noShowSelect();
+    }
+
+    private function revolverClick() {
+        if(curSelect == "j") {
+            Main.SAVE.data.jWeapon = "revolver";
+        } else if(curSelect == "k") {
+            Main.SAVE.data.kWeapon = "revolver";
+        } else if(curSelect == "j2") {
+            Main.SAVE.data.j2ndWeapon = "revolver";
+        } else {
+            Main.SAVE.data.k2ndWeapon = "revolver";
+        }
+        noShowSelect();
+    }
+
     private function noShowSelect() {
         sWindow.kill();
         rifle.kill();
@@ -330,6 +410,14 @@ class WorkshopState extends FlxState {
         rifleT.kill();
         swordT.kill();
         shieldT.kill();
+        if(sgshow) {
+            shotgun.kill();
+            shotgunT.kill();
+        }
+        if(rvshow) {
+            revolver.kill();
+            revolverT.kill();
+        }
         wMask.alpha = 0;
         confirm.revive();
         jWeapon.revive();

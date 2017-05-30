@@ -6,20 +6,40 @@ class Rifle extends Weapon {
     override public function new(playerBulletArray:FlxTypedGroup<Bullet>) {
         super(playerBulletArray);
         this.name = "rifle";
-        this.damage = new Array<Int>();
-        for(i in 1...6) {
-            this.damage.push(i * 5);
+        //damage
+        if(Main.SAVE.data.rDmg == null) {
+            this.damage = 6;
+            Main.SAVE.data.rDmg = this.damage;
+        } else {
+            this.damage = Main.SAVE.data.rDmg;
         }
-        this.damageIndex = 0;
-        this.type = "ballistic";
+        //fire rate
+        if(Main.SAVE.data.rRate == null) {
+            this.fireRate = 0.15;
+            Main.SAVE.data.rRate = this.fireRate;
+        } else {
+            this.fireRate = Main.SAVE.data.rRate;
+        }
         this.range = 1000;
-        this.fireRate = 0.15;
-        this.speed = 1500;
+        this.speed = 1800;
         this.bulletArray = playerBulletArray;
 
-        this.magCapacity = 15;
-        this.curAmmo = 15;
-        this.reloadTime = 1.5;
+        //mag capacity
+        if(Main.SAVE.data.rMag == null) {
+            this.magCapacity = 15;
+            Main.SAVE.data.rMag = this.magCapacity;
+        } else {
+            this.magCapacity = Main.SAVE.data.rMag;
+        }
+        this.curAmmo = this.magCapacity;
+        //reload time
+        if(Main.SAVE.data.rRtime == null) {
+            this.reloadTime = 2.0;
+            Main.SAVE.data.rRtime = this.reloadTime;
+        } else {
+            this.reloadTime = Main.SAVE.data.rRtime;
+        }
+        Main.SAVE.flush();
     }
 
     public override function attack(x:Float, y:Float, direction:Int):Bool {
@@ -32,7 +52,7 @@ class Rifle extends Weapon {
             offset = offset * -1;
             offset += -5;
         }
-        var newBullet = new BallBullet(x + offset, y + 45, speed, direction, this.damage[damageIndex], range);
+        var newBullet = new BallBullet(x + offset, y + 45, speed, direction, this.damage, range);
 		this.bulletArray.add(newBullet);
         curAmmo--;
         return true;

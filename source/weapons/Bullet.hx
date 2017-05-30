@@ -14,7 +14,7 @@ class Bullet extends FlxSprite {
 	private var ypos:Float;
 	private var type:String;
 	
-	public function new(X:Float=0, Y:Float=0, Speed:Float, Direction:Int, Damage:Float, Range:Float) {
+	override public function new(X:Float=0, Y:Float=0, Speed:Float, Direction:Int, Damage:Float, Range:Float) {
 		super(X, Y);
 		speed = Speed;
 		direction = Direction;
@@ -31,6 +31,10 @@ class Bullet extends FlxSprite {
 		}
 	}
 	
+	override public function update(elapsed:Float):Void {
+		super.update(elapsed);
+	}
+
 	public function outOfRange():Bool {
 		if((x > xpos + range) || (x < xpos - range)) {
 			return true;

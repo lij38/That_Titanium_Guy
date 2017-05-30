@@ -11,8 +11,6 @@ class WeaponFactory {
                 return new Shield(playerBulletArray);
             } else if(n == "rifle") {
                 return new Rifle(playerBulletArray);
-            } else if(n == "laser") {
-                return new Laser(playerBulletArray);
             } else if(n == "revolver") {
                 return new Revolver(playerBulletArray);
             } else if(n == "shotgun") {

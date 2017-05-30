@@ -13,6 +13,7 @@ class MarketState extends FlxState {
     private var title:FlxText;
     private var coin:FlxSprite;
     private var coinCount:FlxText;
+    private var money:Int;
     private var confirm:ImageButton;
     private var tCancel:ImageButton;
     private var inTrans:Bool;
@@ -190,9 +191,12 @@ class MarketState extends FlxState {
         wMask = new FlxSprite(0, 0).makeGraphic(800, 600, FlxColor.BLACK);
         wMask.alpha = 0;
         //coin count
+        money = Main.SAVE.data.money;
         coin = new FlxSprite(700, 15).loadGraphic(AssetPaths.coinIcon__png);
-        coinCount = new FlxText(730, 10, 0, Std.string(Main.SAVE.data.money), 20);
-        coinCount.setFormat(AssetPaths.FONT, coinCount.size);
+        coinCount = new FlxText(730, 10, 0);
+        coinCount.text = Std.string(money);
+        coinCount.setFormat(AssetPaths.FONT, 20);
+        
         add(coin);
         add(coinCount);
         //load the confirm button
@@ -209,8 +213,12 @@ class MarketState extends FlxState {
         loadRifle();
         loadSword();
         loadShield();
-        loadShotgun();
-        loadRevolver();
+        if(Main.SAVE.data.levelCompleted >= 6) {
+            loadShotgun();
+        }
+        if(Main.SAVE.data.levelCompleted >= 7 || Main.SAVE.data.revolverPickup) {
+            loadRevolver();
+        }
 
         //window
         tWindow = new FlxSprite(100, 50).makeGraphic(600, 500, FlxColor.BLACK);
@@ -244,6 +252,99 @@ class MarketState extends FlxState {
             } else {
                 clickPlay();
             }
+        }
+        updatePrice();
+    }
+
+    private function updatePrice() {
+        coinCount.text = Std.string(money);
+
+        maxHtext.text = "Enhanced titanium armor allows you to take more damage before you bite the dust.\n"
+                    + "Each upgrade grants you 20 extra health\n" + "Cost: $" + maxHcost + "\nUpgrades left: " + maxHnum;
+        maxHcc.text = "Cost: $" + maxHcost + "\n# Left: " + maxHnum;
+        jfText.text = "Enhanced fusion technology allows the jetpack to fly longer\n"
+                    + "Each upgrade grants you 0.5 second extra flying time\n"
+                    + "Cost: $" + jfcost + "\nUpgrades left: " + jfnum;
+        jfcc.text = "Cost: $" + jfcost + "\n# Left: " + jfnum;
+        pText.text = "Purchasing this upgrade will allow you to hold and save potions for emergency use.\n"
+                    + "Each subsequent purchase will grant you one extra slot.\n"
+                    + "Press \'H\' in game to use a saved health potion.\n"
+                    + "Cost: $" + pcost + "\n" + "Upgrades left: " + pnum;
+        pcc.text = "Cost: $" + pcost + "\n# Left: " + pnum;
+        rRtimeT.text = "Training in your daft hands allows you to reload faster.\n"
+                    + "Each Upgrade grants you +10% faster reload speed.\n"
+                    + "Cost: $" + rRtimeCost + "\nUpgrades left: " + rRtimeNum;
+        rRtimeCC.text = "Cost: $" + rRtimeCost + "\n# Left: " + rRtimeNum;
+        rMagT.text = "Extended clips can always come in handy.\n"
+                    + "Each upgrade will grant you +5 magazine size.\n"
+                    + "Cost: $" + rMagCost + "\n" + "Upgrades left: " + rMagNum;
+        rMagCC.text = "Cost: $" + rMagCost + "\n# Left: " + rMagNum;
+        rDmgT.text = "Hollow points make the baddies drop just that much faster.\n"
+                    + "Each upgrade grants you 10% extra damage\n" + "Cost: $" + rDmgCost + "\nUpgrades left: " + rDmgNum; 
+        rDmgCC.text = "Cost: $" + rDmgCost + "\n# Left: " + rDmgNum;
+        rRateT.text = "Fast as a hairpin trigger.\n"
+                    + "Each upgrade grants you +10% rate of fire\n" + "Cost: $" + rRateCost + "\nUpgrades left: " + rRateNum; 
+        rRateCC.text = "Cost: $" + rRateCost + "\n# Left: " + rRateNum;
+        dsT.text = "Your training in dual-wielding has made you adept at making two slashing attacks at the same time.\n"
+                    + "Each Upgrade grants you +5% chance of making a cross slash while dual wielding.\n"
+                    + "Cost: $" + dsCost + "\nUpgrades left: " + dsNum;
+        dsCC.text = "Cost: $" + dsCost + "\n# Left: " + dsNum;
+        swDmgT.text = "Sharpened edge. Volatile energy.\n"
+                    + "Each upgrade will grant you +10% damage.\n"
+                    + "Cost: $" + swDmgCost + "\n" + "Upgrades left: " + swDmgNum;
+        swDmgCC.text = "Cost: $" + swDmgCost + "\n# Left: " + swDmgNum;
+        kiT.text = "Channel your inner ki energy to slice enemies to pieces from a distance.\n"
+                    + "Your sword attacks will now unleash ranged ki waves.\n" + "Cost: $" + kiCost + "\nUpgrades left: " + kiNum; 
+        kiCC.text = "Cost: $" + kiCost + "\n# Left: " + kiNum;
+        wwT.text = "Your dual-wielding mastery now allows you to shred your surrounding enemies to pieces.\n"
+                    + "Hold \'J\' and \'K\' together in game to unleash the whirlwinde\n" + "Cost: $" + wwCost + "\nUpgrades left: " + wwNum;
+        wwCC.text = "Cost: $" + wwCost + "\n# Left: " + wwNum;
+        spikeT.text = "Inspired by a scientist's pet hedgehog.\n"
+                    + "First Upgrade grants you 5% damage reflected back to your melee attacker while blocking, each subsequent upgrade grants you +1% damage reflected.\n"
+                    + "Cost: $" + spikeCost + "\nUpgrades left: " + spikeNum;
+        spikeCC.text = "Cost: $" + spikeCost + "\n# Left: " + spikeNum;
+        reflectT.text = "Did you know that mirrors reflect bullets too?\n"
+                    + "First Upgrade grants you 5% damage reflected back to your ranged attacker while blocking, each subsequent upgrade grants you +1% damage reflected.\\n"
+                    + "Cost: $" + reflectCost + "\n" + "Upgrades left: " + reflectNum;
+        reflectCC.text = "Cost: $" + reflectCost + "\n# Left: " + reflectNum;
+        dazeT.text = "Enemies are dazed by how good you are at using your shield.\n"
+                    + "First upgrade grants you 5% chance of dazing the attacker while blocking, each subsequent"
+                    + " upgrade grants you +1% chance.\n" + "Cost: $" + dazeCost + "\nUpgrades left: " + dazeNum;
+        dazeCC.text = "Cost: $" + dazeCost + "\n# Left: " + dazeNum;
+        if(Main.SAVE.data.levelCompleted >= 6) {
+            sgRtimeT.text = "Reload like you just missed your daughter's boyfriend.\n"
+                        + "Each Upgrade grants you +10% faster reload speed.\n"
+                        + "Cost: $" + sgRtimeCost + "\nUpgrades left: " + sgRtimeNum;
+            sgRtimeCC.text = "Cost: $" + sgRtimeCost + "\n# Left: " + sgRtimeNum;
+            sgMagT.text = "Extra shells around your belt can make you look like a badass.\n"
+                        + "Each upgrade will grant you +1 magazine size.\n"
+                        + "Cost: $" + sgMagCost + "\n" + "Upgrades left: " + sgMagNum;
+            sgMagCC.text = "Cost: $" + sgMagCost + "\n# Left: " + sgMagNum;
+            sgDmgT.text = "Practicing on your daughter's boyfriend has had some deadly results.\n"
+                        + "Each upgrade grants you 10% extra damage\n" + "Cost: $" + sgDmgCost + "\nUpgrades left: " + sgDmgNum; 
+            sgDmgCC.text = "Cost: $" + sgDmgCost + "\n# Left: " + sgDmgNum;
+            sgRateT.text = "Ever heard of a fully-automatic shotgun?\n"
+                        + "Each upgrade grants you +10% rate of fire\n" + "Cost: $" + sgRateCost + "\nUpgrades left: " + sgRateNum;
+            sgRateCC.text = "Cost: $" + sgRateCost + "\n# Left: " + sgRateNum;
+            pushBackT.text = "Send your daughter's boyfriend flying.\n"
+                        + "Each upgrade grants you +10% enemy knockback\n" + "Cost: $" + pushBackCost + "\nUpgrades left: " + pushBackNum;
+            pushBackCC.text = "Cost: $" + pushBackCost + "\n# Left: " + pushBackNum;
+        }
+        if(Main.SAVE.data.levelCompleted >= 7 || Main.SAVE.data.revolverPickup) {
+            rvRtimeT.text = "Reload like a space cowboy.\n"
+                        + "Each Upgrade grants you +10% faster reload speed.\n"
+                        + "Cost: $" + rvRtimeCost + "\nUpgrades left: " + rvRtimeNum;
+            rvRtimeCC.text = "Cost: $" + rvRtimeCost + "\n# Left: " + rvRtimeNum;
+            rvMagT.text = "Can't call it a 6-shooter anymore.\n"
+                        + "Each upgrade will grant you +1 magazine size.\n"
+                        + "Cost: $" + rvMagCost + "\n" + "Upgrades left: " + rvMagNum;
+            rvMagCC.text = "Cost: $" + rvMagCost + "\n# Left: " + rvMagNum;
+            rvDmgT.text = ".44 Magnum fused with pure power.\n"
+                        + "Each upgrade grants you 10% extra damage\n" + "Cost: $" + rvDmgCost + "\nUpgrades left: " + rvDmgNum;
+            rvDmgCC.text = "Cost: $" + rvDmgCost + "\n# Left: " + rvDmgNum;
+            chargeT.text = "What's scarier than a .44 magnum? A charged up one.\n"
+                        + "Each upgrade grants you +10% charged damage\n" + "Cost: $" + chargeCost + "\nUpgrades left: " + chargeNum;
+            chargeCC.text = "Cost: $" + chargeCost + "\n# Left: " + chargeNum;  
         }
     }
 
@@ -704,7 +805,7 @@ class MarketState extends FlxState {
 
     //shotgun
     private function loadShotgun() {
-        shotgun = new FlxSprite(570, 40).loadGraphic(AssetPaths.rifle__png);
+        shotgun = new FlxSprite(570, 40).loadGraphic(AssetPaths.shotgun__png);
 
         //reload time
         if(Main.SAVE.data.sgRtimeCost == null) {
@@ -863,7 +964,7 @@ class MarketState extends FlxState {
 
     //revolver
     private function loadRevolver() {
-        revolver = new FlxSprite(700, 40).loadGraphic(AssetPaths.rifle__png);
+        revolver = new FlxSprite(700, 40).loadGraphic(AssetPaths.revolver__png);
 
         //reload time
         if(Main.SAVE.data.rvRtimeCost == null) {
@@ -1025,99 +1126,292 @@ class MarketState extends FlxState {
     }
 
     private function maxHConfirmF() {
+        if(money > maxHcost && maxHnum > 0) {
+            money -= maxHcost;
+            maxHnum--;
+            Main.SAVE.data.maxHealth += 20;
+            maxHcost = cast(maxHcost * 1.2, Int);
+            Main.SAVE.data.maxHcost = maxHcost;
+            Main.SAVE.data.maxHnum = maxHnum;
+        }
         killTrans();
     }
 
     private function jfConfirmF() {
+        if(money > jfcost && jfnum > 0) {
+            money -= jfcost;
+            jfnum--;
+            Main.SAVE.data.maxFuel += 0.5;
+            jfcost = cast(jfcost * 1.1, Int);
+            Main.SAVE.data.jfcost = jfcost;
+            Main.SAVE.data.jfnum = jfnum;
+        }
         killTrans();
     }
 
     private function pConfirmF() {
+        if(money > pcost && pnum > 0) {
+            money -= pcost;
+            pnum--;
+            Main.SAVE.data.potionCount += 1;
+            pcost = cast(pcost * 1.1, Int);
+            Main.SAVE.data.pcost = pcost;
+            Main.SAVE.data.pnum = pnum;
+        }
         killTrans();
     }
 
     private function rRtimeConfirmF() {
+        if(money > rRtimeCost && rRtimeNum > 0) {
+            money -= rRtimeCost;
+            rRtimeNum--;
+            Main.SAVE.data.rRtime *= 0.9;
+            rRtimeCost = cast(rRtimeCost * 1.1, Int);
+            Main.SAVE.data.rRtimeCost = rRtimeCost;
+            Main.SAVE.data.rRtimeNum = rRtimeNum;
+        }
         killTrans();
     }
 
     private function rMagConfirmF() {
+        if(money > rMagCost && rMagNum > 0) {
+            money -= rMagCost;
+            rMagNum--;
+            Main.SAVE.data.rMag += 5;
+            rMagCost = cast(rMagCost * 1.1, Int);
+            Main.SAVE.data.rMagCost = rMagCost;
+            Main.SAVE.data.rMagNum = rMagNum;
+        }
         killTrans();
     }
 
     private function rDmgConfirmF() {
+        if(money > rDmgCost && rDmgNum > 0) {
+            money -= rDmgCost;
+            rDmgNum--;
+            Main.SAVE.data.rDmg *= 1.1;
+            rDmgCost = cast(rDmgCost * 1.1, Int);
+            Main.SAVE.data.rDmgCost = rDmgCost;
+            Main.SAVE.data.rDmgNum = rDmgNum;
+        }
         killTrans();
     }
 
     private function rRateConfirmF() {
+        if(money > rRateCost && rRateNum > 0) {
+            money -= rRateCost;
+            rRateNum--;
+            Main.SAVE.data.rRate *= 0.8;
+            rRateCost = cast(rRateCost * 1.1, Int);
+            Main.SAVE.data.rRateCost = rRateCost;
+            Main.SAVE.data.rRateNum = rRateNum;
+        }
         killTrans();
     }
 
     private function dsConfirmF() {
+        if(money > dsCost && dsNum > 0) {
+            money -= dsCost;
+            dsNum--;
+            Main.SAVE.data.ds += 5;
+            dsCost = cast(dsCost * 1.1, Int);
+            Main.SAVE.data.dsCost = dsCost;
+            Main.SAVE.data.dsNum = dsNum;
+        }
         killTrans();
     }
 
     private function swDmgConfirmF() {
+        if(money > swDmgCost && swDmgNum > 0) {
+            money -= swDmgCost;
+            swDmgNum--;
+            Main.SAVE.data.swDmg *= 1.1;
+            swDmgCost = cast(swDmgCost * 1.1, Int);
+            Main.SAVE.data.swDmgCost = swDmgCost;
+            Main.SAVE.data.swDmgNum = swDmgNum;
+        }
         killTrans();
     }
 
     private function kiConfirmF() {
+        if(money > kiCost && kiNum > 0) {
+            money -= kiCost;
+            kiNum--;
+            Main.SAVE.data.ki = true;
+            Main.SAVE.data.kiNum = kiNum;
+        }
         killTrans();
     }
 
     private function wwConfirmF() {
+        if(money > wwCost && wwNum > 0) {
+            money -= wwCost;
+            wwNum--;
+            Main.SAVE.data.ww = true;
+            Main.SAVE.data.wwNum = wwNum;
+        }
         killTrans();
     }
 
     private function spikeConfirmF() {
+        if(money > spikeCost && spikeNum > 0) {
+            money -= spikeCost;
+            spikeNum--;
+            if(Main.SAVE.data.spike == null) {
+                Main.SAVE.data.spike = 0.05;
+            } else {
+                Main.SAVE.data.spike += 0.01;
+            }
+            spikeCost = cast(spikeCost * 1.1, Int);
+            Main.SAVE.data.spikeCost = spikeCost;
+            Main.SAVE.data.spikeNum = spikeNum;
+        }
         killTrans();
     }
 
     private function reflectConfirmF() {
+        if(money > reflectCost && reflectNum > 0) {
+            money -= reflectCost;
+            reflectNum--;
+            if(Main.SAVE.data.reflect == null) {
+                Main.SAVE.data.reflect = 0.05;
+            } else {
+                Main.SAVE.data.reflect += 0.01;
+            }
+            reflectCost = cast(reflectCost * 1.1, Int);
+            Main.SAVE.data.reflectCost = reflectCost;
+            Main.SAVE.data.reflectNum = reflectNum;
+        }
         killTrans();
     }
 
     private function dazeConfirmF() {
+        if(money > dazeCost && dazeNum > 0) {
+            money -= dazeCost;
+            dazeNum--;
+            if(Main.SAVE.data.daze == null) {
+                Main.SAVE.data.daze = 0.05;
+            } else {
+                Main.SAVE.data.daze += 0.01;
+            }
+            dazeCost = cast(dazeCost * 1.1, Int);
+            Main.SAVE.data.dazeCost = dazeCost;
+            Main.SAVE.data.dazeNum = dazeNum;
+        }
         killTrans();
     }
 
     private function sgRtimeConfirmF() {
+        if(money > sgRtimeCost && sgRtimeNum > 0) {
+            money -= sgRtimeCost;
+            sgRtimeNum--;
+            Main.SAVE.data.sgRtime *= 0.9;
+            sgRtimeCost = cast(sgRtimeCost * 1.1, Int);
+            Main.SAVE.data.sgRtimeCost = sgRtimeCost;
+            Main.SAVE.data.sgRtimeNum = sgRtimeNum;
+        }
         killTrans();
     }
 
     private function sgMagConfirmF() {
+        if(money > sgMagCost && sgMagNum > 0) {
+            money -= sgMagCost;
+            sgMagNum--;
+            Main.SAVE.data.sgMag += 1;
+            sgMagCost = cast(sgMagCost * 1.1, Int);
+            Main.SAVE.data.sgMagCost = sgMagCost;
+            Main.SAVE.data.sgMagNum = sgMagNum;
+        }
         killTrans();
     }
 
     private function sgDmgConfirmF() {
+        if(money > sgDmgCost && sgDmgNum > 0) {
+            money -= sgDmgCost;
+            sgDmgNum--;
+            Main.SAVE.data.sgDmg *= 1.1;
+            sgDmgCost = cast(sgDmgCost * 1.1, Int);
+            Main.SAVE.data.sgDmgCost = sgDmgCost;
+            Main.SAVE.data.sgDmgNum = sgDmgNum;
+        }
         killTrans();
     }
 
     private function sgRateConfirmF() {
+        if(money > sgRateCost && sgRateNum > 0) {
+            money -= sgRateCost;
+            sgRateNum--;
+            Main.SAVE.data.sgRate *= 0.9;
+            sgRateCost = cast(sgRateCost * 1.1, Int);
+            Main.SAVE.data.sgRateCost = sgRateCost;
+            Main.SAVE.data.sgRateNum = sgRateNum;
+        }
         killTrans();
     }
 
     private function pushBackConfirmF() {
+        if(money > pushBackCost && pushBackNum > 0) {
+            money -= pushBackCost;
+            pushBackNum--;
+            Main.SAVE.data.pushBack *= 1.1;
+            pushBackCost = cast(pushBackCost * 1.1, Int);
+            Main.SAVE.data.pushBackCost = pushBackCost;
+            Main.SAVE.data.pushBackNum = pushBackNum;
+        }
         killTrans();
     }
 
     private function rvRtimeConfirmF() {
+        if(money > rvRtimeCost && rvRtimeNum > 0) {
+            money -= rvRtimeCost;
+            rvRtimeNum--;
+            Main.SAVE.data.rvRtime *= 0.9;
+            rvRtimeCost = cast(rvRtimeCost * 1.1, Int);
+            Main.SAVE.data.rvRtimeCost = rvRtimeCost;
+            Main.SAVE.data.rvRtimeNum = rvRtimeNum;
+        }
         killTrans();
     }
 
     private function rvMagConfirmF() {
+        if(money > rvMagCost && rvMagNum > 0) {
+            money -= rvMagCost;
+            rvMagNum--;
+            Main.SAVE.data.rvMag += 1;
+            rvMagCost = cast(rvMagCost * 1.1, Int);
+            Main.SAVE.data.rvMagCost = rvMagCost;
+            Main.SAVE.data.rvMagNum = rvMagNum;
+        }
         killTrans();
     }
 
     private function rvDmgConfirmF() {
+        if(money > rvDmgCost && rvDmgNum > 0) {
+            money -= rvDmgCost;
+            rvDmgNum--;
+            Main.SAVE.data.rvDmg *= 1.1;
+            rvDmgCost = cast(rvDmgCost * 1.1, Int);
+            Main.SAVE.data.rvDmgCost = rvDmgCost;
+            Main.SAVE.data.rvDmgNum = rvDmgNum;
+        }
         killTrans();
     }
 
     private function chargeConfirmF() {
+        if(money > chargeCost && chargeNum > 0) {
+            money -= chargeCost;
+            chargeNum--;
+            Main.SAVE.data.charge *= 1.1;
+            chargeCost = cast(chargeCost * 1.1, Int);
+            Main.SAVE.data.chargeCost = chargeCost;
+            Main.SAVE.data.chargeNum = chargeNum;
+        }
         killTrans();
     }
 
     private function clickPlay() {
         Main.LOGGER.logLevelEnd({won: true});
+        Main.SAVE.data.money = money;
         FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
 			FlxG.switchState(new HomeState());
 		});
@@ -1126,14 +1420,14 @@ class MarketState extends FlxState {
     private function tutorial() {
         tWindow.revive();
         wMask.alpha = 0.75;
-        tText = new FlxText(110, 50, 580);
+        tText = new FlxText(110, 25, 580);
         tText.text = "Welcome to the black market! Here you can buy upgrades for you and your Weapons. \n"
             + "All the upgrades are listed under the icon for that item, along with the price and how many"
             + " more times you can upgrade it. \n"
             + "Click on an upgrade to show its details and to purchase it. \n"
             + "If you don't have enough money, try to get better ratings on levels for better rewards and "
             + "come back later!";
-        tText.setFormat(AssetPaths.FONT, 35);
+        tText.setFormat(AssetPaths.FONT, 30);
         add(tText);
         inTut = true;
         tButton = new ImageButton(300, 550, killTut);

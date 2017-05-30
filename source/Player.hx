@@ -27,10 +27,12 @@ class Player extends FlxSprite {
 	private var bulletArray:FlxTypedGroup<Bullet>;
 	
 	public var money:Int;
+	public var maxHealth:Float;
 	public var potionCount:Int;
+	public var potionSlot:Bool;
 
-	public var jetpackFieldMax:Float = 3;
-	public var jetpackField:Float = 3;
+	public var jetpackFieldMax:Float;
+	public var jetpackField:Float;
 	
 	private var jWeapon:Weapon;
 	private var kWeapon:Weapon;
@@ -60,6 +62,7 @@ class Player extends FlxSprite {
 	public var sndRifleReload:FlxSound;
 	public var sndShotgunFire:FlxSound;
 	public var sndShotgunReload:FlxSound;
+	private var sndPotion:FlxSound;
 
 	public function new(?X:Float = 0, ?Y:Float = 0,
 						playerBulletArray:FlxTypedGroup<Bullet>,
@@ -67,7 +70,20 @@ class Player extends FlxSprite {
 		super(X, Y);
 		drag.x = 1600;
 		GRAVITY = gravity;
-		health = 100;
+		if(Main.SAVE.data.maxHealth == null) {
+			health = 100;
+			Main.SAVE.data.maxHealth = health;
+		} else {
+			health = Main.SAVE.data.maxHealth;
+		}
+		if(Main.SAVE.data.maxFuel == null) {
+			jetpackFieldMax = 3;
+			jetpackField = 3;
+			Main.SAVE.data.maxFuel = jetpackFieldMax;
+		} else {
+			jetpackFieldMax = Main.SAVE.data.maxFuel;
+			jetpackField = jetpackFieldMax;
+		}
 		dmgTaken = 0.0;
 
 		loadGraphic(AssetPaths.player__png, true, 334, 182);
@@ -99,8 +115,9 @@ class Player extends FlxSprite {
 			}
 			if(Main.SAVE.data.potionCount == null) {
 				potionCount = 0;
+				potionSlot = false;
 			}
-			Main.SAVE.flush();
+			//Main.SAVE.flush();
 		} else {
 			var jn:String = Main.SAVE.data.jWeapon;
 			var j2n:String = Main.SAVE.data.j2ndWeapon;
@@ -112,10 +129,13 @@ class Player extends FlxSprite {
 			k2ndWeapon = WeaponFactory.getWeapon(k2n, playerBulletArray);
 			curConfig = Main.SAVE.data.curConfig;
 			money = Main.SAVE.data.money;
+			potionSlot = true;
 			potionCount = Main.SAVE.data.potionCount;
 			//trace(curConfig);
 		}
+		maxHealth = health;
 		shielding = false;
+		sndPotion = FlxG.sound.load(AssetPaths.potion__wav);
 	}
 	
 	override public function update(elapsed:Float):Void {
@@ -442,6 +462,21 @@ class Player extends FlxSprite {
 		return shielding;
 	}
 
+	public function usePotion() {
+		if(potionCount > 0) {
+			potionCount--;
+			heal();
+		}
+	}
+
+	public function heal() {
+		health += maxHealth * 0.3;
+		if (health > maxHealth) {
+			health = maxHealth;
+		}
+		sndPotion.play(true);
+	}
+
 	public function getWeaponName(which:Int):String {
 		if(which == 0) {
 			if(jWeapon == null) {
@@ -487,7 +522,7 @@ class Player extends FlxSprite {
 			Main.SAVE.data.k2ndWeapon = k2ndWeapon.getName();
 			curConfig = "swsh";
 			Main.SAVE.data.curConfig = curConfig;
-			Main.SAVE.flush();
+			//Main.SAVE.flush();
 		}
 	}
 	
@@ -499,7 +534,7 @@ class Player extends FlxSprite {
 			Main.SAVE.data.riflePickUp = true;
 			Main.SAVE.data.j2ndWeapon = j2ndWeapon.getName();
 			Main.SAVE.data.k2ndWeapon = k2ndWeapon.getName();
-			Main.SAVE.flush();
+			//Main.SAVE.flush();
 			changeWeaponConfig();
 		}
 		sndRifleReload.play(true);
@@ -554,7 +589,7 @@ class Player extends FlxSprite {
 		Main.SAVE.data.kWeapon = kWeapon.getName();
 		Main.SAVE.data.k2ndWeapon = k2ndWeapon.getName();
 		Main.SAVE.data.curConfig = curConfig;
-		Main.SAVE.flush();
+		//Main.SAVE.flush();
 	}
 
 	private function fireWeapon(w: Weapon):Bool {
