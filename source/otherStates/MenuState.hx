@@ -42,7 +42,7 @@ class MenuState extends FlxState {
 		//_btnContinue.screenCenter();
 		 spritesheet = new FlxSprite(0, 0);
 
-		 spritesheet.loadGraphic(AssetPaths.boss2__png, true, 420, 272);
+		/* spritesheet.loadGraphic(AssetPaths.boss2__png, true, 420, 272);
 		 spritesheet.animation.add("lr", [4, 5, 6, 7, 8, 9], 4, true);
 		// //spritesheet.animation.add("stop", [0], 1, false);
 		 add(spritesheet);
@@ -50,7 +50,7 @@ class MenuState extends FlxState {
 		 spritesheet.setSize(120, 186);
 		//spritesheet.offset.set(60, 20);
 
-		spritesheet.animation.play("lr");
+		spritesheet.animation.play("lr");*/
 		
 		//confirm screen
 		_cWindow = new FlxSprite(200, 100).makeGraphic(400, 400, FlxColor.BLACK);

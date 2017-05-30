@@ -94,7 +94,7 @@ class MeleeEnemy extends Enemy {
 			var curBullet:EnemyBullet = bulletArray.recycle(EnemyBullet);
 			curBullet.setBullet(x + 7, y + 10, 1000, facing,
 							damageLevel[level], range, 
-							Melee);
+							Melee, this);
 			attacked = true;
 		}
 		

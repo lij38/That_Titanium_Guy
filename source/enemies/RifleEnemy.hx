@@ -94,7 +94,7 @@ class RifleEnemy extends Enemy {
 			curBullet.setBullet(getMidpoint().x, y + 45, 
 							bulletSpeedLevel[level], facing, 
 							damageLevel[level], range,
-							Ranged);
+							Ranged, this);
 		}
 		if (!seesPlayer) {
 			velocity.set(0, 0);
