@@ -61,6 +61,10 @@ class Level3State extends PlayState {
         super.update(elapsed);
         //FlxG.overlap(_player, _ice, slide);
         FlxG.collide(_player, _ice);
+        FlxG.collide(enemiesGroup, _ice);
+        FlxG.collide(playerBullets, _ice);
+        FlxG.collide(enemiesBullets, _ice);
+
         if (_player.isTouching(FlxObject.DOWN)){
             if ((_player.x >= 38 * 15 && _player.x <= 153 * 15) 
             || (_player.x > 278 * 15 && _player.x < 442 * 15)

@@ -49,7 +49,7 @@ class Boss2 extends Enemy {
 		//debugBoundingBoxColor = FlxColor.RED;
 		
 
-		cast(this, FlxObject).debugBoundingBoxColor = FlxColor.RED;
+		//cast(this, FlxObject).debugBoundingBoxColor = FlxColor.RED;
 		//makeGraphic(120, 200, FlxColor.WHITE);
 		
 		

@@ -101,7 +101,7 @@ class MenuState extends FlxState {
 		FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
 			Main.SAVE.erase();
 			Main.SAVE.bind(Main.LOGGER.getSavedUserId());
-			FlxG.switchState(new Boss2State());
+			FlxG.switchState(new OpeningState());
 		});
 	}
 
@@ -136,7 +136,7 @@ class MenuState extends FlxState {
 			} else {
 				//FlxG.switchState(new WorkshopState());
 				//FlxG.switchState(new MarketState());
-				FlxG.sound.music.destroy();
+				//FlxG.sound.music.destroy();
 				FlxG.switchState(new HomeState());
 			}
 		});
