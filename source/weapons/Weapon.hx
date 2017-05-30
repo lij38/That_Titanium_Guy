@@ -32,9 +32,10 @@ class Weapon {
         return AssetPaths.IMAGE + this.name + ".png";
     }
 
-    public function reload() {
+    public function reload():Bool {
         curAmmo = magCapacity;
         //TODO: PLAY RELOAD ANIMATION
+		return magCapacity > 0;
     }
 
     public function damageUpgrade() {

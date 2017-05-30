@@ -56,6 +56,8 @@ class PlayState extends FlxState {
 	private var _homebutton:ImageButton;
 	private var _pausebutton:FlxText;
 	private var _pausetxt:FlxText;
+
+	private var _hand:Boss2Hand;
 	
 	override public function create():Void {
 		//FlxG.debugger.drawDebug = true;
@@ -106,12 +108,13 @@ class PlayState extends FlxState {
         add(playerBullets);
 		add(_enemiesHUD);
 		add(_player);
+		add(_hand);
 
 		if (_is_boss) {
 			add(_boss_hud);
 			_exit.visible = false;
 		}
-		FlxG.sound.playMusic(AssetPaths.fighting__mp3);
+		//FlxG.sound.playMusic(AssetPaths.fighting__mp3);
 		
 		 _hud.updateHUD(_player.getAmmo(0), _player.getAmmo(1), _player.isReloading(0), _player.isReloading(1),
 		 				_player.getWeaponName(0), _player.getWeaponName(1));
@@ -287,6 +290,8 @@ class PlayState extends FlxState {
 		
 		var en:Enemy;
 		var boss:Boss1;
+		var boss2:Boss2;
+		_hand = new Boss2Hand();
 		
 		if (entityName == "boss1") {
 			boss = new Boss1(x, y, enId, enemiesBullets, coinsGroup, 0);
@@ -296,6 +301,14 @@ class PlayState extends FlxState {
 			} else {
 				boss.hurt(boss.health);
 			}
+		}  else if (entityName == "boss2"){
+			boss2 = new Boss2(x, y, enId, enemiesBullets, coinsGroup, 0, _hand);
+			enemiesGroup.add(boss2);
+			if (boss2.health > 0) {
+				_boss_hud = new Boss1HUD(boss2);
+			} else {
+				boss2.hurt(boss2.health);
+			}
 		} else {
 			en = EnemyFactory.getEnemy(entityName, x, y, enId,
 										enemiesBullets, coinsGroup,
@@ -304,7 +317,7 @@ class PlayState extends FlxState {
 				trace("Invalide entity name: " + entityName);
 			}
 			
-			if (enId == 34) {
+			if (enId == 34 && lvl == 1) {
 				en.onPickUpItem = pickUpRifle;
 			}
 			enemiesGroup.add(en);
@@ -323,9 +336,19 @@ class PlayState extends FlxState {
 	private function bulletsHitPlayer(bullet:EnemyBullet, player:Player):Void {
 		if (player.alive && bullet.alive) {
 			var damage:Float = bullet.getDamage();
-			if (!player.isShielding() || (player.isShielding() && player.faced == bullet.facing)) {
+			if (!player.isShielding() || 
+					(player.isShielding() && player.faced == bullet.facing)) {
 				player.hurt(damage);
 				_hud.updateDamage(damage);
+			} else {
+				player.sndShield.play(true);
+			}
+			if (bullet.bulletType == SHOTGUN) {
+				if (bullet.velocity.x < 0) {
+					player.x -= 5;
+				} else {
+					player.x += 5;
+				}
 			}
 			bullet.kill();
 		}
@@ -369,6 +392,7 @@ class PlayState extends FlxState {
 			bullet.destroy();
 			if (enemy.hasShield && bullet.facing != enemy.facing) {
 				dmg = 0;
+				_player.sndShield.play();
 			}
 			if (!_is_boss) {
 				_enemiesMap.get(enemy).updateDamage(dmg);

@@ -116,21 +116,7 @@ class JetpackShieldEnemy extends Enemy {
 	}
 	
 	override public function hurt(damage:Float):Void {
-		seesPlayer = true;
-		if (health - damage <= 0) {
-			animation.play("die");
-			alive = false;
-		} else if (rateTimer == -1 || rateTimer > 1) {
-			if (damage <= 0) {
-				animation.play("shield");
-			} else {
-				animation.play("hurt");
-				color = 0xff0000;
-			}
-			hurtTimer = 0;
-		}
-		health -= damage;
-		hurtColorTimer = 0.0;
+		hurtShield(damage, rateTimer == -1 || rateTimer > 1);
 	}
 	
 }

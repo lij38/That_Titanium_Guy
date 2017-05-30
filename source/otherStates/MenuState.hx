@@ -40,17 +40,17 @@ class MenuState extends FlxState {
 		_btnCredits.loadGraphic(AssetPaths.creditsbtn__png, false, 200, 40);
 		add(_btnCredits);
 		//_btnContinue.screenCenter();
-		// spritesheet = new FlxSprite(0, 0);
+		 spritesheet = new FlxSprite(0, 0);
 
-		// spritesheet.loadGraphic(AssetPaths.player__png, true, 334, 182);
-		// spritesheet.animation.add("lr", [2, 3, 4, 5, 6, 7,8,9], 12, true);
+		 spritesheet.loadGraphic(AssetPaths.boss2__png, true, 420, 272);
+		 spritesheet.animation.add("lr", [4, 5, 6, 7, 8, 9], 4, true);
 		// //spritesheet.animation.add("stop", [0], 1, false);
-		// add(spritesheet);
-		// //spritesheet.scale.set(0.25, 0.25);
-		// spritesheet.setSize(48, 115);
-		// spritesheet.offset.set(120, 30);
+		 add(spritesheet);
+		spritesheet.scale.set(0.8, 0.8);
+		 spritesheet.setSize(120, 186);
+		//spritesheet.offset.set(60, 20);
 
-		// spritesheet.animation.play("lr");
+		spritesheet.animation.play("lr");
 		
 		//confirm screen
 		_cWindow = new FlxSprite(200, 100).makeGraphic(400, 400, FlxColor.BLACK);
@@ -78,7 +78,7 @@ class MenuState extends FlxState {
 		add(_cancel);
 		add(_cText);
 		FlxG.camera.fade(FlxColor.BLACK, .33, true);
-		FlxG.sound.playMusic(AssetPaths.theme__mp3);
+		//FlxG.sound.playMusic(AssetPaths.theme__mp3);
 		super.create();
 	}
 	
@@ -101,11 +101,7 @@ class MenuState extends FlxState {
 		FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
 			Main.SAVE.erase();
 			Main.SAVE.bind(Main.LOGGER.getSavedUserId());
-
-			//FlxG.switchState(nullew HomeState());
-			//FlxG.switchState(new TutorialState());
-			//FlxG.switchState(new Boss1State());
-			FlxG.switchState(new OpeningState());
+			FlxG.switchState(new Boss2State());
 		});
 	}
 
