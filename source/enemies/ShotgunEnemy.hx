@@ -98,7 +98,7 @@ class ShotgunEnemy extends Enemy {
 				var curBullet:EnemyBullet = bulletArray.recycle(EnemyBullet);
 				curBullet.setBullet(getMidpoint().x, y + 45,
 								bulletSpeedLevel[level], angle % 360,
-								damageLevel[level], range, SHOTGUN);
+								damageLevel[level], range, SHOTGUN, this);
 				angle += 6;
 			}
 			attacked = true;

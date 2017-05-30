@@ -19,7 +19,7 @@ class EnemyFactory {
 			return new ShieldEnemy(X, Y, id, bulletArray, 
 								coinsGroup,gravity, level);
 		} else if (enType == "TRUCK") {
-			return new TruckEnemy(X, Y, id, bulletArray, 
+			return new ShotgunEnemy(X, Y, id, bulletArray, 
 								coinsGroup, gravity, level);
 		} else if (enType == "JPMELEE") {
 			return new JetpackMeleeEnemy(X, Y, id, bulletArray, 
