@@ -57,6 +57,7 @@ class HUD extends FlxTypedGroup<FlxSprite> {
 		var moneyText:String = FlxStringUtil.formatMoney(_player.money, false, true);
 		_money = new FlxText(462, -4, 0, moneyText, 20);
 		_money.setFormat(AssetPaths.FONT, _money.size, FlxColor.YELLOW);
+		_money.setBorderStyle(SHADOW, FlxColor.GRAY);
 		
 		//jetpack bar
 		_jetpackBar = new FlxBar(60, 29, LEFT_TO_RIGHT, 370, 10, _player,

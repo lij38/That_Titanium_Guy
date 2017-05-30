@@ -1,9 +1,11 @@
 package items;
 
 import animation.Dialog;
+import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.system.FlxAssets.FlxGraphicAsset;
+import flixel.system.FlxSound;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import items.Coin.ItemType;
@@ -19,18 +21,25 @@ class Coin extends FlxSprite {
 	public var type:ItemType;
 	public var onPickUp:Dynamic->Dynamic->Void;
 	
+	private var sndCoin:FlxSound;
+	private var sndPotion:FlxSound;
+	
 	public function new(X:Float = 0, Y:Float = 0, type:ItemType,
 						lowerBound:Int = 1, 
 						upperBound:Int = 10, gravity:Float = 1000) {
 		super(X, Y);
+		
+		
 		
 		onPickUp = pickUpCoin;
 		
 		this.type = type;
 		if (type == COIN) {
 			onPickUp = pickUpCoin;
+			loadCoinGraphic();
 		} else if (type == POTION) {
 			onPickUp = pickUpPotion;
+			loadPotionGrahpic();
 		}
 		
 		value = Std.int(Math.random() * (upperBound - lowerBound) + lowerBound);
@@ -43,6 +52,7 @@ class Coin extends FlxSprite {
 		animation.add("spin", [0, 1, 2, 3, 4, 5, 6, 7], 9, true);
 		animation.play("spin");
 		scale.set(0.75, 0.75);
+		sndCoin = FlxG.sound.load(AssetPaths.coin_pickup__wav);
 	}
 	
 	public function loadPotionGrahpic():Void {
@@ -50,6 +60,7 @@ class Coin extends FlxSprite {
 		animation.add("stop", [0, 1, 2, 3, 4, 5, 6], 9, true);
 		animation.play("stop");
 		scale.set(0.75, 0.75);
+		sndPotion = FlxG.sound.load(AssetPaths.potion__wav);
 	}
 	
 	public function getValue():Int {
@@ -70,6 +81,7 @@ class Coin extends FlxSprite {
 	// call back function for picking up coin
 	public function pickUpCoin(player:Player, coin:Coin):Void {
 		player.pickUpCoin(coin.getValue());
+		sndCoin.play(true);
 	}
 	
 	public function pickUpPotion(player:Player, coin:Coin):Void {
@@ -77,6 +89,7 @@ class Coin extends FlxSprite {
 		if (player.health > 100) {
 			player.health = 100;
 		}
+		sndPotion.play(true);
 	}
 	
 }

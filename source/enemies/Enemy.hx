@@ -6,6 +6,7 @@ import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxPoint;
 import flixel.system.FlxAssets.FlxGraphicAsset;
+import flixel.system.FlxSound;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import weapons.*;
@@ -16,6 +17,7 @@ enum EnemyType {
 	JPRIFLE;
 	JPMELEE;
 	JPSHIELD;
+	SHOTGUN;
 	SHIELD;
 	MELEE;
 	RIFLE;
@@ -56,6 +58,11 @@ class Enemy extends FlxSprite {
 	
 	private var bulletSpeedLevel = [for (i in 0...4) 50 * i + 250];
 	
+	// sound
+	public var sndHurt1:FlxSound;
+	public var sndHurt2:FlxSound;
+	public var sndHurt3:FlxSound;
+	
 	public function new(X:Float = 0, Y:Float = 0, id:Int = -1,
 						enemiesBulletArray:FlxTypedGroup<EnemyBullet>,
 						coinsGroup:FlxTypedGroup<Coin>,
@@ -66,6 +73,10 @@ class Enemy extends FlxSprite {
 		this.coinsGroup = coinsGroup;
 		this.type = type;
 		this.id = id;
+		
+		sndHurt1 = FlxG.sound.load(AssetPaths.hit_monster1__wav);
+		sndHurt2 = FlxG.sound.load(AssetPaths.hit_monster2__wav);
+		sndHurt3 = FlxG.sound.load(AssetPaths.hit_monster3__wav);
 		
 		if (type == JPMELEE || type == JPRIFLE || type == JPSHIELD) {
 			hasJetpack = true;
@@ -114,14 +125,12 @@ class Enemy extends FlxSprite {
 						var coin:Coin = 
 							new Coin(getMidpoint().x + rx, getMidpoint().y + 45 + ry,
 									COIN, lowB, upB);
-						coin.loadCoinGraphic();
 						coinsGroup.add(coin);
 						coinCount++;
 					}
 				} else if (type == TRUCK) {
 					// always drop potion if this is truck enemy
 					var potion:Coin = new Coin(getMidpoint().x, getMidpoint().y, POTION);
-					potion.loadPotionGrahpic();
 					coinsGroup.add(potion);
 					dropCoin = true;
 				} else {
@@ -129,12 +138,10 @@ class Enemy extends FlxSprite {
 					if (randP != 1) {
 						var coin:Coin = new Coin(getMidpoint().x, getMidpoint().y, 
 												COIN, lowB, upB);
-						coin.loadCoinGraphic();
 						coinsGroup.add(coin);
 						dropCoin = true;
 					} else {
 						var potion:Coin = new Coin(getMidpoint().x, getMidpoint().y, POTION);
-						potion.loadPotionGrahpic();
 						coinsGroup.add(potion);
 						dropCoin = true;
 					}
@@ -165,16 +172,39 @@ class Enemy extends FlxSprite {
 	}
 	
 	override public function hurt(damage:Float):Void {
+		hurts(damage, true);
+	}
+	
+	public function hurts(damage:Float, flag:Bool):Void {
 		seesPlayer = true;
 		if (health - damage <= 0) {
 			animation.play("die");
 			alive = false;
-		} else {
+		} else if (flag) {
 			animation.play("hurt");
 			hurtTimer = 0;
 		}
 		health -= damage;
 		color = 0xff0000;
+		hurtColorTimer = 0.0;
+		//hurtSound();
+	}
+	
+	public function hurtShield(damage:Float, flag:Bool):Void {
+		seesPlayer = true;
+		if (health - damage <= 0) {
+			animation.play("die");
+			alive = false;
+		} else if (flag) {
+			if (damage <= 0) {
+				animation.play("shield");
+			} else {
+				animation.play("hurt");
+				color = 0xff0000;
+			}
+			hurtTimer = 0;
+		}
+		health -= damage;
 		hurtColorTimer = 0.0;
 	}
 	
@@ -201,5 +231,16 @@ class Enemy extends FlxSprite {
 		var diffY:Float = playerPos.y - getMidpoint().y;
 		return Math.abs(diffX) < range &&
 				(!hasJetpack || diffY < 15 && diffY > -15);
+	}
+	
+	public function hurtSound():Void {
+		var rand:Float = Math.random() * 3;
+		if (rand < 1) {
+			sndHurt1.play(true);
+		} else if (rand < 2) {
+			sndHurt2.play(true);
+		} else {
+			sndHurt3.play(true);
+		}
 	}
 }

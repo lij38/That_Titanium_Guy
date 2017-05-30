@@ -112,17 +112,7 @@ class JetpackMeleeEnemy extends Enemy {
 	}
 	
 	override public function hurt(damage:Float):Void {
-		seesPlayer = true;
-		if (health - damage <= 0) {
-			animation.play("die");
-			alive = false;
-		} else if (rateTimer == -1) {
-			animation.play("hurt");
-			hurtTimer = 0;
-		}
-		health -= damage;
-		color = 0xff0000;
-		hurtColorTimer = 0.0;
+		hurts(damage, rateTimer == -1);
 	}
 	
 }

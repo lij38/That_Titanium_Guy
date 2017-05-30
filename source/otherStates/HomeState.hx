@@ -16,8 +16,7 @@ import weapons.*;
 import flixel.ui.FlxButton;
 import items.*;
 
-class HomeState extends FlxState
-{
+class HomeState extends FlxState {
 	private var _map:TiledMap;
 	private var _bg:FlxTilemap;
 	private var _fg:FlxTilemap;
@@ -34,9 +33,17 @@ class HomeState extends FlxState
 	private var _stage1:Bool;
 	private var _stage2:Bool;
 	private var _stage3:Bool;
+	
+	// pause state and menu
+	private var _pause:Bool;
+	private var _menu_bg:FlxSprite;
+	private var _menubutton:ImageButton;
+	private var _resumebutton:ImageButton;
+	private var _homebutton:ImageButton;
+	private var _pausebutton:FlxText;
+	private var _pausetxt:FlxText;
 
-	override public function create():Void
-	{
+	override public function create():Void {
 
 		// load map and set a platform that player can stand on (row 17th)
 		_map = new TiledMap(AssetPaths.home__tmx);
@@ -55,8 +62,9 @@ class HomeState extends FlxState
 		playerBullets = new FlxTypedGroup<Bullet>();
 		_player = new Player(playerBullets, 1000);
 
-		_workshop = new FlxSprite();
+		_workshop = new ImageButton(0, 0, switchWorkshopState);
 		_workshop.loadGraphic(AssetPaths.workshop__png, false, 350, 290);
+		_workshop.scrollFactor.set(1);
 		add(_workshop);
 		_workshop.color = 0xdddddd;
 
@@ -78,7 +86,9 @@ class HomeState extends FlxState
 		 {
 		     placeEntities(e.type, e.xmlData.x);
 		 }
+		 add(playerBullets);
 		 add(_player);
+		 
 
 		 _mapbutton = new ImageButton(31, 26, switchMapState);
 		 _mapbutton.scrollFactor.set(0.0);
@@ -92,6 +102,7 @@ class HomeState extends FlxState
 			 _stage2 = false;
 			 _stage3 = false;
 			 _mapbutton.active = false;
+			 _workshop.active = false;
 			 Main.SAVE.data.homeTut = true;
 			 Main.SAVE.flush();
 		 } else {
@@ -124,12 +135,51 @@ class HomeState extends FlxState
 		 	FlxG.sound.playMusic(AssetPaths.dramatic__mp3);
 		 }
 
-		 super.create();
+		 // pause part and whole pause menu
+		_pause = false;
+
+		_menu_bg = new FlxSprite(0, 0);
+		_menu_bg.makeGraphic(800, 600, FlxColor.BLACK);
+		_menu_bg.scrollFactor.set(0.0);
+
+		_homebutton = new ImageButton(300, 200, clickHome);
+		_homebutton.loadGraphic(AssetPaths.gohome__png, false, 200, 40);
+		_homebutton.scrollFactor.set(0.0);
+		_menubutton = new ImageButton(300, 310, clickMenu);
+		_menubutton.loadGraphic(AssetPaths.menu__png, false, 200, 40);
+		_menubutton.scrollFactor.set(0.0);
+		_resumebutton = new ImageButton(300, 420, clickResume);
+		_resumebutton.loadGraphic(AssetPaths.resume__png, false, 200, 40);
+		_resumebutton.scrollFactor.set(0.0);
+		
+		_pausebutton = new FlxText(31, 100, 600, "Press ESC to PAUSE", 20);
+		_pausebutton.setFormat(AssetPaths.FONT, _pausebutton.size);
+		_pausebutton.scrollFactor.set(0.0);
+		_pausebutton.visible = false;
+
+		_pausetxt = new FlxText(240, 85, 600, "Game Paused", 50);
+		_pausetxt.setFormat(AssetPaths.FONT, _pausetxt.size);
+		_pausetxt.scrollFactor.set(0.0);
+		addTopLayer();
+		 
+		super.create();
 		
 	}
 
-	override public function update(elapsed:Float):Void
-	{
+	override public function update(elapsed:Float):Void {
+		if (FlxG.keys.justPressed.ESCAPE) {
+			_pause = !_pause;
+		}
+		if (_pause) {
+			activeButtons();
+			_homebutton.update(elapsed);
+			_menubutton.update(elapsed);
+			_resumebutton.update(elapsed);
+			return;
+		} else {
+			disableButtons();
+		}
+		
 		if (!tutorial_map) {
 			if (FlxG.keys.anyPressed([M])) {
 				switchMapState();
@@ -174,6 +224,7 @@ class HomeState extends FlxState
 		        	_fg.color = 0xffffff;
 		        	_workshop.color = 0xdddddd;
 		        	_mapbutton.active = true;
+					_workshop.active = true;
 					_maptext.visible = true;
 	        	}
 			}
@@ -234,5 +285,58 @@ class HomeState extends FlxState
         		FlxG.switchState(new MapState());	
 			}
 		});
+    }
+	
+	public function addTopLayer():Void {
+		add(_pausebutton);
+		add(_menu_bg);
+		add(_homebutton);
+		add(_menubutton);
+		add(_resumebutton);
+		add(_pausetxt);
+	}
+	
+	private function activeButtons():Void {
+		_menu_bg.visible = true;
+		_menu_bg.alpha = 0.8;
+		_menubutton.visible = true;
+		_menubutton.active = true;
+		_resumebutton.visible = true;
+		_resumebutton.active = true;
+		if (Main.SAVE.data.levelCompleted != null && Main.SAVE.data.levelCompleted >= 2) {
+			_homebutton.visible = true;
+			_homebutton.active = true;
+		}
+		_pausetxt.visible = true;
+	}
+
+	private function disableButtons():Void {
+		_menu_bg.visible = false;
+		_homebutton.visible = false;
+		_homebutton.active = false;
+		_menubutton.visible = false;
+		_menubutton.active = false;
+		_resumebutton.visible = false;
+		_resumebutton.active = false;
+		_pausetxt.visible = false;
+	}
+
+	private function clickHome():Void {
+        _pause = false;
+    }
+
+    private function clickMenu():Void {
+        FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
+			FlxG.sound.music.destroy();
+			FlxG.switchState(new MenuState());
+		});
+    }
+
+    private function clickResume():Void {
+    	_pause = false;
+    }
+
+    private function clickPause():Void {
+    	_pause = true;
     }
 }
