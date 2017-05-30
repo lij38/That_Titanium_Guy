@@ -25,6 +25,8 @@ class EnemyFactory {
 			return new JetpackRifleEnemy(X, Y, id, bulletArray, coinsGroup, gravity, level);
 		} else if (enType == "JPSHIELD") {
 			return new JetpackShieldEnemy(X, Y, id, bulletArray, coinsGroup, gravity, level);
+		} else if (enType == "SHOTGUN") {
+			return new ShotgunEnemy(X, Y, id, bulletArray, coinsGroup, gravity, level);
 		}
 
 		return null;

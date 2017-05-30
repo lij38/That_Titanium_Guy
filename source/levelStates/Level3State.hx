@@ -32,11 +32,14 @@ class Level3State extends PlayState {
 
         //load clouds
         _ice.loadMapFromArray(cast(_map.getLayer("ice"), TiledTileLayer).tileArray, _map.width,
-            _map.height, AssetPaths.IceBox__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 3505, 3504, 3542);
+            _map.height, AssetPaths.IceBox__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 3505, 3504, 3505);
         
         _background.setTileProperties(1, FlxObject.NONE);
         _plat.setTileProperties(3469, FlxObject.ANY);
-        _ice.setTileProperties(3505, FlxObject.NONE);
+        // for (i in 3505...3541) {
+        //     _ice.setTileProperties(i, FlxObject.ANY);
+        // }
+        _ice.setTileProperties(3505, FlxObject.ANY);
         _background.follow();
 		_plat.follow();
         _ice.follow();
@@ -57,9 +60,11 @@ class Level3State extends PlayState {
     override public function update(elapsed:Float):Void {
         super.update(elapsed);
         //FlxG.overlap(_player, _ice, slide);
+        FlxG.collide(_player, _ice);
         if (_player.isTouching(FlxObject.DOWN)){
-            if ((_player.x >= 38 * 15 && _player.x <= 146 * 15) 
-            || (_player.x > 258 * 15 && _player.x < 413 * 15)){
+            if ((_player.x >= 38 * 15 && _player.x <= 153 * 15) 
+            || (_player.x > 278 * 15 && _player.x < 442 * 15)
+            || (_player.x > 606 * 15 && _player.x < 772 * 15)){
                 _player.drag.x = 100;
             } else {
                 _player.drag.x = 1600;
