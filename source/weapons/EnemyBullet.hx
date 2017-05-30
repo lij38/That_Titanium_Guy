@@ -59,4 +59,10 @@ class EnemyBullet extends Bullet {
 			}
 		}
 	}
+
+	//override public function update(elapsed:Float):Void {
+		//super.update(elapsed);
+		//velocity.set(speed, 0);
+        //velocity.rotate(FlxPoint.weak(0, 0), direction);
+	//}
 }

@@ -55,6 +55,8 @@ class PlayState extends FlxState {
 	private var _homebutton:ImageButton;
 	private var _pausebutton:FlxText;
 	private var _pausetxt:FlxText;
+
+	private var _hand:Boss2Hand;
 	
 	override public function create():Void {
 		//FlxG.debugger.drawDebug = true;
@@ -101,6 +103,7 @@ class PlayState extends FlxState {
         add(playerBullets);
 		add(_enemiesHUD);
 		add(_player);
+		add(_hand);
 
 		if (_is_boss) {
 			add(_boss_hud);
@@ -279,6 +282,8 @@ class PlayState extends FlxState {
 		
 		var en:Enemy;
 		var boss:Boss1;
+		var boss2:Boss2;
+		_hand = new Boss2Hand();
 		
 		if (entityName == "boss1") {
 			boss = new Boss1(x, y, enId, enemiesBullets, coinsGroup, 0);
@@ -287,6 +292,14 @@ class PlayState extends FlxState {
 				_boss_hud = new Boss1HUD(boss);
 			} else {
 				boss.hurt(boss.health);
+			}
+		}  else if (entityName == "boss2"){
+			boss2 = new Boss2(x, y, enId, enemiesBullets, coinsGroup, 0, _hand);
+			enemiesGroup.add(boss2);
+			if (boss2.health > 0) {
+				_boss_hud = new Boss1HUD(boss2);
+			} else {
+				boss2.hurt(boss2.health);
 			}
 		} else {
 			en = EnemyFactory.getEnemy(entityName, x, y, enId,

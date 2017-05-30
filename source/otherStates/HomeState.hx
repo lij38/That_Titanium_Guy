@@ -42,9 +42,11 @@ class HomeState extends FlxState {
 	private var _homebutton:ImageButton;
 	private var _pausebutton:FlxText;
 	private var _pausetxt:FlxText;
+	private var _blackmarket:FlxSprite;
+	private var _bmtxt:FlxText;
 
 	override public function create():Void {
-
+	
 		// load map and set a platform that player can stand on (row 17th)
 		_map = new TiledMap(AssetPaths.home__tmx);
 		_bg = new FlxTilemap();
@@ -80,6 +82,19 @@ class HomeState extends FlxState {
         _workshoptext.setFormat(AssetPaths.FONT, 24);
         _workshoptext.visible = false;
         add(_workshoptext);
+
+        _blackmarket = new FlxSprite();
+        _blackmarket.loadGraphic(AssetPaths.blackmarket__png, false, 470, 372);
+        add(_blackmarket);
+        _blackmarket.visible = false;
+        _blackmarket.active = false;
+        _blackmarket.color = 0xdddddd;
+
+        _bmtxt = new FlxText(0, 0, 500, 24);
+        _bmtxt.text = "PRESS W to enter blackmarket";
+        _bmtxt.setFormat(AssetPaths.FONT, 24);
+        _bmtxt.visible = false;
+        add(_bmtxt);
 
 		var tmpMap:TiledObjectLayer = cast _map.getLayer("entities");
 		 for (e in tmpMap.objects)
@@ -161,8 +176,14 @@ class HomeState extends FlxState {
 		_pausetxt.setFormat(AssetPaths.FONT, _pausetxt.size);
 		_pausetxt.scrollFactor.set(0.0);
 		addTopLayer();
-		 
-		super.create();
+
+		 //Main.SAVE.data.levelCompleted = 4;
+		 if (Main.SAVE.data.levelCompleted > 3) {
+		 	_blackmarket.visible = true;
+        	_blackmarket.active = true;
+		 }
+
+		 super.create();
 		
 	}
 
@@ -184,7 +205,10 @@ class HomeState extends FlxState {
 			if (FlxG.keys.anyPressed([M])) {
 				switchMapState();
 			}
-			checkEnter(_player, _workshop);
+			checkEnter(_player, _workshop, _workshoptext, switchWorkshopState);
+		}
+		if (_blackmarket.active) {
+			checkEnter(_player, _blackmarket, _bmtxt, switchBlackMarketState);
 		}
 		FlxG.collide(_player, _fg);
 		if (tutorial_map) {
@@ -237,16 +261,16 @@ class HomeState extends FlxState {
 		super.update(elapsed);
 	}
 
-	private function checkEnter(player:Player, workshop:FlxSprite) {
-		if (player.x + player.width >= workshop.x && player.x <= workshop.x + workshop.width) {
-			_workshop.color = 0xffffff;
-			_workshoptext.visible = true;
+	private function checkEnter(player:Player, object:FlxSprite, text:FlxText, fn:Void->Void) {
+		if (player.x + player.width >= object.x && player.x <= object.x + object.width) {
+			object.color = 0xffffff;
+			text.visible = true;
 			if (FlxG.keys.anyJustPressed([W])) {
-				switchWorkshopState();
+				fn();
 			}
 		} else {
-			_workshop.color = 0xdddddd;
-			_workshoptext.visible = false;
+			object.color = 0xdddddd;
+			text.visible = false;
 		}
 	}
 
@@ -268,12 +292,21 @@ class HomeState extends FlxState {
 		} else if (entityName == "workshoptxt") {
 			_workshoptext.x = x;
 			_workshoptext.y = y;
+		} else if (entityName == "blackmarket") {
+			_blackmarket.x = x;
+			_blackmarket.y = y;
 		}
 	}
 
 	private function switchWorkshopState():Void {
 		FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
 			FlxG.switchState(new WorkshopState());
+		});
+    }
+
+    private function switchBlackMarketState():Void {
+    	FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
+			//FlxG.switchState(new BlackMarketState());
 		});
     }
 
