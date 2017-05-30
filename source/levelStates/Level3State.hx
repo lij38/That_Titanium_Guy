@@ -8,6 +8,7 @@ import flixel.addons.editors.tiled.TiledObjectLayer;
 import flixel.tile.FlxBaseTilemap;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.text.FlxText;
+import weapons.*;
 
 class Level3State extends PlayState {
     private var _ice:FlxTilemap;
@@ -62,8 +63,10 @@ class Level3State extends PlayState {
         //FlxG.overlap(_player, _ice, slide);
         FlxG.collide(_player, _ice);
         FlxG.collide(enemiesGroup, _ice);
-        FlxG.collide(playerBullets, _ice);
-        FlxG.collide(enemiesBullets, _ice);
+		FlxG.collide(_ice, playerBullets, bulletsHitIce);
+		FlxG.collide(_ice, enemiesBullets, enemiesBulletsHitIce);
+        FlxG.collide(_ice, coinsGroup);
+        
 
         if (_player.isTouching(FlxObject.DOWN)){
             if ((_player.x >= 38 * 15 && _player.x <= 153 * 15) 
@@ -75,6 +78,15 @@ class Level3State extends PlayState {
             } 
         }
     }
+
+	public function bulletsHitIce(wall:FlxObject, pb:Bullet):Void {
+		playerBullets.remove(pb);
+		pb.destroy();
+	}
+	
+	public function enemiesBulletsHitIce(wall:FlxObject, b:Bullet):Void {
+		b.kill();
+	}
 
     // private function slide(o1:FlxSprite, o2:FlxTilemap):Void {
     //     if (_player.isTouching(FlxObject.DOWN)) {

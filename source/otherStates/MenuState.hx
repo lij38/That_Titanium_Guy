@@ -78,7 +78,7 @@ class MenuState extends FlxState {
 		add(_cancel);
 		add(_cText);
 		FlxG.camera.fade(FlxColor.BLACK, .33, true);
-		//FlxG.sound.playMusic(AssetPaths.theme__mp3);
+		FlxG.sound.playMusic(AssetPaths.theme__mp3);
 		super.create();
 	}
 	

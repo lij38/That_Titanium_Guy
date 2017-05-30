@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="900" height="52" tilewidth="15" tileheight="15" nextobjectid="31">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="900" height="52" tilewidth="15" tileheight="15" nextobjectid="57">
  <tileset firstgid="1" name="iceblock" tilewidth="15" tileheight="15" tilecount="3468" columns="68">
   <image source="../images/iceblock.jpg" width="1032" height="774"/>
  </tileset>
@@ -182,31 +182,54 @@
   <object id="2" name="END" x="13344" y="91" width="128" height="191"/>
  </objectgroup>
  <objectgroup name="enemies">
-  <object id="3" name="MELEE" type="3" x="7659" y="416" width="90" height="180"/>
+  <object id="3" name="MELEE" type="3" x="7607.48" y="412.97" width="90" height="180"/>
   <object id="5" name="MELEE" type="3" x="521.303" y="603" width="67" height="155"/>
-  <object id="6" name="JPRIFLE" type="3" x="3361" y="99" width="67" height="155"/>
-  <object id="7" name="JPMELEE" type="3" x="980.242" y="348.485" width="67" height="155"/>
+  <object id="6" name="JPRIFLE" type="3" x="4388.27" y="523.242" width="67" height="155"/>
+  <object id="7" name="JPMELEE" type="3" x="759.03" y="421.212" width="67" height="155"/>
   <object id="9" name="MELEE" type="3" x="1618.27" y="542.394" width="67" height="155"/>
-  <object id="10" name="JPMELEE" type="3" x="2016.61" y="184.848" width="67" height="155"/>
-  <object id="11" name="JPMELEE" type="3" x="5413.58" y="112.121" width="67" height="155"/>
-  <object id="12" name="JPMELEE" type="3" x="4968.12" y="84.8485" width="67" height="155"/>
+  <object id="10" name="JPMELEE" type="3" x="3031.76" y="139.394" width="67" height="155"/>
+  <object id="11" name="JPMELEE" type="3" x="5413.58" y="139.394" width="67" height="155"/>
+  <object id="12" name="JPMELEE" type="3" x="5004.48" y="115.152" width="67" height="155"/>
   <object id="13" name="SHOTGUN" type="3" x="3173.12" y="592.939" width="67" height="155"/>
-  <object id="14" name="JPMELEE" type="3" x="2568.12" y="503.03" width="67" height="155"/>
-  <object id="15" name="SHOTGUN" type="3" x="4606.45" y="529.303" width="67" height="155"/>
-  <object id="16" name="SHIELD" type="3" x="4182.21" y="520.212" width="67" height="155"/>
+  <object id="14" name="JPMELEE" type="3" x="2677.21" y="393.939" width="67" height="155"/>
+  <object id="15" name="SHOTGUN" type="3" x="4518.58" y="523.242" width="67" height="155"/>
+  <object id="16" name="JPSHIELD" type="3" x="4218.58" y="514.152" width="67" height="155"/>
   <object id="17" name="JPMELEE" type="3" x="6710.55" y="196.97" width="67" height="155"/>
   <object id="18" name="RIFLE" type="3" x="6871.15" y="366.667" width="67" height="155"/>
   <object id="19" name="MELEE" type="3" x="5995.39" y="339.394" width="67" height="155"/>
-  <object id="20" name="SHOTGUN" type="3" x="7809.48" y="423.242" width="67" height="155"/>
+  <object id="20" name="SHOTGUN" type="3" x="7818.58" y="435.364" width="67" height="155"/>
   <object id="21" name="JPMELEE" type="3" x="8507.52" y="90.9091" width="67" height="155"/>
   <object id="22" name="JPMELEE" type="3" x="10049.9" y="66.6667" width="67" height="155"/>
   <object id="23" name="MELEE" type="3" x="9995.36" y="558.424" width="90" height="180"/>
   <object id="24" name="MELEE" type="3" x="8792.33" y="137.212" width="90" height="180"/>
   <object id="25" name="TRUCK" type="3" x="9060.61" y="448.485" width="536.364" height="242.424"/>
   <object id="26" name="JPMELEE" type="3" x="13040.8" y="106.061" width="67" height="155"/>
-  <object id="27" name="JPMELEE" type="3" x="12207.5" y="151.515" width="67" height="155"/>
-  <object id="28" name="JPSHIELD" type="3" x="10971.1" y="319.03" width="90" height="180"/>
-  <object id="29" name="JPRIFLE" type="3" x="11437.8" y="463.636" width="76.0909" height="155"/>
-  <object id="30" name="SHOTGUN" type="3" x="11974.2" y="593.939" width="67" height="155"/>
+  <object id="27" name="JPMELEE" type="3" x="12525.7" y="493.939" width="67" height="155"/>
+  <object id="28" name="JPSHIELD" type="3" x="10965.1" y="409.939" width="90" height="180"/>
+  <object id="29" name="JPRIFLE" type="3" x="11425.7" y="578.788" width="76.0909" height="155"/>
+  <object id="30" name="SHOTGUN" type="3" x="11904.5" y="584.848" width="67" height="155"/>
+  <object id="31" name="JPMELEE" type="3" x="1304.48" y="369.697" width="67" height="155"/>
+  <object id="32" name="JPMELEE" type="3" x="1934.79" y="324.242" width="67" height="155"/>
+  <object id="33" name="JPRIFLE" type="3" x="2500.39" y="562.636" width="67" height="155"/>
+  <object id="34" name="SHOTGUN" type="3" x="2873.12" y="135.364" width="67" height="155"/>
+  <object id="35" name="MELEE" type="3" x="6319.64" y="342.424" width="67" height="155"/>
+  <object id="36" name="RIFLE" type="3" x="7377.21" y="430.303" width="67" height="155"/>
+  <object id="38" name="JPSHIELD" type="3" x="2188.27" y="489.909" width="67" height="155"/>
+  <object id="39" name="JPSHIELD" type="3" x="2803.42" y="132.333" width="67" height="155"/>
+  <object id="40" name="SHOTGUN" type="3" x="5188.27" y="165.667" width="67" height="155"/>
+  <object id="41" name="JPMELEE" type="3" x="4380.24" y="218.182" width="67" height="155"/>
+  <object id="42" name="JPMELEE" type="3" x="6710.55" y="196.97" width="67" height="155"/>
+  <object id="43" name="JPSHIELD" type="3" x="6448.88" y="180.818" width="67" height="155"/>
+  <object id="45" name="JPMELEE" type="3" x="9419.64" y="187.879" width="84.8485" height="179.242"/>
+  <object id="46" name="JPSHIELD" type="3" x="9770.09" y="323.242" width="67" height="155"/>
+  <object id="47" name="JPMELEE" type="3" x="5413.58" y="139.394" width="67" height="155"/>
+  <object id="48" name="JPRIFLE" type="3" x="8651.91" y="450.515" width="67" height="155"/>
+  <object id="49" name="JPSHIELD" type="3" x="7612.52" y="177.788" width="67" height="155"/>
+  <object id="50" name="JPRIFLE" type="3" x="12907.5" y="524.242" width="76.0909" height="155"/>
+  <object id="52" name="JPMELEE" type="3" x="11262.1" y="330.303" width="67" height="155"/>
+  <object id="53" name="JPMELEE" type="3" x="12649.9" y="145.455" width="67" height="155"/>
+  <object id="54" name="JPMELEE" type="3" x="10477.2" y="103.03" width="67" height="155"/>
+  <object id="55" name="MELEE" type="3" x="10471.1" y="555.394" width="90" height="180"/>
+  <object id="56" name="MELEE" type="3" x="10271.1" y="70.5455" width="90" height="180"/>
  </objectgroup>
 </map>
