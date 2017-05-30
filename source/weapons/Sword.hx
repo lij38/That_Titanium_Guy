@@ -5,6 +5,9 @@ class Sword extends Weapon {
     private var ki:Bool;
     private var ww:Bool;
     private var dsCutOff:Int;
+    private var kiRange:Int;
+    private var kiSpeed:Int;
+
     override public function new(playerBulletArray:FlxTypedGroup<Bullet>) {
         super(playerBulletArray);
         //damage
@@ -28,6 +31,8 @@ class Sword extends Weapon {
         } else {
             this.ki = Main.SAVE.data.ki;
         }
+        //test ki
+        // this.ki = false;
         //whirlwind
         if(Main.SAVE.data.ww == null) {
             this.ww = false;
@@ -38,8 +43,10 @@ class Sword extends Weapon {
         this.name = "sword";
         this.type = "melee";
         this.range = 145;
+        this.kiRange = 1000;
         this.fireRate = 0.25;
         this.speed = 1000;
+        this.kiSpeed = 1500;
         this.magCapacity = -1;
         this.curAmmo = -1;
         this.reloadTime = -1;
@@ -48,7 +55,12 @@ class Sword extends Weapon {
     }
 
     public override function attack(x:Float, y:Float, direction:Int):Bool {
-        var newBullet = new MeleeBullet(x, y + 10, speed, direction, this.damage, range);
+        var newBullet:MeleeBullet;
+        if(!ki) {
+            newBullet = new MeleeBullet(x, y + 10, speed, direction, this.damage, range, ki);
+        } else {
+            newBullet = new MeleeBullet(x, y + 10, kiSpeed, direction, this.damage, kiRange, ki);
+        }
 		this.bulletArray.add(newBullet);
         return true;
     }

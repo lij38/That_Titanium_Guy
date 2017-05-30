@@ -143,17 +143,17 @@ class WorkshopState extends FlxState {
             jWeapon.loadGraphic(AssetPaths.IMAGE + Main.SAVE.data.jWeapon + "Button.png");
         }
         if(Main.SAVE.data.kWeapon == "") {
-            kWeapon.makeGraphic(150, 150, FlxColor.BLUE);
+            kWeapon.loadGraphic(AssetPaths.emptyslot__png);
         } else {
             kWeapon.loadGraphic(AssetPaths.IMAGE + Main.SAVE.data.kWeapon + "Button.png");
         }
         if(Main.SAVE.data.j2ndWeapon == "") {
-            j2ndWeapon.makeGraphic(150, 150, FlxColor.BLUE);
+            j2ndWeapon.loadGraphic(AssetPaths.emptyslot__png);
         } else {
             j2ndWeapon.loadGraphic(AssetPaths.IMAGE + Main.SAVE.data.j2ndWeapon + "Button.png");
         }
         if(Main.SAVE.data.k2ndWeapon == "") {
-            k2ndWeapon.makeGraphic(150, 150, FlxColor.BLUE);
+            k2ndWeapon.loadGraphic(AssetPaths.emptyslot__png);
         } else {
             k2ndWeapon.loadGraphic(AssetPaths.IMAGE + Main.SAVE.data.k2ndWeapon + "Button.png");
         }

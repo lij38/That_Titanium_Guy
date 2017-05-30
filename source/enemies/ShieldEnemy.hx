@@ -100,7 +100,7 @@ class ShieldEnemy extends Enemy {
 			var curBullet:EnemyBullet = bulletArray.recycle(EnemyBullet);
 			curBullet.setBullet(x + 7, y + 10, 1000, facing,
 							damageLevel[level], range, 
-							Melee);
+							Melee, this);
 			attacked = true;
 		}
 		if (!seesPlayer) {
@@ -111,21 +111,7 @@ class ShieldEnemy extends Enemy {
 	}
 	
 	override public function hurt(damage:Float):Void {
-		seesPlayer = true;
-		if (health - damage <= 0) {
-			animation.play("die");
-			alive = false;
-		} else if (rateTimer == -1 || rateTimer > 1) {
-			if (damage <= 0) {
-				animation.play("shield");
-			} else {
-				animation.play("hurt");
-				color = 0xff0000;
-			}
-			hurtTimer = 0;
-		}
-		health -= damage;
-		hurtColorTimer = 0.0;
+		hurtShield(damage, rateTimer == -1 || rateTimer > 1);
 	}
 	
 }

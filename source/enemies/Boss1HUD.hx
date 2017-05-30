@@ -14,7 +14,7 @@ class Boss1HUD extends FlxTypedGroup<FlxSprite>
     private var _healthbar:FlxBar;
     private var _name:FlxText;
 
-    public function new(_smallboss:Boss1)
+    public function new(_smallboss:Enemy)
      {
          super();
 

@@ -1237,7 +1237,7 @@ class MarketState extends FlxState {
         if(money > kiCost && kiNum > 0) {
             money -= kiCost;
             kiNum--;
-            Main.SAVE.data.ki *= 0.9;
+            Main.SAVE.data.ki = true;
             Main.SAVE.data.kiNum = kiNum;
         }
         killTrans();
@@ -1247,6 +1247,7 @@ class MarketState extends FlxState {
         if(money > wwCost && wwNum > 0) {
             money -= wwCost;
             wwNum--;
+            Main.SAVE.data.ww = true;
             Main.SAVE.data.wwNum = wwNum;
         }
         killTrans();
@@ -1419,14 +1420,14 @@ class MarketState extends FlxState {
     private function tutorial() {
         tWindow.revive();
         wMask.alpha = 0.75;
-        tText = new FlxText(110, 50, 580);
+        tText = new FlxText(110, 25, 580);
         tText.text = "Welcome to the black market! Here you can buy upgrades for you and your Weapons. \n"
             + "All the upgrades are listed under the icon for that item, along with the price and how many"
             + " more times you can upgrade it. \n"
             + "Click on an upgrade to show its details and to purchase it. \n"
             + "If you don't have enough money, try to get better ratings on levels for better rewards and "
             + "come back later!";
-        tText.setFormat(AssetPaths.FONT, 35);
+        tText.setFormat(AssetPaths.FONT, 30);
         add(tText);
         inTut = true;
         tButton = new ImageButton(300, 550, killTut);
