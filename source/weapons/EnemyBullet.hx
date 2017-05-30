@@ -7,10 +7,12 @@ import flixel.util.FlxColor;
 enum BulletType {
 	Melee;
 	Ranged;
+	SHOTGUN;
 }
 
 class EnemyBullet extends Bullet {
 	private var meleeColor:FlxColor = FlxColor.TRANSPARENT;
+	public var bulletType:BulletType;
 
     public function new(X:Float = 0, Y:Float = 0, Speed:Float, 
 						Direction:Int, Damage:Float, Range:Float,
@@ -22,6 +24,7 @@ class EnemyBullet extends Bullet {
 			this.type = "melee";
 			makeGraphic(6, 70, meleeColor);
 		}
+		this.bulletType = bulletType;
 	}
 	
 	public function setBullet(X:Float = 0, Y:Float = 0, Speed:Float, 
@@ -35,18 +38,25 @@ class EnemyBullet extends Bullet {
 		ypos = Y;
 		reset(X, Y);
 		facing = direction;
+		this.bulletType = bulletType;
 		
-		if (direction == FlxObject.LEFT) {
-			velocity.set(-speed, 0);
-		}
-		if (direction == FlxObject.RIGHT) {
-			velocity.set(speed, 0);
-		}
-		if (bulletType == Ranged) {
+		if (bulletType == Ranged || bulletType == SHOTGUN) {
 			loadGraphic(AssetPaths.enemybullet__png);
 		} else if (bulletType == Melee) {
 			this.type = "melee";
 			makeGraphic(6, 70, meleeColor);
+		}
+		
+		if (bulletType == SHOTGUN) {
+			velocity.set(speed, 0);
+			velocity.rotate(FlxPoint.weak(0, 0), direction);
+		} else {
+			if (direction == FlxObject.LEFT) {
+				velocity.set(-speed, 0);
+			}
+			if (direction == FlxObject.RIGHT) {
+				velocity.set(speed, 0);
+			}
 		}
 	}
 }

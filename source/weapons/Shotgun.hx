@@ -30,7 +30,8 @@ class Shotgun extends Weapon {
         if(direction == FlxObject.LEFT) {
             var angle:Int = 165;
             for(i in 0...5) {
-                var newBullet = new ShotgunBullet(x + 20, y, speed, angle, this.damage[damageIndex], range);
+                var newBullet = new ShotgunBullet(x + 20, y, speed, angle, 
+											this.damage[damageIndex], range);
                 this.bulletArray.add(newBullet);
                 angle += 6;
             }
@@ -38,7 +39,8 @@ class Shotgun extends Weapon {
         if(direction == FlxObject.RIGHT) {
             var angle:Int = 345;
             for(i in 0...5) {
-                var newBullet = new ShotgunBullet(x + 20, y, speed, angle % 360, this.damage[damageIndex], range);
+                var newBullet = new ShotgunBullet(x + 20, y, speed, angle % 360,
+												this.damage[damageIndex], range);
                 this.bulletArray.add(newBullet);
                 angle += 6;
             }

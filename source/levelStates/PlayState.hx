@@ -106,7 +106,7 @@ class PlayState extends FlxState {
 			add(_boss_hud);
 			_exit.visible = false;
 		}
-		FlxG.sound.playMusic(AssetPaths.fighting__mp3);
+		//FlxG.sound.playMusic(AssetPaths.fighting__mp3);
 		
 		 _hud.updateHUD(_player.getAmmo(0), _player.getAmmo(1), _player.isReloading(0), _player.isReloading(1),
 		 				_player.getWeaponName(0), _player.getWeaponName(1));
@@ -296,7 +296,7 @@ class PlayState extends FlxState {
 				trace("Invalide entity name: " + entityName);
 			}
 			
-			if (enId == 34) {
+			if (enId == 34 && lvl == 1) {
 				en.onPickUpItem = pickUpRifle;
 			}
 			enemiesGroup.add(en);
@@ -315,9 +315,19 @@ class PlayState extends FlxState {
 	private function bulletsHitPlayer(bullet:EnemyBullet, player:Player):Void {
 		if (player.alive && bullet.alive) {
 			var damage:Float = bullet.getDamage();
-			if (!player.isShielding() || (player.isShielding() && player.faced == bullet.facing)) {
+			if (!player.isShielding() || 
+					(player.isShielding() && player.faced == bullet.facing)) {
 				player.hurt(damage);
 				_hud.updateDamage(damage);
+			} else {
+				player.sndShield.play(true);
+			}
+			if (bullet.bulletType == SHOTGUN) {
+				if (bullet.velocity.x < 0) {
+					player.x -= 5;
+				} else {
+					player.x += 5;
+				}
 			}
 			bullet.kill();
 		}
@@ -361,6 +371,7 @@ class PlayState extends FlxState {
 			bullet.destroy();
 			if (enemy.hasShield && bullet.facing != enemy.facing) {
 				dmg = 0;
+				_player.sndShield.play();
 			}
 			if (!_is_boss) {
 				_enemiesMap.get(enemy).updateDamage(dmg);
