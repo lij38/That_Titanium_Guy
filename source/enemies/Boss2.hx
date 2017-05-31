@@ -22,8 +22,8 @@ class Boss2 extends Enemy {
 
 	// distances
 	private var attack_dist:Int = 300;
-	private var shoot_dist:Int = 450;
-	private var catch_dist:Int = 600;
+	private var shoot_dist:Int = 600;
+	private var catch_dist:Int = 1000;
 
 	private var SECOND:Int = 60;
 
@@ -49,6 +49,7 @@ class Boss2 extends Enemy {
 		GRAVITY = gravity;
 		_hand = hand;
 		_player = player;
+		this.name = "MAJ. Beat, Dead";
 
 		loadGraphic(AssetPaths.boss2__png, true, 534, 302);
 		setSize(275, 272);
@@ -59,7 +60,7 @@ class Boss2 extends Enemy {
 		setFacingFlip(FlxObject.RIGHT, true, false);
 		
 		animation.add("stop", [4], 5, false);
-		animation.add("lr", [9, 10, 1, 2, 3, 4], 4, true);
+		animation.add("lr", [9, 10, 1, 2, 3, 4], 8, true);
 		animation.add("catch_start", [5, 6, 7, 8], 4, true);
 		animation.add("catch_end", [8, 7, 6, 5], 4, true);
 		animation.add("die", [0, 10, 11, 12, 12, 12, 12, 12], 4, false);
@@ -67,7 +68,7 @@ class Boss2 extends Enemy {
 		animation.play("stop");
 
 		acceleration.y = GRAVITY;
-		health = 800;
+		health = 1300;
 		facing = FlxObject.LEFT;
 		playerPos = FlxPoint.get();
 		brain = new EnemyFSM(turn);
@@ -75,7 +76,7 @@ class Boss2 extends Enemy {
 		stay_count = 0;
 		shoot_count = 0;
 		catch_count = 0;
-		range = 300;
+		range = 650;
 		_hand.visible = false;
 		_in_catch = false;
 		_in_attack = false;
@@ -165,9 +166,9 @@ class Boss2 extends Enemy {
 		}
 
 		if (facing == FlxObject.LEFT) {
-			velocity.x = -speed;
+			velocity.x = -speed * 5;
 		} else if (facing == FlxObject.RIGHT) {
-			velocity.x = speed;
+			velocity.x = speed * 5;
 		}
 	}
 
@@ -245,12 +246,12 @@ class Boss2 extends Enemy {
 		animation.play("stop");
 
 		shoot_count ++;
-		if (shoot_count == 54) {
+		if (shoot_count == 15) {
 			if (facing == FlxObject.LEFT) {
 	            var angle:Int = 135;
 	            for(i in 0...5) {
 	            	var curBullet:EnemyBullet = bulletArray.recycle(EnemyBullet);
-	                curBullet.setBullet(x - 150, y + 125, 250, angle, 10, range, SHOTGUN, this);
+	                curBullet.setBullet(x - 150, y + 125, 500, angle, 15, range, SHOTGUN, this);
 	                angle += 18;
 	            }
 	        }
@@ -258,13 +259,13 @@ class Boss2 extends Enemy {
 	            var angle:Int = 315;
 	            for(i in 0...5) {
 	            	var curBullet:EnemyBullet = bulletArray.recycle(EnemyBullet);
-	                curBullet.setBullet(x + 350, y + 125, 250, angle % 360, 10, range, SHOTGUN, this);
+	                curBullet.setBullet(x + 350, y + 125, 500, angle % 360, 15, range, SHOTGUN, this);
 	                angle += 18;
 	            }
 	        }
 		}
 		// stop a bit after shoot
-		if (shoot_count > 180) {
+		if (shoot_count > 130) {
 			shoot_count = 0;
 			brain.activeState = judgeState;
 		}
@@ -297,7 +298,7 @@ class Boss2 extends Enemy {
 			// hand moves to catch pos
 			_hand.visible = true;
 			_in_catch = true;
-			moveTowardsPoint(_hand, _hand.getMidpoint(), _catch_pos, Std.int(speed * 15));
+			moveTowardsPoint(_hand, _hand.getMidpoint(), _catch_pos, Std.int(speed * 20));
 		} else {
 
 			// catch the player and return

@@ -27,7 +27,8 @@ enum EnemyType {
 
 class Enemy extends FlxSprite {
 	private var id:Int;
-	
+	public var name:String = "";
+
 	private var bulletArray:FlxTypedGroup<EnemyBullet>;
 	private var coinsGroup:FlxTypedGroup<Coin>;
 	private var dropCoin:Bool = false;

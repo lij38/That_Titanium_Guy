@@ -26,8 +26,9 @@ class Boss1HUD extends FlxTypedGroup<FlxSprite>
          add(_healthbar);
          
          //name
-         _name = new FlxText(300, 500, 0, "1LT. Cleaver, Bull", 35);
-         _name.setFormat(AssetPaths.FONT, _name.size);
+         _name = new FlxText(280, 500, 0);
+         _name.text = _smallboss.name;
+         _name.setFormat(AssetPaths.FONT, 35);
          add(_name);
 
          forEach(function(spr:FlxSprite)

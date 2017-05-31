@@ -180,7 +180,11 @@ class FinishState extends FlxState
     private function clickHome():Void {
         FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
             FlxG.sound.music.destroy();
-			FlxG.switchState(new HomeState());
+            if(_level == 3 && Main.SAVE.data.bmTut == null) {
+                FlxG.switchState(new MarketState());
+            } else {
+                FlxG.switchState(new HomeState());
+            }
 		});
     }
 }
