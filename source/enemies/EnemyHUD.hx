@@ -10,8 +10,7 @@ package enemies;
  import flixel.tweens.*;
  using flixel.util.FlxSpriteUtil;
 
-class EnemyHUD extends FlxTypedGroup<FlxSprite>
-{
+class EnemyHUD extends FlxTypedGroup<FlxSprite> {
     private var _enemy:Enemy;
     private var _healthbar:FlxBar;
     private var _damage1:FlxText;
@@ -24,8 +23,7 @@ class EnemyHUD extends FlxTypedGroup<FlxSprite>
 	private var _xOffset4:Float = Math.random() * 10 - 5;
     private var dmgCounter:Int;
 
-    public function new(enemy:Enemy)
-     {
+    public function new(enemy:Enemy) {
          super();
          _enemy = enemy;
 
@@ -66,32 +64,32 @@ class EnemyHUD extends FlxTypedGroup<FlxSprite>
 	 }
 
      public function updateDamage(damage:Float):Void {
-        var dstr:String = Std.string(damage);
-        if(damage < 1) {
-            dstr = dstr.substring(0, 3);
-        }
+        var dstr:String = Std.string(roundToFirst(damage));
+        //if(damage < 1) {
+            //dstr = dstr.substring(0, 3);
+        //}
         if (dmgCounter == 0) {
             _damage1.visible = true;
 			_damage1.y = _enemy.y - 55;
-            _damage1.text = "- " + Std.string(damage);
+            _damage1.text = "- " + dstr;
             FlxTween.tween(_damage1, {alpha: 0.5, y: _damage1.y - 25 }, 
 				.5, { ease: FlxEase.circOut, onComplete: finishFade.bind(_, dmgCounter) });
         } else if (dmgCounter == 1) {
 			_damage2.y = _enemy.y - 45;
             _damage2.visible = true;
-            _damage2.text = "- " + Std.string(damage);
+            _damage2.text = "- " + dstr;
             FlxTween.tween(_damage2, {alpha: 0.5, y: _damage2.y - 25}, 
 				.5, { ease: FlxEase.circOut, onComplete: finishFade.bind(_, dmgCounter) });
         } else if (dmgCounter == 2) {
 			_damage3.y = _enemy.y - 40;
             _damage3.visible = true;
-            _damage3.text = "- " + Std.string(damage);
+            _damage3.text = "- " + dstr;
             FlxTween.tween(_damage3, {alpha: 0.5, y: _damage3.y - 25}, 
 				.5, { ease: FlxEase.circOut, onComplete: finishFade.bind(_, dmgCounter) });
         } else {
 			_damage4.y = _enemy.y - 35;
             _damage4.visible = true;
-            _damage4.text = "- " + Std.string(damage);
+            _damage4.text = "- " + dstr;
             FlxTween.tween(_damage4, {alpha: 0.5, y: _damage4.y - 25}, 
 				.5, { ease: FlxEase.circOut, onComplete: finishFade.bind(_, dmgCounter) });
         }
@@ -120,5 +118,9 @@ class EnemyHUD extends FlxTypedGroup<FlxSprite>
 	 
 	 private function getRandomOffset():Float {
 		return Math.random() * 10 - 5;
+	 }
+	 
+	 private function roundToFirst(n:Float):Float {
+		 return Math.fround(n * 10) / 10;
 	 }
 }
