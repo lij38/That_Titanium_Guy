@@ -307,7 +307,7 @@ class PlayState extends FlxState {
 				boss.hurt(boss.health);
 			}
 		}  else if (entityName == "boss2"){
-			boss2 = new Boss2(x, y, enId, enemiesBullets, coinsGroup, 0, _hand);
+			boss2 = new Boss2(x, y, enId, enemiesBullets, coinsGroup, 0, _hand, _player);
 			enemiesGroup.add(boss2);
 			if (boss2.health > 0) {
 				_boss_hud = new Boss1HUD(boss2);
