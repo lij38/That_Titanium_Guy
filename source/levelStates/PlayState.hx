@@ -65,6 +65,7 @@ class PlayState extends FlxState {
         //LOAD PLAYER
 		//////////////////
         playerBullets = new FlxTypedGroup<Bullet>();
+		
         _player = new Player(playerBullets, GRAVITY);
 		_exit = new Exit();
 		indicator = new FlxText(0, 0, 200, "W to Exit", 19);
@@ -400,7 +401,7 @@ class PlayState extends FlxState {
 			bullet.destroy();
 			if (enemy.hasShield && bullet.facing != enemy.facing) {
 				dmg = 0;
-				_player.sndShield.play();
+				_player.sndShield.play(true);
 			}
 			if (!_is_boss) {
 				if (!_enemiesMap.exists(enemy)) {

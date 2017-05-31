@@ -326,30 +326,6 @@ class Player extends FlxSprite {
 			if (jump > 0) {
 				velocity.y = -speed * 1.5;
 			}
-			/*if (jumped && !jumpKey) {
-				jumped = false;
-			}
-			if (isTouching(FlxObject.DOWN) && !jumped) {
-				jump = 0;
-				numJump = 0;
-			}
-			if (doubleJump && numJump < numJumpLimit) {
-				numJump++;
-				jumped = false;
-				jump = 0;
-			}
-			if (jump >= 0 && jumpKey) {
-				jumped = true;
-				jump += elapsed;
-				if (jump > 0.33) {
-					jump = -1;
-				}
-			} else {
-				jump = -1;
-			}
-			if (jump > 0) {
-				velocity.y = -speed * 1.5;
-			}*/
 			
 		}
 		
