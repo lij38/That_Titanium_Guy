@@ -320,6 +320,9 @@ class HomeState extends FlxState {
 		} else if (entityName == "blackmarket") {
 			_blackmarket.x = x;
 			_blackmarket.y = y;
+		} else if (entityName == "bmtxt") {
+			_bmtxt.x = x;
+			_bmtxt.y = y;
 		}
 	}
 

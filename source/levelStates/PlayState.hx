@@ -27,6 +27,7 @@ class PlayState extends FlxState {
 	private var _hud:HUD;
 	private var _boss_hud:Boss1HUD;
 	private var _is_boss:Bool = false;
+	private var _is_boss2:Bool = false;
 	private var _exit:Exit;
 	private var indicator:FlxText;
 
@@ -108,7 +109,10 @@ class PlayState extends FlxState {
         add(playerBullets);
 		add(_enemiesHUD);
 		add(_player);
-		add(_hand);
+		
+		if (_is_boss2) {
+			add(_hand);
+		}
 
 		if (_is_boss) {
 			add(_boss_hud);
@@ -260,7 +264,7 @@ class PlayState extends FlxState {
 
 	private function updateEnemyHud() {
 		for(en in _enemiesMap.keys()) {
-			if(en.health > 0){
+			if(en.exists){
 				_enemiesMap.get(en).updateXY();
 			} else {
 				_enemiesMap.get(en).destroy();
@@ -327,10 +331,10 @@ class PlayState extends FlxState {
 			}
 			enemiesGroup.add(en);
 			if (en.health > 0) {
-				var eh:EnemyHUD;
-				eh = new EnemyHUD(en);
-				_enemiesMap.set(en, eh);
-				_enemiesHUD.add(eh);
+				//var eh:EnemyHUD;
+				//eh = new EnemyHUD(en);
+				//_enemiesMap.set(en, eh);
+				//_enemiesHUD.add(eh);
 			} else {
 				en.hurt(en.health);
 			}
@@ -403,6 +407,11 @@ class PlayState extends FlxState {
 				_player.sndShield.play();
 			}
 			if (!_is_boss) {
+				if (!_enemiesMap.exists(enemy)) {
+					var eh:EnemyHUD = new EnemyHUD(enemy);
+					_enemiesMap.set(enemy, eh);
+					_enemiesHUD.add(eh);
+				}
 				_enemiesMap.get(enemy).updateDamage(dmg);
 			}
 			enemy.hurt(dmg);
