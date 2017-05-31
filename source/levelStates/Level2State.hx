@@ -3,7 +3,6 @@ import flixel.*;
 import flixel.addons.editors.tiled.TiledMap;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.tile.FlxTilemap;
-//import flixel.ui.FlxButton;
 import flixel.addons.editors.tiled.TiledTileLayer;
 import flixel.addons.editors.tiled.TiledObjectLayer;
 import flixel.tile.FlxBaseTilemap;
@@ -72,7 +71,7 @@ class Level2State extends PlayState {
         add(_hud);
         addTopLayer();
 
-        Main.LOGGER.logLevelStart(4);
+        Main.LOGGER.logLevelStart(LEVELID);
 
     }
 	

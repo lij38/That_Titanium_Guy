@@ -10,15 +10,21 @@ import weapons.*;
 import items.*;
 import flixel.FlxSprite;
 import flixel.math.FlxVelocity;
+import flixel.FlxG;
+import flixel.math.FlxAngle;
 
 class Boss2 extends Enemy {
-	//public var stuck:Bool;
-	private var dash_count:Int;
-	private var stuck_count:Int;
-	private var attack_count:Int;
-	private var stay_count:Int;
+	// timing variables
+	private var attack_count:Float;
+	private var stay_count:Float;
 	private var shoot_count:Int;
-	private var damage_dist:Int = 400;
+	private var catch_count:Int;
+
+	// distances
+	private var attack_dist:Int = 300;
+	private var shoot_dist:Int = 450;
+	private var catch_dist:Int = 600;
+
 	private var SECOND:Int = 60;
 
 	private var bulletCount:Int = 0;
@@ -28,43 +34,35 @@ class Boss2 extends Enemy {
 	private var rateTimer:Float = 0;
 
 	private var _hand:Boss2Hand;
+	private var _in_catch:Bool;
+	private var _in_attack:Bool;
+	private var _player:Player;
+	private var _catch_pos:FlxPoint;
+	private var _catch_player:Bool;
 
 	public function new(X:Float=0, Y:Float=0, id:Int = -1,
 					bulletArray:FlxTypedGroup<EnemyBullet>, 
 					coinsGroup:FlxTypedGroup<Coin>, 
-					gravity:Float, hand:Boss2Hand) {
+					gravity:Float, hand:Boss2Hand, player:Player) {
+
 		super(X, Y, id, bulletArray, coinsGroup, gravity, BOSS);
 		GRAVITY = gravity;
-
-		setSize(120, 200);
-		makeGraphic(120, 200, FlxColor.WHITE);
-
 		_hand = hand;
+		_player = player;
 
-
-		loadGraphic(AssetPaths.boss2__png, true, 536, 272);
-		//scale.set(0.7, 0.7);
-		setSize(250, 272);
-		offset.set(150, 0);
-		//debugBoundingBoxColor = FlxColor.RED;
-		
-
-		//cast(this, FlxObject).debugBoundingBoxColor = FlxColor.RED;
-		//makeGraphic(120, 200, FlxColor.WHITE);
+		loadGraphic(AssetPaths.boss2__png, true, 534, 302);
+		setSize(275, 272);
+		offset.set(145, 15);
 		
 		
 		setFacingFlip(FlxObject.LEFT, false, false);
 		setFacingFlip(FlxObject.RIGHT, true, false);
 		
-		animation.add("stop", [4], 1, false);
-		//animation.add("raise", [0, 1, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 
-			//5, 5, 5, 5, 5, 5, 5, 5, 5], 3, false, false, false);
-		animation.add("lr", [8, 9, 0, 1, 2, 3], 4, true);
-		//animation.add("stuck_attack", [13, 14, 15, 16, 17, 18], 12, false);
-		//animation.add("stuck", [18], 1, false);
-		//animation.add("stuck_stop", [18, 19, 20], 3, false);
-		//animation.add("attack", [0, 1, 2, 3, 4, 13, 14, 15, 16, 17], 9, false);
-		//animation.add("die", [20, 21, 22, 22, 22, 22, 22, 22], 3, false);
+		animation.add("stop", [4], 5, false);
+		animation.add("lr", [9, 10, 1, 2, 3, 4], 4, true);
+		animation.add("catch_start", [5, 6, 7, 8], 4, true);
+		animation.add("catch_end", [8, 7, 6, 5], 4, true);
+		animation.add("die", [0, 10, 11, 12, 12, 12, 12, 12], 4, false);
 
 		animation.play("stop");
 
@@ -73,22 +71,22 @@ class Boss2 extends Enemy {
 		facing = FlxObject.LEFT;
 		playerPos = FlxPoint.get();
 		brain = new EnemyFSM(turn);
-		//stuck = false;
-		dash_count = 0;
-		stuck_count = 0;
-		attack_count = 0;
+		attack_count = 0.0;
 		stay_count = 0;
 		shoot_count = 0;
+		catch_count = 0;
 		range = 300;
+		_hand.visible = false;
+		_in_catch = false;
+		_in_attack = false;
+		hurtTime = 0.10;
 	}
 
 	override public function update(elapsed:Float):Void {
-		//if (health < 0 && animation.finished) {
-			//kill();
-		//}
-
-		_hand.x = x - 20;
-		_hand.y = y + 120;
+		if (!_in_catch && !_in_attack) {
+			_hand.x = x - 20;
+			_hand.y = y + 120;
+		}
 		
 		if (!alive) {
 			velocity.set(0, 0);
@@ -97,21 +95,22 @@ class Boss2 extends Enemy {
 		} else {
 			brain.update(elapsed);
 		}
+		_hand.facing = facing;
 		
 		super.update(elapsed);
 	}
 
 	public function stay(elapsed:Float):Void {
-		trace("stay!!!!!!!!!!!!!!");
-		stay_count++;
-		if (stay_count > 60) {
-			stay_count = 0;
+		//trace("stay!!!!!!!!!!!!!!");
+		stay_count += elapsed;
+		if (stay_count > 0.4) {
+			stay_count = 0.0;
 			brain.activeState = turn;
 		}
 	}
 
 	public function judgeState(elapsed:Float):Void {
-		trace("judgeState!!!!!!!!!!!!!");
+		//trace("judgeState!!!!!!!!!!!!!");
 		if (playerPos.x <= getMidpoint().x && facing == FlxObject.LEFT
 			|| playerPos.x > getMidpoint().x && facing == FlxObject.RIGHT) {
 			brain.activeState = turn;
@@ -121,33 +120,47 @@ class Boss2 extends Enemy {
 	}
 
 	public function turn(elapsed:Float):Void {
-		trace("turn!!!!!!!!!!!");
+		//trace("turn!!!!!!!!!!!");
+		// make turn
 		if (playerPos.x <= getMidpoint().x) {
 			facing = FlxObject.LEFT;
 		} else {
 			facing = FlxObject.RIGHT;
 		}
-		//stuck_count = 0;
-		if (Math.abs(playerPos.x - getMidpoint().x) <= damage_dist) {
+
+		// switch to other states based on player dist
+		if (Math.abs(playerPos.x - getMidpoint().x) <= attack_dist) {
+			brain.activeState = attack_start;
+		} else if (Math.abs(playerPos.x - getMidpoint().x) <= shoot_dist) {
 			brain.activeState = shoot;
-		} else {
+		} else if (Math.abs(playerPos.x - getMidpoint().x) <= catch_dist) {
 			brain.activeState = walk;
+		} else {
+			_catch_pos = new FlxPoint(_player.x, _player.y);
+			brain.activeState = catch_start;
 		}
-		
 	} 
 
 	public function walk(elapsed:Float):Void {
-		trace("walk!!!!!!!!!!!!!!!");
+		//trace("walk!!!!!!!!!!!!!!!");
 		animation.play("lr");
 		if (facing == FlxObject.LEFT) {
 			// facing left
-			if (getMidpoint().x - playerPos.x <= 300) {
+			if (getMidpoint().x - playerPos.x <= shoot_dist) {
 				brain.activeState = shoot;
+			}
+			if (getMidpoint().x - playerPos.x >= catch_dist) {
+				brain.activeState = catch_start;
+				_catch_pos = new FlxPoint(_player.x, _player.y);
 			}
 		} else {
 			// facing right
-			if (playerPos.x - getMidpoint().x <= 300) {
+			if (playerPos.x - getMidpoint().x <= shoot_dist) {
 				brain.activeState = shoot;
+			}
+			if (playerPos.x - getMidpoint().x >= catch_dist) {
+				brain.activeState = catch_start;
+				_catch_pos = new FlxPoint(_player.x, _player.y);
 			}
 		}
 
@@ -158,168 +171,208 @@ class Boss2 extends Enemy {
 		}
 	}
 
+	public function attack_start(elapsed:Float):Void {
+		//trace("attack start!!!!!!!!!!!!!!!!");
+		animation.play("catch_start");
+		attack_count += elapsed;
+		if (attack_count > 1.0) {
+			animation.finish();
+			_hand.visible = true;
+			_in_attack = true;
+			brain.activeState = attack;
+			attack_count = 0.0;
+			if (_hand.facing == FlxObject.LEFT) {
+				_hand.velocity.x = -speed * 6;
+			} else {
+				_hand.velocity.x = speed * 6;
+			}
+		}
+	}
+
 	public function attack(elapsed:Float):Void {
 		// attack the enemy
-		trace("attack!!!!!!!");
-		attack_count++;
-		if (attack_count == 54) {
-			var curBullet:EnemyBullet = bulletArray.recycle(EnemyBullet);
-			curBullet.setBullet(x, y + 120, 250, facing, 15, range, Melee, this);
+		//trace("attack!!!!!!!");
+		//attack_count++;
+		_hand.velocity.y = 0;
+		if (_hand.facing == FlxObject.LEFT) {
+			_hand.velocity.x = -speed * 6;
+		} else {
+			_hand.velocity.x = speed * 6;
 		}
-		if (attack_count > 67) {
-			//animation.finish();
-			attack_count = 0;
+		if (_hand.facing == FlxObject.LEFT && _hand.x < x - 300) {
+			_hand.velocity.x = 0;
+			brain.activeState = attack_end;
+			
+		} else if (_hand.facing == FlxObject.RIGHT && _hand.x > x + 300){
+			_hand.velocity.x = 0;
+			brain.activeState = attack_end;
+		}
+
+		if (FlxG.overlap(_player, _hand)) {
+			_player.hurt(20);
+			brain.activeState = attack_end;
+			if (_hand.facing == FlxObject.LEFT) {
+				_player.x -= 100;
+			} else {
+				_player.x += 100;
+			}
+		}
+	}
+
+	public function attack_end(elapsed:Float):Void {
+		//trace("attack end!!!!!!!!!!!!!!!!!!");
+		//_hand.velocity.x = 0;
+		animation.play("catch_end");
+		attack_count += elapsed;
+		if (attack_count > 1.0) {
+			_hand.visible = false;
+			_in_attack = false;
+			animation.finish();
+			//brain.activeState = judgeState;
+			//attack_count = 0;
+		} 
+
+		if (attack_count > 1.2) {
 			brain.activeState = judgeState;
+			attack_count = 0;
 		}
 	}
 
 	public function shoot(elapsed:Float):Void {
-		trace("shoot!!!!!!!!!!");
+		//trace("shoot!!!!!!!!!!");
+		// stop all actions
 		velocity.x = 0;
 		animation.play("stop");
-		shoot_count++;
+
+		shoot_count ++;
 		if (shoot_count == 54) {
 			if (facing == FlxObject.LEFT) {
-	            var angle:Int = 165;
+	            var angle:Int = 135;
 	            for(i in 0...5) {
 	            	var curBullet:EnemyBullet = bulletArray.recycle(EnemyBullet);
-	                curBullet.setBullet(x - 125, y + 120, 250, angle, 
-														15, range, SHOTGUN, this);
-	                angle += 6;
+	                curBullet.setBullet(x - 150, y + 125, 250, angle, 10, range, SHOTGUN, this);
+	                angle += 18;
 	            }
 	        }
 	        if (facing == FlxObject.RIGHT) {
-	            var angle:Int = 345;
+	            var angle:Int = 315;
 	            for(i in 0...5) {
 	            	var curBullet:EnemyBullet = bulletArray.recycle(EnemyBullet);
-	                curBullet.setBullet(x + 125, y + 120, 250, angle % 360,
-														15, range, SHOTGUN, this);
-	                angle += 6;
+	                curBullet.setBullet(x + 350, y + 125, 250, angle % 360, 10, range, SHOTGUN, this);
+	                angle += 18;
 	            }
 	        }
 		}
-		if (shoot_count > 67) {
+		// stop a bit after shoot
+		if (shoot_count > 180) {
 			shoot_count = 0;
 			brain.activeState = judgeState;
 		}
+
+		if (facing == FlxObject.LEFT) {
+			// facing left
+			if (getMidpoint().x - playerPos.x <= attack_dist) {
+				brain.activeState = attack_start;
+			}
+		} else {
+			// facing right
+			if (playerPos.x - getMidpoint().x <= attack_dist) {
+				brain.activeState = attack_start;
+			}
+		}
 	}
 
-/*
 	public function catch_start(elapsed:Float):Void {
-		FlxVelocity.moveTowardsPoint(catcher, playerPos, Std.int(speed));
-		brain.activeState = catch_process;
+		//trace("catch start!!!!!!!!!!!!!!!!!!!");
+		velocity.x = 0;
+		catch_count ++;
+
+		// play animation: emit hand
+		if (catch_count < 60) {
+			animation.play("catch_start");
+
+		} else if (catch_count == 60) {
+			animation.finish();
+
+			// hand moves to catch pos
+			_hand.visible = true;
+			_in_catch = true;
+			moveTowardsPoint(_hand, _hand.getMidpoint(), _catch_pos, Std.int(speed * 15));
+		} else {
+
+			// catch the player and return
+			if (FlxG.overlap(_player, _hand)) {
+				_catch_player = true;
+				_player.freeze = true;
+				catch_count = 0;
+				brain.activeState = catch_process;
+				return;
+			}
+
+			// return when reached point and not catch the player
+			var point1 = _hand.getMidpoint();
+			if (dist(_catch_pos, point1) < 10) {
+				catch_count = 0;
+				_hand.velocity.x = 0;
+				_hand.velocity.y = 0;
+				brain.activeState = catch_stop;
+			}
+		}
+		
 	}
 
-	public function dist(p1:FlxPoint, p2:FlxPoint):Float {
-		return Math.sqrt(Math.pow((p1.x-p2.x), 2) + Math.pow((p1.y-p2.y), 2));
+	public function catch_stop(elapsed:Float):Void {
+		catch_count++;
+		if (catch_count > 180) {
+			brain.activeState = catch_process;
+			catch_count = 0;
+		}
 	}
+
+	
 
 	public function catch_process(elapsed:Float):Void {
-		var point1 = catcher.getMidpoint();
-		if (dist(point1, playerPos) < 10) {
-			trace("catched>>>>>>>>>>>>.");
-			FlxVelocity.moveTowardsPoint(catcher, new FlxPoint(x, y), Std.int(speed));
+		_in_catch = true;
+		var point1 = _hand.getMidpoint();
+		//trace("catched>>>>>>>>>>>>.");
+		// if catched, player moves with the hand
+		if (_catch_player) {
+			_player.freeze = true;
+			_player.x = _hand.x;
+			_player.y = _hand.y;
+		} else {
+			if (FlxG.overlap(_player, _hand)) {
+				//_player.freeze = true;
+				_catch_player = true;
+			}
+		}
+		var point2 = new FlxPoint(x, y);
+		if (facing == FlxObject.LEFT) {
+			moveTowardsPoint(_hand, _hand.getMidpoint(), new FlxPoint(x - 200, y + 125), Std.int(speed * 12));
+			point2.x = x - 200;
+			point2.y = y + 125;
+		} else {
+			moveTowardsPoint(_hand, _hand.getMidpoint(), new FlxPoint(x + 450, y + 125), Std.int(speed * 12));
+			point2.x = x + 450;
+			point2.y = y + 125;
+		}
+		if (dist(point1, point2) < 20) {
+			_player.freeze = false;
 			brain.activeState = catch_back;
+			_in_catch = false;
+			_catch_player = false;
 		}
 	}
 
 	public function catch_back(elapsed:Float):Void {
-		brain.activeState = walk;
-	}
-	*/
-
-	/*
-
-
-
-	// the state from raising weapon to run towards player
-	public function dash(elapsed:Float):Void {
-		//trace("dash!!!!!!!!!!!!!!!");
-		if (facing == FlxObject.LEFT) {
-			// facing left
-			if (getMidpoint().x - playerPos.x <= 100) {
-				brain.activeState = dash_attack;
-			}
-		} else {
-			// facing right
-			if (playerPos.x - getMidpoint().x <= 100) {
-				brain.activeState = dash_attack;
-			}
-		}
-		
-		dash_count++;
-		if (dash_count < SECOND * 7) {
-			// raising the sword
-			velocity.x = 0;
-			animation.play("raise");
-		} else {
-			animation.play("lr");
-			//velocity.set(speed * 0.5, 0);
-			if (facing == FlxObject.LEFT) {
-				velocity.x = -speed * 11;
-			} else if (facing == FlxObject.RIGHT) {
-				velocity.x = speed * 11;
-			}
-			//FlxVelocity.moveTowardsPoint(this, playerPos, Std.int(speed));
-		}
-		
-
-	}
-
-	// the state of attacking until stuck, high damage attack
-	public function dash_attack(elapsed:Float):Void {
-		//trace("stuck_attack!!!!!!!!");
-		animation.play("stuck_attack");
-		dash_count = 0;
-		velocity.x = 0;
-		stuck_count++;
-		if (stuck_count == 15) {
-			var curBullet:EnemyBullet = bulletArray.recycle(EnemyBullet);
-			curBullet.setBullet(x, y + 120, 250, facing, 30, range, Melee);
-		}
-		if (stuck_count > 30) {
-			stuck_count = 0;
-			brain.activeState = stuck;
-		}
-	}
-
-	// the state of stuck on the ground
-	public function stuck(elapsed:Float):Void {
-		//trace("stuck!!!!!!!!");
-		animation.play("stuck");
-		stuck_count++;
-		if (stuck_count > 120) {
-			stuck_count = 0;
-			brain.activeState = stuck_stop;
-		}
-	}
-
-	// the state after stuck: pick up weapon
-	public function stuck_stop(elapsed:Float):Void {
-		//trace("stuck_stop!!!!!!!!");
-		animation.play("stuck_stop");
-		stuck_count++;
-		if (stuck_count > 60) {
-			stuck_count = 0;
-			brain.activeState = turn;
-		}
-	}
-
-	// the state of attack in short dist: fast, low damaage
-	public function attack(elapsed:Float):Void {
-		// attack the enemy
-		//trace("attack!!!!!!!1");
-		animation.play("attack");
-		
-		attack_count++;
-		if (attack_count == 54) {
-			var curBullet:EnemyBullet = bulletArray.recycle(EnemyBullet);
-			curBullet.setBullet(x, y + 120, 250, facing, 15, range, Melee);
-		}
-		if (attack_count > 67) {
+		//trace("catch end!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		catch_count ++;
+		animation.play("catch_end");
+		_hand.visible = false;
+		if (catch_count > 60) {
 			animation.finish();
-			attack_count = 0;
 			brain.activeState = judgeState;
+			catch_count = 0;
 		}
 	}
 
@@ -332,7 +385,34 @@ class Boss2 extends Enemy {
 			//hurtTimer = 0;
 		//}
 		health -= damage;
+		color = 0xff0000;
+		hurtColorTimer = 0.0;
 	}
-	*/
+
+	// helper funcitons
+	private function dist(p1:FlxPoint, p2:FlxPoint):Float {
+		return Math.sqrt(Math.pow((p1.x-p2.x), 2) + Math.pow((p1.y-p2.y), 2));
+	}
+
+	private function moveTowardsPoint(object:FlxSprite, Source:FlxPoint, Target:FlxPoint, Speed:Float):Void
+	{
+		var a:Float = angleBetweenPoint(Source, Target);
+		
+		object.velocity.x = Math.cos(a) * Speed;
+		object.velocity.y = Math.sin(a) * Speed;
+		
+		Target.putWeak();
+		Source.putWeak();
+	}
+
+	private function angleBetweenPoint(Source:FlxPoint, Target:FlxPoint):Float
+	{
+		var dx:Float = (Target.x) - (Source.x);
+		var dy:Float = (Target.y) - (Source.y);
+		
+		Target.putWeak();
+		
+		return Math.atan2(dy, dx);
+	}
 	
 }

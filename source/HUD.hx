@@ -41,6 +41,8 @@ class HUD extends FlxTypedGroup<FlxSprite> {
         _txtkAmmo = new FlxText(FlxG.width - 115, 55, 0, "", 24);
         _txtjAmmo.setFormat(AssetPaths.FONT, _txtjAmmo.size);
         _txtkAmmo.setFormat(AssetPaths.FONT, _txtkAmmo.size);
+		_txtjAmmo.setBorderStyle(SHADOW, FlxColor.GRAY);
+		_txtkAmmo.setBorderStyle(SHADOW, FlxColor.GRAY);
 
          //health icon
          _sprHealth = new FlxSprite(35, 4, AssetPaths.health__png);
@@ -83,15 +85,19 @@ class HUD extends FlxTypedGroup<FlxSprite> {
         //damage
         _damage1 = new FlxText(_player.x + 30, _player.y - 50, 0, "1", 30);
         _damage1.setFormat(AssetPaths.FONT, _damage1.size, FlxColor.RED);
+		_damage1.setBorderStyle(SHADOW, FlxColor.GRAY);
         _damage1.visible = false;
         _damage2 = new FlxText(_player.x + 30, _player.y - 50, 0, "2", 30);
         _damage2.setFormat(AssetPaths.FONT, _damage2.size, FlxColor.RED);
+		_damage2.setBorderStyle(SHADOW, FlxColor.GRAY);
         _damage2.visible = false;
 		_damage3 = new FlxText(_player.x + 30, _player.y - 50, 0, "3", 30);
         _damage3.setFormat(AssetPaths.FONT, _damage3.size, FlxColor.RED);
+		_damage3.setBorderStyle(SHADOW, FlxColor.GRAY);
         _damage3.visible = false;
 		_damage4 = new FlxText(_player.x + 30, _player.y - 50, 0, "4", 30);
         _damage4.setFormat(AssetPaths.FONT, _damage3.size, FlxColor.RED);
+		_damage4.setBorderStyle(SHADOW, FlxColor.GRAY);
         _damage4.visible = false;
         dmgCounter = 0;
          

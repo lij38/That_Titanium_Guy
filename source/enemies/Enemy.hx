@@ -116,8 +116,8 @@ class Enemy extends FlxSprite {
 				coinsGroup.add(rifle);
 				dropItem = true;
 			} else if (id != 34 && !dropCoin) {
-				var lowB:Int = level * 2 + 1;
-				var upB:Int = level * 2 + 3;
+				var lowB:Int = level * 4 + 2;
+				var upB:Int = level * 4 + 6;
 				if (type == BOSS) {
 					var rx:Float = Math.random() * 600 - 75;
 					if (coinCount < 50 && rx < 75) {

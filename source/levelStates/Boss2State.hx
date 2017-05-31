@@ -26,11 +26,11 @@ class Boss2State extends PlayState {
 		_map = new TiledMap(AssetPaths.boss2__tmx);
 		_plat = new FlxTilemap();
 		_plat.loadMapFromArray(cast(_map.getLayer("foreground"), TiledTileLayer).tileArray, _map.width, _map.height, 
-			AssetPaths.boss1tile__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 2721, 1, 1);
+			AssetPaths.boss2tile__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 4626, 1, 1);
 
 		_background = new FlxTilemap();
 		_background.loadMapFromArray(cast(_map.getLayer("background"), TiledTileLayer).tileArray, _map.width, _map.height, 
-			AssetPaths.boss1background__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 2722);
+			AssetPaths.boss2bg__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 4628);
 
 		_plat.follow();
 		_background.follow();
@@ -45,7 +45,9 @@ class Boss2State extends PlayState {
 	}
 
 	override public function update(elapsed:Float):Void {
+
 		super.update(elapsed);
+		//playerPos.copyFrom(_player.getMidpoint());
 	}
 
 	private function bulletsHitEnemy(bullet:Bullet, small_boss:Boss1):Void {

@@ -28,6 +28,7 @@ class PlayState extends FlxState {
 	private var _boss_hud:Boss1HUD;
 	private var _is_boss:Bool = false;
 	private var _exit:Exit;
+	private var indicator:FlxText;
 
 	private var _map:TiledMap;
     private var _background:FlxTilemap;
@@ -66,6 +67,9 @@ class PlayState extends FlxState {
         playerBullets = new FlxTypedGroup<Bullet>();
         _player = new Player(playerBullets, GRAVITY);
 		_exit = new Exit();
+		indicator = new FlxText(0, 0, 200, "W to Exit", 19);
+        indicator.setFormat(AssetPaths.FONT, indicator.size, FlxColor.WHITE, CENTER);
+		indicator.setBorderStyle(OUTLINE, FlxColor.BLACK, 1);
 		var tmpMap:TiledObjectLayer = cast _map.getLayer("player");
         for (e in tmpMap.objects) {
             placeEntities(e.name, e.xmlData.x);
@@ -97,6 +101,7 @@ class PlayState extends FlxState {
         add(_background);
         add(_plat);
 		add(_exit);
+		add(indicator);
 		add(enemiesBullets);
         add(enemiesGroup);
 		add(coinsGroup);
@@ -255,7 +260,7 @@ class PlayState extends FlxState {
 
 	private function updateEnemyHud() {
 		for(en in _enemiesMap.keys()) {
-			if(en.health > 0){
+			if(en.exists){
 				_enemiesMap.get(en).updateXY();
 			} else {
 				_enemiesMap.get(en).destroy();
@@ -274,6 +279,9 @@ class PlayState extends FlxState {
 		} else if (entityName == "END") {
 			_exit.x = x;
 			_exit.y = y;
+			indicator.x = x - 45;
+			indicator.y = y - 30;
+
         }
 
 	}
@@ -299,7 +307,7 @@ class PlayState extends FlxState {
 				boss.hurt(boss.health);
 			}
 		}  else if (entityName == "boss2"){
-			boss2 = new Boss2(x, y, enId, enemiesBullets, coinsGroup, 0, _hand);
+			boss2 = new Boss2(x, y, enId, enemiesBullets, coinsGroup, 0, _hand, _player);
 			enemiesGroup.add(boss2);
 			if (boss2.health > 0) {
 				_boss_hud = new Boss1HUD(boss2);
@@ -319,10 +327,10 @@ class PlayState extends FlxState {
 			}
 			enemiesGroup.add(en);
 			if (en.health > 0) {
-				var eh:EnemyHUD;
-				eh = new EnemyHUD(en);
-				_enemiesMap.set(en, eh);
-				_enemiesHUD.add(eh);
+				//var eh:EnemyHUD;
+				//eh = new EnemyHUD(en);
+				//_enemiesMap.set(en, eh);
+				//_enemiesHUD.add(eh);
 			} else {
 				en.hurt(en.health);
 			}
@@ -395,6 +403,11 @@ class PlayState extends FlxState {
 				_player.sndShield.play();
 			}
 			if (!_is_boss) {
+				if (!_enemiesMap.exists(enemy)) {
+					var eh:EnemyHUD = new EnemyHUD(enemy);
+					_enemiesMap.set(enemy, eh);
+					_enemiesHUD.add(eh);
+				}
 				_enemiesMap.get(enemy).updateDamage(dmg);
 			}
 			enemy.hurt(dmg);

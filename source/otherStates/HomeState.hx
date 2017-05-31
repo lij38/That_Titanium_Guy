@@ -96,6 +96,7 @@ class HomeState extends FlxState {
         _bmtxt.setFormat(AssetPaths.FONT, 24);
         _bmtxt.visible = false;
         add(_bmtxt);
+        
 
 		var tmpMap:TiledObjectLayer = cast _map.getLayer("entities");
 		 for (e in tmpMap.objects)
@@ -151,12 +152,20 @@ class HomeState extends FlxState {
 		 	FlxG.sound.playMusic(AssetPaths.dramatic__mp3);
 		 }
 
+		 //Main.SAVE.data.levelCompleted = 4;
+		 if (Main.SAVE.data.levelCompleted != null && Main.SAVE.data.levelCompleted > 3) {
+		 	_blackmarket.visible = true;
+        	_blackmarket.active = true;
+		 }
+
+/*
 		 // pause part and whole pause menu
 		_pause = false;
 
 		_menu_bg = new FlxSprite(0, 0);
 		_menu_bg.makeGraphic(800, 600, FlxColor.BLACK);
 		_menu_bg.scrollFactor.set(0.0);
+
 
 		_homebutton = new ImageButton(300, 200, clickHome);
 		_homebutton.loadGraphic(AssetPaths.gohome__png, false, 200, 40);
@@ -167,6 +176,8 @@ class HomeState extends FlxState {
 		_resumebutton = new ImageButton(300, 420, clickResume);
 		_resumebutton.loadGraphic(AssetPaths.resume__png, false, 200, 40);
 		_resumebutton.scrollFactor.set(0.0);
+
+		
 		
 		_pausebutton = new FlxText(31, 100, 600, "Press ESC to PAUSE", 20);
 		_pausebutton.setFormat(AssetPaths.FONT, _pausebutton.size);
@@ -177,18 +188,19 @@ class HomeState extends FlxState {
 		_pausetxt.setFormat(AssetPaths.FONT, _pausetxt.size);
 		_pausetxt.scrollFactor.set(0.0);
 		addTopLayer();
-
+		*/
+		
 		 //Main.SAVE.data.levelCompleted = 4;
 		 if (Main.SAVE.data.levelCompleted >= 3) {
 		 	_blackmarket.visible = true;
         	_blackmarket.active = true;
 		 }
-
 		 super.create();
 		
 	}
 
 	override public function update(elapsed:Float):Void {
+		/*
 		if (FlxG.keys.justPressed.ESCAPE) {
 			_pause = !_pause;
 		}
@@ -201,6 +213,7 @@ class HomeState extends FlxState {
 		} else {
 			disableButtons();
 		}
+		*/
 		
 		if (!tutorial_map) {
 			if (FlxG.keys.anyPressed([M])) {

@@ -43,16 +43,10 @@ class MenuState extends FlxState {
 		_btnCredits.loadGraphic(AssetPaths.creditsbtn__png, false, 200, 40);
 		
 		//_btnContinue.screenCenter();
-		 spritesheet = new FlxSprite(0, 0);
+		 //spritesheet = new FlxSprite(0, 0);
 
 		/* spritesheet.loadGraphic(AssetPaths.boss2__png, true, 420, 272);
 		 spritesheet.animation.add("lr", [4, 5, 6, 7, 8, 9], 4, true);
-		// //spritesheet.animation.add("stop", [0], 1, false);
-		 add(spritesheet);
-		spritesheet.scale.set(0.8, 0.8);
-		 spritesheet.setSize(120, 186);
-		//spritesheet.offset.set(60, 20);
-
 		spritesheet.animation.play("lr");*/
 		
 		//confirm screen
@@ -142,7 +136,7 @@ class MenuState extends FlxState {
 			} else {
 				//FlxG.switchState(new WorkshopState());
 				//FlxG.switchState(new MarketState());
-				FlxG.sound.music.destroy();
+				//FlxG.sound.music.destroy();
 				FlxG.switchState(new HomeState());
 			}
 		});
