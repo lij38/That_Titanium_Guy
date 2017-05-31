@@ -64,6 +64,8 @@ class Player extends FlxSprite {
 	public var sndShotgunReload:FlxSound;
 	private var sndPotion:FlxSound;
 
+	public var freeze:Bool;
+
 	public function new(?X:Float = 0, ?Y:Float = 0,
 						playerBulletArray:FlxTypedGroup<Bullet>,
 						gravity:Float) {
@@ -139,9 +141,16 @@ class Player extends FlxSprite {
 		maxHealth = health;
 		shielding = false;
 		sndPotion = FlxG.sound.load(AssetPaths.potion__wav);
+
+		freeze = false;
 	}
 	
 	override public function update(elapsed:Float):Void {
+		if (freeze) {
+			animation.play("Stop");
+			return;
+		}
+
 		if(jWeaponTimer > -0.1) {
 			jWeaponTimer += elapsed;
 		}
