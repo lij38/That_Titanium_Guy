@@ -33,14 +33,14 @@ class Level3State extends PlayState {
 
         //load clouds
         _ice.loadMapFromArray(cast(_map.getLayer("ice"), TiledTileLayer).tileArray, _map.width,
-            _map.height, AssetPaths.IceBox__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 3505, 3504, 3505);
+            _map.height, AssetPaths.IceBox__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 3505, 3504, 3541);
         
         _background.setTileProperties(1, FlxObject.NONE);
         _plat.setTileProperties(3469, FlxObject.ANY);
         // for (i in 3505...3541) {
         //     _ice.setTileProperties(i, FlxObject.ANY);
         // }
-        _ice.setTileProperties(3505, FlxObject.ANY);
+        _ice.setTileProperties(3505, FlxObject.NONE);
         _background.follow();
 		_plat.follow();
         _ice.follow();
@@ -61,12 +61,12 @@ class Level3State extends PlayState {
     override public function update(elapsed:Float):Void {
         super.update(elapsed);
         //FlxG.overlap(_player, _ice, slide);
-        FlxG.collide(_player, _ice);
-        FlxG.collide(enemiesGroup, _ice);
-		FlxG.collide(_ice, playerBullets, bulletsHitIce);
-		FlxG.collide(_ice, enemiesBullets, enemiesBulletsHitIce);
-        FlxG.collide(_ice, coinsGroup);
-        
+        //FlxG.collide(_player, _ice);
+        //FlxG.collide(enemiesGroup, _ice);
+		//FlxG.collide(_ice, playerBullets, bulletsHitIce);
+		//FlxG.collide(_ice, enemiesBullets, enemiesBulletsHitIce);
+        //FlxG.collide(_ice, coinsGroup);
+
 
         if (_player.isTouching(FlxObject.DOWN)){
             if ((_player.x >= 38 * 15 && _player.x <= 153 * 15) 

@@ -224,4 +224,6 @@ class HUD extends FlxTypedGroup<FlxSprite> {
 	 private function getRandomOffset():Float {
 		return Math.random() * 10 - 5;
 	 }
+	 
+	 
 }
