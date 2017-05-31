@@ -27,6 +27,7 @@ class PlayState extends FlxState {
 	private var _hud:HUD;
 	private var _boss_hud:Boss1HUD;
 	private var _is_boss:Bool = false;
+	private var _is_boss2:Bool = false;
 	private var _exit:Exit;
 	private var indicator:FlxText;
 
@@ -109,7 +110,10 @@ class PlayState extends FlxState {
         add(playerBullets);
 		add(_enemiesHUD);
 		add(_player);
-		add(_hand);
+		
+		if (_is_boss2) {
+			add(_hand);
+		}
 
 		if (_is_boss) {
 			add(_boss_hud);

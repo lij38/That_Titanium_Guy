@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="125" height="38" tilewidth="16" tileheight="16" nextobjectid="3">
  <tileset firstgid="1" name="boss2bg" tilewidth="16" tileheight="16" tilecount="4625" columns="125">
-  <image source="../images/boss2/boss2bg.png" width="2000" height="600"/>
+  <image source="../images/boss2bg/boss2bg.png" width="2000" height="600"/>
  </tileset>
  <tileset firstgid="4626" name="boss2tile" tilewidth="16" tileheight="16" tilecount="6693" columns="97">
-  <image source="../images/boss2/boss2tile.png" width="1562" height="1114"/>
+  <image source="../images/boss2bg/boss2tile.png" width="1562" height="1114"/>
  </tileset>
  <layer name="background" width="125" height="38">
   <data encoding="csv">
