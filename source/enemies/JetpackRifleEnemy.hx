@@ -31,10 +31,10 @@ class JetpackRifleEnemy extends Enemy {
 		this.level = level;
 		hurtTime = 0.5;
 		
-		loadGraphic(AssetPaths.jp_enemy_rifle__png, true, 531, 356);
-		scale.set(0.35, 0.35);
+		loadGraphic(AssetPaths.jp_enemy_rifle__png, true, 188, 126);
+		//scale.set(0.35, 0.35);
 		setSize(35, 120);
-		offset.set(243, 115);
+		offset.set(76, 0);
 		
 		setFacingFlip(FlxObject.LEFT, false, false);
 		setFacingFlip(FlxObject.RIGHT, true, false);

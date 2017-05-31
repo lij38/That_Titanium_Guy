@@ -30,10 +30,10 @@ class JetpackShieldEnemy extends Enemy {
 		this.level = level;
 		hurtTime = 0.5;
 		
-		loadGraphic(AssetPaths.jp_enemy_shield__png, true, 602, 453);
-		scale.set(0.35, 0.35);
+		loadGraphic(AssetPaths.jp_enemy_shield__png, true, 214, 161);
+		//scale.set(0.35, 0.35);
 		setSize(35, 120);
-		offset.set(282, 162);
+		offset.set(90, 18);
 		
 		setFacingFlip(FlxObject.LEFT, false, false);
 		setFacingFlip(FlxObject.RIGHT, true, false);
