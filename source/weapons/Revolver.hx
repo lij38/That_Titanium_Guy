@@ -13,7 +13,7 @@ class Revolver extends Weapon {
             this.damage = Main.SAVE.data.rvDmg;
         }
         this.type = "ballistic";
-        this.range = 1000;
+        this.range = 1500;
         this.fireRate = 0.0;
         this.speed = 2000;
         this.bulletArray = playerBulletArray;

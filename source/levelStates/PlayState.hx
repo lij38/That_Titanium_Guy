@@ -248,11 +248,12 @@ class PlayState extends FlxState {
 		}
 		Main.SAVE.data.money = _player.money;
 		Main.SAVE.data.levelMoney = levelMoney;
-		Main.LOGGER.logLevelEnd({won: true});
 		logged = true;
 		Main.SAVE.data.dmgTaken = _player.getDamageTaken();
 		Main.SAVE.data.timeTaken = (Date.now().getTime() - startTime) / 1000;
 		Main.SAVE.data.enemiesKilled = numEnemies - enemiesGroup.countLiving();
+		Main.LOGGER.logLevelEnd({won: true, dmgTaken: Main.SAVE.data.dmgTaken, timeTaken: Main.SAVE.data.timeTaken,
+			enemiesKilled:Main.SAVE.data.enemiesKilled, money: _player.money});
 		Main.SAVE.flush();
 		trace("damage taken: " + Main.SAVE.data.dmgTaken);
 		trace("time: " + Main.SAVE.data.timeTaken);

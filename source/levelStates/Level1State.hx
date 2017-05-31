@@ -57,7 +57,7 @@ class Level1State extends PlayState {
 		}
 
         super.create();
-        Main.LOGGER.logLevelStart(2);
+        Main.LOGGER.logLevelStart(LEVELID);
         add(_keys);
 		add(texts);
 		add(_player);

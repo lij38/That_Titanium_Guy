@@ -177,7 +177,7 @@ class WorkshopState extends FlxState {
 		}
         Main.SAVE.data.curConfig = curConfig;
         Main.SAVE.flush();
-        Main.LOGGER.logLevelEnd({won: true});
+        Main.LOGGER.logLevelEnd({won: true, curConfig:curConfig});
         FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
 			FlxG.switchState(new HomeState());
 		});

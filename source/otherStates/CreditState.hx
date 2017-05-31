@@ -19,9 +19,9 @@ class CreditState extends FlxState
         _credit = new FlxSprite(0, 0);
         _credit.loadGraphic(AssetPaths.credits__png, false, 800, 600);
         add(_credit);
-        _txt = new FlxText(230, 500, 500, "CLICK or PRESS ANY KEY to return to MENU", 20);
-        _txt.setFormat(AssetPaths.FONT, _txt.size);
-        add(_txt);
+        // _txt = new FlxText(230, 500, 500, "CLICK or PRESS ANY KEY to return to MENU", 20);
+        // _txt.setFormat(AssetPaths.FONT, _txt.size);
+        // add(_txt);
 
 		FlxG.sound.playMusic(AssetPaths.introspection__mp3);
         super.create(); 

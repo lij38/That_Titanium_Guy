@@ -20,7 +20,7 @@ class Rifle extends Weapon {
         } else {
             this.fireRate = Main.SAVE.data.rRate;
         }
-        this.range = 1000;
+        this.range = 1500;
         this.speed = 1800;
         this.bulletArray = playerBulletArray;
 

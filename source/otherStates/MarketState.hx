@@ -1133,6 +1133,7 @@ class MarketState extends FlxState {
             maxHcost = cast(maxHcost * 1.2, Int);
             Main.SAVE.data.maxHcost = maxHcost;
             Main.SAVE.data.maxHnum = maxHnum;
+            Main.LOGGER.logLevelAction(1);
         }
         killTrans();
     }
@@ -1145,6 +1146,7 @@ class MarketState extends FlxState {
             jfcost = cast(jfcost * 1.1, Int);
             Main.SAVE.data.jfcost = jfcost;
             Main.SAVE.data.jfnum = jfnum;
+            Main.LOGGER.logLevelAction(2);
         }
         killTrans();
     }
@@ -1153,10 +1155,13 @@ class MarketState extends FlxState {
         if(money > pcost && pnum > 0) {
             money -= pcost;
             pnum--;
-            Main.SAVE.data.potionCount += 1;
+            if(Main.SAVE.data.potionCount != null) {
+                Main.SAVE.data.potionCount += 1;
+            }
             pcost = cast(pcost * 1.1, Int);
             Main.SAVE.data.pcost = pcost;
             Main.SAVE.data.pnum = pnum;
+            Main.LOGGER.logLevelAction(3);
         }
         killTrans();
     }
@@ -1169,6 +1174,7 @@ class MarketState extends FlxState {
             rRtimeCost = cast(rRtimeCost * 1.1, Int);
             Main.SAVE.data.rRtimeCost = rRtimeCost;
             Main.SAVE.data.rRtimeNum = rRtimeNum;
+            Main.LOGGER.logLevelAction(4);
         }
         killTrans();
     }
@@ -1181,6 +1187,7 @@ class MarketState extends FlxState {
             rMagCost = cast(rMagCost * 1.1, Int);
             Main.SAVE.data.rMagCost = rMagCost;
             Main.SAVE.data.rMagNum = rMagNum;
+            Main.LOGGER.logLevelAction(5);
         }
         killTrans();
     }
@@ -1193,6 +1200,7 @@ class MarketState extends FlxState {
             rDmgCost = cast(rDmgCost * 1.1, Int);
             Main.SAVE.data.rDmgCost = rDmgCost;
             Main.SAVE.data.rDmgNum = rDmgNum;
+            Main.LOGGER.logLevelAction(6);
         }
         killTrans();
     }
@@ -1205,6 +1213,7 @@ class MarketState extends FlxState {
             rRateCost = cast(rRateCost * 1.1, Int);
             Main.SAVE.data.rRateCost = rRateCost;
             Main.SAVE.data.rRateNum = rRateNum;
+            Main.LOGGER.logLevelAction(7);
         }
         killTrans();
     }
@@ -1217,6 +1226,7 @@ class MarketState extends FlxState {
             dsCost = cast(dsCost * 1.1, Int);
             Main.SAVE.data.dsCost = dsCost;
             Main.SAVE.data.dsNum = dsNum;
+            Main.LOGGER.logLevelAction(8);
         }
         killTrans();
     }
@@ -1229,6 +1239,7 @@ class MarketState extends FlxState {
             swDmgCost = cast(swDmgCost * 1.1, Int);
             Main.SAVE.data.swDmgCost = swDmgCost;
             Main.SAVE.data.swDmgNum = swDmgNum;
+            Main.LOGGER.logLevelAction(9);
         }
         killTrans();
     }
@@ -1239,6 +1250,7 @@ class MarketState extends FlxState {
             kiNum--;
             Main.SAVE.data.ki = true;
             Main.SAVE.data.kiNum = kiNum;
+            Main.LOGGER.logLevelAction(10);
         }
         killTrans();
     }
@@ -1249,6 +1261,7 @@ class MarketState extends FlxState {
             wwNum--;
             Main.SAVE.data.ww = true;
             Main.SAVE.data.wwNum = wwNum;
+            Main.LOGGER.logLevelAction(11);
         }
         killTrans();
     }
@@ -1265,6 +1278,7 @@ class MarketState extends FlxState {
             spikeCost = cast(spikeCost * 1.1, Int);
             Main.SAVE.data.spikeCost = spikeCost;
             Main.SAVE.data.spikeNum = spikeNum;
+            Main.LOGGER.logLevelAction(12);
         }
         killTrans();
     }
@@ -1281,6 +1295,7 @@ class MarketState extends FlxState {
             reflectCost = cast(reflectCost * 1.1, Int);
             Main.SAVE.data.reflectCost = reflectCost;
             Main.SAVE.data.reflectNum = reflectNum;
+            Main.LOGGER.logLevelAction(13);
         }
         killTrans();
     }
@@ -1297,6 +1312,7 @@ class MarketState extends FlxState {
             dazeCost = cast(dazeCost * 1.1, Int);
             Main.SAVE.data.dazeCost = dazeCost;
             Main.SAVE.data.dazeNum = dazeNum;
+            Main.LOGGER.logLevelAction(14);
         }
         killTrans();
     }
@@ -1309,6 +1325,7 @@ class MarketState extends FlxState {
             sgRtimeCost = cast(sgRtimeCost * 1.1, Int);
             Main.SAVE.data.sgRtimeCost = sgRtimeCost;
             Main.SAVE.data.sgRtimeNum = sgRtimeNum;
+            Main.LOGGER.logLevelAction(15);
         }
         killTrans();
     }
@@ -1321,6 +1338,7 @@ class MarketState extends FlxState {
             sgMagCost = cast(sgMagCost * 1.1, Int);
             Main.SAVE.data.sgMagCost = sgMagCost;
             Main.SAVE.data.sgMagNum = sgMagNum;
+            Main.LOGGER.logLevelAction(16);
         }
         killTrans();
     }
@@ -1333,6 +1351,7 @@ class MarketState extends FlxState {
             sgDmgCost = cast(sgDmgCost * 1.1, Int);
             Main.SAVE.data.sgDmgCost = sgDmgCost;
             Main.SAVE.data.sgDmgNum = sgDmgNum;
+            Main.LOGGER.logLevelAction(17);
         }
         killTrans();
     }
@@ -1345,6 +1364,7 @@ class MarketState extends FlxState {
             sgRateCost = cast(sgRateCost * 1.1, Int);
             Main.SAVE.data.sgRateCost = sgRateCost;
             Main.SAVE.data.sgRateNum = sgRateNum;
+            Main.LOGGER.logLevelAction(18);
         }
         killTrans();
     }
@@ -1357,6 +1377,7 @@ class MarketState extends FlxState {
             pushBackCost = cast(pushBackCost * 1.1, Int);
             Main.SAVE.data.pushBackCost = pushBackCost;
             Main.SAVE.data.pushBackNum = pushBackNum;
+            Main.LOGGER.logLevelAction(19);
         }
         killTrans();
     }
@@ -1369,6 +1390,7 @@ class MarketState extends FlxState {
             rvRtimeCost = cast(rvRtimeCost * 1.1, Int);
             Main.SAVE.data.rvRtimeCost = rvRtimeCost;
             Main.SAVE.data.rvRtimeNum = rvRtimeNum;
+            Main.LOGGER.logLevelAction(20);
         }
         killTrans();
     }
@@ -1381,6 +1403,7 @@ class MarketState extends FlxState {
             rvMagCost = cast(rvMagCost * 1.1, Int);
             Main.SAVE.data.rvMagCost = rvMagCost;
             Main.SAVE.data.rvMagNum = rvMagNum;
+            Main.LOGGER.logLevelAction(21);
         }
         killTrans();
     }
@@ -1393,6 +1416,7 @@ class MarketState extends FlxState {
             rvDmgCost = cast(rvDmgCost * 1.1, Int);
             Main.SAVE.data.rvDmgCost = rvDmgCost;
             Main.SAVE.data.rvDmgNum = rvDmgNum;
+            Main.LOGGER.logLevelAction(22);
         }
         killTrans();
     }
@@ -1405,6 +1429,7 @@ class MarketState extends FlxState {
             chargeCost = cast(chargeCost * 1.1, Int);
             Main.SAVE.data.chargeCost = chargeCost;
             Main.SAVE.data.chargeNum = chargeNum;
+            Main.LOGGER.logLevelAction(23);
         }
         killTrans();
     }

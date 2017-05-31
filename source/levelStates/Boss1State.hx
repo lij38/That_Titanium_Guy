@@ -41,6 +41,7 @@ class Boss1State extends PlayState {
 		add(_hud);
 
 		addTopLayer();
+		Main.LOGGER.logLevelStart(LEVELID);
 	}
 
 	override public function update(elapsed:Float):Void {

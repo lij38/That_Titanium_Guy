@@ -2,6 +2,21 @@
 mysql -h prd.db.centerforgamescience.com -u gc_fullmecha -p -D cgs_gc_17sp_fullmecha_log 
 Uzf7Puwx
 
+		--info
+-- LEVELIDS
+-- 0:workshop
+-- -1:market
+-- 1:tutoria
+-- 2:level1
+-- 3:boss1
+-- 4:level2
+-- 5:level3
+-- 6:boss2
+
+-- ACTIONIDS:
+-- 0:change weapon config
+-- 1-23: upgrades
+
 --count of unique users
 select count(distinct uid) from player_quests_log where cid = ?;
 

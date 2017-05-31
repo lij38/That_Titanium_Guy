@@ -87,7 +87,6 @@ class Player extends FlxSprite {
 			jetpackField = jetpackFieldMax;
 		}
 		//potions
-		trace("potion: " + Std.string( Main.SAVE.data.potionCount == 0));
 		if(Main.SAVE.data.potionCount == null || Main.SAVE.data.potionCount == 0) {
 			potionCount = 0;
 			potionSlot = false;
@@ -192,6 +191,7 @@ class Player extends FlxSprite {
 		
 		//change weapon configuration
 		if(FlxG.keys.anyJustPressed([Q])) {
+			Main.LOGGER.logLevelAction(0);
 			changeWeaponConfig();
 		}
 
