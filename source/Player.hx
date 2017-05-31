@@ -88,6 +88,7 @@ class Player extends FlxSprite {
 		if(Main.SAVE.data.potionCount == null || Main.SAVE.data.potionCount == 0) {
 			potionCount = 0;
 			potionSlot = false;
+			Main.SAVE.data.potionCount = 0;
 		} else {
 			potionSlot = true;
 			potionCount = Main.SAVE.data.potionCount;
@@ -350,7 +351,7 @@ class Player extends FlxSprite {
 		// animation to match their facing
 		if (isTumbling()) {
 			animation.play("tumble");
-		} else if (jetpack) {
+		} else if (jetpack && !isSwording()) {
 			animation.play(curConfig + "JP");
 			if(isShielding()) {
 				animation.play(curConfig + "JPShield");
@@ -597,7 +598,7 @@ class Player extends FlxSprite {
 	}
 
 	private function fireWeapon(w: Weapon):Bool {
-		if(curConfig == "ds" && swordNum == 2) {
+		if(curConfig == "ds" && (cast(jWeapon, Sword).isDs() || cast(kWeapon, Sword).isDs())) {
 			swordTimer = 0;
 			if (facing == FlxObject.NONE) {
 				jWeapon.attack(getMidpoint().x, y, faced);

@@ -19,7 +19,7 @@ class Sword extends Weapon {
         }
         //double slash proficiency
         if(Main.SAVE.data.ds == null) {
-            this.dsCutOff = 20;
+            this.dsCutOff = 10;
             Main.SAVE.data.ds = this.dsCutOff;
         } else {
             this.dsCutOff = Main.SAVE.data.ds;

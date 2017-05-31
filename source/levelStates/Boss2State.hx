@@ -20,7 +20,7 @@ class Boss2State extends PlayState {
 	//private var _boss_hud:Boss1HUD;
 	
 	override public function create():Void {
-		LEVELID = 3;
+		LEVELID = 6;
 		_is_boss = true;
 		
 		_map = new TiledMap(AssetPaths.boss2__tmx);
@@ -42,6 +42,7 @@ class Boss2State extends PlayState {
 
 		super.create();
 		add(_hud);
+		Main.LOGGER.logLevelStart(LEVELID);
 	}
 
 	override public function update(elapsed:Float):Void {
