@@ -32,7 +32,7 @@ class Sword extends Weapon {
             this.ki = Main.SAVE.data.ki;
         }
         //test ki
-        // this.ki = false;
+        // this.ki = true;
         //whirlwind
         if(Main.SAVE.data.ww == null) {
             this.ww = false;
@@ -40,6 +40,8 @@ class Sword extends Weapon {
         } else {
             this.ww = Main.SAVE.data.ww;
         }
+        //test ww
+        //this.ww = true;
         this.name = "sword";
         this.type = "melee";
         this.range = 145;

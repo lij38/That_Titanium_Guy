@@ -94,6 +94,7 @@ class HomeState extends FlxState {
         _bmtxt = new FlxText(0, 0, 500, 24);
         _bmtxt.text = "PRESS W to enter blackmarket";
         _bmtxt.setFormat(AssetPaths.FONT, 24);
+		_bmtxt.scrollFactor.set(0.0);
         _bmtxt.visible = false;
         add(_bmtxt);
 
