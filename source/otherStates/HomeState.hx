@@ -158,7 +158,7 @@ class HomeState extends FlxState {
         	_blackmarket.active = true;
 		 }
 
-/*
+
 		 // pause part and whole pause menu
 		_pause = false;
 
@@ -188,7 +188,7 @@ class HomeState extends FlxState {
 		_pausetxt.setFormat(AssetPaths.FONT, _pausetxt.size);
 		_pausetxt.scrollFactor.set(0.0);
 		addTopLayer();
-		*/
+		
 		
 		 //Main.SAVE.data.levelCompleted = 4;
 		 if (Main.SAVE.data.levelCompleted >= 3) {
@@ -200,7 +200,7 @@ class HomeState extends FlxState {
 	}
 
 	override public function update(elapsed:Float):Void {
-		/*
+		
 		if (FlxG.keys.justPressed.ESCAPE) {
 			_pause = !_pause;
 		}
@@ -213,7 +213,7 @@ class HomeState extends FlxState {
 		} else {
 			disableButtons();
 		}
-		*/
+		
 		
 		if (!tutorial_map) {
 			if (FlxG.keys.anyPressed([M])) {

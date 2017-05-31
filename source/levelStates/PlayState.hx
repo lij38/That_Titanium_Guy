@@ -61,7 +61,7 @@ class PlayState extends FlxState {
 	private var _hand:Boss2Hand;
 	
 	override public function create():Void {
-		//FlxG.debugger.drawDebug = true;
+		FlxG.debugger.drawDebug = true;
 		//////////////////
         //LOAD PLAYER
 		//////////////////
