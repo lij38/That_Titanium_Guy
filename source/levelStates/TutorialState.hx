@@ -84,8 +84,9 @@ class TutorialState extends PlayState {
         add(_hud);
 
         addTopLayer();
-
-        Main.SAVE.data.stararr = [null, null, null, null, null, null, null];
+		if (Main.SAVE.data.stararr == null) {
+			Main.SAVE.data.stararr = [null, null, null, null, null, null, null];
+		}
     }
 
 	override public function update(elapsed:Float):Void  {

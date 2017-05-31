@@ -358,9 +358,12 @@ class Player extends FlxSprite {
 		if (isTumbling()) {
 			animation.play("tumble");
 		} else if (jetpack) {
-			animation.play(curConfig + "JP");
 			if(isShielding()) {
 				animation.play(curConfig + "JPShield");
+			} else if (isSwording()) {
+				animation.play(curConfig + "JPSword");
+			} else {
+				animation.play(curConfig + "JP");
 			}
 		} else if (!isTouching(FlxObject.DOWN) && !isSwording()) {
 			animation.play(curConfig + "Jump");

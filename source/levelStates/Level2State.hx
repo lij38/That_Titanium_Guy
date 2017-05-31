@@ -15,7 +15,7 @@ class Level2State extends PlayState {
     private var _cloud:FlxTilemap;
 
     override public function create():Void {
-		LEVELID = 5;
+		LEVELID = 4;
         ///////////////////////////////////////////////////
         ////    LOAD MAP
         ///////////////////////////////////////////////////

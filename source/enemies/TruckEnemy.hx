@@ -20,8 +20,8 @@ class TruckEnemy extends Enemy {
 	private var rate:Float = 0.1;
 	
 	private var bulletXOffset:Float = 200;
-	
-	private var damageLevel = [for (i in 1...10) i * 2];
+
+	private var damageLevel = [for (i in 1...10) i];
 	private var healthLevel = [for (i in 0...10) 20 * i + 400];
 	
 	
@@ -53,7 +53,7 @@ class TruckEnemy extends Enemy {
 		facing = FlxObject.LEFT;
 		brain = new EnemyFSM(idle);
 		range = 550;
-		speed = 200;
+		speed = 230;
 		detectRange = 800;
 	}
 	
