@@ -30,10 +30,10 @@ class JetpackMeleeEnemy extends Enemy {
 		this.level = level;
 		hurtTime = 0.5;
 		
-		loadGraphic(AssetPaths.jp_enemy_melee__png, true, 598, 460);
-		scale.set(0.35, 0.35);
+		loadGraphic(AssetPaths.jp_enemy_melee__png, true, 209, 160);
+		//scale.set(0.35, 0.35);
 		setSize(35, 120);
-		offset.set(280, 165);
+		offset.set(85, 15);
 		
 		setFacingFlip(FlxObject.LEFT, false, false);
 		setFacingFlip(FlxObject.RIGHT, true, false);

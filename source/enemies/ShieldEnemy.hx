@@ -28,10 +28,10 @@ class ShieldEnemy extends Enemy {
 		super(X, Y, id, bulletArray, coinsGroup, gravity, SHIELD);
 		this.level = level;
 		
-		loadGraphic(AssetPaths.enemy_shield__png, true, 568, 481);
-		scale.set(0.35, 0.35);
-		setSize(35, 122);
-		offset.set(265, 176);
+		loadGraphic(AssetPaths.enemy_shield__png, true, 220, 169);
+		//scale.set(0.35, 0.35);
+		setSize(35, 123);
+		offset.set(91, 18);
 		
 		setFacingFlip(FlxObject.LEFT, false, false);
 		setFacingFlip(FlxObject.RIGHT, true, false);
@@ -41,7 +41,7 @@ class ShieldEnemy extends Enemy {
 		animation.add("shield", [10, 10, 10, 10, 6], 12, false);
 		animation.add("hurt", [11, 11, 11, 11, 6], 12, false);
 		animation.add("die", [11, 12, 13, 13, 13, 13, 13, 13, 13, 13, 13], 9, false);
-		animation.add("attack", [7, 7, 7, 8, 8, 8, 9, 9, 9], 9, false);
+		animation.add("attack", [7, 7, 7, 8, 8, 8, 9, 9, 9, 6, 6, 6, 6, 6, 6], 9, false);
 		animation.play("stop");
 		
 		health = healthLevel[level];

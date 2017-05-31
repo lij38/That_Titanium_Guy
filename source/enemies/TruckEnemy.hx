@@ -33,10 +33,10 @@ class TruckEnemy extends Enemy {
 		
 		this.level = level;
 		
-		loadGraphic(AssetPaths.enemy_truck__png, true, 1980, 667);
-		scale.set(0.25, 0.25);
-		setSize(270, 133);
-		offset.set(855, 282);
+		loadGraphic(AssetPaths.enemy_truck__png, true, 496, 167);
+		//scale.set(0.25, 0.25);
+		setSize(270, 128);
+		offset.set(112, 30);
 		
 		setFacingFlip(FlxObject.LEFT, false, false);
 		setFacingFlip(FlxObject.RIGHT, true, false);

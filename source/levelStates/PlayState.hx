@@ -61,7 +61,7 @@ class PlayState extends FlxState {
 	private var _hand:Boss2Hand;
 	
 	override public function create():Void {
-		//FlxG.debugger.drawDebug = true;
+		FlxG.debugger.drawDebug = true;
 		//////////////////
         //LOAD PLAYER
 		//////////////////
@@ -109,7 +109,6 @@ class PlayState extends FlxState {
 		add(coinsGroup);
         add(playerBullets);
 		add(_enemiesHUD);
-		add(_player);
 		
 		if (_is_boss2) {
 			add(_hand);
@@ -453,6 +452,7 @@ class PlayState extends FlxState {
 	}
 
 	public function addTopLayer():Void {
+		add(_player);
 		add(_pausebutton);
 		add(_menu_bg);
 		add(_homebutton);
