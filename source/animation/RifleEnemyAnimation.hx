@@ -16,10 +16,10 @@ class RifleEnemyAnimation extends FlxSprite {
 	public function new(X:Float = 0, Y:Float = 0, gravity:Float) {
 		super(X, Y);
 		
-		loadGraphic(AssetPaths.enemy_rifle__png, true, 552, 383);
-		scale.set(0.4, 0.4);
-		setSize(35, 105);
-		offset.set(260, 133);
+		loadGraphic(AssetPaths.enemy_rifle__png, true, 193, 134);
+		//scale.set(0.35, 0.35);
+		setSize(35, 122);
+		offset.set(77, 0);
 		
 		setFacingFlip(FlxObject.LEFT, false, false);
 		setFacingFlip(FlxObject.RIGHT, true, false);
