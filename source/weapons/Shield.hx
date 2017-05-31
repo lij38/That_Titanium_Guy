@@ -4,7 +4,7 @@ import flixel.group.FlxGroup;
 class Shield extends Weapon {
     private var spike:Float;
     private var reflect:Float;
-    private var daze:Float;
+    private var daze:Int;
     override public function new(playerBulletArray:FlxTypedGroup<Bullet>) {
         super(playerBulletArray);
         this.name = "shield";
@@ -34,7 +34,7 @@ class Shield extends Weapon {
         return this.reflect;
     }
 
-    public function getDaze():Float {
-        return this.daze;
+    public function getDaze():Bool {
+        return Std.random(100) < daze;
     }
 }

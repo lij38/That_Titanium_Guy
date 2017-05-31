@@ -18,7 +18,7 @@ class OverState extends FlxState
 
     override public function create():Void
     {
-        text = new FlxText(270, 150, 0, "GAME OVER", 64);
+        text = new FlxText(180, 150, 0, "GAME OVER", 64);
         text.setFormat(AssetPaths.FONT, text.size);
         add(text);
         _btnPlay = new ImageButton(300, 300, "Try Again", clickPlay);
@@ -48,6 +48,7 @@ class OverState extends FlxState
                 case 3: FlxG.switchState(new Boss1State());
                 case 4: FlxG.switchState(new Level2State());
                 case 5: FlxG.switchState(new Level3State());
+                case 6: FlxG.switchState(new Boss2State());
             }
 		});
 	}

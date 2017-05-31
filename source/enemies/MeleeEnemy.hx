@@ -30,10 +30,10 @@ class MeleeEnemy extends Enemy {
 		
 		this.level = level;
 		
-		loadGraphic(AssetPaths.enemy_melee__png, true, 683, 478);
-		scale.set(0.35, 0.35);
+		loadGraphic(AssetPaths.enemy_melee__png, true, 240, 168);
+		//scale.set(0.35, 0.35);
 		setSize(40, 125);
-		offset.set(320, 175);
+		offset.set(100, 20);
 		
 		setFacingFlip(FlxObject.LEFT, false, false);
 		setFacingFlip(FlxObject.RIGHT, true, false);

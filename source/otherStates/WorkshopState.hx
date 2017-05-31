@@ -99,13 +99,13 @@ class WorkshopState extends FlxState {
         add(confirm);
 
         //show shotgun or not
-        if(Main.SAVE.data.levelCompleted >= 6) {
+        if(Main.SAVE.data.shotgunPickup) {
             sgshow = true;
         } else {
             sgshow = false;
         }
         //show revolver or not
-        if(Main.SAVE.data.levelCompleted >= 7 || Main.SAVE.data.revolverPickup) {
+        if( Main.SAVE.data.revolverPickup) {
             rvshow = true;
         } else {
             rvshow = false;

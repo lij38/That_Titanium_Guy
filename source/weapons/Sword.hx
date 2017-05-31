@@ -19,27 +19,29 @@ class Sword extends Weapon {
         }
         //double slash proficiency
         if(Main.SAVE.data.ds == null) {
-            this.dsCutOff = 20;
+            this.dsCutOff = 10;
             Main.SAVE.data.ds = this.dsCutOff;
         } else {
             this.dsCutOff = Main.SAVE.data.ds;
         }
         //ki
-        if(Main.SAVE.data.ki == null) {
-            this.ki = false;
-            Main.SAVE.data.ki = this.ki;
-        } else {
-            this.ki = Main.SAVE.data.ki;
-        }
+        // if(Main.SAVE.data.ki == null) {
+        //     this.ki = false;
+        //     Main.SAVE.data.ki = this.ki;
+        // } else {
+        //     this.ki = Main.SAVE.data.ki;
+        // }
         //test ki
-        // this.ki = false;
+         this.ki = true;
         //whirlwind
-        if(Main.SAVE.data.ww == null) {
-            this.ww = false;
-            Main.SAVE.data.ww = this.ww;
-        } else {
-            this.ww = Main.SAVE.data.ww;
-        }
+        // if(Main.SAVE.data.ww == null) {
+        //     this.ww = false;
+        //     Main.SAVE.data.ww = this.ww;
+        // } else {
+        //     this.ww = Main.SAVE.data.ww;
+        // }
+        //test ww
+        this.ww = true;
         this.name = "sword";
         this.type = "melee";
         this.range = 145;

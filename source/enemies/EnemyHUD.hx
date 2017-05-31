@@ -8,6 +8,7 @@ package enemies;
  import flixel.util.FlxColor;
  import flixel.ui.FlxBar;
  import flixel.tweens.*;
+ import items.Daze;
  using flixel.util.FlxSpriteUtil;
 
 class EnemyHUD extends FlxTypedGroup<FlxSprite> {
@@ -22,10 +23,18 @@ class EnemyHUD extends FlxTypedGroup<FlxSprite> {
 	private var _xOffset3:Float = Math.random() * 10 - 5;
 	private var _xOffset4:Float = Math.random() * 10 - 5;
     private var dmgCounter:Int;
+	
+	private var _daze:Daze;
+	private var _dazeTime:Float = 1.0;
+	private var _dazeTimer:Float = -1;
 
     public function new(enemy:Enemy) {
          super();
          _enemy = enemy;
+		 
+		//daze
+		_daze = new Daze();
+		_daze.visible = false;
 
          //health bar
          var ewidth:Int = cast(_enemy.width, Int);
@@ -47,12 +56,31 @@ class EnemyHUD extends FlxTypedGroup<FlxSprite> {
         _damage4.visible = false;
         dmgCounter = 0;
          
-         add(_healthbar);
-         add(_damage1);
-         add(_damage2);
-         add(_damage3);
-         add(_damage4);
-     }
+		add(_daze);
+        add(_healthbar);
+        add(_damage1);
+        add(_damage2);
+        add(_damage3);
+        add(_damage4);
+    }
+	
+	override public function update(elapsed:Float) {
+		if (_dazeTimer >= 0.0) {
+			_dazeTimer += elapsed;
+			_daze.x = _enemy.getMidpoint().x - (_daze.width / 2);
+			_daze.y = _enemy.y - 50;
+		}
+		if (_dazeTimer > _dazeTime) {
+			_dazeTimer = -1;
+			_daze.visible = false;
+		}
+		super.update(elapsed);
+	}
+	 
+	public function startDaze() {
+		_daze.visible = true;
+		_dazeTimer = 0.0;
+	}
 
      public function updateXY():Void {
         _damage1.x = _enemy.x + _xOffset1;

@@ -29,8 +29,6 @@ class Coin extends FlxSprite {
 						upperBound:Int = 10, gravity:Float = 1000) {
 		super(X, Y);
 		
-		
-		
 		onPickUp = pickUpCoin;
 		
 		this.type = type;

@@ -162,6 +162,7 @@ class HUD extends FlxTypedGroup<FlxSprite> {
             _txtkAmmo.size = 24;
         }
 		_money.text = FlxStringUtil.formatMoney(_player.money, false, true);
+        _potionNum.text = Std.string(_player.potionCount);
      }
 
      public function updateXY():Void {

@@ -27,7 +27,8 @@ enum EnemyType {
 
 class Enemy extends FlxSprite {
 	private var id:Int;
-	
+	public var name:String = "";
+
 	private var bulletArray:FlxTypedGroup<EnemyBullet>;
 	private var coinsGroup:FlxTypedGroup<Coin>;
 	private var dropCoin:Bool = false;
@@ -57,6 +58,9 @@ class Enemy extends FlxSprite {
 	public var hasShield:Bool = false;
 	
 	private var bulletSpeedLevel = [for (i in 0...4) 50 * i + 250];
+	
+	private var dazeTime:Float = 1.0;
+	private var dazeTimer:Float = -1;
 	
 	// sound
 	public var sndHurt1:FlxSound;
@@ -149,15 +153,24 @@ class Enemy extends FlxSprite {
 			}
 			return;
 		} else {
+			if (dazeTimer >= 0) {
+				dazeTimer += elapsed;
+			}
+			if (dazeTimer > dazeTime) {
+				dazeTimer = -1;
+			}
+			
 			if (hurtTimer >= 0) {
 				hurtTimer += elapsed;
 			}
 			if (hurtTimer > hurtTime) {
 				hurtTimer = -1;
 			}
-			if (isHurting()) {
+			if (isHurting() || isDizzy()) {
+				animation.pause();
 				velocity.x = 0;
 			} else {
+				animation.resume();
 				brain.update(elapsed);
 			}
 		}
@@ -169,6 +182,14 @@ class Enemy extends FlxSprite {
 			color = originalColor;
 		}
 		super.update(elapsed);
+	}
+	
+	public function startDaze():Void {
+		dazeTimer = 0.0;
+	}
+	
+	public function isDizzy():Bool {
+		return dazeTimer > 0 && dazeTimer < dazeTime;
 	}
 	
 	override public function hurt(damage:Float):Void {

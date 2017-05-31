@@ -21,7 +21,7 @@ import flixel.util.FlxColor;
 
 class PlayState extends FlxState {
 	// update this when new level added
-	private var LAST_LEVEL:Int = 4;
+	private var LAST_LEVEL:Int = 6;
 	
 	private var _player:Player;
 	private var _hud:HUD;
@@ -61,7 +61,7 @@ class PlayState extends FlxState {
 	private var _hand:Boss2Hand;
 	
 	override public function create():Void {
-		//FlxG.debugger.drawDebug = true;
+		FlxG.debugger.drawDebug = true;
 		//////////////////
         //LOAD PLAYER
 		//////////////////
@@ -109,7 +109,6 @@ class PlayState extends FlxState {
 		add(coinsGroup);
         add(playerBullets);
 		add(_enemiesHUD);
-		add(_player);
 		
 		if (_is_boss2) {
 			add(_hand);
@@ -119,7 +118,7 @@ class PlayState extends FlxState {
 			add(_boss_hud);
 			_exit.visible = false;
 		}
-		//FlxG.sound.playMusic(AssetPaths.fighting__mp3);
+		FlxG.sound.playMusic(AssetPaths.dramatic__mp3);
 		
 		 _hud.updateHUD(_player.getAmmo(0), _player.getAmmo(1), _player.isReloading(0), _player.isReloading(1),
 		 				_player.getWeaponName(0), _player.getWeaponName(1));
@@ -351,7 +350,28 @@ class PlayState extends FlxState {
 				player.hurt(damage);
 				_hud.updateDamage(damage);
 			} else {
+				// player is shielding the right direction
 				player.sndShield.play(true);
+				var prt:Enemy = bullet.parent;
+				if (prt.alive && prt.type != BOSS) {
+					if (bullet.bulletType == Melee && player.getSpike() != 0) {
+						// return spike damage
+						var returnDmg:Float = player.getSpike() * damage;
+						enemyTakeDamgeHud(prt, returnDmg);
+						prt.hurt(returnDmg);
+					} else if ((bullet.bulletType == Ranged ||
+								bullet.bulletType == SHOTGUN) &&
+								player.getReflect() != 0) {
+						// return reflect damage
+						var returnDmg:Float = player.getReflect() * damage;
+						enemyTakeDamgeHud(prt, returnDmg);
+						prt.hurt(returnDmg);
+					}
+					if (player.getDaze()) {
+						enemyTakeDamgeHud(prt, -1);
+						prt.startDaze();
+					}
+				}
 			}
 			if (bullet.bulletType == SHOTGUN) {
 				if (bullet.velocity.x < 0) {
@@ -408,12 +428,7 @@ class PlayState extends FlxState {
 				_player.sndShield.play(true);
 			}
 			if (!_is_boss) {
-				if (!_enemiesMap.exists(enemy)) {
-					var eh:EnemyHUD = new EnemyHUD(enemy);
-					_enemiesMap.set(enemy, eh);
-					_enemiesHUD.add(eh);
-				}
-				_enemiesMap.get(enemy).updateDamage(dmg);
+				enemyTakeDamgeHud(enemy, dmg);
 			}
 			enemy.hurt(dmg);
 		}
@@ -451,8 +466,24 @@ class PlayState extends FlxState {
 			e.hurt(e.health);
 		}
 	}
+	
+	public function enemyTakeDamgeHud(enemy:Enemy, dmg:Float) {
+		if (!_enemiesMap.exists(enemy)) {
+			var eh:EnemyHUD = new EnemyHUD(enemy);
+			_enemiesMap.set(enemy, eh);
+			_enemiesHUD.add(eh);
+		}
+		// update hud if dmg >= 0
+		if (dmg >= 0) {
+			_enemiesMap.get(enemy).updateDamage(dmg);
+		} else {
+			// daze if dmg < 0
+			_enemiesMap.get(enemy).startDaze();
+		}
+	}
 
 	public function addTopLayer():Void {
+		add(_player);
 		add(_pausebutton);
 		add(_menu_bg);
 		add(_homebutton);

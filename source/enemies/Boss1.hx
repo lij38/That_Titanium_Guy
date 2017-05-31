@@ -35,7 +35,7 @@ class Boss1 extends Enemy {
 		scale.set(0.6, 0.6);
 		setSize(120, 186);
 		offset.set(445, 290);
-
+		this.name = "1LT. Cleaver, Bull";
 		//cast(this, FlxObject).debugBoundingBoxColor = FlxColor.RED;
 		
 		setFacingFlip(FlxObject.LEFT, false, false);

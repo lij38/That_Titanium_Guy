@@ -94,6 +94,7 @@ class HomeState extends FlxState {
         _bmtxt = new FlxText(0, 0, 500, 24);
         _bmtxt.text = "PRESS W to enter blackmarket";
         _bmtxt.setFormat(AssetPaths.FONT, 24);
+		_bmtxt.scrollFactor.set(0.0);
         _bmtxt.visible = false;
         add(_bmtxt);
         
@@ -149,7 +150,7 @@ class HomeState extends FlxState {
 		 
 		 //trace(FlxG.sound.music);
 		 if(FlxG.sound.music.playing == false) {
-		 	FlxG.sound.playMusic(AssetPaths.dramatic__mp3);
+		 	FlxG.sound.playMusic(AssetPaths.theme__mp3);
 		 }
 
 		 //Main.SAVE.data.levelCompleted = 4;
@@ -158,7 +159,7 @@ class HomeState extends FlxState {
         	_blackmarket.active = true;
 		 }
 
-/*
+
 		 // pause part and whole pause menu
 		_pause = false;
 
@@ -188,7 +189,7 @@ class HomeState extends FlxState {
 		_pausetxt.setFormat(AssetPaths.FONT, _pausetxt.size);
 		_pausetxt.scrollFactor.set(0.0);
 		addTopLayer();
-		*/
+		
 		
 		 //Main.SAVE.data.levelCompleted = 4;
 		 if (Main.SAVE.data.levelCompleted >= 3) {
@@ -200,7 +201,7 @@ class HomeState extends FlxState {
 	}
 
 	override public function update(elapsed:Float):Void {
-		/*
+		
 		if (FlxG.keys.justPressed.ESCAPE) {
 			_pause = !_pause;
 		}
@@ -213,7 +214,7 @@ class HomeState extends FlxState {
 		} else {
 			disableButtons();
 		}
-		*/
+		
 		
 		if (!tutorial_map) {
 			if (FlxG.keys.anyPressed([M])) {

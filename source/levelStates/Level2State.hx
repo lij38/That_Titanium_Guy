@@ -63,11 +63,10 @@ class Level2State extends PlayState {
         /////////////////////////
 		//ADD EVERY COMPONENT
 		////////////////////////
-        add(_cloud);
         add(_keys);
 		add(texts);
-        add(_hud);
 		add(_player);
+        add(_cloud);
         add(_hud);
         addTopLayer();
 
