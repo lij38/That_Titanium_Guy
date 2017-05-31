@@ -20,8 +20,9 @@ class Boss2State extends PlayState {
 	//private var _boss_hud:Boss1HUD;
 	
 	override public function create():Void {
-		LEVELID = 3;
+		LEVELID = 6;
 		_is_boss = true;
+		_is_boss2 = true;
 		
 		_map = new TiledMap(AssetPaths.boss2__tmx);
 		_plat = new FlxTilemap();

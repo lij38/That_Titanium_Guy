@@ -22,6 +22,7 @@ class MapTutorialState extends FlxState
     private var _level1:FlxButton;
     private var _level1boss:FlxButton;
     private var _level2:FlxButton;
+    private var _level2boss:FlxButton;
     private var _level3:FlxButton;
     private var _level4:FlxButton;
     private var _level5:FlxButton;
@@ -59,6 +60,7 @@ class MapTutorialState extends FlxState
         _level1 = new FlxButton();
         _level1boss = new FlxButton();
         _level2 = new FlxButton();
+        _level2boss = new FlxButton();
         _level3 = new FlxButton();
         _level4 = new FlxButton();
         _level5 = new FlxButton();
@@ -68,6 +70,7 @@ class MapTutorialState extends FlxState
         _levelarr.push(_level1boss);
         _levelarr.push(_level2);
         _levelarr.push(_level3);
+        _levelarr.push(_level2boss);
         _levelarr.push(_level4);
         _levelarr.push(_level5);
         _level_index = 0;
@@ -99,7 +102,7 @@ class MapTutorialState extends FlxState
         for (i in 0...level) {
              _levelarr[i].active = true;
             // BOSS Level
-            if (i == 2) {
+            if (i == 2 || i == 5) {
                 _levelarr[i].loadGraphic(AssetPaths.star_red__png, false, 50, 50);
             } else {
                 _levelarr[i].loadGraphic(AssetPaths.star_yellow__png, false, 50, 50);
@@ -109,7 +112,7 @@ class MapTutorialState extends FlxState
         // locked states
         for (i in level..._levelarr.length) {
             _levelarr[i].active = false;
-            if (i == 2) {
+            if (i == 2 || i == 5) {
                 _levelarr[i].loadGraphic(AssetPaths.star_red_lock__png, false, 50, 50);
             } else {
                 _levelarr[i].loadGraphic(AssetPaths.star_yellow_lock__png, false, 50, 50);
@@ -121,7 +124,7 @@ class MapTutorialState extends FlxState
             + " weapon configurations. (Click Anywhere to continue)";
         _text.setFormat(AssetPaths.FONT, 18);
 
-        for (i in 3...7) {
+        for (i in 3...8) {
             _levelarr[i].color = 0x777777;
         }
 
@@ -196,7 +199,7 @@ class MapTutorialState extends FlxState
                 //     + "or go home. Remember, this is only your first step on your journey to reach the FA Supreme "
                 //     + "Leader in the Capital Hills, good luck! (Click Anywhere to continue)";
                 _bg.color = 0xffffff;
-                for (i in 3...7) {
+                for (i in 3...8) {
                     _levelarr[i].color = 0xffffff;
                 }
                 FlxG.switchState(new MapState());

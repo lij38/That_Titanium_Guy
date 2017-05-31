@@ -22,6 +22,7 @@ class MapState extends FlxState
     private var _level1:ImageButton;
     private var _level1boss:ImageButton;
     private var _level2:ImageButton;
+    private var _level2boss:ImageButton;
     private var _level3:ImageButton;
     private var _level4:ImageButton;
     private var _level5:ImageButton;
@@ -46,6 +47,7 @@ class MapState extends FlxState
         _level1 = new ImageButton(0, 0, level1OnClick);
         _level1boss = new ImageButton(0, 0, level1bossOnClick);
         _level2 = new ImageButton(0, 0, level2OnClick);
+        _level2boss = new ImageButton(0, 0, level2bossOnClick);
         _level3 = new ImageButton(0, 0, level3OnClick);
         _level4 = new ImageButton();
         _level5 = new ImageButton();
@@ -55,6 +57,7 @@ class MapState extends FlxState
         _levelarr.push(_level1boss);
         _levelarr.push(_level2);
         _levelarr.push(_level3);
+        _levelarr.push(_level2boss);
         _levelarr.push(_level4);
         _levelarr.push(_level5);
         _level_index = 0;
@@ -86,7 +89,7 @@ class MapState extends FlxState
         for (i in 0...level) {
              _levelarr[i].active = true;
             // BOSS Level
-            if (i == 2) {
+            if (i == 2 || i == 5) {
                 _levelarr[i].loadGraphic(AssetPaths.star_red__png, false, 50, 50);
             } else {
                 _levelarr[i].loadGraphic(AssetPaths.star_yellow__png, false, 50, 50);
@@ -96,7 +99,7 @@ class MapState extends FlxState
         // locked states
         for (i in level..._levelarr.length) {
             _levelarr[i].active = false;
-            if (i == 2) {
+            if (i == 2 || i == 5) {
                 _levelarr[i].loadGraphic(AssetPaths.star_red_lock__png, false, 50, 50);
             } else {
                 _levelarr[i].loadGraphic(AssetPaths.star_yellow_lock__png, false, 50, 50);
@@ -166,6 +169,12 @@ class MapState extends FlxState
     private function level2OnClick():Void {
         FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
             FlxG.switchState(new Level2State());
+        });
+    }
+
+    private function level2bossOnClick():Void {
+        FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
+            FlxG.switchState(new Boss2State());
         });
     }
 
