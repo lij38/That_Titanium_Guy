@@ -158,17 +158,18 @@ class FinishState extends FlxState
 			switch _level {
                 case 1: FlxG.switchState(new Level1State());
                 case 4: FlxG.switchState(new Level3State());
-                case 5: FlxG.switchState(new CreditState());
+                case 5: FlxG.switchState(new Boss2State());
+                case 6: FlxG.switchState(new CreditState());
             }
             if( _level == 2) {
-                if(Main.SAVE.data.levelCompleted < 3) {
+                if(Main.SAVE.data.wsTut == null) {
                     FlxG.switchState(new WorkshopState());
                 } else {
                     FlxG.switchState(new Boss1State());
                 }
             }
             if(_level == 3) {
-                if(Main.SAVE.data.levelCompleted < 4) {
+                if(Main.SAVE.data.bmTut == null) {
                     FlxG.switchState(new MarketState());
                 } else {
                     FlxG.switchState(new Level2State());

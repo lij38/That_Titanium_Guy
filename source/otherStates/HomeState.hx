@@ -150,7 +150,7 @@ class HomeState extends FlxState {
 		 
 		 //trace(FlxG.sound.music);
 		 if(FlxG.sound.music.playing == false) {
-		 	FlxG.sound.playMusic(AssetPaths.dramatic__mp3);
+		 	FlxG.sound.playMusic(AssetPaths.theme__mp3);
 		 }
 
 		 //Main.SAVE.data.levelCompleted = 4;

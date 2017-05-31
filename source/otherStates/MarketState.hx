@@ -666,7 +666,7 @@ class MarketState extends FlxState {
 
         //whirlwind
         if(Main.SAVE.data.wwCost == null) {
-            wwCost = 5000;
+            wwCost = 100000;
         } else {
             wwCost = Main.SAVE.data.wwCost;
         }
@@ -1290,9 +1290,9 @@ class MarketState extends FlxState {
             money -= dazeCost;
             dazeNum--;
             if(Main.SAVE.data.daze == null) {
-                Main.SAVE.data.daze = 0.05;
+                Main.SAVE.data.daze = 5;
             } else {
-                Main.SAVE.data.daze += 0.01;
+                Main.SAVE.data.daze += 1;
             }
             dazeCost = cast(dazeCost * 1.1, Int);
             Main.SAVE.data.dazeCost = dazeCost;

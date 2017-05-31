@@ -6,12 +6,13 @@ import flixel.math.FlxPoint;
 
 //private var angle:Int;
 
-class ShotgunBullet extends BallBullet {
+class ShotgunBullet extends Bullet{
     private var pushBack:Float;
     override public function new(X:Float=0, Y:Float=0, Speed:Float, Direction:Int, Damage:Float, Range:Float, push:Float) {
+        super(X, Y, Speed, Direction, Damage, Range);
         this.type = "shotgun";
         this.pushBack = push;
-        super(X, Y, Speed, Direction, Damage, Range);
+        loadGraphic(AssetPaths.shotgunBullet__png);
     }
 
     override public function update(elapsed:Float):Void {

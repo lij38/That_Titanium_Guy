@@ -44,8 +44,10 @@ class EnemyBullet extends Bullet {
 		this.bulletType = bulletType;
 		parent = Parent;
 		
-		if (bulletType == Ranged || bulletType == SHOTGUN) {
+		if (bulletType == Ranged) {
 			loadGraphic(AssetPaths.enemybullet__png);
+		} else if(bulletType == SHOTGUN) {
+			loadGraphic(AssetPaths.shotgunBullet__png);
 		} else if (bulletType == Melee) {
 			this.type = "melee";
 			makeGraphic(6, 70, meleeColor);

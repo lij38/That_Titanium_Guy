@@ -87,6 +87,7 @@ class Player extends FlxSprite {
 			jetpackField = jetpackFieldMax;
 		}
 		//potions
+		trace("potion: " + Std.string( Main.SAVE.data.potionCount == 0));
 		if(Main.SAVE.data.potionCount == null || Main.SAVE.data.potionCount == 0) {
 			potionCount = 0;
 			potionSlot = false;
@@ -358,13 +359,20 @@ class Player extends FlxSprite {
 				&& (kWeaponTimer == -0.1 || kWeaponTimer > kWeapon.getRate()))
 				&& cast(jWeapon, Sword).isWW()) {
 				swordTimer = 0;
-				jWeapon.attack(getMidpoint().x, y, faced);
-				trace(Std.string(faced));
+				if(facing == FlxObject.NONE) {
+					jWeapon.attack(getMidpoint().x, y, faced);
+					kWeapon.attack(getMidpoint().x, y, facing);
+				} else {
+					kWeapon.attack(getMidpoint().x, y, faced);
+					jWeapon.attack(getMidpoint().x, y, facing);
+				}
+				
+				//trace(Std.string(faced));
 				//kWeapon.attack(getMidpoint().x, y, faced);
 				
 				//jWeapon.attack(getMidpoint().x, y, facing);
-				kWeapon.attack(getMidpoint().x, y, facing);
-				trace(Std.string(facing));
+				
+				//trace(Std.string(facing));
 				if(jetpack) {
 					animation.play(curConfig + "JPDC");
 				} else {
@@ -373,6 +381,7 @@ class Player extends FlxSprite {
 				}
 				jWeaponTimer = 0.0;
 				kWeaponTimer = 0.0;
+				fireWeaponSound("DC");
 			} else {
 				if (FlxG.keys.anyPressed([J])) {
 					//RIFLE fully automatic, can hold to fire
@@ -470,6 +479,42 @@ class Player extends FlxSprite {
 		}
 		sndPotion.play(true);
 	}
+
+	public function getSpike():Float {
+		if(isShielding()) {
+			if(jWeapon.getName() == "shield") {
+				return cast(jWeapon, Shield).getSpike();
+			} else {
+				return cast(kWeapon, Shield).getSpike();
+			}
+		} else {
+			return 0;
+		}
+    }
+
+    public function getReflect():Float {
+        if(isShielding()) {
+			if(jWeapon.getName() == "shield") {
+				return cast(jWeapon, Shield).getReflect();
+			} else {
+				return cast(kWeapon, Shield).getReflect();
+			}
+		} else {
+			return 0;
+		}
+    }
+
+    public function getDaze():Bool {
+        if(isShielding()) {
+			if(jWeapon.getName() == "shield") {
+				return cast(jWeapon, Shield).getDaze();
+			} else {
+				return cast(kWeapon, Shield).getDaze();
+			}
+		} else {
+			return false;
+		}
+    }
 
 	public function getWeaponName(which:Int):String {
 		if(which == 0) {
