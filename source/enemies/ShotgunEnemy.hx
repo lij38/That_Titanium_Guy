@@ -30,10 +30,10 @@ class ShotgunEnemy extends Enemy {
 		this.level = level;
 		hurtTime = 0.5;
 		
-		loadGraphic(AssetPaths.enemy_rifle__png, true, 552, 383);
-		scale.set(0.35, 0.35);
-		setSize(35, 120);
-		offset.set(260, 125);
+		loadGraphic(AssetPaths.enemy_rifle__png, true, 193, 134);
+		//scale.set(0.35, 0.35);
+		setSize(35, 122);
+		offset.set(77, 0);
 		
 		setFacingFlip(FlxObject.LEFT, false, false);
 		setFacingFlip(FlxObject.RIGHT, true, false);
