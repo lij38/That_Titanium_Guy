@@ -142,7 +142,7 @@ class MenuState extends FlxState {
 			} else {
 				//FlxG.switchState(new WorkshopState());
 				//FlxG.switchState(new MarketState());
-				FlxG.sound.music.destroy();
+				//FlxG.sound.music.destroy();
 				FlxG.switchState(new HomeState());
 			}
 		});

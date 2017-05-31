@@ -68,6 +68,7 @@ class Player extends FlxSprite {
 						playerBulletArray:FlxTypedGroup<Bullet>,
 						gravity:Float) {
 		super(X, Y);
+		drag.x = 1600;
 		GRAVITY = gravity;
 		if(Main.SAVE.data.maxHealth == null) {
 			health = 100;
@@ -295,7 +296,7 @@ class Player extends FlxSprite {
 			}
 			
 			if (!left && !right) {
-				velocity.x = 0;
+				//velocity.x = 0;
 				facing = FlxObject.NONE;
 			}
 			

@@ -18,8 +18,8 @@ class MeleeEnemy extends Enemy {
 	private var rateTimer:Float = -1;
 	private var attacked:Bool = false;
 	
-	private var damageLevel = [for (i in 1...4) i];	
-	private var healthLevel = [for (i in 0...4) 20 * i + 50];
+	private var damageLevel = [for (i in 1...10) i];	
+	private var healthLevel = [for (i in 0...10) 20 * i + 50];
 	
 	
 	public function new(X:Float = 0, Y:Float = 0, id:Int = -1,

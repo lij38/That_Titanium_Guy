@@ -159,6 +159,7 @@ class HomeState extends FlxState {
 		_menu_bg.makeGraphic(800, 600, FlxColor.BLACK);
 		_menu_bg.scrollFactor.set(0.0);
 
+
 		_homebutton = new ImageButton(300, 200, clickHome);
 		_homebutton.loadGraphic(AssetPaths.gohome__png, false, 200, 40);
 		_homebutton.scrollFactor.set(0.0);
