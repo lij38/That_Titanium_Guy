@@ -23,10 +23,10 @@ class Bullet extends FlxSprite {
 		xpos = X;
 		ypos = Y;
 		facing = direction;
-		if (direction == FlxObject.LEFT) {
+		
+		if (facing == FlxObject.LEFT) {
 			velocity.x = -speed;
-		}
-		if (direction == FlxObject.RIGHT) {
+		} else if (facing == FlxObject.RIGHT) {
 			velocity.x = speed;
 		}
 	}

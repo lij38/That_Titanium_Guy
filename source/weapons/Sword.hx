@@ -19,7 +19,7 @@ class Sword extends Weapon {
         }
         //double slash proficiency
         if(Main.SAVE.data.ds == null) {
-            this.dsCutOff = 10;
+            this.dsCutOff = 7;
             Main.SAVE.data.ds = this.dsCutOff;
         } else {
             this.dsCutOff = Main.SAVE.data.ds;
@@ -32,7 +32,7 @@ class Sword extends Weapon {
             this.ki = Main.SAVE.data.ki;
         }
         //test ki
-        // this.ki = true;
+        //   this.ki = true;
         //whirlwind
         if(Main.SAVE.data.ww == null) {
             this.ww = false;
@@ -41,12 +41,12 @@ class Sword extends Weapon {
             this.ww = Main.SAVE.data.ww;
         }
         //test ww
-        //this.ww = true;
+        // this.ww = true;
 
         this.name = "sword";
         this.type = "melee";
         this.range = 100;
-        this.kiRange = 1000;
+        this.kiRange = 1300;
         this.fireRate = 0.25;
         this.speed = 1000;
         this.kiSpeed = 1500;

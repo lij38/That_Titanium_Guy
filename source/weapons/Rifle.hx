@@ -34,7 +34,7 @@ class Rifle extends Weapon {
         this.curAmmo = this.magCapacity;
         //reload time
         if(Main.SAVE.data.rRtime == null) {
-            this.reloadTime = 2.0;
+            this.reloadTime = 2.5;
             Main.SAVE.data.rRtime = this.reloadTime;
         } else {
             this.reloadTime = Main.SAVE.data.rRtime;

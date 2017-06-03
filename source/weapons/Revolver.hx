@@ -28,7 +28,7 @@ class Revolver extends Weapon {
         this.curAmmo = this.magCapacity;
         //reload time
         if(Main.SAVE.data.rvRtime == null) {
-            this.reloadTime = 2.5;
+            this.reloadTime = 3.0;
             Main.SAVE.data.rvRtime = this.reloadTime;
         } else {
             this.reloadTime = Main.SAVE.data.rvRtime;

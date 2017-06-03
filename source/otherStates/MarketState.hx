@@ -8,13 +8,16 @@ import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import items.*;
+import levelStates.*;
 
 class MarketState extends FlxState {
+    private var _level:Int;
     private var title:FlxText;
     private var coin:FlxSprite;
     private var coinCount:FlxText;
     private var money:Int;
     private var confirm:ImageButton;
+    private var next:ImageButton;
     private var tCancel:ImageButton;
     private var inTrans:Bool;
     private var confirmButtons:FlxTypedGroup<ImageButton>;
@@ -185,6 +188,7 @@ class MarketState extends FlxState {
 
     override public function create():Void {
         //title
+        _level = Main.SAVE.data.curLevel;
         title = new FlxText(325, 1, 0, "Black Market", 26);
         title.setFormat(AssetPaths.FONT, title.size);
         add(title);
@@ -200,9 +204,13 @@ class MarketState extends FlxState {
         add(coin);
         add(coinCount);
         //load the confirm button
-        confirm = new ImageButton(300, 550, "CONFIRM", clickPlay);
+        confirm = new ImageButton(200, 550, "CONFIRM", clickPlay);
         confirm.loadGraphic(AssetPaths.confirm__png, false, 200, 40);
         add(confirm);
+        //load the next level button
+        next = new ImageButton(400, 550, "next", clickNext);
+        next.loadGraphic(AssetPaths.nextlevel__png);
+        add(next);
         //confirm buttons
         confirmButtons = new FlxTypedGroup<ImageButton>();
         inTrans = false;
@@ -213,10 +221,10 @@ class MarketState extends FlxState {
         loadRifle();
         loadSword();
         loadShield();
-        if(Main.SAVE.data.levelCompleted >= 6) {
+        if(Main.SAVE.data.shotgunPickup != null) {
             loadShotgun();
         }
-        if(Main.SAVE.data.levelCompleted >= 7 || Main.SAVE.data.revolverPickup) {
+        if(Main.SAVE.data.revolverPickup != null) {
             loadRevolver();
         }
 
@@ -236,6 +244,7 @@ class MarketState extends FlxState {
         if(Main.SAVE.data.bmTut == null || Main.SAVE.data.bmTut == false) {
             tutorial();
             confirm.kill();
+            next.kill();
         }
         add(confirmButtons);
         Main.LOGGER.logLevelStart(-1);
@@ -290,7 +299,7 @@ class MarketState extends FlxState {
                     + "Cost: $" + dsCost + "\nUpgrades left: " + dsNum;
         dsCC.text = "Cost: $" + dsCost + "\n# Left: " + dsNum;
         swDmgT.text = "Sharpened edge. Volatile energy.\n"
-                    + "Each upgrade will grant you +10% damage.\n"
+                    + "Each upgrade will grant you +15% damage.\n"
                     + "Cost: $" + swDmgCost + "\n" + "Upgrades left: " + swDmgNum;
         swDmgCC.text = "Cost: $" + swDmgCost + "\n# Left: " + swDmgNum;
         kiT.text = "Channel your inner ki energy to slice enemies to pieces from a distance.\n"
@@ -300,18 +309,18 @@ class MarketState extends FlxState {
                     + "Hold \'J\' and \'K\' together in game to unleash the whirlwinde\n" + "Cost: $" + wwCost + "\nUpgrades left: " + wwNum;
         wwCC.text = "Cost: $" + wwCost + "\n# Left: " + wwNum;
         spikeT.text = "Inspired by a scientist's pet hedgehog.\n"
-                    + "First Upgrade grants you 5% damage reflected back to your melee attacker while blocking, each subsequent upgrade grants you +1% damage reflected.\n"
+                    + "First Upgrade grants you 5% damage reflected back to your melee attacker while blocking, each subsequent upgrade grants you +2% damage reflected.\n"
                     + "Cost: $" + spikeCost + "\nUpgrades left: " + spikeNum;
         spikeCC.text = "Cost: $" + spikeCost + "\n# Left: " + spikeNum;
         reflectT.text = "Did you know that mirrors reflect bullets too?\n"
-                    + "First Upgrade grants you 5% damage reflected back to your ranged attacker while blocking, each subsequent upgrade grants you +1% damage reflected.\\n"
+                    + "First Upgrade grants you 5% damage reflected back to your ranged attacker while blocking, each subsequent upgrade grants you +2% damage reflected.\\n"
                     + "Cost: $" + reflectCost + "\n" + "Upgrades left: " + reflectNum;
         reflectCC.text = "Cost: $" + reflectCost + "\n# Left: " + reflectNum;
         dazeT.text = "Enemies are dazed by how good you are at using your shield.\n"
                     + "First upgrade grants you 5% chance of dazing the attacker while blocking, each subsequent"
-                    + " upgrade grants you +1% chance.\n" + "Cost: $" + dazeCost + "\nUpgrades left: " + dazeNum;
+                    + " upgrade grants you +2% chance.\n" + "Cost: $" + dazeCost + "\nUpgrades left: " + dazeNum;
         dazeCC.text = "Cost: $" + dazeCost + "\n# Left: " + dazeNum;
-        if(Main.SAVE.data.levelCompleted >= 6) {
+        if(Main.SAVE.data.shotgunPickup != null) {
             sgRtimeT.text = "Reload like you just missed your daughter's boyfriend.\n"
                         + "Each Upgrade grants you +10% faster reload speed.\n"
                         + "Cost: $" + sgRtimeCost + "\nUpgrades left: " + sgRtimeNum;
@@ -330,7 +339,7 @@ class MarketState extends FlxState {
                         + "Each upgrade grants you +10% enemy knockback\n" + "Cost: $" + pushBackCost + "\nUpgrades left: " + pushBackNum;
             pushBackCC.text = "Cost: $" + pushBackCost + "\n# Left: " + pushBackNum;
         }
-        if(Main.SAVE.data.levelCompleted >= 7 || Main.SAVE.data.revolverPickup) {
+        if(Main.SAVE.data.revolverPickup != null) {
             rvRtimeT.text = "Reload like a space cowboy.\n"
                         + "Each Upgrade grants you +10% faster reload speed.\n"
                         + "Cost: $" + rvRtimeCost + "\nUpgrades left: " + rvRtimeNum;
@@ -340,7 +349,7 @@ class MarketState extends FlxState {
                         + "Cost: $" + rvMagCost + "\n" + "Upgrades left: " + rvMagNum;
             rvMagCC.text = "Cost: $" + rvMagCost + "\n# Left: " + rvMagNum;
             rvDmgT.text = ".44 Magnum fused with pure power.\n"
-                        + "Each upgrade grants you 10% extra damage\n" + "Cost: $" + rvDmgCost + "\nUpgrades left: " + rvDmgNum;
+                        + "Each upgrade grants you 15% extra damage\n" + "Cost: $" + rvDmgCost + "\nUpgrades left: " + rvDmgNum;
             rvDmgCC.text = "Cost: $" + rvDmgCost + "\n# Left: " + rvDmgNum;
             chargeT.text = "What's scarier than a .44 magnum? A charged up one.\n"
                         + "Each upgrade grants you +10% charged damage\n" + "Cost: $" + chargeCost + "\nUpgrades left: " + chargeNum;
@@ -361,7 +370,7 @@ class MarketState extends FlxState {
         } else {
             maxHnum = Main.SAVE.data.maxHnum;
         }
-        maxHtext = new FlxText(200, 150, 400);
+        maxHtext = new FlxText(200, 150, 450);
         maxHtext.text = "Enhanced titanium armor allows you to take more damage before you bite the dust.\n"
             + "Each upgrade grants you 20 extra health\n" + "Cost: $" + maxHcost + "\nUpgrades left: " + maxHnum; 
         maxHtext.setFormat(AssetPaths.FONT, 25);
@@ -389,7 +398,7 @@ class MarketState extends FlxState {
         } else {
             jfnum = Main.SAVE.data.jfnum;
         }
-        jfText = new FlxText(200, 150, 400);
+        jfText = new FlxText(200, 150, 450);
         jfText.text = "Enhanced fusion technology allows the jetpack to fly longer\n"
             + "Each upgrade grants you 0.5 second extra flying time\n"
             + "Cost: $" + jfcost + "\nUpgrades left: " + jfnum;
@@ -418,7 +427,7 @@ class MarketState extends FlxState {
         } else {
             pnum = Main.SAVE.data.pnum;
         }
-        pText = new FlxText(200, 150, 400);
+        pText = new FlxText(200, 150, 450);
         pText.text = "Purchasing this upgrade will allow you to hold and save potions for emergency use.\n"
             + "Each subsequent purchase will grant you one extra slot.\n"
             + "Press \'H\' in game to use a saved health potion.\n"
@@ -460,7 +469,7 @@ class MarketState extends FlxState {
         } else {
             rRtimeNum = Main.SAVE.data.rRtimeNum;
         }
-        rRtimeT = new FlxText(200, 150, 400);
+        rRtimeT = new FlxText(200, 150, 450);
         rRtimeT.text = "Training in your daft hands allows you to reload faster.\n"
             + "Each Upgrade grants you +10% faster reload speed.\n"
             + "Cost: $" + rRtimeCost + "\nUpgrades left: " + rRtimeNum;
@@ -489,7 +498,7 @@ class MarketState extends FlxState {
         } else {
             rMagNum = Main.SAVE.data.rMagNum;
         }
-        rMagT = new FlxText(200, 150, 400);
+        rMagT = new FlxText(200, 150, 450);
         rMagT.text = "Extended clips can always come in handy.\n"
             + "Each upgrade will grant you +5 magazine size.\n"
             + "Cost: $" + rMagCost + "\n" + "Upgrades left: " + rMagNum;
@@ -518,7 +527,7 @@ class MarketState extends FlxState {
         } else {
             rDmgNum = Main.SAVE.data.rDmgNum;
         }
-        rDmgT = new FlxText(200, 150, 400);
+        rDmgT = new FlxText(200, 150, 450);
         rDmgT.text = "Hollow points make the baddies drop just that much faster.\n"
             + "Each upgrade grants you 10% extra damage\n" + "Cost: $" + rDmgCost + "\nUpgrades left: " + rDmgNum; 
         rDmgT.setFormat(AssetPaths.FONT, 25);
@@ -546,7 +555,7 @@ class MarketState extends FlxState {
         } else {
             rRateNum = Main.SAVE.data.rRateNum;
         }
-        rRateT = new FlxText(200, 150, 400);
+        rRateT = new FlxText(200, 150, 450);
         rRateT.text = "Fast as a hairpin trigger.\n"
             + "Each upgrade grants you +10% rate of fire\n" + "Cost: $" + rRateCost + "\nUpgrades left: " + rRateNum; 
         rRateT.setFormat(AssetPaths.FONT, 25);
@@ -589,7 +598,7 @@ class MarketState extends FlxState {
         } else {
             dsNum = Main.SAVE.data.dsNum;
         }
-        dsT = new FlxText(200, 150, 400);
+        dsT = new FlxText(200, 150, 450);
         dsT.text = "Your training in dual-wielding has made you adept at making two slashing attacks at the same time.\n"
             + "Each Upgrade grants you +5% chance of making a cross slash while dual wielding.\n"
             + "Cost: $" + dsCost + "\nUpgrades left: " + dsNum;
@@ -618,9 +627,9 @@ class MarketState extends FlxState {
         } else {
             swDmgNum = Main.SAVE.data.swDmgNum;
         }
-        swDmgT = new FlxText(200, 150, 400);
+        swDmgT = new FlxText(200, 150, 450);
         swDmgT.text = "Sharpened edge. Volatile energy.\n"
-            + "Each upgrade will grant you +10% damage.\n"
+            + "Each upgrade will grant you +15% damage.\n"
             + "Cost: $" + swDmgCost + "\n" + "Upgrades left: " + swDmgNum;
         swDmgT.setFormat(AssetPaths.FONT, 25);
         swDmgT.kill();
@@ -638,7 +647,7 @@ class MarketState extends FlxState {
 
         //ki attack
         if(Main.SAVE.data.kiCost == null) {
-            kiCost = 3000;
+            kiCost = 5000;
         } else {
             kiCost = Main.SAVE.data.kiCost;
         }
@@ -647,7 +656,7 @@ class MarketState extends FlxState {
         } else {
             kiNum = Main.SAVE.data.kiNum;
         }
-        kiT = new FlxText(200, 150, 400);
+        kiT = new FlxText(200, 150, 450);
         kiT.text = "Channel your inner ki energy to slice enemies to pieces from a distance.\n"
             + "Your sword attacks will now unleash ranged ki waves.\n" + "Cost: $" + kiCost + "\nUpgrades left: " + kiNum; 
         kiT.setFormat(AssetPaths.FONT, 25);
@@ -666,7 +675,7 @@ class MarketState extends FlxState {
 
         //whirlwind
         if(Main.SAVE.data.wwCost == null) {
-            wwCost = 100000;
+            wwCost = 8000;
         } else {
             wwCost = Main.SAVE.data.wwCost;
         }
@@ -675,7 +684,7 @@ class MarketState extends FlxState {
         } else {
             wwNum = Main.SAVE.data.wwNum;
         }
-        wwT = new FlxText(200, 150, 400);
+        wwT = new FlxText(200, 150, 450);
         wwT.text = "Your dual-wielding mastery now allows you to shred your surrounding enemies to pieces.\n"
             + "Hold \'J\' and \'K\' together in game to unleash the whirlwinde\n" + "Cost: $" + wwCost + "\nUpgrades left: " + wwNum; 
         wwT.setFormat(AssetPaths.FONT, 25);
@@ -718,9 +727,9 @@ class MarketState extends FlxState {
         } else {
             spikeNum = Main.SAVE.data.spikeNum;
         }
-        spikeT = new FlxText(200, 150, 400);
+        spikeT = new FlxText(200, 150, 450);
         spikeT.text = "Inspired by a scientist's pet hedgehog.\n"
-            + "First Upgrade grants you 5% damage reflected back to your melee attacker while blocking, each subsequent upgrade grants you +1% damage reflected.\n"
+            + "First Upgrade grants you 5% damage reflected back to your melee attacker while blocking, each subsequent upgrade grants you +2% damage reflected.\n"
             + "Cost: $" + spikeCost + "\nUpgrades left: " + spikeNum;
         spikeT.setFormat(AssetPaths.FONT, 25);
         spikeT.kill();
@@ -747,9 +756,9 @@ class MarketState extends FlxState {
         } else {
             reflectNum = Main.SAVE.data.reflectNum;
         }
-        reflectT = new FlxText(200, 150, 400);
+        reflectT = new FlxText(200, 150, 450);
         reflectT.text = "Did you know that mirrors reflect bullets too?\n"
-            + "First Upgrade grants you 5% damage reflected back to your ranged attacker while blocking, each subsequent upgrade grants you +1% damage reflected.\\n"
+            + "First Upgrade grants you 5% damage reflected back to your ranged attacker while blocking, each subsequent upgrade grants you +2% damage reflected.\\n"
             + "Cost: $" + reflectCost + "\n" + "Upgrades left: " + reflectNum;
         reflectT.setFormat(AssetPaths.FONT, 25);
         reflectT.kill();
@@ -779,7 +788,7 @@ class MarketState extends FlxState {
         dazeT = new FlxText(200, 150, 400);
         dazeT.text = "Enemies are dazed by how good you are at using your shield.\n"
             + "First upgrade grants you 5% chance of dazing the attacker while blocking, each subsequent"
-            + " upgrade grants you +1% chance.\n" + "Cost: $" + dazeCost + "\nUpgrades left: " + dazeNum; 
+            + " upgrade grants you +2% chance.\n" + "Cost: $" + dazeCost + "\nUpgrades left: " + dazeNum; 
         dazeT.setFormat(AssetPaths.FONT, 25);
         dazeT.kill();
         dazeCC = new FlxText(400, 330, 120);
@@ -818,7 +827,7 @@ class MarketState extends FlxState {
         } else {
             sgRtimeNum = Main.SAVE.data.sgRtimeNum;
         }
-        sgRtimeT = new FlxText(200, 150, 400);
+        sgRtimeT = new FlxText(200, 150, 450);
         sgRtimeT.text = "Reload like you just missed your daughter's boyfriend.\n"
             + "Each Upgrade grants you +10% faster reload speed.\n"
             + "Cost: $" + sgRtimeCost + "\nUpgrades left: " + sgRtimeNum;
@@ -847,7 +856,7 @@ class MarketState extends FlxState {
         } else {
             sgMagNum = Main.SAVE.data.sgMagNum;
         }
-        sgMagT = new FlxText(200, 150, 400);
+        sgMagT = new FlxText(200, 150, 450);
         sgMagT.text = "Extra shells around your belt can make you look like a badass.\n"
             + "Each upgrade will grant you +1 magazine size.\n"
             + "Cost: $" + sgMagCost + "\n" + "Upgrades left: " + sgMagNum;
@@ -876,7 +885,7 @@ class MarketState extends FlxState {
         } else {
             sgDmgNum = Main.SAVE.data.sgDmgNum;
         }
-        sgDmgT = new FlxText(200, 150, 400);
+        sgDmgT = new FlxText(200, 150, 450);
         sgDmgT.text = "Practicing on your daughter's boyfriend has had some deadly results.\n"
             + "Each upgrade grants you 10% extra damage\n" + "Cost: $" + sgDmgCost + "\nUpgrades left: " + sgDmgNum; 
         sgDmgT.setFormat(AssetPaths.FONT, 25);
@@ -904,7 +913,7 @@ class MarketState extends FlxState {
         } else {
             sgRateNum = Main.SAVE.data.sgRateNum;
         }
-        sgRateT = new FlxText(200, 150, 400);
+        sgRateT = new FlxText(200, 150, 450);
         sgRateT.text = "Ever heard of a fully-automatic shotgun?\n"
             + "Each upgrade grants you +10% rate of fire\n" + "Cost: $" + sgRateCost + "\nUpgrades left: " + sgRateNum; 
         sgRateT.setFormat(AssetPaths.FONT, 25);
@@ -932,7 +941,7 @@ class MarketState extends FlxState {
         } else {
             pushBackNum = Main.SAVE.data.pushBackNum;
         }
-        pushBackT = new FlxText(200, 150, 400);
+        pushBackT = new FlxText(200, 150, 450);
         pushBackT.text = "Send your daughter's boyfriend flying.\n"
             + "Each upgrade grants you +10% enemy knockback\n" + "Cost: $" + pushBackCost + "\nUpgrades left: " + pushBackNum; 
         pushBackT.setFormat(AssetPaths.FONT, 25);
@@ -977,7 +986,7 @@ class MarketState extends FlxState {
         } else {
             rvRtimeNum = Main.SAVE.data.rvRtimeNum;
         }
-        rvRtimeT = new FlxText(200, 150, 400);
+        rvRtimeT = new FlxText(200, 150, 450);
         rvRtimeT.text = "Reload like a space cowboy.\n"
             + "Each Upgrade grants you +10% faster reload speed.\n"
             + "Cost: $" + rvRtimeCost + "\nUpgrades left: " + rvRtimeNum;
@@ -1006,7 +1015,7 @@ class MarketState extends FlxState {
         } else {
             rvMagNum = Main.SAVE.data.rvMagNum;
         }
-        rvMagT = new FlxText(200, 150, 400);
+        rvMagT = new FlxText(200, 150, 450);
         rvMagT.text = "Can't call it a 6-shooter anymore.\n"
             + "Each upgrade will grant you +1 magazine size.\n"
             + "Cost: $" + rvMagCost + "\n" + "Upgrades left: " + rvMagNum;
@@ -1035,9 +1044,9 @@ class MarketState extends FlxState {
         } else {
             rvDmgNum = Main.SAVE.data.rvDmgNum;
         }
-        rvDmgT = new FlxText(200, 150, 400);
+        rvDmgT = new FlxText(200, 150, 450);
         rvDmgT.text = ".44 Magnum fused with pure power.\n"
-            + "Each upgrade grants you 10% extra damage\n" + "Cost: $" + rvDmgCost + "\nUpgrades left: " + rvDmgNum; 
+            + "Each upgrade grants you 15% extra damage\n" + "Cost: $" + rvDmgCost + "\nUpgrades left: " + rvDmgNum; 
         rvDmgT.setFormat(AssetPaths.FONT, 25);
         rvDmgT.kill();
         rvDmgCC = new FlxText(660, 330, 120);
@@ -1063,7 +1072,7 @@ class MarketState extends FlxState {
         } else {
             chargeNum = Main.SAVE.data.chargeNum;
         }
-        chargeT = new FlxText(200, 150, 400);
+        chargeT = new FlxText(200, 150, 450);
         chargeT.text = "What's scarier than a .44 magnum? A charged up one.\n"
             + "Each upgrade grants you +10% charged damage\n" + "Cost: $" + chargeCost + "\nUpgrades left: " + chargeNum; 
         chargeT.setFormat(AssetPaths.FONT, 25);
@@ -1094,6 +1103,7 @@ class MarketState extends FlxState {
     private function trans(t:FlxText, b:ImageButton) {
         if(!inTut && !inTrans) {
             confirm.kill();
+            next.kill();
             wMask.alpha = 0.75;
             tWindow.revive();
             t.revive();
@@ -1105,6 +1115,7 @@ class MarketState extends FlxState {
 
     private function killTrans() {
         confirm.revive();
+        next.revive();
         inTrans = false;
         wMask.alpha = 0;
         tWindow.kill();
@@ -1125,12 +1136,13 @@ class MarketState extends FlxState {
         }
     }
 
+    //1
     private function maxHConfirmF() {
         if(money > maxHcost && maxHnum > 0) {
             money -= maxHcost;
             maxHnum--;
             Main.SAVE.data.maxHealth += 20;
-            maxHcost = cast(maxHcost * 1.2, Int);
+            maxHcost = cast(maxHcost * 1.4, Int);
             Main.SAVE.data.maxHcost = maxHcost;
             Main.SAVE.data.maxHnum = maxHnum;
             Main.LOGGER.logLevelAction(1);
@@ -1138,12 +1150,13 @@ class MarketState extends FlxState {
         killTrans();
     }
 
+    //2
     private function jfConfirmF() {
         if(money > jfcost && jfnum > 0) {
             money -= jfcost;
             jfnum--;
             Main.SAVE.data.maxFuel += 0.5;
-            jfcost = cast(jfcost * 1.1, Int);
+            jfcost = cast(jfcost * 1.5, Int);
             Main.SAVE.data.jfcost = jfcost;
             Main.SAVE.data.jfnum = jfnum;
             Main.LOGGER.logLevelAction(2);
@@ -1151,6 +1164,7 @@ class MarketState extends FlxState {
         killTrans();
     }
 
+    //3
     private function pConfirmF() {
         if(money > pcost && pnum > 0) {
             money -= pcost;
@@ -1158,7 +1172,7 @@ class MarketState extends FlxState {
             if(Main.SAVE.data.potionCount != null) {
                 Main.SAVE.data.potionCount += 1;
             }
-            pcost = cast(pcost * 1.1, Int);
+            pcost = cast(pcost * 1.5, Int);
             Main.SAVE.data.pcost = pcost;
             Main.SAVE.data.pnum = pnum;
             Main.LOGGER.logLevelAction(3);
@@ -1166,12 +1180,14 @@ class MarketState extends FlxState {
         killTrans();
     }
 
+
+    //4
     private function rRtimeConfirmF() {
         if(money > rRtimeCost && rRtimeNum > 0) {
             money -= rRtimeCost;
             rRtimeNum--;
             Main.SAVE.data.rRtime *= 0.9;
-            rRtimeCost = cast(rRtimeCost * 1.1, Int);
+            rRtimeCost = cast(rRtimeCost * 1.4, Int);
             Main.SAVE.data.rRtimeCost = rRtimeCost;
             Main.SAVE.data.rRtimeNum = rRtimeNum;
             Main.LOGGER.logLevelAction(4);
@@ -1179,51 +1195,52 @@ class MarketState extends FlxState {
         killTrans();
     }
 
+    //5
     private function rMagConfirmF() {
         if(money > rMagCost && rMagNum > 0) {
             money -= rMagCost;
             rMagNum--;
             Main.SAVE.data.rMag += 5;
-            rMagCost = cast(rMagCost * 1.1, Int);
+            rMagCost = cast(rMagCost * 1.4, Int);
             Main.SAVE.data.rMagCost = rMagCost;
             Main.SAVE.data.rMagNum = rMagNum;
             Main.LOGGER.logLevelAction(5);
         }
         killTrans();
     }
-
+    //6
     private function rDmgConfirmF() {
         if(money > rDmgCost && rDmgNum > 0) {
             money -= rDmgCost;
             rDmgNum--;
             Main.SAVE.data.rDmg *= 1.1;
-            rDmgCost = cast(rDmgCost * 1.1, Int);
+            rDmgCost = cast(rDmgCost * 1.4, Int);
             Main.SAVE.data.rDmgCost = rDmgCost;
             Main.SAVE.data.rDmgNum = rDmgNum;
             Main.LOGGER.logLevelAction(6);
         }
         killTrans();
     }
-
+    //7
     private function rRateConfirmF() {
         if(money > rRateCost && rRateNum > 0) {
             money -= rRateCost;
             rRateNum--;
             Main.SAVE.data.rRate *= 0.8;
-            rRateCost = cast(rRateCost * 1.1, Int);
+            rRateCost = cast(rRateCost * 1.5, Int);
             Main.SAVE.data.rRateCost = rRateCost;
             Main.SAVE.data.rRateNum = rRateNum;
             Main.LOGGER.logLevelAction(7);
         }
         killTrans();
     }
-
+    //8
     private function dsConfirmF() {
         if(money > dsCost && dsNum > 0) {
             money -= dsCost;
             dsNum--;
             Main.SAVE.data.ds += 5;
-            dsCost = cast(dsCost * 1.1, Int);
+            dsCost = cast(dsCost * 1.5, Int);
             Main.SAVE.data.dsCost = dsCost;
             Main.SAVE.data.dsNum = dsNum;
             Main.LOGGER.logLevelAction(8);
@@ -1231,19 +1248,20 @@ class MarketState extends FlxState {
         killTrans();
     }
 
+    //9
     private function swDmgConfirmF() {
         if(money > swDmgCost && swDmgNum > 0) {
             money -= swDmgCost;
             swDmgNum--;
-            Main.SAVE.data.swDmg *= 1.1;
-            swDmgCost = cast(swDmgCost * 1.1, Int);
+            Main.SAVE.data.swDmg *= 1.15;
+            swDmgCost = cast(swDmgCost * 1.5, Int);
             Main.SAVE.data.swDmgCost = swDmgCost;
             Main.SAVE.data.swDmgNum = swDmgNum;
             Main.LOGGER.logLevelAction(9);
         }
         killTrans();
     }
-
+    //10
     private function kiConfirmF() {
         if(money > kiCost && kiNum > 0) {
             money -= kiCost;
@@ -1254,7 +1272,7 @@ class MarketState extends FlxState {
         }
         killTrans();
     }
-
+    //11
     private function wwConfirmF() {
         if(money > wwCost && wwNum > 0) {
             money -= wwCost;
@@ -1265,7 +1283,7 @@ class MarketState extends FlxState {
         }
         killTrans();
     }
-
+    //12
     private function spikeConfirmF() {
         if(money > spikeCost && spikeNum > 0) {
             money -= spikeCost;
@@ -1273,16 +1291,16 @@ class MarketState extends FlxState {
             if(Main.SAVE.data.spike == null) {
                 Main.SAVE.data.spike = 0.05;
             } else {
-                Main.SAVE.data.spike += 0.01;
+                Main.SAVE.data.spike += 0.02;
             }
-            spikeCost = cast(spikeCost * 1.1, Int);
+            spikeCost = cast(spikeCost * 1.4, Int);
             Main.SAVE.data.spikeCost = spikeCost;
             Main.SAVE.data.spikeNum = spikeNum;
             Main.LOGGER.logLevelAction(12);
         }
         killTrans();
     }
-
+    //13
     private function reflectConfirmF() {
         if(money > reflectCost && reflectNum > 0) {
             money -= reflectCost;
@@ -1290,16 +1308,16 @@ class MarketState extends FlxState {
             if(Main.SAVE.data.reflect == null) {
                 Main.SAVE.data.reflect = 0.05;
             } else {
-                Main.SAVE.data.reflect += 0.01;
+                Main.SAVE.data.reflect += 0.02;
             }
-            reflectCost = cast(reflectCost * 1.1, Int);
+            reflectCost = cast(reflectCost * 1.4, Int);
             Main.SAVE.data.reflectCost = reflectCost;
             Main.SAVE.data.reflectNum = reflectNum;
             Main.LOGGER.logLevelAction(13);
         }
         killTrans();
     }
-
+    //14
     private function dazeConfirmF() {
         if(money > dazeCost && dazeNum > 0) {
             money -= dazeCost;
@@ -1307,133 +1325,133 @@ class MarketState extends FlxState {
             if(Main.SAVE.data.daze == null) {
                 Main.SAVE.data.daze = 5;
             } else {
-                Main.SAVE.data.daze += 1;
+                Main.SAVE.data.daze += 2;
             }
-            dazeCost = cast(dazeCost * 1.1, Int);
+            dazeCost = cast(dazeCost * 1.5, Int);
             Main.SAVE.data.dazeCost = dazeCost;
             Main.SAVE.data.dazeNum = dazeNum;
             Main.LOGGER.logLevelAction(14);
         }
         killTrans();
     }
-
+    //15
     private function sgRtimeConfirmF() {
         if(money > sgRtimeCost && sgRtimeNum > 0) {
             money -= sgRtimeCost;
             sgRtimeNum--;
             Main.SAVE.data.sgRtime *= 0.9;
-            sgRtimeCost = cast(sgRtimeCost * 1.1, Int);
+            sgRtimeCost = cast(sgRtimeCost * 1.4, Int);
             Main.SAVE.data.sgRtimeCost = sgRtimeCost;
             Main.SAVE.data.sgRtimeNum = sgRtimeNum;
             Main.LOGGER.logLevelAction(15);
         }
         killTrans();
     }
-
+    //16
     private function sgMagConfirmF() {
         if(money > sgMagCost && sgMagNum > 0) {
             money -= sgMagCost;
             sgMagNum--;
             Main.SAVE.data.sgMag += 1;
-            sgMagCost = cast(sgMagCost * 1.1, Int);
+            sgMagCost = cast(sgMagCost * 1.4, Int);
             Main.SAVE.data.sgMagCost = sgMagCost;
             Main.SAVE.data.sgMagNum = sgMagNum;
             Main.LOGGER.logLevelAction(16);
         }
         killTrans();
     }
-
+    //17
     private function sgDmgConfirmF() {
         if(money > sgDmgCost && sgDmgNum > 0) {
             money -= sgDmgCost;
             sgDmgNum--;
             Main.SAVE.data.sgDmg *= 1.1;
-            sgDmgCost = cast(sgDmgCost * 1.1, Int);
+            sgDmgCost = cast(sgDmgCost * 1.4, Int);
             Main.SAVE.data.sgDmgCost = sgDmgCost;
             Main.SAVE.data.sgDmgNum = sgDmgNum;
             Main.LOGGER.logLevelAction(17);
         }
         killTrans();
     }
-
+    //18
     private function sgRateConfirmF() {
         if(money > sgRateCost && sgRateNum > 0) {
             money -= sgRateCost;
             sgRateNum--;
             Main.SAVE.data.sgRate *= 0.9;
-            sgRateCost = cast(sgRateCost * 1.1, Int);
+            sgRateCost = cast(sgRateCost * 1.4, Int);
             Main.SAVE.data.sgRateCost = sgRateCost;
             Main.SAVE.data.sgRateNum = sgRateNum;
             Main.LOGGER.logLevelAction(18);
         }
         killTrans();
     }
-
+    //19
     private function pushBackConfirmF() {
         if(money > pushBackCost && pushBackNum > 0) {
             money -= pushBackCost;
             pushBackNum--;
             Main.SAVE.data.pushBack *= 1.1;
-            pushBackCost = cast(pushBackCost * 1.1, Int);
+            pushBackCost = cast(pushBackCost * 1.4, Int);
             Main.SAVE.data.pushBackCost = pushBackCost;
             Main.SAVE.data.pushBackNum = pushBackNum;
             Main.LOGGER.logLevelAction(19);
         }
         killTrans();
     }
-
+    //20
     private function rvRtimeConfirmF() {
         if(money > rvRtimeCost && rvRtimeNum > 0) {
             money -= rvRtimeCost;
             rvRtimeNum--;
             Main.SAVE.data.rvRtime *= 0.9;
-            rvRtimeCost = cast(rvRtimeCost * 1.1, Int);
+            rvRtimeCost = cast(rvRtimeCost * 1.4, Int);
             Main.SAVE.data.rvRtimeCost = rvRtimeCost;
             Main.SAVE.data.rvRtimeNum = rvRtimeNum;
             Main.LOGGER.logLevelAction(20);
         }
         killTrans();
     }
-
+    //21
     private function rvMagConfirmF() {
         if(money > rvMagCost && rvMagNum > 0) {
             money -= rvMagCost;
             rvMagNum--;
             Main.SAVE.data.rvMag += 1;
-            rvMagCost = cast(rvMagCost * 1.1, Int);
+            rvMagCost = cast(rvMagCost * 1.4, Int);
             Main.SAVE.data.rvMagCost = rvMagCost;
             Main.SAVE.data.rvMagNum = rvMagNum;
             Main.LOGGER.logLevelAction(21);
         }
         killTrans();
     }
-
+    //22
     private function rvDmgConfirmF() {
         if(money > rvDmgCost && rvDmgNum > 0) {
             money -= rvDmgCost;
             rvDmgNum--;
-            Main.SAVE.data.rvDmg *= 1.1;
-            rvDmgCost = cast(rvDmgCost * 1.1, Int);
+            Main.SAVE.data.rvDmg *= 1.15;
+            rvDmgCost = cast(rvDmgCost * 1.5, Int);
             Main.SAVE.data.rvDmgCost = rvDmgCost;
             Main.SAVE.data.rvDmgNum = rvDmgNum;
             Main.LOGGER.logLevelAction(22);
         }
         killTrans();
     }
-
+    //23
     private function chargeConfirmF() {
         if(money > chargeCost && chargeNum > 0) {
             money -= chargeCost;
             chargeNum--;
             Main.SAVE.data.charge *= 1.1;
-            chargeCost = cast(chargeCost * 1.1, Int);
+            chargeCost = cast(chargeCost * 1.4, Int);
             Main.SAVE.data.chargeCost = chargeCost;
             Main.SAVE.data.chargeNum = chargeNum;
             Main.LOGGER.logLevelAction(23);
         }
         killTrans();
     }
-
+    
     private function clickPlay() {
         Main.LOGGER.logLevelEnd({won: true});
         Main.SAVE.data.money = money;
@@ -1467,7 +1485,28 @@ class MarketState extends FlxState {
         tText.destroy();
         tButton.destroy();
         confirm.revive();
+        next.revive();
         inTut = false;
+    }
+
+    private function clickNext() {
+        FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
+			switch _level {
+                case 1: FlxG.switchState(new Level1State());
+                case 2: FlxG.switchState(new Boss1State());
+                case 4: FlxG.switchState(new Level3State());
+                case 5: FlxG.switchState(new Boss2State());
+                case 6: FlxG.switchState(new CreditState());
+            }
+
+            if(_level == 3) {
+                if(Main.SAVE.data.homeTut == null) {
+                    FlxG.switchState(new HomeState());
+                } else {
+                    FlxG.switchState(new Level2State());
+                }
+            }
+		});
     }
 }
 
