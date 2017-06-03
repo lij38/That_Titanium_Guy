@@ -44,7 +44,7 @@ class Shotgun extends Weapon {
         this.curAmmo = this.magCapacity;
         //reload time
         if(Main.SAVE.data.sgRtime == null) {
-            this.reloadTime = 3;
+            this.reloadTime = 4;
             Main.SAVE.data.sgRtime = this.reloadTime;
         } else {
             this.reloadTime = Main.SAVE.data.sgRtime;

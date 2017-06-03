@@ -9,6 +9,7 @@ import flixel.util.FlxColor;
 import flixel.FlxG;
 import flixel.math.FlxPoint;
 import flixel.FlxObject;
+import flixel.input.keyboard.FlxKey;
 import weapons.*;
 import haxe.CallStack;
 
@@ -30,6 +31,10 @@ class Player extends FlxSprite {
 	public var maxHealth:Float;
 	public var potionCount:Int;
 	public var potionSlot:Bool;
+
+	//controls
+	private var jumpControl:Array<FlxKey>;
+	private var rollControl:Array<FlxKey>;
 
 	public var jetpackFieldMax:Float;
 	public var jetpackField:Float;
@@ -63,6 +68,10 @@ class Player extends FlxSprite {
 	public var sndShotgunFire:FlxSound;
 	public var sndShotgunReload:FlxSound;
 	private var sndPotion:FlxSound;
+	private var sndJump:FlxSound;
+	private var sndRoll:FlxSound;
+	private var sndLand:FlxSound;
+	private var midAir:Bool;
 
 	public var freeze:Bool;
 
@@ -97,6 +106,14 @@ class Player extends FlxSprite {
 		}
 		dmgTaken = 0.0;
 
+		//controls
+		if(Main.SAVE.data.jump == null) {
+			jumpControl = [SPACE];
+			rollControl = [S];
+		} else {
+			jumpControl = Main.SAVE.data.jump;
+			rollControl = Main.SAVE.data.roll;
+		}
 		loadGraphic(AssetPaths.player__png, true, 334, 182);
 		setFacingFlip(FlxObject.LEFT, true, false);
 		setFacingFlip(FlxObject.RIGHT, false, false);
@@ -142,6 +159,7 @@ class Player extends FlxSprite {
 		shielding = false;
 		sndPotion = FlxG.sound.load(AssetPaths.potion__wav);
 
+		midAir = false;
 		freeze = false;
 	}
 	
@@ -234,11 +252,11 @@ class Player extends FlxSprite {
 			left = FlxG.keys.anyPressed([A]);
 			right = FlxG.keys.anyPressed([D]);
 			down = FlxG.keys.anyPressed([S]);
-			doubleJump = FlxG.keys.anyJustPressed([SPACE]);
+			doubleJump = FlxG.keys.anyJustPressed(jumpControl);
 			
 			jetpack = FlxG.keys.anyPressed([SHIFT]);
 			
-			roll = FlxG.keys.anyJustPressed([S]);
+			roll = FlxG.keys.anyJustPressed(rollControl);
 		} else if (isTumbling()){
 			tumble(FlxObject.NONE, elapsed);
 		} else if (isSwording()) {
@@ -313,6 +331,9 @@ class Player extends FlxSprite {
 			
 			// jumping
 			if (isTouching(FlxObject.DOWN)) {
+				if(midAir) {
+					sndLand.play();
+				}
 				jump = -1;
 				numJump = 0;
 			}
@@ -320,6 +341,7 @@ class Player extends FlxSprite {
 			if (doubleJump && numJump < numJumpLimit) {
 				numJump++;
 				jump = 0;
+				sndJump.play();
 			}
 			if (jump >= 0) {
 				jump += elapsed;
@@ -333,6 +355,13 @@ class Player extends FlxSprite {
 			
 		}
 		
+		//is the player in midair
+		if(cast(velocity.y, Int) != 0 && !isTouching(FlxObject.DOWN)) {
+			midAir = true;
+		} else {
+			midAir = false;
+		}
+
 		// if the player is moving (velocity is not 0), we need to change the
 		// animation to match their facing
 		if (isTumbling()) {
@@ -359,20 +388,9 @@ class Player extends FlxSprite {
 				&& (kWeaponTimer == -0.1 || kWeaponTimer > kWeapon.getRate()))
 				&& cast(jWeapon, Sword).isWW()) {
 				swordTimer = 0;
-				if(facing == FlxObject.NONE) {
-					jWeapon.attack(getMidpoint().x, y, faced);
-					kWeapon.attack(getMidpoint().x, y, facing);
-				} else {
-					kWeapon.attack(getMidpoint().x, y, faced);
-					jWeapon.attack(getMidpoint().x, y, facing);
-				}
-				
-				//trace(Std.string(faced));
-				//kWeapon.attack(getMidpoint().x, y, faced);
-				
-				//jWeapon.attack(getMidpoint().x, y, facing);
-				
-				//trace(Std.string(facing));
+				jWeapon.attack(getMidpoint().x, y, FlxObject.RIGHT);
+				kWeapon.attack(getMidpoint().x, y, FlxObject.LEFT);
+
 				if(jetpack) {
 					animation.play(curConfig + "JPDC");
 				} else {
@@ -721,6 +739,7 @@ class Player extends FlxSprite {
 		} else {
 			tumbleTimer = -1;
 		}
+		sndRoll.play();
 	}
 	
 	public function isTumbling():Bool {
@@ -852,6 +871,9 @@ class Player extends FlxSprite {
 		sndRifleReload = FlxG.sound.load(AssetPaths.rifle_reload__wav);
 		sndShotgunFire = FlxG.sound.load(AssetPaths.shotgun_fire1__wav);
 		sndShotgunReload = FlxG.sound.load(AssetPaths.shotgun_reload__wav);
+		sndJump = FlxG.sound.load(AssetPaths.jump__wav);
+		sndLand = FlxG.sound.load(AssetPaths.land__wav);
+		sndRoll = FlxG.sound.load(AssetPaths.roll__wav);
 	}
 	
 	private function fireWeaponSound(name:String):Void {
