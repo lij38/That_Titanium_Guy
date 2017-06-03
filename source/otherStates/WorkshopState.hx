@@ -99,13 +99,13 @@ class WorkshopState extends FlxState {
         add(k2);
 
         //load the confirm button
-        confirm = new ImageButton(150, 550, "CONFIRM", clickPlay);
+        confirm = new ImageButton(200, 550, "CONFIRM", clickPlay);
         confirm.loadGraphic(AssetPaths.confirm__png, false, 200, 40);
         add(confirm);
 
         //load the next level button
-        next = new ImageButton(450, 550, "next", clickNext);
-        next.loadGraphic(AssetPaths.next__png);
+        next = new ImageButton(400, 550, "next", clickNext);
+        next.loadGraphic(AssetPaths.nextlevel__png);
         add(next);
 
         //show shotgun or not

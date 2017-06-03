@@ -209,7 +209,7 @@ class MarketState extends FlxState {
         add(confirm);
         //load the next level button
         next = new ImageButton(400, 550, "next", clickNext);
-        next.loadGraphic(AssetPaths.next__png);
+        next.loadGraphic(AssetPaths.nextlevel__png);
         add(next);
         //confirm buttons
         confirmButtons = new FlxTypedGroup<ImageButton>();

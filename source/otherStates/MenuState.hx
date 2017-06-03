@@ -50,7 +50,8 @@ class MenuState extends FlxState {
 		_btnCredits = new ImageButton(0, 515, clickCredits);
 		_btnCredits.loadGraphic(AssetPaths.creditsbtn__png, false, 200, 40);
 		_btnControl = new ImageButton(0, 420, clickControl);
-		
+		_btnControl.loadGraphic(AssetPaths.controlsettings__png);
+
 		//_btnContinue.screenCenter();
 		 //spritesheet = new FlxSprite(0, 0);
 
