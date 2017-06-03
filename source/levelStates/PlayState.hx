@@ -202,9 +202,7 @@ class PlayState extends FlxState {
 		// Bullets collide walls
 		FlxG.collide(_plat, playerBullets, bulletsHitWalls);
 		FlxG.collide(_plat, enemiesBullets, enemiesBulletsHitWalls);
-		if(!_is_boss) {
-			FlxG.collide(enemiesGroup, _plat);
-		}
+		FlxG.collide(enemiesGroup, _plat);
 		
 		// Coins
 		FlxG.collide(coinsGroup, _plat);
@@ -304,21 +302,15 @@ class PlayState extends FlxState {
 		_hand = new Boss2Hand();
 		
 		if (entityName == "boss1") {
-			boss = new Boss1(x, y, enId, enemiesBullets, coinsGroup, 0);
+			boss = new Boss1(x - 200, y, enId, enemiesBullets, coinsGroup, GRAVITY);
 			enemiesGroup.add(boss);
-			if (boss.health > 0) {
-				_boss_hud = new Boss1HUD(boss);
-			} else {
-				boss.hurt(boss.health);
-			}
+			_boss_hud = new Boss1HUD(boss);
+			
 		}  else if (entityName == "boss2"){
 			boss2 = new Boss2(x, y, enId, enemiesBullets, coinsGroup, 0, _hand, _player);
 			enemiesGroup.add(boss2);
-			if (boss2.health > 0) {
-				_boss_hud = new Boss1HUD(boss2);
-			} else {
-				boss2.hurt(boss2.health);
-			}
+			_boss_hud = new Boss1HUD(boss2);
+			
 		} else {
 			en = EnemyFactory.getEnemy(entityName, x, y, enId,
 										enemiesBullets, coinsGroup,
@@ -331,14 +323,6 @@ class PlayState extends FlxState {
 				en.onPickUpItem = pickUpRifle;
 			}
 			enemiesGroup.add(en);
-			if (en.health > 0) {
-				//var eh:EnemyHUD;
-				//eh = new EnemyHUD(en);
-				//_enemiesMap.set(en, eh);
-				//_enemiesHUD.add(eh);
-			} else {
-				en.hurt(en.health);
-			}
 		}
 	}
 

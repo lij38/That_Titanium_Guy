@@ -31,10 +31,10 @@ class Boss1 extends Enemy {
 		super(X, Y, id, bulletArray, coinsGroup, gravity, BOSS);
 		GRAVITY = gravity;
 
-		loadGraphic(AssetPaths.abc__png, true, 1007, 702);
+		loadGraphic(AssetPaths.boss1__png, true, 1007, 702);
 		scale.set(0.6, 0.6);
-		setSize(120, 186);
-		offset.set(445, 290);
+		setSize(120, 215);
+		offset.set(445, 310);
 		this.name = "1LT. Cleaver, Bull";
 		//cast(this, FlxObject).debugBoundingBoxColor = FlxColor.RED;
 		
@@ -68,11 +68,7 @@ class Boss1 extends Enemy {
 		hurtTime = 0.10;
 	}
 
-	override public function update(elapsed:Float):Void {
-		//if (health < 0 && animation.finished) {
-			//kill();
-		//}
-		
+	/*override public function update(elapsed:Float):Void {
 		if (!alive) {
 			velocity.set(0, 0);
 			super.update(elapsed);
@@ -82,7 +78,7 @@ class Boss1 extends Enemy {
 		}
 		
 		super.update(elapsed);
-	}
+	}*/
 
 	public function stay(elapsed:Float):Void {
 		//trace("stay!!!!!!!!!!!!!!");
