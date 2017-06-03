@@ -177,10 +177,10 @@ class RatingCalc {
             var dmg:Float = Main.SAVE.data.dmgTaken;
             if(dmg <= dmg6) {
                 return 3;
-            } else if(dmg4 == 0) {
-                dmg4 = 30;
+            } else if(dmg6 == 0) {
+                dmg6 = 30;
             } 
-            if(dmg <= dmg4 + dmg4){
+            if(dmg <= dmg6 + dmg6){
                 return 2;
             } 
             return 1;

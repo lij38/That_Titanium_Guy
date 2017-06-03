@@ -8,6 +8,7 @@ import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import items.*;
+import levelStates.*;
 
 class WorkshopState extends FlxState {
     private var jWeapon:ImageButton;
@@ -26,6 +27,9 @@ class WorkshopState extends FlxState {
     private var config2:FlxText;
     private var title:FlxText;
     private var confirm:ImageButton;
+    private var cancel:ImageButton;
+    private var next:ImageButton;
+    private var _level:Int;
 
     //weapon selection window
     private var sWindow:FlxSprite;
@@ -52,6 +56,7 @@ class WorkshopState extends FlxState {
     private var inTut:Bool;
 
     override public function create():Void {
+        _level = Main.SAVE.data.curLevel;
         title = new FlxText(325, 15, 0, "Workshop", 35);
         title.setFormat(AssetPaths.FONT, title.size);
         add(title);
@@ -94,9 +99,14 @@ class WorkshopState extends FlxState {
         add(k2);
 
         //load the confirm button
-        confirm = new ImageButton(300, 550, "CONFIRM", clickPlay);
+        confirm = new ImageButton(150, 550, "CONFIRM", clickPlay);
         confirm.loadGraphic(AssetPaths.confirm__png, false, 200, 40);
         add(confirm);
+
+        //load the next level button
+        next = new ImageButton(450, 550, "next", clickNext);
+        next.loadGraphic(AssetPaths.next__png);
+        add(next);
 
         //show shotgun or not
         if(Main.SAVE.data.shotgunPickup) {
@@ -184,38 +194,38 @@ class WorkshopState extends FlxState {
     }
 
     private function loadSP() {
-        sWindow = new FlxSprite(50, 10).makeGraphic(700, 590, FlxColor.BLACK);
+        sWindow = new FlxSprite(25, 10).makeGraphic(725, 590, FlxColor.BLACK);
         wMask = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
         add(wMask);
         wMask.alpha = 0;
         add(sWindow);
         curSelect = "";
         //rifle
-        rifle = new ImageButton(50, 15, rifleClick);
+        rifle = new ImageButton(25, 15, rifleClick);
         rifle.loadGraphic(AssetPaths.riflebm__png);
         add(rifle);
-        rifleT = new FlxText(150, 15, 600);
-        rifleT.text = "\t               The Standard Issue \n"
+        rifleT = new FlxText(125, 15, 650);
+        rifleT.text = "\t                   The Standard Issue \n"
             + "The Old Federal Army's standard fully-automatic weapon \n"
             + "\"look at that G.I. with his S.I.\"";
         rifleT.setFormat(AssetPaths.FONT, 20);
         add(rifleT);
         //sword
-        sword = new ImageButton(50, 140, swordClick);
+        sword = new ImageButton(25, 120, swordClick);
         sword.loadGraphic(AssetPaths.swordbm__png);
         add(sword);
-        swordT = new FlxText(150, 125, 600);
-        swordT.text = "\t               The Glower \n"
+        swordT = new FlxText(125, 100, 650);
+        swordT.text = "\t                  The Glower \n"
             + "A fine piece of weaponry made with the matrimony of titanium and energy \n"
             + "\"They say the glowing Glower glowers at the enemy.\"";
         swordT.setFormat(AssetPaths.FONT, 20);
         add(swordT);
         //shield
-        shield = new ImageButton(50, 265, shieldClick);
+        shield = new ImageButton(25, 245, shieldClick);
         shield.loadGraphic(AssetPaths.shieldbm__png);
         add(shield);
-        shieldT = new FlxText(150, 250, 600);
-        shieldT.text = "\t                The Cower \n"
+        shieldT = new FlxText(125, 225, 650);
+        shieldT.text = "\t                    The Cower \n"
             + "The shield that saved countless line infantrymen's lives back in the Great Wars \n"
             + "\"Not all who cower behind The Cower are cowards.\"";
         shieldT.setFormat(AssetPaths.FONT, 20);
@@ -223,10 +233,10 @@ class WorkshopState extends FlxState {
 
         //shotgun
         if(sgshow) {
-            shotgun = new ImageButton(50, 390, shotgunClick);
+            shotgun = new ImageButton(25, 360, shotgunClick);
             shotgun.loadGraphic(AssetPaths.shotgunbm__png);
             add(shotgun);
-            shotgunT = new FlxText(150, 375, 600);
+            shotgunT = new FlxText(125, 345, 650);
             shotgunT.text = "\t               The Musher \n"
                 + "Deadly when upclose and personal. A favorite of the Sappers.\n"
                 + "\"Being hit with The Musher is like tying your limbs to a group of huskies and yelling \'MUSH!\'.\"";
@@ -236,17 +246,20 @@ class WorkshopState extends FlxState {
 
         //revolver
         if(rvshow) {
-            revolver = new ImageButton(50, 515, revolverClick);
+            revolver = new ImageButton(25, 475, revolverClick);
             revolver.loadGraphic(AssetPaths.revolverbm__png);
             add(revolver);
-            revolverT = new FlxText(150, 500, 600);
-            revolverT.text = "\t        The Single-Action PewPew \n"
+            revolverT = new FlxText(125, 470, 650);
+            revolverT.text = "\t             The Single-Action PewPew \n"
                 + "Space cowboys like to charge 'em up for extra hell.\n"
                 + "\"You telling me that I can fire 'em as fast as I can cock 'em?\"";
             revolverT.setFormat(AssetPaths.FONT, 20);
             add(revolverT);
         }
-
+        //cancel button
+        cancel = new ImageButton(300, 550, "CANCEL", noShowSelect);
+        cancel.loadGraphic(AssetPaths.cancel__png, false, 200, 40);
+        add(cancel);
         noShowSelect();
     }
 
@@ -321,8 +334,10 @@ class WorkshopState extends FlxState {
             revolver.revive();
             revolverT.revive();
         }
+        cancel.revive();
         wMask.alpha = 0.75;
         confirm.kill();
+        next.kill();
         jWeapon.kill();
         kWeapon.kill();
         j2ndWeapon.kill();
@@ -418,11 +433,26 @@ class WorkshopState extends FlxState {
             revolver.kill();
             revolverT.kill();
         }
+        cancel.kill();
         wMask.alpha = 0;
         confirm.revive();
+        next.revive();
         jWeapon.revive();
         kWeapon.revive();
         j2ndWeapon.revive();
         k2ndWeapon.revive();
+    }
+
+    private function clickNext():Void {
+        FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
+			switch _level {
+                case 1: FlxG.switchState(new Level1State());
+                case 2: FlxG.switchState(new Boss1State());
+                case 3: FlxG.switchState(new Level2State());
+                case 4: FlxG.switchState(new Level3State());
+                case 5: FlxG.switchState(new Boss2State());
+                case 6: FlxG.switchState(new CreditState());
+            }
+		});
     }
 }

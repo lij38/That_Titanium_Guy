@@ -95,7 +95,6 @@ class PlayState extends FlxState {
 			placeEnemies(e.name, e.xmlData.x);
 		}
 		numEnemies = enemiesGroup.countLiving();
-		trace(Std.string(numEnemies));
 		Main.SAVE.data.numEnemies = numEnemies;
 		/////////////////////////
 		//ADD EVERY COMPONENT

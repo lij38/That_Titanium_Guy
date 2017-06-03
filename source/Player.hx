@@ -9,6 +9,7 @@ import flixel.util.FlxColor;
 import flixel.FlxG;
 import flixel.math.FlxPoint;
 import flixel.FlxObject;
+import flixel.input.keyboard.FlxKey;
 import weapons.*;
 import haxe.CallStack;
 
@@ -30,6 +31,10 @@ class Player extends FlxSprite {
 	public var maxHealth:Float;
 	public var potionCount:Int;
 	public var potionSlot:Bool;
+
+	//controls
+	private var jumpControl:Array<FlxKey>;
+	private var rollControl:Array<FlxKey>;
 
 	public var jetpackFieldMax:Float;
 	public var jetpackField:Float;
@@ -97,6 +102,14 @@ class Player extends FlxSprite {
 		}
 		dmgTaken = 0.0;
 
+		//controls
+		if(Main.SAVE.data.jump == null) {
+			jumpControl = [SPACE];
+			rollControl = [S];
+		} else {
+			jumpControl = Main.SAVE.data.jump;
+			rollControl = Main.SAVE.data.roll;
+		}
 		loadGraphic(AssetPaths.player__png, true, 334, 182);
 		setFacingFlip(FlxObject.LEFT, true, false);
 		setFacingFlip(FlxObject.RIGHT, false, false);
@@ -234,11 +247,11 @@ class Player extends FlxSprite {
 			left = FlxG.keys.anyPressed([A]);
 			right = FlxG.keys.anyPressed([D]);
 			down = FlxG.keys.anyPressed([S]);
-			doubleJump = FlxG.keys.anyJustPressed([SPACE]);
+			doubleJump = FlxG.keys.anyJustPressed(jumpControl);
 			
 			jetpack = FlxG.keys.anyPressed([SHIFT]);
 			
-			roll = FlxG.keys.anyJustPressed([S]);
+			roll = FlxG.keys.anyJustPressed(rollControl);
 		} else if (isTumbling()){
 			tumble(FlxObject.NONE, elapsed);
 		} else if (isSwording()) {
@@ -359,20 +372,9 @@ class Player extends FlxSprite {
 				&& (kWeaponTimer == -0.1 || kWeaponTimer > kWeapon.getRate()))
 				&& cast(jWeapon, Sword).isWW()) {
 				swordTimer = 0;
-				if(facing == FlxObject.NONE) {
-					jWeapon.attack(getMidpoint().x, y, faced);
-					kWeapon.attack(getMidpoint().x, y, facing);
-				} else {
-					kWeapon.attack(getMidpoint().x, y, faced);
-					jWeapon.attack(getMidpoint().x, y, facing);
-				}
-				
-				//trace(Std.string(faced));
-				//kWeapon.attack(getMidpoint().x, y, faced);
-				
-				//jWeapon.attack(getMidpoint().x, y, facing);
-				
-				//trace(Std.string(facing));
+				jWeapon.attack(getMidpoint().x, y, FlxObject.RIGHT);
+				kWeapon.attack(getMidpoint().x, y, FlxObject.LEFT);
+
 				if(jetpack) {
 					animation.play(curConfig + "JPDC");
 				} else {

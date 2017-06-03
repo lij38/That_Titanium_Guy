@@ -10,6 +10,7 @@ import items.*;
 import flixel.util.FlxColor;
 import flixel.util.FlxSave;
 import flixel.text.FlxText;
+import flixel.input.keyboard.FlxKey;
 
 class MenuState extends FlxState {
 	private var _bg:FlxSprite;
@@ -26,6 +27,13 @@ class MenuState extends FlxState {
 	private var _cancel:ImageButton;
 	private var _cText:FlxText;
 	
+	//control settings
+	private var _btnControl:ImageButton;
+	private var select1:ImageButton;
+	private var select2:ImageButton;
+	private var _controlCancel:ImageButton;
+	private var controlText:FlxText;
+
 	var spritesheet:FlxSprite;
 		
 	override public function create():Void {
@@ -39,8 +47,9 @@ class MenuState extends FlxState {
 		_btnPlay.loadGraphic(AssetPaths.newgame__png, false, 200, 40);
 		_btnContinue = new ImageButton(0, 325, "Continue", clickContinue);
 		_btnContinue.loadGraphic(AssetPaths.continue__png, false, 200, 40);
-		_btnCredits = new ImageButton(0, 420, clickCredits);
+		_btnCredits = new ImageButton(0, 515, clickCredits);
 		_btnCredits.loadGraphic(AssetPaths.creditsbtn__png, false, 200, 40);
+		_btnControl = new ImageButton(0, 420, clickControl);
 		
 		//_btnContinue.screenCenter();
 		 //spritesheet = new FlxSprite(0, 0);
@@ -66,17 +75,38 @@ class MenuState extends FlxState {
 		_cancel.kill();
 		_cText.kill();
 
+		//load control selection screen
+		controlText = new FlxText(210, 100, 390);
+		controlText.text = "There are two kinds of people in this world. \n"
+			+ "             Choose your side:";
+		controlText.setFormat(AssetPaths.FONT, 25);
+		select1 = new ImageButton(225, 225, setting1);
+		select1.loadGraphic(AssetPaths.emptyslot__png);
+		select2 = new ImageButton(425, 225, setting2);
+		select2.loadGraphic(AssetPaths.emptyslot__png);
+		_controlCancel = new ImageButton(300, 400, killControl);
+		_controlCancel.loadGraphic(AssetPaths.cancel__png);
+		controlText.kill();
+		select1.kill();
+		select2.kill();
+		_controlCancel.kill();
+
 		// add(_title);
 		// add(_subtitle);
 		add(_bg);
 		add(_btnPlay);
 		add(_btnContinue);
 		add(_btnCredits);
+		add(_btnControl);
 		add(_mask);
 		add(_cWindow);
 		add(_cButton);
 		add(_cancel);
 		add(_cText);
+		add(controlText);
+		add(select1);
+		add(select2);
+		add(_controlCancel);
 		FlxG.camera.fade(FlxColor.BLACK, .33, true);
 		FlxG.sound.playMusic(AssetPaths.theme__mp3);
 		super.create();
@@ -110,6 +140,7 @@ class MenuState extends FlxState {
 		_btnContinue.kill();
 		_btnCredits.kill();
 		_btnPlay.kill();
+		_btnControl.kill();
 		_cWindow.revive();
 		_cButton.revive();
 		_cancel.revive();
@@ -121,10 +152,49 @@ class MenuState extends FlxState {
 		_btnContinue.revive();
 		_btnCredits.revive();
 		_btnPlay.revive();
+		_btnControl.revive();
 		_cWindow.kill();
 		_cButton.kill();
 		_cancel.kill();
 		_cText.kill();
+	}
+
+	private function clickControl():Void {
+		_mask.alpha = 0.75;
+		_btnContinue.kill();
+		_btnCredits.kill();
+		_btnPlay.kill();
+		_btnControl.kill();
+		_cWindow.revive();
+		select1.revive();
+		select2.revive();
+		controlText.revive();
+		_controlCancel.revive();
+	}
+
+	private function setting1():Void {
+		Main.SAVE.data.jump = [FlxKey.SPACE];
+		Main.SAVE.data.roll = [FlxKey.S];
+		killControl();
+	}
+
+	private function setting2():Void {
+		Main.SAVE.data.jump = [FlxKey.W];
+		Main.SAVE.data.roll = [FlxKey.SPACE];
+		killControl();
+	}
+
+	private function killControl():Void {
+		_mask.alpha = 0;
+		_btnContinue.revive();
+		_btnCredits.revive();
+		_btnPlay.revive();
+		_btnControl.revive();
+		_cWindow.kill();
+		select1.kill();
+		select2.kill();
+		controlText.kill();
+		_controlCancel.kill();
 	}
 
 	private function clickContinue():Void {
