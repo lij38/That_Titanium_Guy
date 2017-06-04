@@ -72,6 +72,7 @@ class Player extends FlxSprite {
 	private var sndRoll:FlxSound;
 	private var sndLand:FlxSound;
 	private var midAir:Bool;
+	private var sndJetpack:FlxSound;
 
 	public var freeze:Bool;
 
@@ -278,9 +279,12 @@ class Player extends FlxSprite {
 		} else if (jetpackField < jetpackFieldMax && isTouching(FlxObject.DOWN)) {
 			jetpackField += elapsed / 2;
 		}
-		
+		if (!jetpack) {
+			sndJetpack.pause();
+		}
 		// facing and movement
 		if (jetpack) {
+			sndJetpack.play();
 			numJump = numJumpLimit;
 			if (up || down || left || right) {
 				acceleration.y = 0;
@@ -341,7 +345,7 @@ class Player extends FlxSprite {
 			if (doubleJump && numJump < numJumpLimit) {
 				numJump++;
 				jump = 0;
-				sndJump.play();
+				sndJump.play(true);
 			}
 			if (jump >= 0) {
 				jump += elapsed;
@@ -734,12 +738,13 @@ class Player extends FlxSprite {
 		}
 		if (tumbleTimer < 0) {
 			tumbleTimer = 0.0;
+			sndRoll.play(true);
 		} else if (tumbleTimer < TumbleTime) {
 			tumbleTimer += elapsed;
 		} else {
 			tumbleTimer = -1;
 		}
-		sndRoll.play();
+		
 	}
 	
 	public function isTumbling():Bool {
@@ -945,6 +950,7 @@ class Player extends FlxSprite {
 		sndJump = FlxG.sound.load(AssetPaths.jump__wav);
 		sndLand = FlxG.sound.load(AssetPaths.land__wav);
 		sndRoll = FlxG.sound.load(AssetPaths.roll__wav);
+		sndJetpack = FlxG.sound.load(AssetPaths.jetpack__wav);
 	}
 	
 	private function fireWeaponSound(name:String):Void {
