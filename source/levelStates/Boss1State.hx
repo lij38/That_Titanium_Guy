@@ -44,10 +44,6 @@ class Boss1State extends PlayState {
 		Main.LOGGER.logLevelStart(LEVELID);
 	}
 
-	override public function update(elapsed:Float):Void {
-		super.update(elapsed);
-	}
-
 	private function bulletsHitEnemy(bullet:Bullet, small_boss:Boss1):Void {
 		if (small_boss.alive) {
 			var damage:Float = bullet.getDamage();
@@ -57,18 +53,6 @@ class Boss1State extends PlayState {
 			bullet.destroy();
 		}
 	}
-
-/*
-	public function stopPlayer(player:Player, enemy:Boss1):Void {
-		if(!player.isTumbling()) {
-			if (player.facing == FlxObject.LEFT) {
-				player.x += 2;
-			} else {
-				player.x -= 2;	
-			}
-		}
-	}
-	*/
 
 	override public function playerCollidesEnemies(player:Player, enemy:Enemy):Void {
 		if(!player.isTumbling()) {
