@@ -132,6 +132,7 @@ class HomeState extends FlxState {
 		 	_bg.color = 0x777777;
 		 	_player.color = 0x777777;
 		 	_workshop.color = 0x777777;
+			_blackmarket.color = 0x777777;
 		 	_arrow = new Arrow();
 			 _arrow.x = 120;
 			 _arrow.y = 50;
@@ -256,6 +257,7 @@ class HomeState extends FlxState {
 		        	_player.color = 0xffffff;
 		        	_fg.color = 0xffffff;
 		        	_workshop.color = 0xdddddd;
+					_blackmarket.color = 0xdddddd;
 		        	_mapbutton.active = true;
 					_workshop.active = true;
 					_maptext.visible = true;

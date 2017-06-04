@@ -349,7 +349,7 @@ class MarketState extends FlxState {
                         + "Cost: $" + rvMagCost + "\n" + "Upgrades left: " + rvMagNum;
             rvMagCC.text = "Cost: $" + rvMagCost + "\n# Left: " + rvMagNum;
             rvDmgT.text = ".44 Magnum fused with pure power.\n"
-                        + "Each upgrade grants you 15% extra damage\n" + "Cost: $" + rvDmgCost + "\nUpgrades left: " + rvDmgNum;
+                        + "Each upgrade grants you 12% extra damage\n" + "Cost: $" + rvDmgCost + "\nUpgrades left: " + rvDmgNum;
             rvDmgCC.text = "Cost: $" + rvDmgCost + "\n# Left: " + rvDmgNum;
             chargeT.text = "What's scarier than a .44 magnum? A charged up one.\n"
                         + "Each upgrade grants you +10% charged damage\n" + "Cost: $" + chargeCost + "\nUpgrades left: " + chargeNum;
@@ -1046,7 +1046,7 @@ class MarketState extends FlxState {
         }
         rvDmgT = new FlxText(200, 150, 450);
         rvDmgT.text = ".44 Magnum fused with pure power.\n"
-            + "Each upgrade grants you 15% extra damage\n" + "Cost: $" + rvDmgCost + "\nUpgrades left: " + rvDmgNum; 
+            + "Each upgrade grants you 12% extra damage\n" + "Cost: $" + rvDmgCost + "\nUpgrades left: " + rvDmgNum; 
         rvDmgT.setFormat(AssetPaths.FONT, 25);
         rvDmgT.kill();
         rvDmgCC = new FlxText(660, 330, 120);
@@ -1430,8 +1430,8 @@ class MarketState extends FlxState {
         if(money > rvDmgCost && rvDmgNum > 0) {
             money -= rvDmgCost;
             rvDmgNum--;
-            Main.SAVE.data.rvDmg *= 1.15;
-            rvDmgCost = cast(rvDmgCost * 1.5, Int);
+            Main.SAVE.data.rvDmg *= 1.12;
+            rvDmgCost = cast(rvDmgCost * 1.4, Int);
             Main.SAVE.data.rvDmgCost = rvDmgCost;
             Main.SAVE.data.rvDmgNum = rvDmgNum;
             Main.LOGGER.logLevelAction(22);

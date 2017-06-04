@@ -34,7 +34,7 @@ class FinishState extends FlxState
     override public function create():Void
     {   
         _level = Main.SAVE.data.curLevel;
-        text = new FlxText(275, 25, 0, "Victory!", 50);
+        text = new FlxText(290, 25, 0, "Victory!", 50);
         text.setFormat(AssetPaths.FONT, text.size);
         add(text);
         // rating = new FlxText(320, 200, 0, "Rating: Gold", 25);

@@ -1,5 +1,6 @@
 package weapons;
 import flixel.group.FlxGroup;
+import flixel.FlxG;
 
 class Sword extends Weapon {
     private var ki:Bool;
@@ -17,6 +18,8 @@ class Sword extends Weapon {
         } else {
             this.damage = Main.SAVE.data.swDmg;
         }
+        //fire sound
+        this.sndFire = FlxG.sound.load(AssetPaths.sword_slash2__wav);
         //double slash proficiency
         if(Main.SAVE.data.ds == null) {
             this.dsCutOff = 7;
@@ -57,6 +60,10 @@ class Sword extends Weapon {
         Main.SAVE.flush();
     }
 
+    override public function update(elapsed:Float) {
+        super.update(elapsed);
+    }
+
     public override function attack(x:Float, y:Float, direction:Int):Bool {
         var newBullet:MeleeBullet;
         if(!ki) {
@@ -65,6 +72,8 @@ class Sword extends Weapon {
             newBullet = new MeleeBullet(x, y + 10, kiSpeed, direction, this.damage, kiRange, ki);
         }
 		this.bulletArray.add(newBullet);
+        this.sndFire.play();
+        fTimer = 0;
         return true;
     }
 

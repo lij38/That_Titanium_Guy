@@ -109,17 +109,19 @@ class WorkshopState extends FlxState {
         add(next);
 
         //show shotgun or not
-        if(Main.SAVE.data.shotgunPickup) {
-            sgshow = true;
-        } else {
-            sgshow = false;
-        }
-        //show revolver or not
-        if( Main.SAVE.data.revolverPickup) {
-            rvshow = true;
-        } else {
-            rvshow = false;
-        }
+        // if(Main.SAVE.data.shotgunPickup) {
+        //     sgshow = true;
+        // } else {
+        //     sgshow = false;
+        // }
+        // //show revolver or not
+        // if( Main.SAVE.data.revolverPickup) {
+        //     rvshow = true;
+        // } else {
+        //     rvshow = false;
+        // }
+        sgshow = true;
+        rvshow = true;
 
         //load the select panel
         loadSP();
@@ -184,6 +186,31 @@ class WorkshopState extends FlxState {
 			curConfig = "ds";
 		} else if(Main.SAVE.data.jWeapon == "rifle" && Main.SAVE.data.kWeapon == "rifle") {
 			curConfig = "dr";
+		} else if(Main.SAVE.data.jWeapon == "shotgun" && Main.SAVE.data.kWeapon == "shotgun") {
+			curConfig = "dsg";
+		} else if(Main.SAVE.data.jWeapon == "revolver" && Main.SAVE.data.kWeapon == "revolver") {
+			curConfig = "drv";
+		} else if(Main.SAVE.data.jWeapon == "rifle" && Main.SAVE.data.kWeapon == "shotgun" ||
+				Main.SAVE.data.kWeapon == "rifle" && Main.SAVE.data.jWeapon == "shotgun") {
+			curConfig = "rsg";
+		} else if(Main.SAVE.data.jWeapon == "rifle" && Main.SAVE.data.kWeapon == "revolver" ||
+				Main.SAVE.data.kWeapon == "rifle" && Main.SAVE.data.jWeapon == "revolver") {
+			curConfig = "rrv";
+		} else if(Main.SAVE.data.jWeapon == "shotgun" && Main.SAVE.data.kWeapon == "revolver" ||
+				Main.SAVE.data.kWeapon == "shotgun" && Main.SAVE.data.jWeapon == "revolver") {
+			curConfig = "sgrv";
+		} else if(Main.SAVE.data.jWeapon == "shotgun" && Main.SAVE.data.kWeapon == "shield" ||
+				Main.SAVE.data.kWeapon == "shotgun" && Main.SAVE.data.jWeapon == "shield"){
+			curConfig = "sgsh";
+		} else if(Main.SAVE.data.jWeapon == "revolver" && Main.SAVE.data.kWeapon == "shield" ||
+				Main.SAVE.data.kWeapon == "revolver" && Main.SAVE.data.jWeapon == "shield"){
+			curConfig = "rvsh";
+		} else if(Main.SAVE.data.jWeapon == "sword" && Main.SAVE.data.kWeapon == "shotgun" ||
+				Main.SAVE.data.kWeapon == "sword" && Main.SAVE.data.jWeapon == "shotgun") {
+			curConfig = "swsg";
+		} else if(Main.SAVE.data.jWeapon == "sword" && Main.SAVE.data.kWeapon == "revolver" ||
+				Main.SAVE.data.kWeapon == "sword" && Main.SAVE.data.jWeapon == "revolver") {
+			curConfig = "swrv";
 		}
         Main.SAVE.data.curConfig = curConfig;
         Main.SAVE.flush();
@@ -215,7 +242,7 @@ class WorkshopState extends FlxState {
         sword.loadGraphic(AssetPaths.swordbm__png);
         add(sword);
         swordT = new FlxText(125, 100, 650);
-        swordT.text = "\t                  The Glower \n"
+        swordT.text = "\t                   The Glower \n"
             + "A fine piece of weaponry made with the matrimony of titanium and energy \n"
             + "\"They say the glowing Glower glowers at the enemy.\"";
         swordT.setFormat(AssetPaths.FONT, 20);
@@ -225,7 +252,7 @@ class WorkshopState extends FlxState {
         shield.loadGraphic(AssetPaths.shieldbm__png);
         add(shield);
         shieldT = new FlxText(125, 225, 650);
-        shieldT.text = "\t                    The Cower \n"
+        shieldT.text = "\t                     The Cower \n"
             + "The shield that saved countless line infantrymen's lives back in the Great Wars \n"
             + "\"Not all who cower behind The Cower are cowards.\"";
         shieldT.setFormat(AssetPaths.FONT, 20);
@@ -237,8 +264,8 @@ class WorkshopState extends FlxState {
             shotgun.loadGraphic(AssetPaths.shotgunbm__png);
             add(shotgun);
             shotgunT = new FlxText(125, 345, 650);
-            shotgunT.text = "\t               The Musher \n"
-                + "Deadly when upclose and personal. A favorite of the Sappers.\n"
+            shotgunT.text = "\t                   The Musher \n"
+                + "Deadly when upclose and personal. A favorite of the Sapper Corps.\n"
                 + "\"Being hit with The Musher is like tying your limbs to a group of huskies and yelling \'MUSH!\'.\"";
             shotgunT.setFormat(AssetPaths.FONT, 20);
             add(shotgunT);
@@ -283,6 +310,7 @@ class WorkshopState extends FlxState {
         kWeapon.kill();
         j2ndWeapon.kill();
         k2ndWeapon.kill();
+        next.kill();
     }
 
     private function killTut() {
@@ -296,6 +324,7 @@ class WorkshopState extends FlxState {
         kWeapon.revive();
         j2ndWeapon.revive();
         k2ndWeapon.revive();
+        next.revive();
     }
 
     private function jClick() {
