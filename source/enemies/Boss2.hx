@@ -45,7 +45,7 @@ class Boss2 extends Enemy {
 					coinsGroup:FlxTypedGroup<Coin>, 
 					gravity:Float, hand:Boss2Hand, player:Player) {
 
-		super(X, Y, id, bulletArray, coinsGroup, gravity, BOSS);
+		super(X, Y, id, bulletArray, coinsGroup, gravity, BOSS2);
 		GRAVITY = gravity;
 		_hand = hand;
 		_player = player;

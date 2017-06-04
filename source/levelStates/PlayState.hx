@@ -340,7 +340,7 @@ class PlayState extends FlxState {
 				// player is shielding the right direction
 				player.sndShield.play(true);
 				var prt:Enemy = bullet.parent;
-				if (prt.alive && prt.type != BOSS) {
+				if (prt.alive && !prt.isBoss) {
 					if (bullet.bulletType == Melee && player.getSpike() != 0) {
 						// return spike damage
 						var returnDmg:Float = player.getSpike() * damage;
