@@ -180,8 +180,8 @@ class PlayState extends FlxState {
 		enemiesGroup.forEach(enemiesUpdate);
 		if (!_is_boss) {
 			updateEnemyHud();
-			_hud.updateXY();
 		}
+		_hud.updateXY();
 
 		//use potion
 		if(FlxG.keys.anyPressed([H])) {
@@ -201,8 +201,9 @@ class PlayState extends FlxState {
 		// Bullets collide walls
 		FlxG.collide(_plat, playerBullets, bulletsHitWalls);
 		FlxG.collide(_plat, enemiesBullets, enemiesBulletsHitWalls);
-		FlxG.collide(enemiesGroup, _plat);
-		
+		if (!_is_boss2) {
+			FlxG.collide(enemiesGroup, _plat);
+		}
 		// Coins
 		FlxG.collide(coinsGroup, _plat);
 		FlxG.overlap(_player, coinsGroup, pickUpCoin);
@@ -301,7 +302,7 @@ class PlayState extends FlxState {
 		_hand = new Boss2Hand();
 		
 		if (entityName == "boss1") {
-			boss = new Boss1(x - 200, y, enId, enemiesBullets, coinsGroup, GRAVITY);
+			boss = new Boss1(x, y, enId, enemiesBullets, coinsGroup, GRAVITY);
 			enemiesGroup.add(boss);
 			_boss_hud = new Boss1HUD(boss);
 			
