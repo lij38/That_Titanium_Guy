@@ -1491,17 +1491,29 @@ class MarketState extends FlxState {
 
     private function clickNext() {
         FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
-			switch _level {
-                case 1: FlxG.switchState(new Level1State());
-                case 2: FlxG.switchState(new Boss1State());
-                case 4: FlxG.switchState(new Level3State());
-                case 5: FlxG.switchState(new Boss2State());
-                case 6: FlxG.switchState(new CreditState());
+			if(_level <= Main.SAVE.data.levelCompleted) {
+                switch _level {
+                    case 1: FlxG.switchState(new Level1State());
+                    case 2: FlxG.switchState(new Boss1State());
+                    case 4: FlxG.switchState(new Level3State());
+                    case 5: FlxG.switchState(new Boss2State());
+                    case 6: FlxG.switchState(new CreditState());
+                }
+            } else {
+                switch _level {
+                    case 1: FlxG.switchState(new TutorialState());
+                    case 2: FlxG.switchState(new Level1State());
+                    case 4: FlxG.switchState(new Level2State());
+                    case 5: FlxG.switchState(new Level3State());
+                    case 6: FlxG.switchState(new Boss2State());
+                }
             }
 
             if(_level == 3) {
                 if(Main.SAVE.data.homeTut == null) {
                     FlxG.switchState(new HomeState());
+                } else if(Main.SAVE.data.levelCompleted < 3) {
+                    FlxG.switchState(new Boss1State());
                 } else {
                     FlxG.switchState(new Level2State());
                 }

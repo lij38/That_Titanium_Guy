@@ -116,8 +116,10 @@ class PlayState extends FlxState {
 		if (_is_boss) {
 			add(_boss_hud);
 			_exit.visible = false;
+			FlxG.sound.playMusic(AssetPaths.boss__mp3);
+		} else {
+			FlxG.sound.playMusic(AssetPaths.dramatic__mp3);
 		}
-		FlxG.sound.playMusic(AssetPaths.dramatic__mp3);
 		
 		 _hud.updateHUD(_player.getAmmo(0), _player.getAmmo(1), _player.isReloading(0), _player.isReloading(1),
 		 				_player.getWeaponName(0), _player.getWeaponName(1));

@@ -642,6 +642,31 @@ class Player extends FlxSprite {
 			curConfig = "ds";
 		} else if(jWeapon.getName() == "rifle" && kWeapon.getName() == "rifle") {
 			curConfig = "dr";
+		} else if(jWeapon.getName() == "shotgun" && kWeapon.getName() == "shotgun") {
+			curConfig = "dsg";
+		} else if(jWeapon.getName() == "revolver" && kWeapon.getName() == "revolver") {
+			curConfig = "drv";
+		} else if(jWeapon.getName() == "rifle" && kWeapon.getName() == "shotgun" ||
+				kWeapon.getName() == "rifle" && jWeapon.getName() == "shotgun") {
+			curConfig = "rsg";
+		} else if(jWeapon.getName() == "rifle" && kWeapon.getName() == "revolver" ||
+				kWeapon.getName() == "rifle" && jWeapon.getName() == "revolver") {
+			curConfig = "rrv";
+		} else if(jWeapon.getName() == "shotgun" && kWeapon.getName() == "revolver" ||
+				kWeapon.getName() == "shotgun" && jWeapon.getName() == "revolver") {
+			curConfig = "sgrv";
+		} else if(jWeapon.getName() == "shotgun" && kWeapon.getName() == "shield" ||
+				kWeapon.getName() == "shotgun" && jWeapon.getName() == "shield"){
+			curConfig = "sgsh";
+		} else if(jWeapon.getName() == "revolver" && kWeapon.getName() == "shield" ||
+				kWeapon.getName() == "revolver" && jWeapon.getName() == "shield"){
+			curConfig = "rvsh";
+		} else if(jWeapon.getName() == "sword" && kWeapon.getName() == "shotgun" ||
+				kWeapon.getName() == "sword" && jWeapon.getName() == "shotgun") {
+			curConfig = "swsg";
+		} else if(jWeapon.getName() == "sword" && kWeapon.getName() == "revolver" ||
+				kWeapon.getName() == "sword" && jWeapon.getName() == "revolver") {
+			curConfig = "swrv";
 		} else {
 			curConfig = jWeapon.getName();
 		}
