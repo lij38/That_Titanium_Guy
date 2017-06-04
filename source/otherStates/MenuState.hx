@@ -82,9 +82,9 @@ class MenuState extends FlxState {
 			+ "             Choose your side:";
 		controlText.setFormat(AssetPaths.FONT, 25);
 		select1 = new ImageButton(225, 225, setting1);
-		select1.loadGraphic(AssetPaths.emptyslot__png);
+		select1.loadGraphic(AssetPaths.control1__png);
 		select2 = new ImageButton(425, 225, setting2);
-		select2.loadGraphic(AssetPaths.emptyslot__png);
+		select2.loadGraphic(AssetPaths.control2__png);
 		_controlCancel = new ImageButton(300, 400, killControl);
 		_controlCancel.loadGraphic(AssetPaths.cancel__png);
 		controlText.kill();

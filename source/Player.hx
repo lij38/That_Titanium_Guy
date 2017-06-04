@@ -824,7 +824,7 @@ class Player extends FlxSprite {
 		//running
 		animation.add("rshRun", [111, 112, 113, 114, 115, 116, 117, 118], 12, false);
 		//shielding
-		animation.add("rshShield", [123], 1, false);
+		animation.add("rshShield", [192], 1, false);
 		//jetpack
 		animation.add("rshJP", [121, 122], 12, false);
 		animation.add("rshJPShield", [123], 1, false);
@@ -857,6 +857,77 @@ class Player extends FlxSprite {
 		animation.add("dsJPDC", [158, 159, 160, 161], 16, false);
 		animation.add("dsJPStab", [162, 163, 163, 162], 16, false);
 		animation.add("dsJPCut", [165, 166, 167], 16, false);
+
+		//RIFLE SHOTGUN
+		//standing
+		animation.add("rsgStop", [168], 1, false);
+		//jumping
+		animation.add("rsgJump", [177], 1, false);
+		//running
+		animation.add("rsgRun", [169, 170, 171, 172, 173, 174, 175, 176], 12, false);
+		//jetpack
+		animation.add("rsgJP", [178, 179], 12, false);
+
+		//RIFLE REVOLVER
+		//standing
+		animation.add("rrvStop", [180], 1, false);
+		animation.add("rrvRun", [181, 182, 183,184,185,186,187,188], 12, false);
+		animation.add("rrvJump", [189], 1, false);
+		animation.add("rrvJP", [190, 191], 12, false);
+
+		//SHOTGUN REVOLVER
+		animation.add("sgrvStop", [193], 1, false);
+		animation.add("sgrvRun", [194,195,196,197,198,199,200,201], 12, false);
+		animation.add("sgrvJump", [202], 1, false);
+		animation.add("sgrvJP", [203, 204], 12, false);
+
+		//DOUBLE REVOLVER
+		animation.add("drvStop", [205], 1, false);
+		animation.add("drvRun", [206,207,208,209,210,211,212,213], 12, false);
+		animation.add("drvJump", [214], 1, false);
+		animation.add("drvJP", [215, 216], 12, false);
+
+		//REVOLVER SHIELD
+		animation.add("rvshStop", [217], 1, false);
+		animation.add("rvshRun", [218,219,220,221,222,223,224,225], 12, false);
+		animation.add("rvshJump", [226], 1, false);
+		animation.add("rvshJP", [227, 228], 12, false);
+		animation.add("rvshJPShield", [229], 1, false);
+		animation.add("rvshShield", [230], 1, false);
+
+		//SWORD REVOLVER
+		animation.add("swrvStop", [237], 1, false);
+		animation.add("swrvJump", [238], 1, false);
+		animation.add("swrvRun", [247,248,249,250,251,252,253,254], 12, false);
+		animation.add("swrvCut", [231,232,233,234], 16, false);
+		animation.add("swrvStab", [235,236,236,235], 16, false);
+		animation.add("swrvJP", [245, 246], 12, false);
+		animation.add("swrvJPCut", [239, 240,241,242], 16, false);
+		animation.add("swrvJPStab", [243, 244, 244, 243], 16, false);
+
+		//DOUBLE SHOTGUN
+		animation.add("dsgStop", [255], 1, false);
+		animation.add("dsgRun", [256,257,258,259,260,261,262,263], 12, false);
+		animation.add("dsgJump", [264], 1, false);
+		animation.add("dsgJP", [265,266], 12, false);
+
+		//SHOTGUN SHIELD
+		animation.add("sgshStop", [267], 1, false);
+		animation.add("sgshRun", [268,269,270,271,272,273,274,275], 12, false);
+		animation.add("sgshJump", [276], 1, false);
+		animation.add("sgshJP", [277, 278], 12, false);
+		animation.add("sgshJPShield", [279], 1, false);
+		animation.add("sgshShield", [280], 1, false);
+
+		//SWORD SHOTGUN
+		animation.add("swsgStop", [287], 1, false);
+		animation.add("swsgJump", [288], 1, false);
+		animation.add("swsgRun", [297, 298, 299, 300, 301, 302, 303, 304], 12, false);
+		animation.add("swsgCut", [281,282,283,284], 16, false);
+		animation.add("swsgStab", [285, 286, 286, 285], 16, false);
+		animation.add("swsgJP", [295, 296], 12, false);
+		animation.add("swsgJPCut", [289,290,291,292], 16, false);
+		animation.add("swsgJPStab", [293, 294, 294, 293], 16, false);
 	}
 	
 	private function loadSound():Void {
