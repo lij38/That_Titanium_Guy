@@ -33,6 +33,9 @@ class EnemyFactory {
 		} else if (enType == "SHOTGUN") {
 			return new ShotgunEnemy(X, Y, id, bulletArray,
 								coinsGroup, gravity, level);
+		} else if (enType == "SPIDER") {
+			return new SpiderEnemy(X, Y, id, bulletArray,
+								coinsGroup, gravity, level);
 		}
 
 		return null;

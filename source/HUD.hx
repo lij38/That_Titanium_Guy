@@ -8,6 +8,7 @@ package ;
  import flixel.ui.FlxBar;
  import flixel.tweens.*;
  import flixel.util.FlxStringUtil;
+ import items.Daze;
  using flixel.util.FlxSpriteUtil;
 
 class HUD extends FlxTypedGroup<FlxSprite> {
@@ -32,6 +33,10 @@ class HUD extends FlxTypedGroup<FlxSprite> {
 	private var _xOffset3:Float = Math.random() * 10 - 5;
 	private var _xOffset4:Float = Math.random() * 10 - 5;
     private var dmgCounter:Int;
+	
+	private var _daze:Daze;
+	private var _dazeTime:Float = 0.5;
+	private var _dazeTimer:Float = -1;
 
     public function new(player:Player) {
          super();
@@ -43,6 +48,10 @@ class HUD extends FlxTypedGroup<FlxSprite> {
         _txtkAmmo.setFormat(AssetPaths.FONT, _txtkAmmo.size);
 		_txtjAmmo.setBorderStyle(SHADOW, FlxColor.GRAY);
 		_txtkAmmo.setBorderStyle(SHADOW, FlxColor.GRAY);
+		
+		// daze
+		_daze = new Daze();
+		_daze.visible = false;
 
          //health icon
          _sprHealth = new FlxSprite(35, 4, AssetPaths.health__png);
@@ -127,7 +136,29 @@ class HUD extends FlxTypedGroup<FlxSprite> {
          add(_damage2);
          add(_damage3);
          add(_damage4);
+		 add(_daze);
     }
+	
+	override public function update(elapsed:Float) {
+		if (_dazeTimer >= 0.0) {
+			_dazeTimer += elapsed;
+			_daze.x = _player.getMidpoint().x - (_daze.width / 2);
+			_daze.y = _player.y - 50;
+		}
+		if (_dazeTimer > _dazeTime) {
+			_dazeTimer = -1;
+			_daze.visible = false;
+		}
+		super.update(elapsed);
+	}
+	
+	public function startDaze(t:Float = 0.5) {
+		_daze.visible = true;
+		_dazeTime = t;
+		_dazeTimer = 0.0;
+		_daze.x = _player.getMidpoint().x - (_daze.width / 2);
+		_daze.y = _player.y - 50;
+	}
 
     public function updateHUD(jAmmo:Int = 0, kAmmo:Int = 0, jReloading:Bool, 
 								kReloading:Bool, jName:String, kName:String):Void {  

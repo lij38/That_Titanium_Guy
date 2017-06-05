@@ -337,6 +337,10 @@ class PlayState extends FlxState {
 					(player.isShielding() && player.faced == bullet.facing)) {
 				player.hurt(damage);
 				_hud.updateDamage(damage);
+				if (bullet.bulletType == WEB) {
+					player.stun();
+					_hud.startDaze();
+				}
 			} else {
 				// player is shielding the right direction
 				player.sndShield.play(true);
@@ -371,6 +375,7 @@ class PlayState extends FlxState {
 								_map.width * _map.tileWidth - player.width - 20);
 				}
 			}
+			
 			bullet.kill();
 		}
 	}

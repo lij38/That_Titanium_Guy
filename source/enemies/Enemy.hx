@@ -23,6 +23,7 @@ enum EnemyType {
 	MELEE;
 	RIFLE;
 	TRUCK;
+	SPIDER;
 	BOSS1;
 	BOSS2;
 }
@@ -122,14 +123,16 @@ class Enemy extends FlxSprite {
 			super.update(elapsed);
 			color = originalColor;
 			// spawn coins when die
-			if (id == 34 && level == 1 && !dropItem) {
+			if (id == 34 && level == 1 && !dropItem && 
+							Main.SAVE.data.levelCompleted != null &&
+							Main.SAVE.data.levelCompleted < 2) {
 				// drop rifle in level 1
 				var rifle:Coin = new Coin(getMidpoint().x, getMidpoint().y, OTHER);
 				rifle.loadGraphic(AssetPaths.rifle__png);
 				rifle.onPickUp = onPickUpItem;
 				coinsGroup.add(rifle);
 				dropItem = true;
-			} else if (id != 34 && !dropCoin) {
+			} else if (!dropCoin) {
 				var lowB:Int = level * 4 + 2;
 				var upB:Int = level * 4 + 6;
 				if (isBoss) {
