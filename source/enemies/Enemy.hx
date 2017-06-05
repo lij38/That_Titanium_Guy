@@ -133,7 +133,7 @@ class Enemy extends FlxSprite {
 				var lowB:Int = level * 4 + 2;
 				var upB:Int = level * 4 + 6;
 				if (isBoss) {
-					if (type == BOSS2 && !dropItem) {
+					if (type == BOSS2 && !dropItem && coinCount == 51) {
 						var shotgun:Coin = new Coin(getMidpoint().x, getMidpoint().y,
 														OTHER);
 						shotgun.loadGraphic(AssetPaths.shotgun__png);

@@ -65,7 +65,7 @@ class HomeState extends FlxState {
 		_fg.follow();
 
 		playerBullets = new FlxTypedGroup<Bullet>();
-		_player = new Player(playerBullets, 1000);
+		_player = new Player(playerBullets, 1500);
 
 		_workshop = new ImageButton(0, 0, switchWorkshopState);
 		_workshop.loadGraphic(AssetPaths.workshop__png, false, 350, 290);

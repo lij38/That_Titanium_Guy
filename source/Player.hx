@@ -668,8 +668,10 @@ class Player extends FlxSprite {
 	public function pickUpShotgun():Void {
 		if(Main.SAVE.data.shogunPickUp == null || Main.SAVE.data.shotgunPickUp == false) {
 			this.j2ndWeapon = new Shotgun(bulletArray);
+			this.k2ndWeapon = new Shotgun(bulletArray);
 			Main.SAVE.data.shotgunPickUp = true;
 			Main.SAVE.data.j2ndWeapon = j2ndWeapon.getName();
+			Main.SAVE.data.k2ndWeapon = k2ndWeapon.getName();
 			//Main.SAVE.flush();
 			changeWeaponConfig();
 			sndShotgunReload.play(true);
@@ -679,8 +681,10 @@ class Player extends FlxSprite {
 	public function pickUpRevolver():Void {
 		if(Main.SAVE.data.revolverPickUp == null || Main.SAVE.data.revolverPickUp == false) {
 			this.j2ndWeapon = new Revolver(bulletArray);
+			this.k2ndWeapon = new Revolver(bulletArray);
 			Main.SAVE.data.revolverPickUp = true;
 			Main.SAVE.data.j2ndWeapon = j2ndWeapon.getName();
+			Main.SAVE.data.k2ndWeapon = k2ndWeapon.getName();
 			//Main.SAVE.flush();
 			changeWeaponConfig();
 			sndRevolverReload.play(true);
