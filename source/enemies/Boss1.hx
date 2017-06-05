@@ -30,7 +30,7 @@ class Boss1 extends Enemy {
 					bulletArray:FlxTypedGroup<EnemyBullet>, 
 					coinsGroup:FlxTypedGroup<Coin>,
 					gravity:Float) {
-		super(X, Y, id, bulletArray, coinsGroup, gravity, BOSS);
+		super(X, Y, id, bulletArray, coinsGroup, gravity, BOSS1);
 		GRAVITY = gravity;
 
 		loadGraphic(AssetPaths.boss1__png, true, 1007, 702);

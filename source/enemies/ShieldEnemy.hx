@@ -57,7 +57,12 @@ class ShieldEnemy extends Enemy {
 		if (seesPlayer) {
 			brain.activeState = attack;
 		}
-		randomFacing(elapsed);
+		//randomFacing(elapsed);
+		if (playerPos.x <= getMidpoint().x) {
+			facing = FlxObject.LEFT;
+		} else {
+			facing = FlxObject.RIGHT;
+		}
 		animation.play("stop");
 		rateTimer = -1;
 		attacked = false;

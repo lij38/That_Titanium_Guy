@@ -61,7 +61,7 @@ class PlayState extends FlxState {
 	private var _hand:Boss2Hand;
 	
 	override public function create():Void {
-		FlxG.debugger.drawDebug = true;
+		//FlxG.debugger.drawDebug = true;
 		//////////////////
         //LOAD PLAYER
 		//////////////////
@@ -340,7 +340,7 @@ class PlayState extends FlxState {
 				// player is shielding the right direction
 				player.sndShield.play(true);
 				var prt:Enemy = bullet.parent;
-				if (prt.alive && prt.type != BOSS) {
+				if (prt.alive && !prt.isBoss) {
 					if (bullet.bulletType == Melee && player.getSpike() != 0) {
 						// return spike damage
 						var returnDmg:Float = player.getSpike() * damage;
@@ -408,6 +408,10 @@ class PlayState extends FlxState {
 	public function bulletsHitEnemies(bullet:Bullet, enemy:Enemy):Void {
 		if (enemy.alive) {
 			var dmg:Float = bullet.getDamage();
+			if (bullet.getType() == "shotgun") {
+				var len:Int = Std.int(cast(bullet, ShotgunBullet).getPushBack());
+				enemy.knockBack(len, bullet.facing);
+			}
 			playerBullets.remove(bullet);
 			bullet.destroy();
 			if (enemy.hasShield && bullet.facing != enemy.facing) {
