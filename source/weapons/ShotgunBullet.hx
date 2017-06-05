@@ -1,5 +1,6 @@
 package weapons;
 
+import flixel.FlxObject;
 import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.util.FlxColor;
 import flixel.math.FlxPoint;
@@ -12,14 +13,15 @@ class ShotgunBullet extends Bullet{
         super(X, Y, Speed, Direction, Damage, Range);
         this.type = "shotgun";
         this.pushBack = push;
-        loadGraphic(AssetPaths.shotgunBullet__png);
-    }
-
-    override public function update(elapsed:Float):Void {
-		super.update(elapsed);
 		velocity.set(speed, 0);
         velocity.rotate(FlxPoint.weak(0, 0), direction);
-	}
+		if (velocity.x > 0) {
+			facing = FlxObject.RIGHT;
+		} else {
+			facing = FlxObject.LEFT;
+		}
+        loadGraphic(AssetPaths.shotgunBullet__png);
+    }
 
     public function getPushBack():Float {
         return this.pushBack;

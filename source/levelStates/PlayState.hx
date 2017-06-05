@@ -61,7 +61,7 @@ class PlayState extends FlxState {
 	private var _hand:Boss2Hand;
 	
 	override public function create():Void {
-		FlxG.debugger.drawDebug = true;
+		//FlxG.debugger.drawDebug = true;
 		//////////////////
         //LOAD PLAYER
 		//////////////////
@@ -408,6 +408,10 @@ class PlayState extends FlxState {
 	public function bulletsHitEnemies(bullet:Bullet, enemy:Enemy):Void {
 		if (enemy.alive) {
 			var dmg:Float = bullet.getDamage();
+			if (bullet.getType() == "shotgun") {
+				var len:Int = Std.int(cast(bullet, ShotgunBullet).getPushBack());
+				enemy.knockBack(len, bullet.facing);
+			}
 			playerBullets.remove(bullet);
 			bullet.destroy();
 			if (enemy.hasShield && bullet.facing != enemy.facing) {

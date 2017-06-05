@@ -65,7 +65,7 @@ class Enemy extends FlxSprite {
 	private var dazeTimer:Float = -1;
 	
 	private var knockBackLen:Float = -1;
-	private var knockBackSpeed:Float = 500;
+	private var knockBackSpeed:Float = 1500;
 	private var knockBackDir:Int;
 	
 	// sound
@@ -172,6 +172,7 @@ class Enemy extends FlxSprite {
 			return;
 		} else {
 			if (knockBackLen >= 0) {
+				trace("isKnockBack");
 				knockBackLen -= elapsed * knockBackSpeed;
 				if (knockBackDir == FlxObject.LEFT) {
 					velocity.x = -knockBackSpeed;
@@ -196,13 +197,17 @@ class Enemy extends FlxSprite {
 			if (hurtTimer > hurtTime) {
 				hurtTimer = -1;
 			}
-			if (isHurting() || isDizzy() || isKnockBack()) {
+			if (isKnockBack()) {
+				animation.pause();
+				trace(velocity.x);
+			} else if (isHurting() || isDizzy()) {
 				animation.pause();
 				velocity.x = 0;
 			} else {
 				animation.resume();
 				brain.update(elapsed);
 			}
+			
 		}
 		if (hurtColorTimer >= 0) {
 			hurtColorTimer += elapsed;
@@ -278,6 +283,7 @@ class Enemy extends FlxSprite {
 	}
 	
 	public function knockBack(len:Int, dir:Int):Void {
+		trace("Enemy call knockBack");
 		if (knockBackLen < 0) {
 			knockBackLen = 0.0;
 			knockBackDir = dir;
