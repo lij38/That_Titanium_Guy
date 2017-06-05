@@ -18,7 +18,7 @@ class Shotgun extends Weapon {
         }
         
         this.type = "shotgun";
-        this.range = 300;
+        this.range = 200;
         //fire rate
         if(Main.SAVE.data.sgRate == null) {
             this.fireRate = 0.75;
@@ -35,8 +35,8 @@ class Shotgun extends Weapon {
         this.sndFire = FlxG.sound.load(AssetPaths.shotgun_fire1__wav);
         //pushback
         if(Main.SAVE.data.pushBack == null) {
-            this.pushBack = 6;
-            Main.SAVE.data.pushBack = 6;
+            this.pushBack = 35;
+            Main.SAVE.data.pushBack = 35;
         } else {
             this.pushBack = Main.SAVE.data.pushBack;
         }

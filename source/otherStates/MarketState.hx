@@ -221,10 +221,10 @@ class MarketState extends FlxState {
         loadRifle();
         loadSword();
         loadShield();
-        if(Main.SAVE.data.shotgunPickup != null) {
+        if(Main.SAVE.data.levelCompleted >= 6) {
             loadShotgun();
         }
-        if(Main.SAVE.data.revolverPickup != null) {
+        if(Main.SAVE.data.levelCompleted >= 4) {
             loadRevolver();
         }
 
@@ -299,7 +299,7 @@ class MarketState extends FlxState {
                     + "Cost: $" + dsCost + "\nUpgrades left: " + dsNum;
         dsCC.text = "Cost: $" + dsCost + "\n# Left: " + dsNum;
         swDmgT.text = "Sharpened edge. Volatile energy.\n"
-                    + "Each upgrade will grant you +15% damage.\n"
+                    + "Each upgrade will grant you +20% damage.\n"
                     + "Cost: $" + swDmgCost + "\n" + "Upgrades left: " + swDmgNum;
         swDmgCC.text = "Cost: $" + swDmgCost + "\n# Left: " + swDmgNum;
         kiT.text = "Channel your inner ki energy to slice enemies to pieces from a distance.\n"
@@ -320,7 +320,7 @@ class MarketState extends FlxState {
                     + "First upgrade grants you 5% chance of dazing the attacker while blocking, each subsequent"
                     + " upgrade grants you +2% chance.\n" + "Cost: $" + dazeCost + "\nUpgrades left: " + dazeNum;
         dazeCC.text = "Cost: $" + dazeCost + "\n# Left: " + dazeNum;
-        if(Main.SAVE.data.shotgunPickup != null) {
+        if(Main.SAVE.data.levelCompleted >= 6) {
             sgRtimeT.text = "Reload like you just missed your daughter's boyfriend.\n"
                         + "Each Upgrade grants you +10% faster reload speed.\n"
                         + "Cost: $" + sgRtimeCost + "\nUpgrades left: " + sgRtimeNum;
@@ -336,10 +336,10 @@ class MarketState extends FlxState {
                         + "Each upgrade grants you +10% rate of fire\n" + "Cost: $" + sgRateCost + "\nUpgrades left: " + sgRateNum;
             sgRateCC.text = "Cost: $" + sgRateCost + "\n# Left: " + sgRateNum;
             pushBackT.text = "Send your daughter's boyfriend flying.\n"
-                        + "Each upgrade grants you +10% enemy knockback\n" + "Cost: $" + pushBackCost + "\nUpgrades left: " + pushBackNum;
+                        + "Each upgrade grants you +20% enemy knockback\n" + "Cost: $" + pushBackCost + "\nUpgrades left: " + pushBackNum;
             pushBackCC.text = "Cost: $" + pushBackCost + "\n# Left: " + pushBackNum;
         }
-        if(Main.SAVE.data.revolverPickup != null) {
+        if(Main.SAVE.data.levelCompleted >= 4) {
             rvRtimeT.text = "Reload like a space cowboy.\n"
                         + "Each Upgrade grants you +10% faster reload speed.\n"
                         + "Cost: $" + rvRtimeCost + "\nUpgrades left: " + rvRtimeNum;
@@ -349,7 +349,7 @@ class MarketState extends FlxState {
                         + "Cost: $" + rvMagCost + "\n" + "Upgrades left: " + rvMagNum;
             rvMagCC.text = "Cost: $" + rvMagCost + "\n# Left: " + rvMagNum;
             rvDmgT.text = ".44 Magnum fused with pure power.\n"
-                        + "Each upgrade grants you 12% extra damage\n" + "Cost: $" + rvDmgCost + "\nUpgrades left: " + rvDmgNum;
+                        + "Each upgrade grants you 10% extra damage\n" + "Cost: $" + rvDmgCost + "\nUpgrades left: " + rvDmgNum;
             rvDmgCC.text = "Cost: $" + rvDmgCost + "\n# Left: " + rvDmgNum;
             chargeT.text = "What's scarier than a .44 magnum? A charged up one.\n"
                         + "Each upgrade grants you +10% charged damage\n" + "Cost: $" + chargeCost + "\nUpgrades left: " + chargeNum;
@@ -629,7 +629,7 @@ class MarketState extends FlxState {
         }
         swDmgT = new FlxText(200, 150, 450);
         swDmgT.text = "Sharpened edge. Volatile energy.\n"
-            + "Each upgrade will grant you +15% damage.\n"
+            + "Each upgrade will grant you +20% damage.\n"
             + "Cost: $" + swDmgCost + "\n" + "Upgrades left: " + swDmgNum;
         swDmgT.setFormat(AssetPaths.FONT, 25);
         swDmgT.kill();
@@ -943,7 +943,7 @@ class MarketState extends FlxState {
         }
         pushBackT = new FlxText(200, 150, 450);
         pushBackT.text = "Send your daughter's boyfriend flying.\n"
-            + "Each upgrade grants you +10% enemy knockback\n" + "Cost: $" + pushBackCost + "\nUpgrades left: " + pushBackNum; 
+            + "Each upgrade grants you +20% enemy knockback\n" + "Cost: $" + pushBackCost + "\nUpgrades left: " + pushBackNum; 
         pushBackT.setFormat(AssetPaths.FONT, 25);
         pushBackT.kill();
         pushBackCC = new FlxText(530, 530, 120);
@@ -1046,7 +1046,7 @@ class MarketState extends FlxState {
         }
         rvDmgT = new FlxText(200, 150, 450);
         rvDmgT.text = ".44 Magnum fused with pure power.\n"
-            + "Each upgrade grants you 12% extra damage\n" + "Cost: $" + rvDmgCost + "\nUpgrades left: " + rvDmgNum; 
+            + "Each upgrade grants you 10% extra damage\n" + "Cost: $" + rvDmgCost + "\nUpgrades left: " + rvDmgNum; 
         rvDmgT.setFormat(AssetPaths.FONT, 25);
         rvDmgT.kill();
         rvDmgCC = new FlxText(660, 330, 120);
@@ -1253,7 +1253,7 @@ class MarketState extends FlxState {
         if(money > swDmgCost && swDmgNum > 0) {
             money -= swDmgCost;
             swDmgNum--;
-            Main.SAVE.data.swDmg *= 1.15;
+            Main.SAVE.data.swDmg *= 1.2;
             swDmgCost = cast(swDmgCost * 1.5, Int);
             Main.SAVE.data.swDmgCost = swDmgCost;
             Main.SAVE.data.swDmgNum = swDmgNum;
@@ -1391,8 +1391,8 @@ class MarketState extends FlxState {
         if(money > pushBackCost && pushBackNum > 0) {
             money -= pushBackCost;
             pushBackNum--;
-            Main.SAVE.data.pushBack *= 1.1;
-            pushBackCost = cast(pushBackCost * 1.4, Int);
+            Main.SAVE.data.pushBack *= 1.2;
+            pushBackCost = cast(pushBackCost * 1.3, Int);
             Main.SAVE.data.pushBackCost = pushBackCost;
             Main.SAVE.data.pushBackNum = pushBackNum;
             Main.LOGGER.logLevelAction(19);
@@ -1430,7 +1430,7 @@ class MarketState extends FlxState {
         if(money > rvDmgCost && rvDmgNum > 0) {
             money -= rvDmgCost;
             rvDmgNum--;
-            Main.SAVE.data.rvDmg *= 1.12;
+            Main.SAVE.data.rvDmg *= 1.1;
             rvDmgCost = cast(rvDmgCost * 1.4, Int);
             Main.SAVE.data.rvDmgCost = rvDmgCost;
             Main.SAVE.data.rvDmgNum = rvDmgNum;

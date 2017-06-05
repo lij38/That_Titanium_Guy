@@ -55,6 +55,8 @@ class Player extends FlxSprite {
 	
 	// sound
 	public var sndRifleReload:FlxSound;
+	public var sndShotgunReload:FlxSound;
+	public var sndRevolverReload:FlxSound;
 	public var sndHurt1:FlxSound;
 	public var sndHurt2:FlxSound;
 	public var sndHurt3:FlxSound;
@@ -650,7 +652,7 @@ class Player extends FlxSprite {
 	}
 	
 	public function pickUpRifle():Void {
-		trace(Std.string(Main.SAVE.data.riflePickUp));
+		//trace(Std.string(Main.SAVE.data.riflePickUp));
 		if(Main.SAVE.data.riflePickUp == null || Main.SAVE.data.riflePickUp == false) {
 			this.j2ndWeapon = new Rifle(bulletArray);
 			this.k2ndWeapon = new Weapon(bulletArray);
@@ -659,10 +661,32 @@ class Player extends FlxSprite {
 			Main.SAVE.data.k2ndWeapon = k2ndWeapon.getName();
 			//Main.SAVE.flush();
 			changeWeaponConfig();
+			sndRifleReload.play(true);
 		}
-		sndRifleReload.play(true);
 	}
 	
+	public function pickUpShotgun():Void {
+		if(Main.SAVE.data.shogunPickUp == null || Main.SAVE.data.shotgunPickUp == false) {
+			this.j2ndWeapon = new Shotgun(bulletArray);
+			Main.SAVE.data.shotgunPickUp = true;
+			Main.SAVE.data.j2ndWeapon = j2ndWeapon.getName();
+			//Main.SAVE.flush();
+			changeWeaponConfig();
+			sndShotgunReload.play(true);
+		}
+	}
+
+	public function pickUpRevolver():Void {
+		if(Main.SAVE.data.revolverPickUp == null || Main.SAVE.data.revolverPickUp == false) {
+			this.j2ndWeapon = new Revolver(bulletArray);
+			Main.SAVE.data.revolverPickUp = true;
+			Main.SAVE.data.j2ndWeapon = j2ndWeapon.getName();
+			//Main.SAVE.flush();
+			changeWeaponConfig();
+			sndRevolverReload.play(true);
+		}
+	}
+
 	public function pickUpCoin(value:Int):Void {
 		//trace("pick up coin: " + value);
 		money += value;
@@ -956,6 +980,8 @@ class Player extends FlxSprite {
 		sndRoll = FlxG.sound.load(AssetPaths.roll__wav);
 		sndJetpack = FlxG.sound.load(AssetPaths.jetpack__wav);
 		sndRifleReload = FlxG.sound.load(AssetPaths.rifle_reload__wav);
+		sndShotgunReload = FlxG.sound.load(AssetPaths.shotgun_reload__wav);
+		sndRevolverReload = FlxG.sound.load(AssetPaths.laser_reload__wav);
 	}
 	
 	override public function hurt(damage:Float):Void {
