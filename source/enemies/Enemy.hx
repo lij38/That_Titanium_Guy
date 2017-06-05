@@ -14,6 +14,7 @@ import flixel.util.FlxColor;
 import items.Coin;
 
 enum EnemyType {
+	WIFE;
 	JPRIFLE;
 	JPMELEE;
 	JPSHIELD;
