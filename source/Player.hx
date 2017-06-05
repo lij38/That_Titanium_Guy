@@ -402,8 +402,8 @@ class Player extends FlxSprite {
 							}
 							krvTimer = -1;
 						}
-						if(jWeapon.canFire() && !jWeapon.isReloading()) {
-							fireWeapon(jWeapon);
+						if(kWeapon.canFire() && !kWeapon.isReloading()) {
+							fireWeapon(kWeapon);
 						}
 					}
 				}

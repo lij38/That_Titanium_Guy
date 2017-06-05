@@ -28,6 +28,7 @@ class PlayState extends FlxState {
 	private var _boss_hud:Boss1HUD;
 	private var _is_boss:Bool = false;
 	private var _is_boss2:Bool = false;
+	private var _is_boss3:Bool = false;
 	private var _exit:Exit;
 	private var indicator:FlxText;
 

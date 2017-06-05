@@ -25,6 +25,7 @@ enum EnemyType {
 	TRUCK;
 	BOSS1;
 	BOSS2;
+	BOSS3;
 }
 
 class Enemy extends FlxSprite {

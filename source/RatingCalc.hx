@@ -13,6 +13,12 @@ class RatingCalc {
         private static var dmg5:Float = 85;
         private static var time6:Float = 110;
         private static var dmg6:Float = 0;
+        private static var time7:Float = 110;
+        private static var dmg7:Float = 0;
+        private static var time8:Float = 110;
+        private static var dmg8:Float = 0;
+        private static var time9:Float = 110;
+        private static var dmg9:Float = 0;
 
         public static function getTimeRating(level:Int):Int {
             switch level {
@@ -100,12 +106,9 @@ class RatingCalc {
 
         public static function Dmg3Rating():Int {
             var dmg:Float = Main.SAVE.data.dmgTaken;
-            if(dmg <= dmg3) {
+            if(dmg <= 0) {
                 return 3;
-            } else if(dmg3 == 0) {
-                dmg3 = 15;
-            } 
-            if(dmg <= dmg3 + dmg3){
+            } else if(dmg <= 30){
                 return 2;
             } 
             return 1;
@@ -125,12 +128,9 @@ class RatingCalc {
 
         public static function Dmg4Rating():Int {
             var dmg:Float = Main.SAVE.data.dmgTaken;
-            if(dmg <= dmg4) {
+            if(dmg <= 0) {
                 return 3;
-            } else if(dmg4 == 0) {
-                dmg4 = 15;
-            } 
-            if(dmg <= dmg4 + dmg4){
+            } else if(dmg <= dmg4){
                 return 2;
             } 
             return 1;
@@ -150,12 +150,10 @@ class RatingCalc {
 
         public static function Dmg5Rating():Int {
             var dmg:Float = Main.SAVE.data.dmgTaken;
-            if(dmg <= dmg5) {
+            if(dmg <= 0) {
                 return 3;
-            } else if(dmg5 == 0) {
-                dmg5 = 30;
             } 
-            if(dmg <= dmg5 + dmg5){
+            if(dmg <= dmg5){
                 return 2;
             } 
             return 1;
@@ -175,12 +173,79 @@ class RatingCalc {
 
         public static function Dmg6Rating():Int {
             var dmg:Float = Main.SAVE.data.dmgTaken;
-            if(dmg <= dmg6) {
+            if(dmg <= 0) {
                 return 3;
-            } else if(dmg6 == 0) {
-                dmg6 = 30;
             } 
-            if(dmg <= dmg6 + dmg6){
+            if(dmg <= 40){
+                return 2;
+            } 
+            return 1;
+        }
+
+        public static function Time7Rating():Int {
+            var seg:Float = time7 / 2;
+            var time:Float = Main.SAVE.data.timeTaken;
+            if(time <= time5) {
+                return 3;
+            } else if(time <= (time + seg)) {
+                return 2;
+            } else {
+                return 1;
+            }
+        }
+
+        public static function Dmg7Rating():Int {
+            var dmg:Float = Main.SAVE.data.dmgTaken;
+            if(dmg <= 0) {
+                return 3;
+            } 
+            if(dmg <= dmg7){
+                return 2;
+            } 
+            return 1;
+        }
+
+        public static function Time8Rating():Int {
+            var seg:Float = time8 / 2;
+            var time:Float = Main.SAVE.data.timeTaken;
+            if(time <= time8) {
+                return 3;
+            } else if(time <= (time + seg)) {
+                return 2;
+            } else {
+                return 1;
+            }
+        }
+
+        public static function Dmg8Rating():Int {
+            var dmg:Float = Main.SAVE.data.dmgTaken;
+            if(dmg <= 0) {
+                return 3;
+            } 
+            if(dmg <= dmg8){
+                return 2;
+            } 
+            return 1;
+        }
+
+        public static function Time9Rating():Int {
+            var seg:Float = time9 / 2;
+            var time:Float = Main.SAVE.data.timeTaken;
+            if(time <= time9) {
+                return 3;
+            } else if(time <= (time + seg)) {
+                return 2;
+            } else {
+                return 1;
+            }
+        }
+
+        public static function Dmg9Rating():Int {
+            var dmg:Float = Main.SAVE.data.dmgTaken;
+            if(dmg <= 0) {
+                return 3;
+            } 
+            if(dmg <= dmg9){
                 return 2;
             } 
             return 1;
