@@ -9,6 +9,7 @@ enum BulletType {
 	Melee;
 	Ranged;
 	SHOTGUN;
+	WEB;
 }
 
 class EnemyBullet extends Bullet {
@@ -51,11 +52,22 @@ class EnemyBullet extends Bullet {
 		} else if (bulletType == Melee) {
 			this.type = "melee";
 			makeGraphic(6, 70, meleeColor);
+		} else if (bulletType == WEB) {
+			loadGraphic(AssetPaths.spider_web__png, true, 30, 32);
+			setFacingFlip(FlxObject.LEFT, false, false);
+			setFacingFlip(FlxObject.RIGHT, true, false);
+			animation.add("first", [0], 1);
+			animation.play("first");
 		}
 		
 		if (bulletType == SHOTGUN) {
 			velocity.set(speed, 0);
 			velocity.rotate(FlxPoint.weak(0, 0), direction);
+			if (velocity.x < 0) {
+				facing = FlxObject.LEFT;
+			} else {
+				facing = FlxObject.RIGHT;
+			}
 		} else {
 			if (direction == FlxObject.LEFT) {
 				velocity.set(-speed, 0);
@@ -65,10 +77,4 @@ class EnemyBullet extends Bullet {
 			}
 		}
 	}
-
-	//override public function update(elapsed:Float):Void {
-		//super.update(elapsed);
-		//velocity.set(speed, 0);
-        //velocity.rotate(FlxPoint.weak(0, 0), direction);
-	//}
 }

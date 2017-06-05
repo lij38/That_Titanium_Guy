@@ -311,6 +311,7 @@ class PlayState extends FlxState {
 			
 		}  else if (entityName == "boss2"){
 			boss2 = new Boss2(x, y, enId, enemiesBullets, coinsGroup, 0, _hand, _player);
+			boss2.onPickUpItem = pickUpShotgun;
 			enemiesGroup.add(boss2);
 			_boss_hud = new Boss1HUD(boss2);
 			
@@ -337,6 +338,10 @@ class PlayState extends FlxState {
 					(player.isShielding() && player.faced == bullet.facing)) {
 				player.hurt(damage);
 				_hud.updateDamage(damage);
+				if (bullet.bulletType == WEB) {
+					player.stun();
+					_hud.startDaze();
+				}
 			} else {
 				// player is shielding the right direction
 				player.sndShield.play(true);
@@ -371,6 +376,7 @@ class PlayState extends FlxState {
 								_map.width * _map.tileWidth - player.width - 20);
 				}
 			}
+			
 			bullet.kill();
 		}
 	}
@@ -451,6 +457,14 @@ class PlayState extends FlxState {
 	
 	public function pickUpRifle(player:Player, rifle:Coin):Void {
 		player.pickUpRifle();
+	}
+	
+	public function pickUpShotgun(player:Player, shotgun:Coin):Void {
+		player.pickUpShotgun();
+	}
+	
+	public function pickUpRevolver(player:Player, revolver:Coin):Void {
+		player.pickUpRevolver();
 	}
 	
 	public function killAllEnemies(e:Enemy) {
