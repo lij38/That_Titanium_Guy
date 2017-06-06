@@ -28,5 +28,10 @@ class Dialog extends FlxSprite
 		visible = true;
 		loadGraphic(AssetPaths.dialog3__png, false, 720, 145);
 	}
+
+	public function dialog4() {
+		visible = true;
+		loadGraphic(AssetPaths.dialog4__png, false, 720, 145);
+	}
     
 }
