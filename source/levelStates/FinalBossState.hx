@@ -91,9 +91,9 @@ class FinalBossState extends PlayState {
 			sndExp1.play();
 			sndExp2.play();
 			exploded = true;
-		}
-		if (boss3.getTime() == 0) {
-			Main.SAVE.data.wifeLives = false;
+			if (boss3.getTime() > 0) {
+				Main.SAVE.data.wifeLives = true;
+			}
 		}
         _boss_hud.updateTimer();
 		super.update(elapsed);
