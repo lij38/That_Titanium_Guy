@@ -311,9 +311,14 @@ class PlayState extends FlxState {
 		_hand = new Boss2Hand();
 		
 		if (entityName == "boss1") {
-			boss = new Boss1(x, y, enId, enemiesBullets, coinsGroup, GRAVITY);
-			enemiesGroup.add(boss);
-			_boss_hud = new Boss1HUD(boss);
+			if (LEVELID == 8) {
+				boss = new Boss1(x, y, enId, enemiesBullets, coinsGroup, GRAVITY);
+				enemiesGroup.add(boss);
+			} else {
+				boss = new Boss1(x, y, enId, enemiesBullets, coinsGroup, GRAVITY);
+				enemiesGroup.add(boss);
+				_boss_hud = new Boss1HUD(boss);
+			}
 			
 		}  else if (entityName == "boss2"){
 			boss2 = new Boss2(x, y, enId, enemiesBullets, coinsGroup, 0, _hand, _player);
@@ -325,6 +330,8 @@ class PlayState extends FlxState {
 			boss3 = new FinalBoss(x, y, enId, enemiesBullets, coinsGroup, GRAVITY, _map.width * _map.tileWidth, _hud, _player);
 			enemiesGroup.add(boss3);
 			_boss_hud = new Boss1HUD(boss3);
+		} else if (entityName == "ENEMYG") {
+			enemiesGroup.add(new EnemyGen(x, y, enId, enemiesBullets, coinsGroup, GRAVITY, enemiesGroup, lvl));
 		} else {
 			en = EnemyFactory.getEnemy(entityName, x, y, enId,
 										enemiesBullets, coinsGroup,
@@ -336,7 +343,7 @@ class PlayState extends FlxState {
 			if (enId == 34 && lvl == 1) {
 				en.onPickUpItem = pickUpRifle;
 			}
-			if (enId == 36 && lvl == 4) {
+			if (enId == 36 && lvl == 2) {
 				en.onPickUpItem = pickUpRevolver;
 			}
 			enemiesGroup.add(en);
