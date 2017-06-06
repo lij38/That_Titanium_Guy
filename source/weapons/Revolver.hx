@@ -10,7 +10,7 @@ class Revolver extends Weapon {
     public var charged:Bool;
     private var sndCharge:FlxSound;
     private var sndCFire:FlxSound;
-    private var CTIME = 1.6;
+    private var CTIME = 1.3;
 
     override public function new(playerBulletArray:FlxTypedGroup<Bullet>) {
         super(playerBulletArray);
