@@ -57,9 +57,9 @@ class OpeningState extends FlxState
 		_conv_index = 0;
 		_text_array.push("Federal Army Soldiers: This land is now confiscated under the authority of the Federal Government for our Supreme Leader");
 		_text_array.push("FA Soldiers: You have 24 hours to vacate the premises. Failure to do so will result in the use of deadly forces.");
-		_text_array.push("J. Hypin: It is not safe here. Wait me outside.");
-		_text_array.push("J. Katy: Ok. Be safe.");
-		_text_array.push("J. Hypin: WHAT?! You can’t just take my land from me and my family! We have rights to this land and I will defend my rights!");
+		_text_array.push("J. Hypin: Grab our stuff and wait for me outside!");
+		_text_array.push("Katy Hypin: Ok. Be safe!.");
+		_text_array.push("J. Hypin: You can’t just take my land from me and my family! We have rights to this land and we will defend our rights!");
 		_text_array.push("FA Soldiers: Resistance detected, deadly force is now authorized.");
 
 		_player = new PlayerAnimation(200,300,0);
