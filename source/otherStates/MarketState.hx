@@ -1497,7 +1497,10 @@ class MarketState extends FlxState {
                     case 2: FlxG.switchState(new Boss1State());
                     case 4: FlxG.switchState(new Level3State());
                     case 5: FlxG.switchState(new Boss2State());
-                    case 6: FlxG.switchState(new CreditState());
+                    case 6: FlxG.switchState(new Level4State());
+                    case 7: FlxG.switchState(new Level5State());
+                    case 8: FlxG.switchState(new FinalBossState());
+                    case 9: FlxG.switchState(new CreditState());
                 }
             } else {
                 switch _level {
@@ -1506,6 +1509,9 @@ class MarketState extends FlxState {
                     case 4: FlxG.switchState(new Level2State());
                     case 5: FlxG.switchState(new Level3State());
                     case 6: FlxG.switchState(new Boss2State());
+                    case 7: FlxG.switchState(new Level4State());
+                    case 8: FlxG.switchState(new Level5State());
+                    case 9: FlxG.switchState(new FinalBossState());
                 }
             }
 

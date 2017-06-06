@@ -183,9 +183,10 @@ class FinishState extends FlxState
                     FlxG.switchState(new CatchKatyState());
                 } else {
                     if(Main.SAVE.data.bossTalk == null) {
-
+                        FlxG.switchState(new BeforeFinalBossState());
+                        Main.SAVE.data.bossTalk = true;
                     } else {
-                        
+                        FlxG.switchState(new FinalBossState());
                     }
                 }
             }
