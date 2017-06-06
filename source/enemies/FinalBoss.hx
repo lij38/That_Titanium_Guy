@@ -13,18 +13,21 @@ import items.Coin;
 
 class FinalBoss extends Enemy {
     private var mapWidth:Float;
-	private var chargeTimer:Float;
-	private var attackTimer:Float;
-	private var stayTimer:Float;
+	private var chargeTimer:Float = 10;
+	private var attackTimer:Float = 0;
+	private var stayTimer:Float = 0;
 	private var meleeDist:Int = 200;
-    private var meleeNum:Int = 1;
+    private var meleeNum:Int = 0;
     private var rangedDist:Int = 700;
 	private var SECOND:Int = 60;
-    private var countDown:Float = 60;
+    private var countDown:Float = 120;
 
     private var _player:Player;
 	private var caught:Bool = false;
 	private var attacked:Bool = false;
+	private var stayed:Bool = false;
+	private var stayTime:Float = 1;
+	private var rampage:Bool = false;
 
     private var _catch_pos:FlxPoint;
     private var shootCount:Int = 0;
@@ -54,29 +57,25 @@ class FinalBoss extends Enemy {
 		setSize(140, 297);
 		offset.set(130, 78);
 		this.name = "Supreme Leader. Clint, Don";
-		//cast(this, FlxObject).debugBoundingBoxColor = FlxColor.RED;
 		
 		setFacingFlip(FlxObject.LEFT, false, false);
 		setFacingFlip(FlxObject.RIGHT, true, false);
 		
 		animation.add("stop", [0], 1, false);
-		animation.add("lr", [1,2,3,4,5,6,7], 12, false);
-        animation.add("charge", [1,2,3,4,5,6,7], 60, false);
+		animation.add("lr", [1,2,3,4,5,6], 12, false);
+        animation.add("charge", [11], 1, false);
+		animation.add("rampage", [13], 1, false);
 		animation.add("attack1", [8,9,10,11], 16, false);
-        animation.add("attack2", [12,13,13,12], 16, false);
-		animation.add("die", [0, 0, 0, 0, 0], 1, false);
+        animation.add("attack2", [12,12,13,13], 16, false);
+		animation.add("die", [0, 0, 0, 0, 0, 0], 1, false);
 		animation.play("stop");
 		this.level = 0;
 
         _catch_pos = new FlxPoint(_player.x, _player.y);
-		acceleration.y = GRAVITY;
 		health = 5000;
 		facing = FlxObject.LEFT;
 		playerPos = FlxPoint.get();
 		brain = new EnemyFSM(turn);
-		chargeTimer = 10;
-		attackTimer = 0;
-		stayTimer = 0;
 		range = meleeDist;
 		hurtTime = 0.10;
 	}
@@ -87,12 +86,16 @@ class FinalBoss extends Enemy {
         } else {
             countDown = 0;
         }
-        if(chargeTimer >= 20) {
-            brain.activeState = charge;
-            chargeTimer = 0;
-        } else {
-            chargeTimer += elapsed;
-        }
+		if (chargeTimer <= stayTime * 20) {
+			chargeTimer += elapsed;
+		}
+		if (countDown == 0 && !rampage) {
+			rampage = true;
+			speed *= 2;
+			stayTime /= 2;
+			velocity.x = 0;
+			brain.activeState = chargeRampage;
+		}
         super.update(elapsed);
     }
 
@@ -103,10 +106,11 @@ class FinalBoss extends Enemy {
 	public function stay(elapsed:Float):Void {
 		//trace("stay!!!!!!!!!!!!!!");
 		stayTimer += elapsed;
-		if (stayTimer > 0.5) {
+		if (stayTimer > stayTime) {
 			stayTimer = 0.0;
 			brain.activeState = turn;
 		}
+		stayed = false;
 	}
 
 	public function judgeState(elapsed:Float):Void {
@@ -126,8 +130,14 @@ class FinalBoss extends Enemy {
 		} else {
 			facing = FlxObject.RIGHT;
 		}
+		
+        if (chargeTimer >= stayTime * 20) {
+            brain.activeState = charge;
+            chargeTimer = 0;
+			return;
+        }
 		// switch to other states based on player dist
-		if(playerPos.y < this.y) {
+		if (playerPos.y < this.y) {
             brain.activeState = ranged;
         } else if (Math.abs(playerPos.x - getMidpoint().x) <= meleeDist) {
 			brain.activeState = melee;
@@ -144,22 +154,23 @@ class FinalBoss extends Enemy {
 		//trace("attack!!!!!!!1")
 		attackTimer += elapsed;
 		if (!attacked && attackTimer > 0) {
-            if(meleeNum == 1) {
+            if(meleeNum == 0 || meleeNum == 2) {
                 animation.play("attack1");
-                meleeNum = 2;
-            } else {
+            } else if (meleeNum == 1 || meleeNum == 3) {
                 animation.play("attack2");
-                meleeNum = 1;
             }
+			meleeNum = (meleeNum + 1) % 4;
 			var curBullet:EnemyBullet = bulletArray.recycle(EnemyBullet);
 			curBullet.setBullet(getMidpoint().x, y, 1000, facing, 20,
-												range, BOSSMELEE, this);
+												meleeDist, BOSSMELEE, this);
 			attacked = true;
 		}
 		if (attackTimer >= 0.25) {
 			attackTimer = 0.0;
 			attacked = false;
-			brain.activeState = judgeState;
+			if (meleeNum == 0) {
+				brain.activeState = turn;
+			}
 		}
 	}
 
@@ -176,14 +187,14 @@ class FinalBoss extends Enemy {
 		animation.play("stop");
 
 		shootTimer += elapsed;
-		if (shootTimer > 0.3) {
+		if (shootTimer > 0.15) {
 			if (facing == FlxObject.LEFT) {
                 var curBullet:EnemyBullet = bulletArray.recycle(EnemyBullet);
-                curBullet.setBullet(x, y, 500, cast(angle, Int), 15, 2000, SKULL, this);
+                curBullet.setBullet(x, y, 250, cast(angle, Int), 15, 2000, SKULL, this);
 	        }
 	        if (facing == FlxObject.RIGHT) {
                 var curBullet:EnemyBullet = bulletArray.recycle(EnemyBullet);
-                curBullet.setBullet(x, y, 500, cast(angle, Int) % 360, 15, 2000, SKULL, this);
+                curBullet.setBullet(x, y, 250, cast(angle, Int) % 360, 15, 2000, SKULL, this);
 	        }
             shootTimer = 0;
             shootCount++;
@@ -237,12 +248,27 @@ class FinalBoss extends Enemy {
 
 	// the state from raising weapon to run towards player
 	public function charge(elapsed:Float):Void {
+		if (!stayed) {
+			stayTimer += elapsed;
+			animation.play("charge");
+			FlxFlicker.flicker(this, stayTime * 2, 0.10, true, false);
+		}
+		if (!stayed && stayTimer < stayTime * 2) {
+			return;
+		}
+		if (!stayed && stayTimer > stayTime * 2) {
+			stayTimer = 0.0;
+			stayed = true;
+		}
 		//trace("charge!!!!!!!!!!!!!!!");
-        FlxFlicker.flicker(this, 0.5, 0.10, true, true);
 		if (caught) {
 			_player.freeze = true;
-			_player.x = this.x;
 			_player.y = this.y;
+			if (facing == FlxObject.LEFT) {
+				_player.x = this.x;
+			} else {
+				_player.x = this.x + this.width - _player.width;
+			}
 		} else {
 			if (FlxG.overlap(_player, this)) {
 				//_player.freeze = true;
@@ -258,15 +284,39 @@ class FinalBoss extends Enemy {
                 caught = false;
                 _player.freeze = false;
             }
-            brain.activeState = turn;
+            brain.activeState = stay;
         }
-
+		
         animation.play("lr");
         if (facing == FlxObject.LEFT) {
             velocity.x = -speed * 3.5;
         } else if (facing == FlxObject.RIGHT) {
             velocity.x = speed * 3.5;
         }
+	}
+	
+	public function chargeRampage(elapsed:Float) {
+		if (stayTimer < stayTime * 8) {
+			stayTimer += elapsed;
+		} else {
+			brain.activeState = turn;
+			stayTimer = 0;
+			originalColor = 0x870000;
+			color = originalColor;
+			return;
+		}
+		FlxFlicker.flicker(this, stayTime * 8, 0.10, true, false);
+		animation.play("rampage");
+		if (stayTimer < 1.0) {
+			originalColor = 0x878787;
+		} else if (stayTimer < 2.0) {
+			originalColor = 0x874444;
+		} else if (stayTimer < 3.0) {
+			originalColor = 0x872222;
+		} else if (stayTimer > 3.5) {
+			originalColor = 0x870000;
+		}
+		color = originalColor;
 	}
 
 	override public function hurt(damage:Float):Void {
