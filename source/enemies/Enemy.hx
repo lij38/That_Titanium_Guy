@@ -64,7 +64,7 @@ class Enemy extends FlxSprite {
 	public var hasShield:Bool = false;
 	public var isBoss:Bool = false;
 	
-	private var bulletSpeedLevel = [for (i in 0...4) 50 * i + 250];
+	private var bulletSpeedLevel = [for (i in 0...10) 50 * i + 250];
 	
 	private var dazeTime:Float = 1.0;
 	private var dazeTimer:Float = -1;
