@@ -12,18 +12,17 @@ import flixel.tweens.FlxTween;
 import weapons.*;
 import items.Coin;
 
-class SpiderEnemy extends Enemy {
+class NurseEnemy extends Enemy {
 	
 	private var rate:Float = 0.5;
-	private var webRate:Float = 0.5;
+	private var dashRate:Float = 1.0;
 	private var rateTimer:Float = -1;
 	private var attacked:Bool = false;
+	private var attackCount:Int = 0;
 	
-	private var meleeRange:Float = 130;
-	private var webRange:Float = 350;
-	
-	private var webCD:Float = 5;
-	private var webCDTimer:Float = 5;
+	private var dashRange:Float;
+	private var needleRange:Float = 70;
+	private var longRange:Float = 250;
 	
 	private var damageLevel = [for (i in 1...10) i];	
 	private var healthLevel = [for (i in 0...10) 20 * i + 50];
@@ -33,37 +32,32 @@ class SpiderEnemy extends Enemy {
 						bulletArray:FlxTypedGroup<EnemyBullet>,
 						coinsGroup:FlxTypedGroup<Coin>,
 						gravity:Float, level:Int = 0) {
-		super(X, Y, id, bulletArray, coinsGroup, gravity, SPIDER);
+		super(X, Y, id, bulletArray, coinsGroup, gravity, NURSE);
 		
 		this.level = level;
 		
-		loadGraphic(AssetPaths.spider__png, true, 266, 175);
-		setSize(120, 92);
-		offset.set(73, 65);
+		loadGraphic(AssetPaths.nurse__png, true, 196, 132);
+		setSize(75, 127);
+		offset.set(59, 0);
 		
 		setFacingFlip(FlxObject.LEFT, false, false);
 		setFacingFlip(FlxObject.RIGHT, true, false);
 		
 		animation.add("stop", [0], 1, false);
-		animation.add("lr", [0, 1, 2, 3], 9, false);
+		animation.add("lr", [1, 2, 3, 4, 5, 6], 9, false);
 		animation.add("hurt", [8, 8, 8, 8, 0], 12, false);
-		animation.add("die", [8, 8, 9, 9, 9, 9, 9, 9, 9, 9, 9], 9, false);
-		animation.add("attack", [4, 4, 4, 5, 5, 6, 6, 7, 7], 18, false);
-		animation.add("spillWeb", [10], 1, false);
+		animation.add("die", [9, 9, 10, 10, 10, 10, 10, 10,
+								10, 10, 10], 9, false);
+		//animation.add("attack", [4, 4, 4, 5, 5, 6, 6, 7, 7], 9, false);
+		//animation.add("spillWeb", [10], 1, false);
 		animation.play("stop");
 		
 		health = healthLevel[level];
 		facing = FlxObject.LEFT;
 		brain = new EnemyFSM(idle);
-		speed = 200;
-		range = webRange;
-	}
-	
-	override public function update(elapsed:Float):Void {
-		if (webCDTimer < 5) {
-			webCDTimer += elapsed;
-		}
-		super.update(elapsed);
+		speed = 500;
+		dashRange = detectRange;
+		range = longRange;
 	}
 	
 	public function idle(elapsed:Float):Void {
@@ -74,6 +68,7 @@ class SpiderEnemy extends Enemy {
 		animation.play("stop");
 		rateTimer = -1;
 		attacked = false;
+		attackCount = 0;
 	}
 	
 	public function judge(elapsed:Float):Void {
@@ -83,55 +78,19 @@ class SpiderEnemy extends Enemy {
 			animation.play("stop");
 			return;
 		}
-		if (webCDTimer >= 5) {
-			range = webRange;
-			brain.activeState = webAttack;
-		} else {
-			range = meleeRange;
-			brain.activeState = meleeAttack;
-		}
-	}
-	
-	public function webAttack(elapsed:Float):Void {
-		if (rateTimer >= 0) {
-			rateTimer += elapsed;
-		}
-		if (rateTimer > webRate) {
-			rateTimer = -1;
-			attacked = false;
-			brain.activeState = judge;
-			return;
-		}
-		if (rateTimer == -1) {
-			if (playerPos.x <= getMidpoint().x) {
-				velocity.x = -speed;
-				facing = FlxObject.LEFT;
-			} else {
-				facing = FlxObject.RIGHT;
-				velocity.x = speed;
-			}
-		}
-
+		
+		range = longRange;
 		if (playerInRange()) {
-			velocity.x = 0;
-			if (rateTimer == -1) {
-				rateTimer = 0;
+			brain.activeState = attack;
+		} else {
+			range = dashRange;
+			if (playerInRange()) {
+				brain.activeState = dashAttack;
 			}
-			animation.play("spillWeb");
-		} else if (rateTimer < 0) {
-			animation.play("lr");
-		}
-		if (rateTimer > 0.0 && !attacked) {
-			var curBullet:EnemyBullet = bulletArray.recycle(EnemyBullet);
-			curBullet.setBullet(getMidpoint().x, getMidpoint().y - 5, 400, facing,
-							damageLevel[level], range, 
-							WEB, this);
-			webCDTimer = 0.0;
-			attacked = true;
 		}
 	}
 	
-	public function meleeAttack(elapsed:Float):Void {
+	public function attack(elapsed:Float):Void {
 		if (rateTimer >= 0) {
 			rateTimer += elapsed;
 		}
@@ -156,16 +115,54 @@ class SpiderEnemy extends Enemy {
 			if (rateTimer == -1) {
 				rateTimer = 0;
 			}
-			animation.play("attack");
+			animation.play("stop");
 		} else if (rateTimer < 0) {
 			animation.play("lr");
 		}
-		if (rateTimer > 0.25 && !attacked) {
+		if (rateTimer > 0.0 && !attacked) {
 			var curBullet:EnemyBullet = bulletArray.recycle(EnemyBullet);
-			curBullet.setBullet(getMidpoint().x, y + 10, 1000, facing,
+			curBullet.setBullet(getMidpoint().x, getMidpoint().y - 30, 100, facing,
 							damageLevel[level], range, 
-							Melee, this);
+							HEART, this);
 			attacked = true;
+		}
+	}
+	
+	public function dashAttack(elapsed:Float):Void {
+		if (rateTimer >= 0) {
+			rateTimer += elapsed;
+		}
+		if (rateTimer > dashRate) {
+			rateTimer = -1;
+			attackCount = 0;
+			brain.activeState = judge;
+			return;
+		}
+		if (rateTimer == -1) {
+			if (playerPos.x <= getMidpoint().x) {
+				velocity.x = -speed;
+				facing = FlxObject.LEFT;
+			} else {
+				facing = FlxObject.RIGHT;
+				velocity.x = speed;
+			}
+		}
+		range = needleRange;
+		if (playerInRange()) {
+			velocity.x = 0;
+			if (rateTimer == -1) {
+				rateTimer = 0;
+			}
+			animation.play("stop");
+		} else if (rateTimer < 0) {
+			animation.play("lr");
+		}
+		if (rateTimer > attackCount * 0.2) {
+			var curBullet:EnemyBullet = bulletArray.recycle(EnemyBullet);
+			curBullet.setBullet(getMidpoint().x, getMidpoint().y - 3, 1000, facing,
+							damageLevel[level], range, 
+							NEEDLE, this);
+			attackCount++;
 		}
 	}
 	

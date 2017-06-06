@@ -10,6 +10,8 @@ enum BulletType {
 	Ranged;
 	SHOTGUN;
 	WEB;
+	NEEDLE;
+	HEART;
 }
 
 class EnemyBullet extends Bullet {
@@ -57,6 +59,13 @@ class EnemyBullet extends Bullet {
 			setFacingFlip(FlxObject.LEFT, false, false);
 			setFacingFlip(FlxObject.RIGHT, true, false);
 			animation.add("first", [0], 1);
+			animation.play("first");
+		} else if (bulletType == NEEDLE) {
+			this.type = "melee";
+			makeGraphic(11, 11, meleeColor);
+		} else if (bulletType == HEART) {
+			loadGraphic(AssetPaths.nurse_heart__png, true, 18, 32);
+			animation.add("first", [0, 1, 2, 1, 0, 3, 4, 3], 6);
 			animation.play("first");
 		}
 		

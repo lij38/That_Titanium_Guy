@@ -92,7 +92,7 @@ class MeleeEnemy extends Enemy {
 		}
 		if (rateTimer > 0.66 && !attacked) {
 			var curBullet:EnemyBullet = bulletArray.recycle(EnemyBullet);
-			curBullet.setBullet(x + 7, y + 10, 1000, facing,
+			curBullet.setBullet(getMidpoint().x, y + 10, 1000, facing,
 							damageLevel[level], range, 
 							Melee, this);
 			attacked = true;

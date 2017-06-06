@@ -36,6 +36,9 @@ class EnemyFactory {
 		} else if (enType == "SPIDER") {
 			return new SpiderEnemy(X, Y, id, bulletArray,
 								coinsGroup, gravity, level);
+		} else if (enType == "NURSE") {
+			return new NurseEnemy(X, Y, id, bulletArray,
+								coinsGroup, gravity, level);
 		}
 
 		return null;

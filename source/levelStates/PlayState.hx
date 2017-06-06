@@ -337,9 +337,10 @@ class PlayState extends FlxState {
 					(player.isShielding() && player.faced == bullet.facing)) {
 				player.hurt(damage);
 				_hud.updateDamage(damage);
+				// stun player
 				if (bullet.bulletType == WEB) {
-					player.stun();
-					_hud.startDaze();
+					player.stun(1.0);
+					_hud.startDaze(1.0);
 				}
 			} else {
 				// player is shielding the right direction
