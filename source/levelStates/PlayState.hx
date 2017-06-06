@@ -13,6 +13,7 @@ import flixel.addons.editors.tiled.TiledTileLayer;
 import flixel.addons.editors.tiled.TiledObjectLayer;
 import flixel.tile.FlxBaseTilemap;
 import flixel.addons.editors.tiled.TiledMap;
+import flixel.system.FlxSound;
 import weapons.*;
 import enemies.*;
 import items.*;
@@ -62,6 +63,8 @@ class PlayState extends FlxState {
 	private var _hand:Boss2Hand;
 	private var boss3:FinalBoss;
 	
+	private var _sndFlesh:FlxSound;
+
 	override public function create():Void {
 		//FlxG.debugger.drawDebug = true;
 		//////////////////
@@ -159,6 +162,7 @@ class PlayState extends FlxState {
 		_pausetxt.setFormat(AssetPaths.FONT, _pausetxt.size);
 		_pausetxt.scrollFactor.set(0.0);
 
+		_sndFlesh = FlxG.sound.load(AssetPaths.fleshCut__wav);
 		super.create();
 	}
 
@@ -436,6 +440,9 @@ class PlayState extends FlxState {
 					len = Std.int(len / 10);
 				}
 				enemy.knockBack(len, bullet.facing);
+			}
+			if(bullet.getType() == "melee") {
+				_sndFlesh.play(true);
 			}
 			playerBullets.remove(bullet);
 			bullet.destroy();

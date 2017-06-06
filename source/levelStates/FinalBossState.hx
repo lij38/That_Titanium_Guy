@@ -92,6 +92,9 @@ class FinalBossState extends PlayState {
 			sndExp2.play();
 			exploded = true;
 		}
+		if (boss3.getTime() == 0) {
+			Main.SAVE.data.wifeLives = false;
+		}
         _boss_hud.updateTimer();
 		super.update(elapsed);
 		//playerPos.copyFrom(_player.getMidpoint());

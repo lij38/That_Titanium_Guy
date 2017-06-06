@@ -36,7 +36,8 @@ class Boss1HUD extends FlxTypedGroup<FlxSprite>
 
          //count down timer
          if(boss.type == BOSS3) {
-            timer = new FlxText(375, 50, 0, "60", 40);
+            _name.x = 200;
+            timer = new FlxText(360, 50, 0, "120", 50);
             timer.setFormat(AssetPaths.FONT, timer.size);
             add(timer);
          }
@@ -47,9 +48,9 @@ class Boss1HUD extends FlxTypedGroup<FlxSprite>
      }
 
      public function updateTimer():Void {
-         timer.text = Std.string(cast(_boss, FinalBoss).getTime());
-         if(timer.text.length > 2) {
+         timer.text = Std.string(Math.fround(cast(_boss, FinalBoss).getTime()));
+         /*if(timer.text.length > 2) {
              timer.text = timer.text.substring(0, 2);
-         }
+         }*/
      }
 }

@@ -1,4 +1,5 @@
 package enemies;
+import flixel.system.FlxSound;
 import flixel.util.FlxColor;
 import flixel.FlxObject;
 import flixel.math.FlxPoint;
@@ -20,7 +21,7 @@ class FinalBoss extends Enemy {
     private var meleeNum:Int = 0;
     private var rangedDist:Int = 700;
 	private var SECOND:Int = 60;
-    private var countDown:Float = 120;
+    private var countDown:Float = 10;
 
     private var _player:Player;
 	private var caught:Bool = false;
@@ -38,6 +39,9 @@ class FinalBoss extends Enemy {
 	private var rate:Float = 0.1;
 	private var rateTimer:Float = 0;
     private var pHud:HUD;
+	
+	private var sndRoar:FlxSound;
+	private var sndThud:FlxSound;
 
 	public function new(X:Float = 0, Y:Float = 0, id:Int = -1,
 					bulletArray:FlxTypedGroup<EnemyBullet>, 
@@ -61,14 +65,7 @@ class FinalBoss extends Enemy {
 		setFacingFlip(FlxObject.LEFT, false, false);
 		setFacingFlip(FlxObject.RIGHT, true, false);
 		
-		animation.add("stop", [0], 1, false);
-		animation.add("lr", [1,2,3,4,5,6], 12, false);
-        animation.add("charge", [11], 1, false);
-		animation.add("rampage", [13], 1, false);
-		animation.add("attack1", [8,9,10,11], 16, false);
-        animation.add("attack2", [12,12,13,13], 16, false);
-		animation.add("die", [0, 0, 0, 0, 0, 0], 1, false);
-		animation.play("stop");
+		addAnimationAndSound();
 		this.level = 0;
 
         _catch_pos = new FlxPoint(_player.x, _player.y);
@@ -94,6 +91,7 @@ class FinalBoss extends Enemy {
 			speed *= 2;
 			stayTime /= 2;
 			velocity.x = 0;
+			sndRoar.play();
 			brain.activeState = chargeRampage;
 		}
         super.update(elapsed);
@@ -249,6 +247,9 @@ class FinalBoss extends Enemy {
 	// the state from raising weapon to run towards player
 	public function charge(elapsed:Float):Void {
 		if (!stayed) {
+			if (stayTimer < 0.5) {
+				sndRoar.play();
+			}
 			stayTimer += elapsed;
 			animation.play("charge");
 			FlxFlicker.flicker(this, stayTime * 2, 0.10, true, false);
@@ -283,6 +284,7 @@ class FinalBoss extends Enemy {
                 pHud.startDaze();
                 caught = false;
                 _player.freeze = false;
+				sndThud.play();
             }
             brain.activeState = stay;
         }
@@ -303,15 +305,27 @@ class FinalBoss extends Enemy {
 			stayTimer = 0;
 			originalColor = 0x870000;
 			color = originalColor;
+			attacked = false;
 			return;
 		}
 		FlxFlicker.flicker(this, stayTime * 8, 0.10, true, false);
 		animation.play("rampage");
 		if (stayTimer < 1.0) {
+			attacked = false;
 			originalColor = 0x878787;
 		} else if (stayTimer < 2.0) {
+			if (!attacked) {
+				sndRoar.play(true);
+				attacked = true;
+			}
 			originalColor = 0x874444;
+		} else if (stayTimer < 2.5) {
+			attacked = false;
 		} else if (stayTimer < 3.0) {
+			if (!attacked) {
+				sndRoar.play(true);
+				attacked = true;
+			}
 			originalColor = 0x872222;
 		} else if (stayTimer > 3.5) {
 			originalColor = 0x870000;
@@ -330,13 +344,26 @@ class FinalBoss extends Enemy {
 		hurtColorTimer = 0.0;
 	}	
 
-    private function angles(Source:FlxPoint, Target:FlxPoint):Float
-	{
+    private function angles(Source:FlxPoint, Target:FlxPoint):Float {
 		var dx:Float = (Target.x) - (Source.x);
 		var dy:Float = (Target.y) - (Source.y);
 		
 		Target.putWeak();
 		
 		return Math.atan2(dy, dx);
+	}
+	
+	private function addAnimationAndSound():Void {
+		animation.add("stop", [0], 1, false);
+		animation.add("lr", [1,2,3,4,5,6], 12, false);
+        animation.add("charge", [11], 1, false);
+		animation.add("rampage", [13], 1, false);
+		animation.add("attack1", [8,9,10,11], 16, false);
+        animation.add("attack2", [12,12,13,13], 16, false);
+		animation.add("die", [0, 0, 0, 0, 0, 0], 1, false);
+		animation.play("stop");
+		
+		sndRoar = FlxG.sound.load(AssetPaths.roar__wav);
+		sndThud = FlxG.sound.load(AssetPaths.thud__wav);
 	}
 }

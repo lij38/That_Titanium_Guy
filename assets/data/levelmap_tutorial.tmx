@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="20" height="15" tilewidth="40" tileheight="40" nextobjectid="23">
+<map version="1.0.0" orientation="orthogonal" renderorder="right-down" width="20" height="15" tilewidth="40" tileheight="40" nextobjectid="26">
  <tileset firstgid="1" name="levelmap" tilewidth="40" tileheight="40" tilecount="300" columns="20">
   <image source="../images/levelmap.png" width="800" height="600"/>
  </tileset>
@@ -32,8 +32,10 @@
   <object id="8" name="home" type="home" x="41.3333" y="42.6667" width="65" height="65"/>
   <object id="9" name="arrow" type="arrow" x="140" y="60" width="40" height="25"/>
   <object id="10" name="text" type="text" x="210.667" y="46.6667" width="32" height="32"/>
-  <object id="13" x="562.667" y="275" width="50" height="50"/>
-  <object id="21" x="601.667" y="131" width="50" height="50"/>
+  <object id="13" x="713.667" y="327" width="50" height="50"/>
+  <object id="21" x="568.667" y="278" width="50" height="50"/>
+  <object id="23" x="604.667" y="134" width="50" height="50"/>
+  <object id="25" name="helptxt" type="helptxt" x="228" y="181" width="16" height="16"/>
  </objectgroup>
  <objectgroup name="stars">
   <object id="14" x="33" y="207" width="80" height="30"/>
@@ -42,7 +44,8 @@
   <object id="17" x="334" y="347" width="80" height="30"/>
   <object id="18" x="458" y="449" width="80" height="30"/>
   <object id="19" x="557" y="386" width="80" height="30"/>
-  <object id="20" x="553" y="231" width="80" height="30"/>
-  <object id="22" x="590" y="90" width="80" height="30"/>
+  <object id="20" x="699" y="287" width="80" height="30"/>
+  <object id="22" x="557" y="235" width="80" height="30"/>
+  <object id="24" x="591" y="93" width="80" height="30"/>
  </objectgroup>
 </map>
