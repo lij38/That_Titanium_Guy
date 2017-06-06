@@ -74,9 +74,9 @@ class Enemy extends FlxSprite {
 	private var knockBackDir:Int;
 	
 	// sound
-	public var sndHurt1:FlxSound;
+	/*public var sndHurt1:FlxSound;
 	public var sndHurt2:FlxSound;
-	public var sndHurt3:FlxSound;
+	public var sndHurt3:FlxSound;*/
 	
 	public function new(X:Float = 0, Y:Float = 0, id:Int = -1,
 						enemiesBulletArray:FlxTypedGroup<EnemyBullet>,
@@ -89,9 +89,9 @@ class Enemy extends FlxSprite {
 		this.type = type;
 		this.id = id;
 		
-		sndHurt1 = FlxG.sound.load(AssetPaths.hit_monster1__wav);
-		sndHurt2 = FlxG.sound.load(AssetPaths.hit_monster2__wav);
-		sndHurt3 = FlxG.sound.load(AssetPaths.hit_monster3__wav);
+		//sndHurt1 = FlxG.sound.load(AssetPaths.hit_monster1__wav);
+		//sndHurt2 = FlxG.sound.load(AssetPaths.hit_monster2__wav);
+		//sndHurt3 = FlxG.sound.load(AssetPaths.hit_monster3__wav);
 		
 		if (type == JPMELEE || type == JPRIFLE || type == JPSHIELD) {
 			hasJetpack = true;
@@ -136,7 +136,7 @@ class Enemy extends FlxSprite {
 				coinsGroup.add(rifle);
 				dropItem = true;
 				dropCoin = true;
-			} else if (id == 36 && level == 4 && !dropItem && 
+			} else if (id == 36 && level == 2 && !dropItem && 
 							Main.SAVE.data.levelCompleted != null &&
 							Main.SAVE.data.levelCompleted < 4) {
 				var revolver:Coin = new Coin(getMidpoint().x, getMidpoint().y, OTHER);
@@ -212,15 +212,12 @@ class Enemy extends FlxSprite {
 			} else {
 				velocity.x = 0;
 			}
-			
-			
 			if (dazeTimer >= 0) {
 				dazeTimer += elapsed;
 			}
 			if (dazeTimer > dazeTime) {
 				dazeTimer = -1;
 			}
-			
 			if (hurtTimer >= 0) {
 				hurtTimer += elapsed;
 			}
@@ -341,14 +338,14 @@ class Enemy extends FlxSprite {
 				(!hasJetpack || diffY < 15 && diffY > -15);
 	}
 	
-	public function hurtSound():Void {
-		var rand:Float = Math.random() * 3;
-		if (rand < 1) {
-			sndHurt1.play(true);
-		} else if (rand < 2) {
-			sndHurt2.play(true);
-		} else {
-			sndHurt3.play(true);
-		}
-	}
+	//public function hurtSound():Void {
+		//var rand:Float = Math.random() * 3;
+		//if (rand < 1) {
+			//sndHurt1.play(true);
+		//} else if (rand < 2) {
+			//sndHurt2.play(true);
+		//} else {
+			//sndHurt3.play(true);
+		//}
+	//}
 }

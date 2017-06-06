@@ -5,6 +5,7 @@ import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxState;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.system.FlxSound;
 import flixel.text.FlxText;
 import flixel.tile.FlxTilemap;
 import flixel.addons.editors.ogmo.FlxOgmoLoader;
@@ -19,8 +20,17 @@ class FinalBossState extends PlayState {
 	//private var _enemy:Boss1;
 	//private var _boss_hud:Boss1HUD;
     private var timer:FlxText;
-    private var explosion:Explosion;
-
+    private var explosion1:Explosion;
+	private var explosion2:Explosion;
+	private var explosion3:Explosion;
+	private var explosion4:Explosion;
+	
+	private var sndExp1:FlxSound;
+	private var sndExp2:FlxSound;
+	private var sndExp0:FlxSound;
+	
+	private var exploded:Bool = false;
+	
 	override public function create():Void {
 		LEVELID = 9;
 		_is_boss = true;
@@ -43,19 +53,48 @@ class FinalBossState extends PlayState {
 		// FlxG.debugger.drawDebug = true;
 
 		super.create();
-        explosion = new Explosion();
+        explosion1 = new Explosion();
+		explosion2 = new Explosion();
+		explosion3 = new Explosion();
+		explosion4 = new Explosion();
+		
+		sndExp0 = FlxG.sound.load(AssetPaths.explosion_01__wav);
+		sndExp1 = FlxG.sound.load(AssetPaths.explosion_02__wav);
+		sndExp2 = FlxG.sound.load(AssetPaths.explosion_03__wav);
+		
+		
 		add(_hud);
 		Main.LOGGER.logLevelStart(LEVELID);
 		addTopLayer();
-        add(explosion);
-        explosion.kill();
+        add(explosion1);
+		add(explosion2);
+		add(explosion3);
+		add(explosion4);
+		
+        explosion1.kill();
+		explosion2.kill();
+		explosion3.kill();
+		explosion4.kill();
 	}
 
 	override public function update(elapsed:Float):Void {
-        if(enemiesGroup.countLiving() == -1) {
-            explosion.revive();
-            explosion.explode(boss3.x, boss3.y);
-        }
+        if (enemiesGroup.countLiving() == 0 && !exploded) {
+            explosion1.revive();
+            explosion1.explode(boss3.x, boss3.y);
+			explosion2.revive();
+            explosion2.explode(boss3.x + 100, boss3.y + 100);
+			explosion3.revive();
+            explosion3.explode(boss3.x + 60, boss3.y + 150);
+			explosion4.revive();
+            explosion4.explode(boss3.x + 280, boss3.y + 130);
+			sndExp0.play();
+			sndExp1.play();
+			sndExp2.play();
+			exploded = true;
+		}
+		if (boss3.getTime() == 0) {
+			Main.SAVE.data.wifeLives = false;
+		}
         _boss_hud.updateTimer();
 		super.update(elapsed);
 		//playerPos.copyFrom(_player.getMidpoint());

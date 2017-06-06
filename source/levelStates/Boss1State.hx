@@ -56,11 +56,6 @@ class Boss1State extends PlayState {
 
 	override public function playerCollidesEnemies(player:Player, enemy:Enemy):Void {
 		if(!player.isTumbling()) {
-			/*if (player.facing == FlxObject.LEFT) {
-				player.x += 2;
-			} else {
-				player.x -= 2;	
-			}*/
 			if (player.getMidpoint().x <= enemy.getMidpoint().x) {
 				player.x -= 2;
 			} else {

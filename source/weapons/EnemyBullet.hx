@@ -63,7 +63,9 @@ class EnemyBullet extends Bullet {
 			animation.add("first", [0], 1);
 			animation.play("first");
 		} else if (bulletType == SKULL) {
-			loadGraphic(AssetPaths.poisonSkull__png);
+			loadGraphic(AssetPaths.poisonSkull__png, true, 24, 45);
+			animation.add("first", [0, 1, 2, 1, 0, 3, 4, 3], 6);
+			animation.play("first");
 		} else if (bulletType == NEEDLE) {
 			this.type = "melee";
 			makeGraphic(11, 11, meleeColor);

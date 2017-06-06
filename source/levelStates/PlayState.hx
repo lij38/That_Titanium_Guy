@@ -343,7 +343,7 @@ class PlayState extends FlxState {
 			if (enId == 34 && lvl == 1) {
 				en.onPickUpItem = pickUpRifle;
 			}
-			if (enId == 36 && lvl == 4) {
+			if (enId == 36 && lvl == 2) {
 				en.onPickUpItem = pickUpRevolver;
 			}
 			enemiesGroup.add(en);

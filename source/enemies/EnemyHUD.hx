@@ -148,7 +148,7 @@ class EnemyHUD extends FlxTypedGroup<FlxSprite> {
 		return Math.random() * 10 - 5;
 	 }
 	 
-	 private function roundToFirst(n:Float):Float {
-		 return Math.fround(n * 10) / 10;
-	 }
+	private function roundToFirst(n:Float):Float {
+		return Math.fround(n * 10) / 10;
+	}
 }
