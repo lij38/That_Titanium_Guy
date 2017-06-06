@@ -15,10 +15,9 @@ import flixel.util.FlxColor;
 import levelStates.*;
 import otherStates.*;
 
-class WifeLiveState extends FlxState
+class WifeDieState extends FlxState
 {
 	private var _player:PlayerAnimation;
-	private var _wife:WifeAnimation;
 	private var count:Int = 0;
 	private var _dialog:Dialog;
 	private var _bg:FlxSprite;
@@ -53,14 +52,12 @@ class WifeLiveState extends FlxState
 		// initialize with all conversations
 		_text_array = new Array<String>();
 		_conv_index = 0;
-		_text_array.push("Katy lived! You saved your wife!");
+		_text_array.push("Katy Died! You couldn't save your wife!");
 		_text_array.push("J. Hypin: ...!");
-		_text_array.push("Katy Hypin: ...*groans* where... am I?");
-		_text_array.push("J: Don't worry, you are safe now! It's ok... it's all over. Let's go home...");
+		_text_array.push("J. Hypin: Katy...where are you...");
+		_text_array.push("J: *cries* NOOOOOOOO!");
 
 		_player = new PlayerAnimation(200,305,0);
-		_wife = new WifeAnimation(600, 300, 0);
-		_wife.facing = FlxObject.LEFT;
 
 		_dialog = new Dialog(39, 431);
 		_dialog.width = 720;
@@ -78,7 +75,6 @@ class WifeLiveState extends FlxState
 
 		 add(_bg);
 		 add(_player);
-		 add(_wife);
 		 add(_dialog);
 		 add(_text);
 		 add(_helptext);
@@ -116,7 +112,7 @@ class WifeLiveState extends FlxState
 			var space:Bool = FlxG.keys.anyJustPressed([ENTER]);
 			if (space) {
 				_conv_index += 1;
-				_dialog.dialog3();
+				_dialog.dialog1();
 				_text.text = _text_array[_conv_index];
 				_stage2 = false;
 				_stage3 = true;

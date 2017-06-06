@@ -437,7 +437,7 @@ class PlayState extends FlxState {
 			if (bullet.getType() == "shotgun") {
 				var len:Int = Std.int(cast(bullet, ShotgunBullet).getPushBack());
 				if (enemy.isBoss) {
-					len = len / 10;
+					len = Std.int(len / 10);
 				}
 				enemy.knockBack(len, bullet.facing);
 			}

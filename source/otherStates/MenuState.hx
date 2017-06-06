@@ -211,7 +211,8 @@ class MenuState extends FlxState {
 				//FlxG.switchState(new MarketState());
 				//FlxG.sound.music.destroy();
 				//FlxG.switchState(new HomeState());
-				FlxG.switchState(new FinalBossState());
+				//FlxG.switchState(new FinalBossState());
+				FlxG.switchState(new WifeDieState());
 			}
 		});
 	}
