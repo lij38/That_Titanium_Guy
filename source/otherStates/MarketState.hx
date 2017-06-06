@@ -336,7 +336,7 @@ class MarketState extends FlxState {
                         + "Each upgrade grants you +10% rate of fire\n" + "Cost: $" + sgRateCost + "\nUpgrades left: " + sgRateNum;
             sgRateCC.text = "Cost: $" + sgRateCost + "\n# Left: " + sgRateNum;
             pushBackT.text = "Send your daughter's boyfriend flying.\n"
-                        + "Each upgrade grants you +20% enemy knockback\n" + "Cost: $" + pushBackCost + "\nUpgrades left: " + pushBackNum;
+                        + "Each upgrade grants you +25% enemy knockback\n" + "Cost: $" + pushBackCost + "\nUpgrades left: " + pushBackNum;
             pushBackCC.text = "Cost: $" + pushBackCost + "\n# Left: " + pushBackNum;
         }
         if(Main.SAVE.data.levelCompleted >= 4) {
@@ -758,7 +758,7 @@ class MarketState extends FlxState {
         }
         reflectT = new FlxText(200, 150, 450);
         reflectT.text = "Did you know that mirrors reflect bullets too?\n"
-            + "First Upgrade grants you 5% damage reflected back to your ranged attacker while blocking, each subsequent upgrade grants you +2% damage reflected.\\n"
+            + "First Upgrade grants you 5% damage reflected back to your ranged attacker while blocking, each subsequent upgrade grants you +2% damage reflected.\n"
             + "Cost: $" + reflectCost + "\n" + "Upgrades left: " + reflectNum;
         reflectT.setFormat(AssetPaths.FONT, 25);
         reflectT.kill();
@@ -814,7 +814,7 @@ class MarketState extends FlxState {
 
     //shotgun
     private function loadShotgun() {
-        shotgun = new FlxSprite(570, 40).loadGraphic(AssetPaths.shotgun__png);
+        shotgun = new FlxSprite(700, 40).loadGraphic(AssetPaths.shotgun__png);
 
         //reload time
         if(Main.SAVE.data.sgRtimeCost == null) {
@@ -833,7 +833,7 @@ class MarketState extends FlxState {
             + "Cost: $" + sgRtimeCost + "\nUpgrades left: " + sgRtimeNum;
         sgRtimeT.setFormat(AssetPaths.FONT, 25);
         sgRtimeT.kill();
-        sgRtimeCC = new FlxText(530, 130, 120);
+        sgRtimeCC = new FlxText(660, 130, 120);
         sgRtimeCC.text = "Cost: $" + sgRtimeCost + "\n# Left: " + sgRtimeNum;
         sgRtimeCC.setFormat(AssetPaths.FONT, 20);
         //confirm button
@@ -842,7 +842,7 @@ class MarketState extends FlxState {
         sgRtimeConfirm.kill();
         confirmButtons.add(sgRtimeConfirm);
         texts.add(sgRtimeT);
-        sgRtime = new ImageButton(530, 95, trans.bind(sgRtimeT, sgRtimeConfirm));
+        sgRtime = new ImageButton(660, 95, trans.bind(sgRtimeT, sgRtimeConfirm));
         sgRtime.loadGraphic(AssetPaths.reloadspeed__png);
 
         //magazine size
@@ -862,7 +862,7 @@ class MarketState extends FlxState {
             + "Cost: $" + sgMagCost + "\n" + "Upgrades left: " + sgMagNum;
         sgMagT.setFormat(AssetPaths.FONT, 25);
         sgMagT.kill();
-        sgMagCC = new FlxText(530, 230, 120);
+        sgMagCC = new FlxText(660, 230, 120);
         sgMagCC.text = "Cost: $" + sgMagCost + "\n# Left: " + sgMagNum;
         sgMagCC.setFormat(AssetPaths.FONT, 20);
         //confirm button
@@ -871,7 +871,7 @@ class MarketState extends FlxState {
         sgMagConfirm.kill();
         confirmButtons.add(sgMagConfirm);
         texts.add(sgMagT);
-        sgMag = new ImageButton(530, 195, trans.bind(sgMagT, sgMagConfirm));
+        sgMag = new ImageButton(660, 195, trans.bind(sgMagT, sgMagConfirm));
         sgMag.loadGraphic(AssetPaths.magazineSize__png);
 
         //damage
@@ -890,7 +890,7 @@ class MarketState extends FlxState {
             + "Each upgrade grants you 10% extra damage\n" + "Cost: $" + sgDmgCost + "\nUpgrades left: " + sgDmgNum; 
         sgDmgT.setFormat(AssetPaths.FONT, 25);
         sgDmgT.kill();
-        sgDmgCC = new FlxText(530, 330, 120);
+        sgDmgCC = new FlxText(660, 330, 120);
         sgDmgCC.text = "Cost: $" + sgDmgCost + "\n# Left: " + sgDmgNum;
         sgDmgCC.setFormat(AssetPaths.FONT, 20);
         //load the confirm button in transaction
@@ -899,7 +899,7 @@ class MarketState extends FlxState {
         sgDmgConfirm.kill();
         confirmButtons.add(sgDmgConfirm);
         texts.add(sgDmgT);
-        sgDmg = new ImageButton(530, 295, trans.bind(sgDmgT, sgDmgConfirm));
+        sgDmg = new ImageButton(660, 295, trans.bind(sgDmgT, sgDmgConfirm));
         sgDmg.loadGraphic(AssetPaths.damage__png);
 
         //fire rate
@@ -918,7 +918,7 @@ class MarketState extends FlxState {
             + "Each upgrade grants you +10% rate of fire\n" + "Cost: $" + sgRateCost + "\nUpgrades left: " + sgRateNum; 
         sgRateT.setFormat(AssetPaths.FONT, 25);
         sgRateT.kill();
-        sgRateCC = new FlxText(530, 430, 120);
+        sgRateCC = new FlxText(660, 430, 120);
         sgRateCC.text = "Cost: $" + sgRateCost + "\n# Left: " + sgRateNum;
         sgRateCC.setFormat(AssetPaths.FONT, 20);
         //load the confirm button in transaction
@@ -927,7 +927,7 @@ class MarketState extends FlxState {
         sgRateConfirm.kill();
         confirmButtons.add(sgRateConfirm);
         texts.add(sgRateT);
-        sgRate = new ImageButton(530, 395, trans.bind(sgRateT, sgRateConfirm));
+        sgRate = new ImageButton(660, 395, trans.bind(sgRateT, sgRateConfirm));
         sgRate.loadGraphic(AssetPaths.rateoffire__png);
 
         //pushback
@@ -943,10 +943,10 @@ class MarketState extends FlxState {
         }
         pushBackT = new FlxText(200, 150, 450);
         pushBackT.text = "Send your daughter's boyfriend flying.\n"
-            + "Each upgrade grants you +20% enemy knockback\n" + "Cost: $" + pushBackCost + "\nUpgrades left: " + pushBackNum; 
+            + "Each upgrade grants you +25% enemy knockback\n" + "Cost: $" + pushBackCost + "\nUpgrades left: " + pushBackNum; 
         pushBackT.setFormat(AssetPaths.FONT, 25);
         pushBackT.kill();
-        pushBackCC = new FlxText(530, 530, 120);
+        pushBackCC = new FlxText(660, 530, 120);
         pushBackCC.text = "Cost: $" + pushBackCost + "\n# Left: " + pushBackNum;
         pushBackCC.setFormat(AssetPaths.FONT, 20);
         //load the confirm button in transaction
@@ -955,7 +955,7 @@ class MarketState extends FlxState {
         pushBackConfirm.kill();
         confirmButtons.add(pushBackConfirm);
         texts.add(pushBackT);
-        pushBack = new ImageButton(530, 495, trans.bind(pushBackT, pushBackConfirm));
+        pushBack = new ImageButton(660, 495, trans.bind(pushBackT, pushBackConfirm));
         pushBack.loadGraphic(AssetPaths.juggernaut__png);
 
         add(shotgun);
@@ -973,7 +973,7 @@ class MarketState extends FlxState {
 
     //revolver
     private function loadRevolver() {
-        revolver = new FlxSprite(700, 40).loadGraphic(AssetPaths.revolver__png);
+        revolver = new FlxSprite(570, 40).loadGraphic(AssetPaths.revolver__png);
 
         //reload time
         if(Main.SAVE.data.rvRtimeCost == null) {
@@ -992,7 +992,7 @@ class MarketState extends FlxState {
             + "Cost: $" + rvRtimeCost + "\nUpgrades left: " + rvRtimeNum;
         rvRtimeT.setFormat(AssetPaths.FONT, 25);
         rvRtimeT.kill();
-        rvRtimeCC = new FlxText(660, 130, 120);
+        rvRtimeCC = new FlxText(530, 130, 120);
         rvRtimeCC.text = "Cost: $" + rvRtimeCost + "\n# Left: " + rvRtimeNum;
         rvRtimeCC.setFormat(AssetPaths.FONT, 20);
         //confirm button
@@ -1001,7 +1001,7 @@ class MarketState extends FlxState {
         rvRtimeConfirm.kill();
         confirmButtons.add(rvRtimeConfirm);
         texts.add(rvRtimeT);
-        rvRtime = new ImageButton(660, 95, trans.bind(rvRtimeT, rvRtimeConfirm));
+        rvRtime = new ImageButton(530, 95, trans.bind(rvRtimeT, rvRtimeConfirm));
         rvRtime.loadGraphic(AssetPaths.reloadspeed__png);
 
         //magazine size
@@ -1021,7 +1021,7 @@ class MarketState extends FlxState {
             + "Cost: $" + rvMagCost + "\n" + "Upgrades left: " + rvMagNum;
         rvMagT.setFormat(AssetPaths.FONT, 25);
         rvMagT.kill();
-        rvMagCC = new FlxText(660, 230, 120);
+        rvMagCC = new FlxText(530, 230, 120);
         rvMagCC.text = "Cost: $" + rvMagCost + "\n# Left: " + rvMagNum;
         rvMagCC.setFormat(AssetPaths.FONT, 20);
         //confirm button
@@ -1030,7 +1030,7 @@ class MarketState extends FlxState {
         rvMagConfirm.kill();
         confirmButtons.add(rvMagConfirm);
         texts.add(rvMagT);
-        rvMag = new ImageButton(660, 195, trans.bind(rvMagT, rvMagConfirm));
+        rvMag = new ImageButton(530, 195, trans.bind(rvMagT, rvMagConfirm));
         rvMag.loadGraphic(AssetPaths.magazineSize__png);
 
         //damage
@@ -1049,7 +1049,7 @@ class MarketState extends FlxState {
             + "Each upgrade grants you 10% extra damage\n" + "Cost: $" + rvDmgCost + "\nUpgrades left: " + rvDmgNum; 
         rvDmgT.setFormat(AssetPaths.FONT, 25);
         rvDmgT.kill();
-        rvDmgCC = new FlxText(660, 330, 120);
+        rvDmgCC = new FlxText(530, 330, 120);
         rvDmgCC.text = "Cost: $" + rvDmgCost + "\n# Left: " + rvDmgNum;
         rvDmgCC.setFormat(AssetPaths.FONT, 20);
         //load the confirm button in transaction
@@ -1058,7 +1058,7 @@ class MarketState extends FlxState {
         rvDmgConfirm.kill();
         confirmButtons.add(rvDmgConfirm);
         texts.add(rvDmgT);
-        rvDmg = new ImageButton(660, 295, trans.bind(rvDmgT, rvDmgConfirm));
+        rvDmg = new ImageButton(530, 295, trans.bind(rvDmgT, rvDmgConfirm));
         rvDmg.loadGraphic(AssetPaths.damage__png);
 
         //charge
@@ -1073,11 +1073,11 @@ class MarketState extends FlxState {
             chargeNum = Main.SAVE.data.chargeNum;
         }
         chargeT = new FlxText(200, 150, 450);
-        chargeT.text = "What's scarier than a .44 magnum? A charged up one.\n"
+        chargeT.text = "What's scarier than a .44 magnum? A charged up one.\nHold the attack button in game to charge a shot.\n"
             + "Each upgrade grants you +10% charged damage\n" + "Cost: $" + chargeCost + "\nUpgrades left: " + chargeNum; 
         chargeT.setFormat(AssetPaths.FONT, 25);
         chargeT.kill();
-        chargeCC = new FlxText(660, 430, 120);
+        chargeCC = new FlxText(530, 430, 120);
         chargeCC.text = "Cost: $" + chargeCost + "\n# Left: " + chargeNum;
         chargeCC.setFormat(AssetPaths.FONT, 20);
         //load the confirm button in transaction
@@ -1086,7 +1086,7 @@ class MarketState extends FlxState {
         chargeConfirm.kill();
         confirmButtons.add(chargeConfirm);
         texts.add(chargeT);
-        charge = new ImageButton(660, 395, trans.bind(chargeT, chargeConfirm));
+        charge = new ImageButton(530, 395, trans.bind(chargeT, chargeConfirm));
         charge.loadGraphic(AssetPaths.chargingcolt__png);
 
         add(revolver);
@@ -1391,7 +1391,7 @@ class MarketState extends FlxState {
         if(money > pushBackCost && pushBackNum > 0) {
             money -= pushBackCost;
             pushBackNum--;
-            Main.SAVE.data.pushBack *= 1.2;
+            Main.SAVE.data.pushBack *= 1.25;
             pushBackCost = cast(pushBackCost * 1.3, Int);
             Main.SAVE.data.pushBackCost = pushBackCost;
             Main.SAVE.data.pushBackNum = pushBackNum;

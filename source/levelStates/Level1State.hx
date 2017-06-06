@@ -60,7 +60,6 @@ class Level1State extends PlayState {
         Main.LOGGER.logLevelStart(LEVELID);
         add(_keys);
 		add(texts);
-		add(_player);
         add(_hud);
         
         addTopLayer();
