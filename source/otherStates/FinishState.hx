@@ -162,7 +162,6 @@ class FinishState extends FlxState
                 case 4: FlxG.switchState(new Level3State());
                 case 5: FlxG.switchState(new Boss2State());
                 case 6: FlxG.switchState(new Level4State());
-                case 7: FlxG.switchState(new Level5State());
             }
             if( _level == 2) {
                 if(Main.SAVE.data.wsTut == null) {
@@ -178,17 +177,21 @@ class FinishState extends FlxState
                     FlxG.switchState(new Level2State());
                 }
             }
-            if(_level == 8) {
+            if(_level == 7) {
                 if(Main.SAVE.data.katyCaught == null) {
                     Main.SAVE.data.katyCaught = true;
                     FlxG.switchState(new CatchKatyState());
                 } else {
-                    if(Main.SAVE.data.bossTalk == null) {
-                        FlxG.switchState(new BeforeFinalBossState());
-                        Main.SAVE.data.bossTalk = true;
-                    } else {
-                        FlxG.switchState(new FinalBossState());
-                    }
+                    FlxG.switchState(new Level5State());
+                }
+            }
+
+            if(_level == 8) {
+                if(Main.SAVE.data.bossTalk == null) {
+                    FlxG.switchState(new BeforeFinalBossState());
+                    Main.SAVE.data.bossTalk = true;
+                } else {
+                    FlxG.switchState(new FinalBossState());
                 }
             }
             if(_level == 9) {

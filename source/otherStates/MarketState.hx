@@ -1498,9 +1498,6 @@ class MarketState extends FlxState {
                     case 4: FlxG.switchState(new Level3State());
                     case 5: FlxG.switchState(new Boss2State());
                     case 6: FlxG.switchState(new Level4State());
-                    case 7: FlxG.switchState(new Level5State());
-                    case 8: FlxG.switchState(new FinalBossState());
-                    case 9: FlxG.switchState(new CreditState());
                 }
             } else {
                 switch _level {
@@ -1522,6 +1519,31 @@ class MarketState extends FlxState {
                     FlxG.switchState(new Boss1State());
                 } else {
                     FlxG.switchState(new Level2State());
+                }
+            }
+
+            if(_level == 7) {
+                if(Main.SAVE.data.katyCaught == null) {
+                    Main.SAVE.data.katyCaught = true;
+                    FlxG.switchState(new CatchKatyState());
+                } else {
+                    FlxG.switchState(new Level5State());
+                }
+            }
+
+            if(_level == 8) {
+                if(Main.SAVE.data.bossTalk == null) {
+                    FlxG.switchState(new BeforeFinalBossState());
+                    Main.SAVE.data.bossTalk = true;
+                } else {
+                    FlxG.switchState(new FinalBossState());
+                }
+            }
+            if(_level == 9) {
+                if(Main.SAVE.data.wifeLives == true) {
+                    FlxG.switchState(new WifeLiveState());
+                } else {
+                    FlxG.switchState(new WifeDieState());
                 }
             }
 		});

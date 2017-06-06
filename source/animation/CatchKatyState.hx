@@ -63,7 +63,7 @@ class CatchKatyState extends FlxState
 		_conv_index = 0;
 		_text_array.push("J. Katy: !   !   !  ( I need to run. )");
 		_text_array.push("J.Katy: >  <  ( Let me go! )");
-		_text_array.push("J. Hypin: Where is my wife?");
+		_text_array.push("J. Hypin: ...Where is my wife?");
 
 		_player = new PlayerAnimation(200 - 250,300,0);
 		_wife = new WifeAnimation(200, 260, 0);
@@ -255,7 +255,7 @@ class CatchKatyState extends FlxState
 			} else if (count > 260) {
 				var space:Bool = FlxG.keys.anyJustPressed([ENTER]);
 		 		if (space) {	
-	 				//switch state????
+	 				FlxG.switchState(new HomeState());
 	 			}			 	
 			}
 	 	}

@@ -62,8 +62,8 @@ class BeforeFinalBossState extends FlxState
 		_text_array.push("J. Hypin: Katy  !  !  !");
 		_text_array.push("J. Hypin: What the hell did you do to my wife?");
 		_text_array.push("Don Clint: HAHAHAHAHAHAHAHA. She will soon be absorbed by me. And the next is you !");
-		_text_array.push("J. Hypin: I will kill you!");
-		_text_array.push("Rules: You have to kill Don Clint in 120 secs to save Katy");
+		_text_array.push("J. Hypin: ...You will die before either of that happens.");
+		_text_array.push("Rules: You have to kill Don Clint in 120 secs before Katy gets completely absorbed by him");
 
 		_player = new PlayerAnimation(120,330,0);
 		_enemy = new FinalBossAnimation(500, 130, 0);
@@ -146,11 +146,9 @@ class BeforeFinalBossState extends FlxState
 		     	_enemy.animation.play("lr");
 		     	_enemy.x -= 4;
 		    } else if (count > 115) {
-		    	// switch state
+		    	FlxG.switchState(new FinalBossState());
 		    }
 		}
-	 	
-
 		super.update(elapsed);
 	}
 }
