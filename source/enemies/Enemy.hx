@@ -155,7 +155,6 @@ class Enemy extends FlxSprite {
 						var shotgun:Coin = new Coin(getMidpoint().x, getMidpoint().y,
 														OTHER);
 						shotgun.loadGraphic(AssetPaths.shotgun__png);
-						// TODO: add onPickUpItem in PlayState
 						shotgun.onPickUp = onPickUpItem;
 						coinsGroup.add(shotgun);
 						dropItem = true;
