@@ -33,8 +33,9 @@ class EnemyGen extends Enemy {
 	//private var originalColor:FlxColor = 0xffffff;
     private var enemies:FlxTypedGroup<Enemy>;
 
-    private var genTime:Float = 3.0;
+    private var genTime:Float = 2.5;
     private var genTimer:Float = -1;
+    private var cap:Int = 0;
 
 	
 	//CAP
@@ -46,8 +47,10 @@ class EnemyGen extends Enemy {
         loadGraphic(AssetPaths.gen__png);
         this.enemies = enemies;
         this.level = lvl;
-        health = 200;
+        health = 350;
         brain = new EnemyFSM(nothing);
+        acceleration.y = 0;
+        cap = 18 * level;
     }
 
     override public function update(elapsed:Float):Void {
@@ -76,26 +79,31 @@ class EnemyGen extends Enemy {
     }
 
     public function generate(elapsed:Float):Void {
-        trace(enemies.countLiving());
         if (genTimer < 0) {
-            genTimer = 0;
+            genTimer = 5;
         }
         if (!seesPlayer) {
             brain.activeState = nothing;
-        }
-        if (genTimer >= genTime && enemies.countLiving() < 60) {
-            var enem:String = randType();
-                if (enem != null) {
-                    enemies.add(EnemyFactory.getEnemy(enem, getMidpoint().x - 17, getMidpoint().y - 60, id, bulletArray, coinsGroup, GRAVITY, level));
-                } else {
-                    enemies.add(EnemyFactory.getEnemy("TRUCK", getMidpoint().x, getMidpoint().y - 60, id, bulletArray, coinsGroup, GRAVITY, level));
-                }
-            genTimer = 0;
+        } else {
+            if (genTimer >= genTime && enemies.countLiving() < cap) {
+                var enem:String = randType();
+                    if (enem != null) {
+                        //if (getMidpoint().x - playerPos.x >= 0) {
+                            enemies.add(EnemyFactory.getEnemy(enem, getMidpoint().x - 80, getMidpoint().y - 80, id, bulletArray, coinsGroup, GRAVITY, level));
+                        //} else {
+                        //    enemies.add(EnemyFactory.getEnemy(enem, getMidpoint().x - 70, getMidpoint().y + 60, id, bulletArray, coinsGroup, GRAVITY, level));
+                        //}
+                    } else {
+                        enemies.add(EnemyFactory.getEnemy("TRUCK", getMidpoint().x, getMidpoint().y - 60, id, bulletArray, coinsGroup, GRAVITY, level));
+                    }
+                trace(enemies.countLiving());
+                genTimer = 0;
+            }
         }
     }
 
     private function randType():String {
-        var randP:Int = Std.random(5);
+        var randP:Int = Std.random(7);
         switch randP {
             case 0: return "RIFLE";
             case 1: return "JPRIFLE";
@@ -103,6 +111,9 @@ class EnemyGen extends Enemy {
             case 3: return "JPMELEE";
             case 4: return "SHIELD";
             case 5: return "JPSHIELD";
+            //case 6: return "SPIDER";
+            //case 7: return "NURSE";
+            case 6: return "SHOTGUN";
         }
         return null;
     // 	JPRIFLE;
@@ -114,10 +125,10 @@ class EnemyGen extends Enemy {
     // 	RIFLE;
     // 	TRUCK;
     // 	SPIDER;
+    //  NURSE;
     }
     
     public function nothing(elapsed:Float):Void {
-        trace(seesPlayer);
         if (seesPlayer) {
             brain.activeState = generate;
         }
