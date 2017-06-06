@@ -31,7 +31,7 @@ class CreditState extends FlxState
 
     override public function update(elapsed:Float):Void
     {   
-        if(_count < 8600) {
+        if(_count < 8800) {
             FlxG.camera.scroll.add(0, 2);
             _count += 2;
         }
