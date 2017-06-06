@@ -257,7 +257,7 @@ class WorkshopState extends FlxState {
             + "\"Not all who cower behind The Cower are cowards.\"";
         shieldT.setFormat(AssetPaths.FONT, 20);
         add(shieldT);
-
+        
         //shotgun
         if(sgshow) {
             shotgun = new ImageButton(25, 360, shotgunClick);

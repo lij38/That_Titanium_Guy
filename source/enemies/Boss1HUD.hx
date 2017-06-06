@@ -13,13 +13,16 @@ class Boss1HUD extends FlxTypedGroup<FlxSprite>
     private var _sprHealth:FlxSprite;
     private var _healthbar:FlxBar;
     private var _name:FlxText;
+    private var timer:FlxText;
+    private var _boss:Enemy;
 
-    public function new(_smallboss:Enemy)
+    public function new(boss:Enemy)
      {
          super();
 
+         _boss = boss;
          //health bar
-        _healthbar = new FlxBar(120, 550, 600, 20, _smallboss, "health", 0, _smallboss.health);
+        _healthbar = new FlxBar(120, 550, 600, 20, boss, "health", 0, boss.health);
         _healthbar.createFilledBar(FlxColor.TRANSPARENT, FlxColor.PURPLE, true, FlxColor.BLACK);
 
          //add(_sprHealth);
@@ -27,13 +30,26 @@ class Boss1HUD extends FlxTypedGroup<FlxSprite>
          
          //name
          _name = new FlxText(280, 500, 0);
-         _name.text = _smallboss.name;
+         _name.text = boss.name;
          _name.setFormat(AssetPaths.FONT, 35);
          add(_name);
 
+         //count down timer
+         if(boss.name == "Supreme Leder. Clint, Don") {
+            timer = new FlxText(375, 50, "60", 40);
+            timer.setFormat(AssetPaths.FONT, timer.size);
+            add(timer);
+         }
          forEach(function(spr:FlxSprite)
          {
              spr.scrollFactor.set(0, 0);
          });
+     }
+
+     public function updateTimer():Void {
+         timer.text = cast(_boss, FinalBoss).getTime();
+         if(timer.text.size > 2) {
+             timer.text = timer.text.substring(0, 2);
+         }
      }
 }

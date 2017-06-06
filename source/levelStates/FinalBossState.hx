@@ -18,11 +18,12 @@ import flixel.tile.FlxBaseTilemap;
 class Boss2State extends PlayState {
 	//private var _enemy:Boss1;
 	//private var _boss_hud:Boss1HUD;
-	
+    private var timer:FlxText;
+
 	override public function create():Void {
-		LEVELID = 6;
+		LEVELID = 9;
 		_is_boss = true;
-		_is_boss2 = true;
+        _is_boss3 = true;
 		
 		_map = new TiledMap(AssetPaths.boss2__tmx);
 		_plat = new FlxTilemap();
@@ -40,25 +41,23 @@ class Boss2State extends PlayState {
 		// FlxG.debugger.visible = true;
 		// FlxG.debugger.drawDebug = true;
 
-
 		super.create();
 		add(_hud);
-		addTopLayer();
 		Main.LOGGER.logLevelStart(LEVELID);
 		addTopLayer();
 	}
 
 	override public function update(elapsed:Float):Void {
-
+        _boss_hud.updateTimer();
 		super.update(elapsed);
 		//playerPos.copyFrom(_player.getMidpoint());
 	}
 
-	private function bulletsHitEnemy(bullet:Bullet, small_boss:Boss1):Void {
-		if (small_boss.alive) {
+	private function bulletsHitEnemy(bullet:Bullet, boss:FinalBoss):Void {
+		if (boss.alive) {
 			var damage:Float = bullet.getDamage();
 			//trace(damage);
-			small_boss.hurt(damage);
+			boss.hurt(damage);
 			playerBullets.remove(bullet);
 			bullet.destroy();
 		}
