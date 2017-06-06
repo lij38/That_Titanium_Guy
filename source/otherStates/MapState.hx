@@ -49,8 +49,8 @@ class MapState extends FlxState
         _level2 = new ImageButton(0, 0, level2OnClick);
         _level2boss = new ImageButton(0, 0, level2bossOnClick);
         _level3 = new ImageButton(0, 0, level3OnClick);
-        _level4 = new ImageButton();
-        _level5 = new ImageButton();
+        _level4 = new ImageButton(0, 0, level4OnClick);
+        _level5 = new ImageButton(0, 0, level5OnClick);
         _home = new ImageButton(0, 0, switchHomeState);
         _levelarr.push(_tutorial);
         _levelarr.push(_level1);
@@ -181,6 +181,18 @@ class MapState extends FlxState
     private function level3OnClick():Void {
         FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
             FlxG.switchState(new Level3State());
+        });
+    }
+
+    private function level4OnClick():Void {
+        FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
+            FlxG.switchState(new Level4State());
+        });
+    }
+
+    private function level5OnClick():Void {
+        FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
+            FlxG.switchState(new Level5State());
         });
     }
 
