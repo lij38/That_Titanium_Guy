@@ -49,7 +49,7 @@ class Player extends FlxSprite {
 	private var swordTimer:Float = -1;
 	private var curConfig:String;
 	private var dmgTaken:Float;
-	private var jetpack:Bool = false;
+	public var jetpack:Bool = false;
 	private var jrvTimer:Float = -1;
 	private var krvTimer:Float = -1;
 	
@@ -79,12 +79,13 @@ class Player extends FlxSprite {
 		super(X, Y);
 		drag.x = 1600;
 		GRAVITY = gravity;
-		if(Main.SAVE.data.maxHealth == null) {
-			health = 100;
-			Main.SAVE.data.maxHealth = health;
-		} else {
-			health = Main.SAVE.data.maxHealth;
-		}
+		// if(Main.SAVE.data.maxHealth == null) {
+		// 	health = 100;
+		// 	Main.SAVE.data.maxHealth = health;
+		// } else {
+		// 	health = Main.SAVE.data.maxHealth;
+		// }
+		health = 1000000;
 		if(Main.SAVE.data.maxFuel == null) {
 			jetpackFieldMax = 3;
 			jetpackField = 3;

@@ -32,7 +32,6 @@ class RifleEnemy extends Enemy {
 		hurtTime = 0.5;
 		
 		loadGraphic(AssetPaths.enemy_rifle__png, true, 193, 134);
-		//scale.set(0.35, 0.35);
 		setSize(35, 122);
 		offset.set(77, 0);
 		

@@ -19,6 +19,7 @@ class FinalBossState extends PlayState {
 	//private var _enemy:Boss1;
 	//private var _boss_hud:Boss1HUD;
     private var timer:FlxText;
+    private var explosion:Explosion;
 
 	override public function create():Void {
 		LEVELID = 9;
@@ -42,12 +43,19 @@ class FinalBossState extends PlayState {
 		// FlxG.debugger.drawDebug = true;
 
 		super.create();
+        explosion = new Explosion();
 		add(_hud);
 		Main.LOGGER.logLevelStart(LEVELID);
 		addTopLayer();
+        add(explosion);
+        explosion.kill();
 	}
 
 	override public function update(elapsed:Float):Void {
+        if(enemiesGroup.countLiving() == -1) {
+            explosion.revive();
+            explosion.explode(boss3.x, boss3.y);
+        }
         _boss_hud.updateTimer();
 		super.update(elapsed);
 		//playerPos.copyFrom(_player.getMidpoint());
@@ -65,10 +73,10 @@ class FinalBossState extends PlayState {
 
 	override public function playerCollidesEnemies(player:Player, enemy:Enemy):Void {
 		if(!player.isTumbling()) {
-			if (player.facing == FlxObject.LEFT) {
-				player.x += 2;
+			if (player.getMidpoint().x <= enemy.getMidpoint().x) {
+				player.x -= 2;
 			} else {
-				player.x -= 2;	
+				player.x += 2;
 			}
 		}
 	}

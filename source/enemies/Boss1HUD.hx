@@ -35,8 +35,8 @@ class Boss1HUD extends FlxTypedGroup<FlxSprite>
          add(_name);
 
          //count down timer
-         if(boss.name == "Supreme Leder. Clint, Don") {
-            timer = new FlxText(375, 50, "60", 40);
+         if(boss.name == "Supreme Leader. Clint, Don") {
+            timer = new FlxText(375, 50, 0, "60", 40);
             timer.setFormat(AssetPaths.FONT, timer.size);
             add(timer);
          }
@@ -47,8 +47,8 @@ class Boss1HUD extends FlxTypedGroup<FlxSprite>
      }
 
      public function updateTimer():Void {
-         timer.text = cast(_boss, FinalBoss).getTime();
-         if(timer.text.size > 2) {
+         timer.text = Std.string(cast(_boss, FinalBoss).getTime());
+         if(timer.text.length > 2) {
              timer.text = timer.text.substring(0, 2);
          }
      }

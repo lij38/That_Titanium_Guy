@@ -111,7 +111,7 @@
 </data>
  </layer>
  <objectgroup name="enemies">
-  <object id="2" name="finalboss" type="finalboss" x="767" y="302" width="16" height="16"/>
+  <object id="2" name="finalboss" type="finalboss" x="796" y="179" width="16" height="16"/>
  </objectgroup>
  <objectgroup name="player">
   <object id="1" name="START" type="START" x="105.333" y="464" width="16" height="16"/>
