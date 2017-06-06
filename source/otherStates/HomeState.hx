@@ -376,7 +376,8 @@ class HomeState extends FlxState {
 
 	private function switchMapState():Void {
 		FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
-			if(tutState) {
+			if(Main.SAVE.data.mapTut == null) {
+				FlxG.SAVE.data.mapTut = true;
 				FlxG.switchState(new MapTutorialState());
 			} else {
         		FlxG.switchState(new MapState());	
