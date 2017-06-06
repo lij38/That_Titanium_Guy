@@ -34,7 +34,7 @@ class FinishState extends FlxState
     override public function create():Void
     {   
         _level = Main.SAVE.data.curLevel;
-        text = new FlxText(250, 25, 0, "Stage Cleared!", 50);
+        text = new FlxText(290, 25, 0, "Victory!", 50);
         text.setFormat(AssetPaths.FONT, text.size);
         add(text);
         // rating = new FlxText(320, 200, 0, "Rating: Gold", 25);
@@ -140,6 +140,7 @@ class FinishState extends FlxState
         Main.SAVE.flush();
         add(reward);
 
+        FlxG.sound.playMusic(AssetPaths.victory__mp3);
 		FlxG.camera.fade(FlxColor.BLACK, .25, true);
         super.create();
     }

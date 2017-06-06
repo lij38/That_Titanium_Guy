@@ -83,10 +83,8 @@ class Coin extends FlxSprite {
 	}
 	
 	public function pickUpPotion(player:Player, coin:Coin):Void {
-		if(player.potionSlot) {
-			if(player.potionCount < Main.SAVE.data.potionCount) {
-				player.potionCount++; 
-			}
+		if(player.potionSlot && player.potionCount < Main.SAVE.data.potionCount) {
+			player.potionCount++; 
 		} else {
 			player.heal();
 		}

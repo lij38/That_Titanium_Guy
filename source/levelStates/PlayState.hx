@@ -61,7 +61,7 @@ class PlayState extends FlxState {
 	private var _hand:Boss2Hand;
 	
 	override public function create():Void {
-		FlxG.debugger.drawDebug = true;
+		//FlxG.debugger.drawDebug = true;
 		//////////////////
         //LOAD PLAYER
 		//////////////////
@@ -95,7 +95,6 @@ class PlayState extends FlxState {
 			placeEnemies(e.name, e.xmlData.x);
 		}
 		numEnemies = enemiesGroup.countLiving();
-		trace(Std.string(numEnemies));
 		Main.SAVE.data.numEnemies = numEnemies;
 		/////////////////////////
 		//ADD EVERY COMPONENT
@@ -117,8 +116,10 @@ class PlayState extends FlxState {
 		if (_is_boss) {
 			add(_boss_hud);
 			_exit.visible = false;
+			FlxG.sound.playMusic(AssetPaths.boss__mp3);
+		} else {
+			FlxG.sound.playMusic(AssetPaths.dramatic__mp3);
 		}
-		FlxG.sound.playMusic(AssetPaths.dramatic__mp3);
 		
 		 _hud.updateHUD(_player.getAmmo(0), _player.getAmmo(1), _player.isReloading(0), _player.isReloading(1),
 		 				_player.getWeaponName(0), _player.getWeaponName(1));
@@ -181,8 +182,8 @@ class PlayState extends FlxState {
 		enemiesGroup.forEach(enemiesUpdate);
 		if (!_is_boss) {
 			updateEnemyHud();
-			_hud.updateXY();
 		}
+		_hud.updateXY();
 
 		//use potion
 		if(FlxG.keys.anyPressed([H])) {
@@ -202,10 +203,9 @@ class PlayState extends FlxState {
 		// Bullets collide walls
 		FlxG.collide(_plat, playerBullets, bulletsHitWalls);
 		FlxG.collide(_plat, enemiesBullets, enemiesBulletsHitWalls);
-		if(!_is_boss) {
+		if (!_is_boss2) {
 			FlxG.collide(enemiesGroup, _plat);
 		}
-		
 		// Coins
 		FlxG.collide(coinsGroup, _plat);
 		FlxG.overlap(_player, coinsGroup, pickUpCoin);
@@ -248,11 +248,12 @@ class PlayState extends FlxState {
 		}
 		Main.SAVE.data.money = _player.money;
 		Main.SAVE.data.levelMoney = levelMoney;
-		Main.LOGGER.logLevelEnd({won: true});
 		logged = true;
 		Main.SAVE.data.dmgTaken = _player.getDamageTaken();
 		Main.SAVE.data.timeTaken = (Date.now().getTime() - startTime) / 1000;
 		Main.SAVE.data.enemiesKilled = numEnemies - enemiesGroup.countLiving();
+		Main.LOGGER.logLevelEnd({won: true, dmgTaken: Main.SAVE.data.dmgTaken, timeTaken: Main.SAVE.data.timeTaken,
+			enemiesKilled:Main.SAVE.data.enemiesKilled, money: _player.money});
 		Main.SAVE.flush();
 		trace("damage taken: " + Main.SAVE.data.dmgTaken);
 		trace("time: " + Main.SAVE.data.timeTaken);
@@ -303,21 +304,16 @@ class PlayState extends FlxState {
 		_hand = new Boss2Hand();
 		
 		if (entityName == "boss1") {
-			boss = new Boss1(x, y, enId, enemiesBullets, coinsGroup, 0);
+			boss = new Boss1(x, y, enId, enemiesBullets, coinsGroup, GRAVITY);
 			enemiesGroup.add(boss);
-			if (boss.health > 0) {
-				_boss_hud = new Boss1HUD(boss);
-			} else {
-				boss.hurt(boss.health);
-			}
+			_boss_hud = new Boss1HUD(boss);
+			
 		}  else if (entityName == "boss2"){
 			boss2 = new Boss2(x, y, enId, enemiesBullets, coinsGroup, 0, _hand, _player);
+			boss2.onPickUpItem = pickUpShotgun;
 			enemiesGroup.add(boss2);
-			if (boss2.health > 0) {
-				_boss_hud = new Boss1HUD(boss2);
-			} else {
-				boss2.hurt(boss2.health);
-			}
+			_boss_hud = new Boss1HUD(boss2);
+			
 		} else {
 			en = EnemyFactory.getEnemy(entityName, x, y, enId,
 										enemiesBullets, coinsGroup,
@@ -330,14 +326,6 @@ class PlayState extends FlxState {
 				en.onPickUpItem = pickUpRifle;
 			}
 			enemiesGroup.add(en);
-			if (en.health > 0) {
-				//var eh:EnemyHUD;
-				//eh = new EnemyHUD(en);
-				//_enemiesMap.set(en, eh);
-				//_enemiesHUD.add(eh);
-			} else {
-				en.hurt(en.health);
-			}
 		}
 	}
 
@@ -349,11 +337,15 @@ class PlayState extends FlxState {
 					(player.isShielding() && player.faced == bullet.facing)) {
 				player.hurt(damage);
 				_hud.updateDamage(damage);
+				if (bullet.bulletType == WEB) {
+					player.stun();
+					_hud.startDaze();
+				}
 			} else {
 				// player is shielding the right direction
 				player.sndShield.play(true);
 				var prt:Enemy = bullet.parent;
-				if (prt.alive && prt.type != BOSS) {
+				if (prt.alive && !prt.isBoss) {
 					if (bullet.bulletType == Melee && player.getSpike() != 0) {
 						// return spike damage
 						var returnDmg:Float = player.getSpike() * damage;
@@ -383,6 +375,7 @@ class PlayState extends FlxState {
 								_map.width * _map.tileWidth - player.width - 20);
 				}
 			}
+			
 			bullet.kill();
 		}
 	}
@@ -421,6 +414,10 @@ class PlayState extends FlxState {
 	public function bulletsHitEnemies(bullet:Bullet, enemy:Enemy):Void {
 		if (enemy.alive) {
 			var dmg:Float = bullet.getDamage();
+			if (bullet.getType() == "shotgun") {
+				var len:Int = Std.int(cast(bullet, ShotgunBullet).getPushBack());
+				enemy.knockBack(len, bullet.facing);
+			}
 			playerBullets.remove(bullet);
 			bullet.destroy();
 			if (enemy.hasShield && bullet.facing != enemy.facing) {
@@ -459,6 +456,14 @@ class PlayState extends FlxState {
 	
 	public function pickUpRifle(player:Player, rifle:Coin):Void {
 		player.pickUpRifle();
+	}
+	
+	public function pickUpShotgun(player:Player, shotgun:Coin):Void {
+		player.pickUpShotgun();
+	}
+	
+	public function pickUpRevolver(player:Player, revolver:Coin):Void {
+		player.pickUpRevolver();
 	}
 	
 	public function killAllEnemies(e:Enemy) {

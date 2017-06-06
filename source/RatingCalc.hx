@@ -9,12 +9,19 @@ class RatingCalc {
         private static var dmg3:Float = 0;
         private static var time4:Float = 150;
         private static var dmg4:Float = 40;
+        private static var time5:Float = 195;
+        private static var dmg5:Float = 85;
+        private static var time6:Float = 110;
+        private static var dmg6:Float = 0;
 
         public static function getTimeRating(level:Int):Int {
             switch level {
                 case 1: return RatingCalc.Time1Rating();
                 case 2: return RatingCalc.Time2Rating();
                 case 3: return RatingCalc.Time3Rating();
+                case 4: return RatingCalc.Time4Rating();
+                case 5: return RatingCalc.Time5Rating();
+                case 6: return RatingCalc.Time6Rating();
             }
             return 3;
         }
@@ -24,6 +31,9 @@ class RatingCalc {
                 case 1: return RatingCalc.Dmg1Rating();
                 case 2: return RatingCalc.Dmg2Rating();
                 case 3: return RatingCalc.Dmg3Rating();
+                case 4: return RatingCalc.Dmg4Rating();
+                case 5: return RatingCalc.Time5Rating();
+                case 6: return RatingCalc.Time6Rating();
             }
             return 3;
         }
@@ -121,6 +131,56 @@ class RatingCalc {
                 dmg4 = 15;
             } 
             if(dmg <= dmg4 + dmg4){
+                return 2;
+            } 
+            return 1;
+        }
+
+        public static function Time5Rating():Int {
+            var seg:Float = time5 / 2;
+            var time:Float = Main.SAVE.data.timeTaken;
+            if(time <= time5) {
+                return 3;
+            } else if(time <= (time + seg)) {
+                return 2;
+            } else {
+                return 1;
+            }
+        }
+
+        public static function Dmg5Rating():Int {
+            var dmg:Float = Main.SAVE.data.dmgTaken;
+            if(dmg <= dmg5) {
+                return 3;
+            } else if(dmg5 == 0) {
+                dmg5 = 30;
+            } 
+            if(dmg <= dmg5 + dmg5){
+                return 2;
+            } 
+            return 1;
+        }
+
+        public static function Time6Rating():Int {
+            var seg:Float = time6 / 2;
+            var time:Float = Main.SAVE.data.timeTaken;
+            if(time <= time6) {
+                return 3;
+            } else if(time <= (time + seg)) {
+                return 2;
+            } else {
+                return 1;
+            }
+        }
+
+        public static function Dmg6Rating():Int {
+            var dmg:Float = Main.SAVE.data.dmgTaken;
+            if(dmg <= dmg6) {
+                return 3;
+            } else if(dmg6 == 0) {
+                dmg6 = 30;
+            } 
+            if(dmg <= dmg6 + dmg6){
                 return 2;
             } 
             return 1;

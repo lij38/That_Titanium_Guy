@@ -1,5 +1,6 @@
 package weapons;
 import flixel.group.FlxGroup;
+import flixel.FlxG;
 
 class Sword extends Weapon {
     private var ki:Bool;
@@ -17,35 +18,38 @@ class Sword extends Weapon {
         } else {
             this.damage = Main.SAVE.data.swDmg;
         }
+        //fire sound
+        this.sndFire = FlxG.sound.load(AssetPaths.sword_slash2__wav);
         //double slash proficiency
         if(Main.SAVE.data.ds == null) {
-            this.dsCutOff = 10;
+            this.dsCutOff = 7;
             Main.SAVE.data.ds = this.dsCutOff;
         } else {
             this.dsCutOff = Main.SAVE.data.ds;
         }
         //ki
-        // if(Main.SAVE.data.ki == null) {
-        //     this.ki = false;
-        //     Main.SAVE.data.ki = this.ki;
-        // } else {
-        //     this.ki = Main.SAVE.data.ki;
-        // }
+        if(Main.SAVE.data.ki == null) {
+            this.ki = false;
+            Main.SAVE.data.ki = this.ki;
+        } else {
+            this.ki = Main.SAVE.data.ki;
+        }
         //test ki
-         this.ki = true;
+        //   this.ki = true;
         //whirlwind
-        // if(Main.SAVE.data.ww == null) {
-        //     this.ww = false;
-        //     Main.SAVE.data.ww = this.ww;
-        // } else {
-        //     this.ww = Main.SAVE.data.ww;
-        // }
+        if(Main.SAVE.data.ww == null) {
+            this.ww = false;
+            Main.SAVE.data.ww = this.ww;
+        } else {
+            this.ww = Main.SAVE.data.ww;
+        }
         //test ww
-        this.ww = true;
+        // this.ww = true;
+
         this.name = "sword";
         this.type = "melee";
-        this.range = 145;
-        this.kiRange = 1000;
+        this.range = 100;
+        this.kiRange = 1300;
         this.fireRate = 0.25;
         this.speed = 1000;
         this.kiSpeed = 1500;
@@ -56,6 +60,10 @@ class Sword extends Weapon {
         Main.SAVE.flush();
     }
 
+    override public function update(elapsed:Float) {
+        super.update(elapsed);
+    }
+
     public override function attack(x:Float, y:Float, direction:Int):Bool {
         var newBullet:MeleeBullet;
         if(!ki) {
@@ -64,6 +72,8 @@ class Sword extends Weapon {
             newBullet = new MeleeBullet(x, y + 10, kiSpeed, direction, this.damage, kiRange, ki);
         }
 		this.bulletArray.add(newBullet);
+        this.sndFire.play();
+        fTimer = 0;
         return true;
     }
 

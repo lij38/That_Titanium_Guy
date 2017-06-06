@@ -1,7 +1,10 @@
 package weapons;
 import flixel.group.FlxGroup;
+import flixel.FlxObject;
+import flixel.system.FlxSound;
+import flixel.FlxG;
 
-class Weapon {
+class Weapon extends FlxObject {
     private var damage:Float;
     private var type:String;
     private var range:Float;
@@ -10,9 +13,12 @@ class Weapon {
     private var bulletArray:FlxTypedGroup<Bullet>;
     private var magCapacity:Int;
     private var curAmmo:Int;
-    private var isReloading:Bool;
     private var name:String;
     private var reloadTime:Float;
+    private var fTimer:Float;
+    private var rTimer:Float;
+    private var sndReload:FlxSound;
+    private var sndFire:FlxSound;
 
     public function new(playerBulletArray:FlxTypedGroup<Bullet>) {
         this.name = "";
@@ -24,6 +30,27 @@ class Weapon {
         this.curAmmo = -1;
         this.reloadTime = -1;
         this.bulletArray = playerBulletArray;
+        this.fTimer = -1;
+        this.rTimer = -1;
+        this.sndReload = FlxG.sound.load(AssetPaths.rifle_reload__wav);
+        super();
+    }
+
+    override public function update(elapsed:Float) {
+        if(fTimer > -1) {
+            fTimer += elapsed;
+        }
+        if(rTimer > -1) {
+            rTimer += elapsed;
+        }
+        if(fTimer > fireRate) {
+            fTimer = -1;
+        }
+        if(rTimer > this.reloadTime) {
+            rTimer = -1;
+            curAmmo = magCapacity;
+        }
+        super.update(elapsed);
     }
 
     public function getImagePath():String {
@@ -31,13 +58,22 @@ class Weapon {
     }
 
     public function reload():Bool {
-        curAmmo = magCapacity;
+        rTimer = 0;
         //TODO: PLAY RELOAD ANIMATION
+        sndReload.play();
 		return magCapacity > 0;
     }
 
     public function getName():String {
         return name;
+    }
+
+    public function canFire():Bool {
+        return fTimer == -1 || fTimer > this.fireRate;
+    }
+
+    public function isReloading():Bool {
+        return rTimer != -1;
     }
 
     public function attack(x:Float, y:Float, direction:Int):Bool {

@@ -17,6 +17,9 @@ import flixel.ui.FlxButton;
 import items.*;
 
 class HomeState extends FlxState {
+	
+	private var _wife:Wife;
+	
 	private var _map:TiledMap;
 	private var _bg:FlxTilemap;
 	private var _fg:FlxTilemap;
@@ -46,7 +49,7 @@ class HomeState extends FlxState {
 	private var _bmtxt:FlxText;
 
 	override public function create():Void {
-	
+		//FlxG.debugger.drawDebug = true;
 		// load map and set a platform that player can stand on (row 17th)
 		_map = new TiledMap(AssetPaths.home__tmx);
 		_bg = new FlxTilemap();
@@ -62,7 +65,7 @@ class HomeState extends FlxState {
 		_fg.follow();
 
 		playerBullets = new FlxTypedGroup<Bullet>();
-		_player = new Player(playerBullets, 1000);
+		_player = new Player(playerBullets, 1500);
 
 		_workshop = new ImageButton(0, 0, switchWorkshopState);
 		_workshop.loadGraphic(AssetPaths.workshop__png, false, 350, 290);
@@ -94,18 +97,19 @@ class HomeState extends FlxState {
         _bmtxt = new FlxText(0, 0, 500, 24);
         _bmtxt.text = "PRESS W to enter blackmarket";
         _bmtxt.setFormat(AssetPaths.FONT, 24);
-		_bmtxt.scrollFactor.set(0.0);
         _bmtxt.visible = false;
         add(_bmtxt);
         
 
 		var tmpMap:TiledObjectLayer = cast _map.getLayer("entities");
-		 for (e in tmpMap.objects)
-		 {
+		 for (e in tmpMap.objects) {
 		     placeEntities(e.type, e.xmlData.x);
 		 }
 		 add(playerBullets);
-		 add(_player);
+		 
+		_wife = new Wife(500, 200);
+		add(_wife);
+		add(_player);
 		 
 
 		 _mapbutton = new ImageButton(31, 26, switchMapState);
@@ -133,6 +137,7 @@ class HomeState extends FlxState {
 		 	_bg.color = 0x777777;
 		 	_player.color = 0x777777;
 		 	_workshop.color = 0x777777;
+			_blackmarket.color = 0x777777;
 		 	_arrow = new Arrow();
 			 _arrow.x = 120;
 			 _arrow.y = 50;
@@ -158,6 +163,8 @@ class HomeState extends FlxState {
 		 	_blackmarket.visible = true;
         	_blackmarket.active = true;
 		 }
+		 
+		
 
 
 		 // pause part and whole pause menu
@@ -197,7 +204,6 @@ class HomeState extends FlxState {
         	_blackmarket.active = true;
 		 }
 		 super.create();
-		
 	}
 
 	override public function update(elapsed:Float):Void {
@@ -226,6 +232,13 @@ class HomeState extends FlxState {
 			checkEnter(_player, _blackmarket, _bmtxt, switchBlackMarketState);
 		}
 		FlxG.collide(_player, _fg);
+		// wife
+		if (!_player.isTumbling()) {
+			FlxG.collide(_wife, _player);
+		}
+		FlxG.collide(_wife, _fg);
+		FlxG.overlap(playerBullets, _wife, bulletHitsWife);
+		
 		if (tutorial_map) {
 			var click:Bool = false;
 	        if (FlxG.mouse.justPressed) {
@@ -258,6 +271,7 @@ class HomeState extends FlxState {
 		        	_player.color = 0xffffff;
 		        	_fg.color = 0xffffff;
 		        	_workshop.color = 0xdddddd;
+					_blackmarket.color = 0xdddddd;
 		        	_mapbutton.active = true;
 					_workshop.active = true;
 					_maptext.visible = true;
@@ -299,13 +313,11 @@ class HomeState extends FlxState {
 		}
 	}
 
-	private function placeEntities(entityName:String, entityData:Xml):Void
-	{
+	private function placeEntities(entityName:String, entityData:Xml):Void {
 	    var x:Int = Std.parseInt(entityData.get("x"));
 	    var y:Int = Std.parseInt(entityData.get("y"));
 
-	    if (entityName == "player")
-	    {
+	    if (entityName == "player") {
 	        _player.x = x;
 	        _player.y = y;
 		} else if (entityName == "workshop") {
@@ -325,7 +337,17 @@ class HomeState extends FlxState {
 			_bmtxt.y = y;
 		}
 	}
-
+	
+	private function bulletHitsWife(bullet:Bullet, wife:Wife) {
+		if (bullet.getType() == "shotgun") {
+			var len:Int = Std.int(cast(bullet, ShotgunBullet).getPushBack());
+			wife.knockBack(len, bullet.facing);
+		}
+		playerBullets.remove(bullet);
+		bullet.destroy();
+		wife.hurt(0);
+	}
+	
 	private function switchWorkshopState():Void {
 		FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
 			FlxG.switchState(new WorkshopState());

@@ -14,6 +14,7 @@ import flixel.util.FlxColor;
 import items.Coin;
 
 enum EnemyType {
+	WIFE;
 	JPRIFLE;
 	JPMELEE;
 	JPSHIELD;
@@ -22,7 +23,9 @@ enum EnemyType {
 	MELEE;
 	RIFLE;
 	TRUCK;
-	BOSS;
+	SPIDER;
+	BOSS1;
+	BOSS2;
 }
 
 class Enemy extends FlxSprite {
@@ -56,11 +59,16 @@ class Enemy extends FlxSprite {
 	
 	public var hasJetpack:Bool = false;
 	public var hasShield:Bool = false;
+	public var isBoss:Bool = false;
 	
 	private var bulletSpeedLevel = [for (i in 0...4) 50 * i + 250];
 	
 	private var dazeTime:Float = 1.0;
 	private var dazeTimer:Float = -1;
+	
+	private var knockBackLen:Float = -1;
+	private var knockBackSpeed:Float = 1500;
+	private var knockBackDir:Int;
 	
 	// sound
 	public var sndHurt1:FlxSound;
@@ -88,6 +96,9 @@ class Enemy extends FlxSprite {
 		if (type == SHIELD || type == JPSHIELD) {
 			hasShield = true;
 		}
+		if (type == BOSS1 || type == BOSS2) {
+			isBoss = true;
+		}
 		
 		acceleration.y = hasJetpack ? 0 : GRAVITY;
 		playerPos = FlxPoint.get();
@@ -112,19 +123,30 @@ class Enemy extends FlxSprite {
 			super.update(elapsed);
 			color = originalColor;
 			// spawn coins when die
-			if (id == 34 && level == 1 && !dropItem) {
+			if (id == 34 && level == 1 && !dropItem && 
+							Main.SAVE.data.levelCompleted != null &&
+							Main.SAVE.data.levelCompleted < 2) {
 				// drop rifle in level 1
 				var rifle:Coin = new Coin(getMidpoint().x, getMidpoint().y, OTHER);
 				rifle.loadGraphic(AssetPaths.rifle__png);
 				rifle.onPickUp = onPickUpItem;
 				coinsGroup.add(rifle);
 				dropItem = true;
-			} else if (id != 34 && !dropCoin) {
+			} else if (!dropCoin) {
 				var lowB:Int = level * 4 + 2;
 				var upB:Int = level * 4 + 6;
-				if (type == BOSS) {
+				if (isBoss) {
+					if (type == BOSS2 && !dropItem && coinCount == 51) {
+						var shotgun:Coin = new Coin(getMidpoint().x, getMidpoint().y,
+														OTHER);
+						shotgun.loadGraphic(AssetPaths.shotgun__png);
+						// TODO: add onPickUpItem in PlayState
+						shotgun.onPickUp = onPickUpItem;
+						coinsGroup.add(shotgun);
+						dropItem = true;
+					}
 					var rx:Float = Math.random() * 600 - 75;
-					if (coinCount < 50 && rx < 75) {
+					if (coinCount < 51 && rx < 75) {
 						var ry:Float = Math.random() * 15 - 7;
 						var coin:Coin = 
 							new Coin(getMidpoint().x + rx, getMidpoint().y + 45 + ry,
@@ -153,6 +175,19 @@ class Enemy extends FlxSprite {
 			}
 			return;
 		} else {
+			if (knockBackLen >= 0) {
+				trace("isKnockBack");
+				knockBackLen -= elapsed * knockBackSpeed;
+				if (knockBackDir == FlxObject.LEFT) {
+					velocity.x = -knockBackSpeed;
+				} else {
+					velocity.x = knockBackSpeed;
+				}
+			} else {
+				velocity.x = 0;
+			}
+			
+			
 			if (dazeTimer >= 0) {
 				dazeTimer += elapsed;
 			}
@@ -166,13 +201,17 @@ class Enemy extends FlxSprite {
 			if (hurtTimer > hurtTime) {
 				hurtTimer = -1;
 			}
-			if (isHurting() || isDizzy()) {
+			if (isKnockBack()) {
+				animation.pause();
+				trace(velocity.x);
+			} else if (isHurting() || isDizzy()) {
 				animation.pause();
 				velocity.x = 0;
 			} else {
 				animation.resume();
 				brain.update(elapsed);
 			}
+			
 		}
 		if (hurtColorTimer >= 0) {
 			hurtColorTimer += elapsed;
@@ -245,6 +284,28 @@ class Enemy extends FlxSprite {
 			idleTimer = 0.0;
 			idleTime = Std.random(3) + 3;
 		}
+	}
+	
+	public function knockBack(len:Int, dir:Int):Void {
+		trace("Enemy call knockBack");
+		if (knockBackLen < 0) {
+			knockBackLen = 0.0;
+			knockBackDir = dir;
+		}
+		if (dir != knockBackDir) {
+			if (len > knockBackLen) {
+				knockBackDir = dir;
+				knockBackLen = len - knockBackLen;
+			} else {
+				knockBackLen -= len;
+			}
+		} else {
+			knockBackLen += len;
+		}
+	}
+	
+	public function isKnockBack():Bool {
+		return knockBackLen >= 0;
 	}
 	
 	public function playerInRange():Bool {

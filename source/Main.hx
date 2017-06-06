@@ -16,8 +16,8 @@ class Main extends Sprite {
 		var gameId:Int = 1704;
 		var gameKey:String = "d4e860f67de231c35cf54c2e3f27e466";
 		var gameName:String = "fullmecha";
-		var categoryId:Int = 2;
-		Main.LOGGER = new CapstoneLogger(gameId, gameName, gameKey, categoryId, 1, false);
+		var categoryId:Int = 3;
+		Main.LOGGER = new CapstoneLogger(gameId, gameName, gameKey, categoryId, 1, true);
 		
 		//Retrieve the user (saved in local storage for later)
 		var userId:String = Main.LOGGER.getSavedUserId();
