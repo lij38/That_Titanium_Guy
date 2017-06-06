@@ -36,7 +36,8 @@ class Boss1HUD extends FlxTypedGroup<FlxSprite>
 
          //count down timer
          if(boss.name == "Supreme Leader. Clint, Don") {
-            timer = new FlxText(375, 50, 0, "60", 40);
+            _name.x = 200;
+            timer = new FlxText(360, 50, 0, "120", 50);
             timer.setFormat(AssetPaths.FONT, timer.size);
             add(timer);
          }

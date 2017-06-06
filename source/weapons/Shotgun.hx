@@ -18,7 +18,7 @@ class Shotgun extends Weapon {
         }
         
         this.type = "shotgun";
-        this.range = 200;
+        this.range = 250;
         //fire rate
         if(Main.SAVE.data.sgRate == null) {
             this.fireRate = 0.75;
