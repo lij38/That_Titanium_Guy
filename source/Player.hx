@@ -191,7 +191,9 @@ class Player extends FlxSprite {
 			stunTimer += elapsed;
 			facing = FlxObject.NONE;
 			playRun(curConfig);
-			velocity.y = GRAVITY;
+			acceleration.y = GRAVITY;
+			velocity.x = 0;
+			super.update(elapsed);
 			return;
 		}
 		// freeze
@@ -394,58 +396,58 @@ class Player extends FlxSprite {
 		}
 		if (!isTumbling() && !isSwording()) {
 			//trace(Std.string(jrvTimer));
-			if(jWeapon.getName() == "revolver") {
-				if(FlxG.keys.anyPressed([J]) && !jWeapon.isReloading()) {
-					if(jrvTimer > 0.5 && !cast(jWeapon, Revolver).isCharging()) {
+			if (jWeapon.getName() == "revolver") {
+				if (FlxG.keys.anyPressed([J]) && !jWeapon.isReloading()) {
+					if (jrvTimer > 0.5 && !cast(jWeapon, Revolver).isCharging()) {
 						cast(jWeapon, Revolver).charge();
-					} else if(jrvTimer < 0) {
+					} else if (jrvTimer < 0) {
 						jrvTimer = 0;
-					} else if(jrvTimer > -1) {
+					} else if (jrvTimer > -1) {
 						jrvTimer += elapsed;
 					}
 				}
-				if(!isShielding()) {
+				if (!isShielding()) {
 					//fire revolver
-					if(FlxG.keys.anyJustReleased([J])) {
-						if(cast(jWeapon, Revolver).isCharging()) {
-							if(!cast(jWeapon, Revolver).charged) {
+					if (FlxG.keys.anyJustReleased([J])) {
+						if (cast(jWeapon, Revolver).isCharging()) {
+							if (!cast(jWeapon, Revolver).charged) {
 								cast(jWeapon, Revolver).discharge();
 							}
 							jrvTimer = -1;
 						}
-						if(jWeapon.canFire() && !jWeapon.isReloading()) {
+						if (jWeapon.canFire() && !jWeapon.isReloading()) {
 							fireWeapon(jWeapon);
 						}
 					}
 				}
 			}
-			if(kWeapon.getName() == "revolver") {
-				if(FlxG.keys.anyPressed([K]) && !kWeapon.isReloading()) {
-					if(krvTimer > 0.5 && !cast(kWeapon, Revolver).isCharging()) {
+			if (kWeapon.getName() == "revolver") {
+				if (FlxG.keys.anyPressed([K]) && !kWeapon.isReloading()) {
+					if (krvTimer > 0.5 && !cast(kWeapon, Revolver).isCharging()) {
 						cast(kWeapon, Revolver).charge();
-					} else if(krvTimer < 0) {
+					} else if (krvTimer < 0) {
 						krvTimer = 0;
-					} else if(krvTimer > -1) {
+					} else if (krvTimer > -1) {
 						krvTimer += elapsed;
 					}
 				}
-				if(!isShielding()) {
+				if (!isShielding()) {
 					//fire revolver
-					if(FlxG.keys.anyJustReleased([K])) {
-						if(cast(kWeapon, Revolver).isCharging()) {
-							if(!cast(kWeapon, Revolver).charged) {
+					if (FlxG.keys.anyJustReleased([K])) {
+						if (cast(kWeapon, Revolver).isCharging()) {
+							if (!cast(kWeapon, Revolver).charged) {
 								cast(kWeapon, Revolver).discharge();
 							}
 							krvTimer = -1;
 						}
-						if(kWeapon.canFire() && !kWeapon.isReloading()) {
+						if (kWeapon.canFire() && !kWeapon.isReloading()) {
 							fireWeapon(kWeapon);
 						}
 					}
 				}
 			}
-			if(!isShielding()){
-				if(curConfig == "ds" && FlxG.keys.anyPressed([J]) && FlxG.keys.anyPressed([K])
+			if (!isShielding()){
+				if (curConfig == "ds" && FlxG.keys.anyPressed([J]) && FlxG.keys.anyPressed([K])
 					&& jWeapon.canFire()
 					&& kWeapon.canFire()
 					&& cast(jWeapon, Sword).isWW()) {
@@ -453,7 +455,7 @@ class Player extends FlxSprite {
 					jWeapon.attack(getMidpoint().x, y, FlxObject.RIGHT);
 					kWeapon.attack(getMidpoint().x, y, FlxObject.LEFT);
 
-					if(jetpack) {
+					if (jetpack) {
 						animation.play(curConfig + "JPDC");
 					} else {
 						animation.play(curConfig + "DC");
@@ -462,7 +464,7 @@ class Player extends FlxSprite {
 					if (FlxG.keys.anyPressed([J])) {
 						//RIFLE fully automatic, can hold to fire
 						if (jWeapon.getName() == "rifle") {
-							if(jWeapon.canFire() && !jWeapon.isReloading()) {
+							if (jWeapon.canFire() && !jWeapon.isReloading()) {
 								fireWeapon(jWeapon);
 							} 
 						} else if (jWeapon.getName() == "shield") { //engage shield
@@ -472,7 +474,8 @@ class Player extends FlxSprite {
 						}
 						//Other weapons that cannot hold to fire
 						if (FlxG.keys.anyJustPressed([J])) {
-							if(jWeapon.getName() != "revolver" && jWeapon.canFire() && !jWeapon.isReloading()) {
+							if (jWeapon.getName() != "revolver" && jWeapon.canFire() &&
+													!jWeapon.isReloading()) {
 								fireWeapon(jWeapon);
 							}
 						}
@@ -491,7 +494,8 @@ class Player extends FlxSprite {
 						
 						//Other weapons that cannot hold to fire
 						if (FlxG.keys.anyJustPressed([K])) {
-							if(kWeapon.getName() != "revolver" && kWeapon.canFire() && !kWeapon.isReloading()) {
+							if (kWeapon.getName() != "revolver" && kWeapon.canFire() &&
+													!kWeapon.isReloading()) {
 								fireWeapon(kWeapon);
 							}
 						}

@@ -21,7 +21,7 @@ class FinalBoss extends Enemy {
     private var meleeNum:Int = 0;
     private var rangedDist:Int = 700;
 	private var SECOND:Int = 60;
-    private var countDown:Float = 10;
+    private var countDown:Float = 120;
 
     private var _player:Player;
 	private var caught:Bool = false;
