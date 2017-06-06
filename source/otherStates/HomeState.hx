@@ -108,9 +108,11 @@ class HomeState extends FlxState {
 		 add(playerBullets);
 		 
 		_wife = new Wife(500, 200);
-		add(_wife);
+		if(Main.SAVE.data.wifeLives == null || Main.SAVE.data.wifeLives == true) {
+			add(_wife);
+			Main.SAVE.data.wifeLives = true;
+		}	
 		add(_player);
-		 
 
 		 _mapbutton = new ImageButton(31, 26, switchMapState);
 		 _mapbutton.scrollFactor.set(0.0);
