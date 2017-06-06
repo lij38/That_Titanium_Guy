@@ -26,7 +26,6 @@ class FinishState extends FlxState
     private var dmgRating:FlxSprite;
     private var overall:FlxText;
     private var overallRating:FlxSprite;
-    private var ending:FlxText;
     private var _level:Int;
 
     //money
@@ -123,11 +122,6 @@ class FinishState extends FlxState
         _btnHome.loadGraphic(AssetPaths.gohome__png, false, 200, 40);
         if(Main.SAVE.data.wsTut != null && _level != 9) {
             add(_btnHome);
-        }
-        ending = new FlxText(100, 450, 600, "Thanks for playing! You've beat all of the levels we have so far but more levels are coming soon!", 20);
-        ending.setFormat(AssetPaths.FONT, ending.size);
-        if(Main.SAVE.data.end != null) {
-            add(ending);
         }
 		
         //Money
