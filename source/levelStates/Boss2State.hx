@@ -49,7 +49,10 @@ class Boss2State extends PlayState {
 	}
 
 	override public function update(elapsed:Float):Void {
-
+		if (enemiesGroup.countLiving() == 0) {
+			FlxG.collide(enemiesGroup, _plat);
+			_player.freeze = false;
+		}
 		super.update(elapsed);
 		//playerPos.copyFrom(_player.getMidpoint());
 	}

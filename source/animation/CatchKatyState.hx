@@ -50,6 +50,7 @@ class CatchKatyState extends FlxState
 	override public function create():Void
 	{
 		// animation stage parameters
+		Main.SAVE.data.wifeLives = false;
 		_stage1 = true;
 		_stage2 = false;
 		_stage3 = false;
@@ -62,8 +63,8 @@ class CatchKatyState extends FlxState
 		// initialize with all conversations
 		_text_array = new Array<String>();
 		_conv_index = 0;
-		_text_array.push("J. Katy: !   !   !  ( I need to run. )");
-		_text_array.push("J.Katy: >  <  ( Let me go! )");
+		_text_array.push("Katy Hypin: !   !   !  ( I need to run. )");
+		_text_array.push("Katy Hypin: >  <  ( Let me go! )");
 		_text_array.push("J. Hypin: ...Where is my wife?");
 
 		_player = new PlayerAnimation(200 - 250,300,0);

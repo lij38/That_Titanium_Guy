@@ -17,7 +17,7 @@ enum BulletType {
 }
 
 class EnemyBullet extends Bullet {
-	private var meleeColor:FlxColor = FlxColor.BLACK;
+	private var meleeColor:FlxColor = FlxColor.TRANSPARENT;
 	public var bulletType:BulletType;
 	public var parent:Enemy;
 
