@@ -209,9 +209,9 @@ class PlayState extends FlxState {
 		// Bullets collide walls
 		FlxG.collide(_plat, playerBullets, bulletsHitWalls);
 		FlxG.collide(_plat, enemiesBullets, enemiesBulletsHitWalls);
-		if (!_is_boss2) {
-			FlxG.collide(enemiesGroup, _plat);
-		}
+		//if (!_is_boss2) {
+		FlxG.collide(enemiesGroup, _plat);
+		//}
 		// Coins
 		FlxG.collide(coinsGroup, _plat);
 		FlxG.overlap(_player, coinsGroup, pickUpCoin);

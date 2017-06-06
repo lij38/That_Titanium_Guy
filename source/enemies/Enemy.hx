@@ -122,7 +122,7 @@ class Enemy extends FlxSprite {
 		}
 		if (!alive) {
 			velocity.set(0, 500);
-			acceleration.y = GRAVITY;
+			//acceleration.y = GRAVITY;
 			super.update(elapsed);
 			color = originalColor;
 			// spawn coins when die
