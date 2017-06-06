@@ -35,8 +35,8 @@ class Shotgun extends Weapon {
         this.sndFire = FlxG.sound.load(AssetPaths.shotgun_fire1__wav);
         //pushback
         if(Main.SAVE.data.pushBack == null) {
-            this.pushBack = 35;
-            Main.SAVE.data.pushBack = 35;
+            this.pushBack = 25;
+            Main.SAVE.data.pushBack = 25;
         } else {
             this.pushBack = Main.SAVE.data.pushBack;
         }

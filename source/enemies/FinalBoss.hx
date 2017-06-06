@@ -33,7 +33,9 @@ class FinalBoss extends Enemy {
 		super(X, Y, id, bulletArray, coinsGroup, gravity, BOSS3);
 		GRAVITY = gravity;
 
-		loadGraphic(AssetPaths.boss1__png, true, 1007, 702);
+        //SPEED
+        this.speed = 500;
+		loadGraphic(AssetPaths.finalBoss__png, true, 1007, 702);
 		scale.set(0.6, 0.6);
 		setSize(120, 215);
 		offset.set(445, 310);
@@ -44,15 +46,9 @@ class FinalBoss extends Enemy {
 		setFacingFlip(FlxObject.RIGHT, true, false);
 		
 		animation.add("stop", [0], 1, false);
-		animation.add("raise", [0, 0, 1, 1, 2, 2,
-								3, 3, 4, 4, 5, 5, 
-								5, 5, 5, 6, 6, 6], 6, false, false, false);
-		animation.add("lr", [6, 7, 8, 9, 10, 11, 12, 13, 14, 9, 10, 11, 12, 13, 14], 12, false);
-		animation.add("stuck_attack", [13, 14, 15, 16, 17, 18], 12, false);
-		animation.add("stuck", [18, 19, 19, 18, 19, 19,
-								18, 19, 19, 1, 1, 1], 6, false);
-		//animation.add("stuck_stop", [18, 19, 20], 3, false);
-		animation.add("attack", [0, 1, 2, 3, 4, 13, 14, 15, 16, 17], 15, false);
+		animation.add("lr", [1,2,3,4,5,6,7], 24, false);
+		animation.add("attack1", [8,9,10,11], 32, false);
+        animation.add("attack2", [12,13,13,12], 32, false);
 		animation.add("die", [20, 21, 22, 22, 22, 22, 22, 22, 22, 22, 22,
 							22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22], 3, false);
 		animation.play("stop");
@@ -71,6 +67,16 @@ class FinalBoss extends Enemy {
 		hurtTime = 0.10;
 	}
 
+    override public function update(elapsed:Float) {
+        if(countDown > 0) {
+            countDown -= elapsed;
+        } else {
+            countDown = 0;
+        }
+
+        super.update();
+    }
+
     public function getTime():Float {
         return countDown;
     }
@@ -88,9 +94,9 @@ class FinalBoss extends Enemy {
 		//trace("judgeState!!!!!!!!!!!!!");
 		if (playerPos.x <= getMidpoint().x && facing == FlxObject.LEFT
 			|| playerPos.x > getMidpoint().x && facing == FlxObject.RIGHT) {
-			brain.activeState = turn;
+			brain.activeState = attack;
 		} else {
-			brain.activeState = stay;
+			brain.activeState = turn;
 		}
 	}
 
@@ -101,13 +107,11 @@ class FinalBoss extends Enemy {
 		} else {
 			facing = FlxObject.RIGHT;
 		}
-		stuck_count = 0;
 		if (Math.abs(playerPos.x - getMidpoint().x) <= damage_dist) {
 			brain.activeState = attack;
 		} else {
 			brain.activeState = dash;
 		}
-		//animation.play("lr");
 	}
 
 
@@ -165,17 +169,6 @@ class FinalBoss extends Enemy {
 		}
 	}
 
-	// the state of stuck on the ground
-	public function stuck(elapsed:Float):Void {
-		//trace("stuck!!!!!!!!");
-		animation.play("stuck");
-		stuck_count += elapsed;
-		if (stuck_count >= 2.0) {
-			stuck_count = 0;
-			brain.activeState = turn;
-		}
-	}
-
 	// the state of attack in short dist: fast, low damaage
 	public function attack(elapsed:Float):Void {
 		// attack the enemy
@@ -201,13 +194,9 @@ class FinalBoss extends Enemy {
 		if (health - damage <= 0) {
 			animation.play("die");
 			alive = false;
-		} //else {
-			//animation.play("hurt");
-			//hurtTimer = 0;
-		//}
+		} 
 		health -= damage;
 		color = 0xff0000;
 		hurtColorTimer = 0.0;
-	}
-	
+	}	
 }

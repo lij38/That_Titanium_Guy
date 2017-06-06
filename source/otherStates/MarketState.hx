@@ -336,7 +336,7 @@ class MarketState extends FlxState {
                         + "Each upgrade grants you +10% rate of fire\n" + "Cost: $" + sgRateCost + "\nUpgrades left: " + sgRateNum;
             sgRateCC.text = "Cost: $" + sgRateCost + "\n# Left: " + sgRateNum;
             pushBackT.text = "Send your daughter's boyfriend flying.\n"
-                        + "Each upgrade grants you +20% enemy knockback\n" + "Cost: $" + pushBackCost + "\nUpgrades left: " + pushBackNum;
+                        + "Each upgrade grants you +25% enemy knockback\n" + "Cost: $" + pushBackCost + "\nUpgrades left: " + pushBackNum;
             pushBackCC.text = "Cost: $" + pushBackCost + "\n# Left: " + pushBackNum;
         }
         if(Main.SAVE.data.levelCompleted >= 4) {
@@ -943,7 +943,7 @@ class MarketState extends FlxState {
         }
         pushBackT = new FlxText(200, 150, 450);
         pushBackT.text = "Send your daughter's boyfriend flying.\n"
-            + "Each upgrade grants you +20% enemy knockback\n" + "Cost: $" + pushBackCost + "\nUpgrades left: " + pushBackNum; 
+            + "Each upgrade grants you +25% enemy knockback\n" + "Cost: $" + pushBackCost + "\nUpgrades left: " + pushBackNum; 
         pushBackT.setFormat(AssetPaths.FONT, 25);
         pushBackT.kill();
         pushBackCC = new FlxText(660, 530, 120);
@@ -1073,7 +1073,7 @@ class MarketState extends FlxState {
             chargeNum = Main.SAVE.data.chargeNum;
         }
         chargeT = new FlxText(200, 150, 450);
-        chargeT.text = "What's scarier than a .44 magnum? A charged up one.\n"
+        chargeT.text = "What's scarier than a .44 magnum? A charged up one.\nHold the attack button in game to charge a shot.\n"
             + "Each upgrade grants you +10% charged damage\n" + "Cost: $" + chargeCost + "\nUpgrades left: " + chargeNum; 
         chargeT.setFormat(AssetPaths.FONT, 25);
         chargeT.kill();
@@ -1391,7 +1391,7 @@ class MarketState extends FlxState {
         if(money > pushBackCost && pushBackNum > 0) {
             money -= pushBackCost;
             pushBackNum--;
-            Main.SAVE.data.pushBack *= 1.2;
+            Main.SAVE.data.pushBack *= 1.25;
             pushBackCost = cast(pushBackCost * 1.3, Int);
             Main.SAVE.data.pushBackCost = pushBackCost;
             Main.SAVE.data.pushBackNum = pushBackNum;
