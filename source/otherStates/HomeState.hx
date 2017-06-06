@@ -138,6 +138,7 @@ class HomeState extends FlxState {
 		 	_player.color = 0x777777;
 		 	_workshop.color = 0x777777;
 			_blackmarket.color = 0x777777;
+			_wife.color = 0x777777;
 		 	_arrow = new Arrow();
 			 _arrow.x = 120;
 			 _arrow.y = 50;
@@ -270,6 +271,7 @@ class HomeState extends FlxState {
 		        	_bg.color = 0xffffff;
 		        	_player.color = 0xffffff;
 		        	_fg.color = 0xffffff;
+					_wife.color = 0xffffff;
 		        	_workshop.color = 0xdddddd;
 					_blackmarket.color = 0xdddddd;
 		        	_mapbutton.active = true;
@@ -295,6 +297,7 @@ class HomeState extends FlxState {
 		} else {
 			_maptext.visible = true;
 		}
+		bulletsRangeUpdate();
 		
 		FlxG.collide(_player, _bg);
 		super.update(elapsed);
@@ -335,6 +338,15 @@ class HomeState extends FlxState {
 		} else if (entityName == "bmtxt") {
 			_bmtxt.x = x;
 			_bmtxt.y = y;
+		}
+	}
+	
+	private function bulletsRangeUpdate():Void {
+		for (pb in playerBullets) {
+			if (pb.outOfRange()){
+				playerBullets.remove(pb);
+				pb.destroy();
+			}
 		}
 	}
 	

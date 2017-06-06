@@ -72,6 +72,13 @@ class Player extends FlxSprite {
 	public var freeze:Bool;
 	private var stunTimer:Float = -1;
 	private var stunTime:Float = 0.5;
+	
+	// poison
+	private var poisonTime:Float = 11;
+	private var poisonTimer:Float = -1;
+	private var poisonCount:Int = 1;
+	private var poisonDmg:Float;
+	private var hurtColor:FlxColor = 0xff0000;
 
 	public function new(?X:Float = 0, ?Y:Float = 0,
 						playerBulletArray:FlxTypedGroup<Bullet>,
@@ -162,6 +169,19 @@ class Player extends FlxSprite {
 	}
 	
 	override public function update(elapsed:Float):Void {
+		// poison
+		if (poisonTimer >= 0.0) {
+			poisonTimer += elapsed;
+		}
+		if (poisonTimer > poisonTime) {
+			poisonTimer = -1;
+			poisonCount = 0;
+			hurtColor = 0xff0000;
+		}
+		if (poisonTimer > poisonCount) {
+			poisonCount++;
+			hurt(poisonDmg);
+		}
 		// stun
 		if (stunTimer > stunTime) {
 			stunTimer = -1;
@@ -579,6 +599,7 @@ class Player extends FlxSprite {
 			health = maxHealth;
 		}
 		sndPotion.play(true);
+		poisonTimer = poisonTime;
 	}
 
 	public function getSpike():Float {
@@ -620,6 +641,14 @@ class Player extends FlxSprite {
 	public function stun(t:Float = 0.5) {
 		stunTime = t;
 		stunTimer = 0.0;
+	}
+	
+	// pass in damage per second, last for 10 seconds
+	public function poison(damage:Float = 1.0) {
+		poisonTimer = 0.0;
+		poisonCount = 0;
+		poisonDmg = damage;
+		hurtColor = 0x00ff00;
 	}
 	
 	public function getWeaponName(which:Int):String {
@@ -1011,7 +1040,7 @@ class Player extends FlxSprite {
 	override public function hurt(damage:Float):Void {
 		super.hurt(damage);
 		this.dmgTaken += damage;
-		color = 0xff0000;
+		color = hurtColor;
 		FlxFlicker.flicker(this, 0.5, 0.10, true, true, hurtComplete);
 		var rand:Float = Math.random() * 3;
 		if (rand < 1) {

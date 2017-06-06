@@ -12,6 +12,7 @@ enum BulletType {
 	WEB;
 	NEEDLE;
 	HEART;
+	SKULL;
 }
 
 class EnemyBullet extends Bullet {
