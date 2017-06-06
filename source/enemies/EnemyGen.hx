@@ -33,7 +33,7 @@ class EnemyGen extends Enemy {
 	//private var originalColor:FlxColor = 0xffffff;
     private var enemies:FlxTypedGroup<Enemy>;
 
-    private var genTime:Float = 3.5;
+    private var genTime:Float = 3.8;
     private var genTimer:Float = -1;
     private var cap:Int = 0;
 
