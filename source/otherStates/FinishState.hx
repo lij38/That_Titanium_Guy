@@ -128,7 +128,7 @@ class FinishState extends FlxState
         var percent:Int = timeNum + killNum + dmgNum;
         reward = new FlxText(200, 350, 0);
         var money:Int = Main.SAVE.data.levelMoney;
-        money = cast(money * percent / 10.0, Int);
+        money = Std.int(money * percent / 10.0);
         Main.SAVE.data.money += money;
         reward.text = "Star Reward Coins: +" + Std.string(money);
         reward.setFormat(AssetPaths.FONT, 35);

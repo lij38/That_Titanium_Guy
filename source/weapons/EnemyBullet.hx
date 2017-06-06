@@ -76,7 +76,7 @@ class EnemyBullet extends Bullet {
 		} else if (bulletType == BOSSMELEE) {
 			makeGraphic(20, 250, meleeColor);
 		}
-		
+		trace("speed: " + speed);
 		if (bulletType == SHOTGUN || bulletType == SKULL) {
 			velocity.set(speed, 0);
 			velocity.rotate(FlxPoint.weak(0, 0), direction);
@@ -88,10 +88,11 @@ class EnemyBullet extends Bullet {
 		} else {
 			if (direction == FlxObject.LEFT) {
 				velocity.set(-speed, 0);
-			}
+			} 
 			if (direction == FlxObject.RIGHT) {
 				velocity.set(speed, 0);
 			}
 		}
+		trace("velocity.x: " + velocity.x);
 	}
 }

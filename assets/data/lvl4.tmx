@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="900" height="62" tilewidth="15" tileheight="15" nextobjectid="62">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="900" height="62" tilewidth="15" tileheight="15" nextobjectid="63">
  <tileset firstgid="1" name="metal" tilewidth="15" tileheight="15" tilecount="6" columns="3">
   <image source="../images/metal.jpg" width="48" height="30"/>
  </tileset>
@@ -143,52 +143,41 @@
   <object id="2" name="END" x="13334" y="125.333" width="186" height="181"/>
  </objectgroup>
  <objectgroup name="enemies">
-  <object id="3" name="MELEE" type="4" x="476.242" y="605.515" width="66.6667" height="151.515"/>
   <object id="5" name="ENEMYG" type="4" x="1546.67" y="152" width="136" height="129.333"/>
   <object id="7" name="ENEMYG" type="4" x="3410.42" y="579.636" width="136" height="129.333"/>
   <object id="8" name="ENEMYG" type="4" x="5718.06" y="331.091" width="136" height="129.333"/>
   <object id="9" name="ENEMYG" type="4" x="8072.06" y="542.091" width="136" height="129.333"/>
   <object id="10" name="ENEMYG" type="4" x="11278.1" y="628.879" width="151" height="160.333"/>
-  <object id="12" name="SPIDER" type="4" x="1024.85" y="600.545" width="66.6667" height="151.515"/>
-  <object id="13" name="NURSE" type="4" x="2875.76" y="627.273" width="66.6667" height="151.515"/>
-  <object id="14" name="JPMELEE" type="4" x="1236.36" y="427.273" width="66.6667" height="151.515"/>
-  <object id="15" name="JPMELEE" type="4" x="2178.79" y="642.424" width="66.6667" height="151.515"/>
+  <object id="12" name="SPIDER" type="4" x="955.152" y="615.697" width="66.6667" height="151.515"/>
+  <object id="14" name="JPMELEE" type="4" x="1254.55" y="390.909" width="66.6667" height="151.515"/>
+  <object id="15" name="JPMELEE" type="4" x="3115.15" y="372.727" width="66.6667" height="151.515"/>
   <object id="17" name="SPIDER" type="4" x="11000" y="633.333" width="66.6667" height="151.515"/>
-  <object id="19" name="JPMELEE" type="4" x="2187.88" y="303.03" width="66.6667" height="151.515"/>
-  <object id="20" name="JPMELEE" type="4" x="4309.09" y="615.152" width="66.6667" height="151.515"/>
-  <object id="21" name="NURSE" type="4" x="4712.12" y="630.303" width="66.6667" height="151.515"/>
-  <object id="23" name="MELEE" type="4" x="3281.82" y="630.303" width="66.6667" height="151.515"/>
-  <object id="24" name="JPMELEE" type="4" x="4936.36" y="381.818" width="66.6667" height="151.515"/>
+  <object id="19" name="SHIELD" type="4" x="4190.91" y="603.03" width="66.6667" height="151.515"/>
+  <object id="20" name="MELEE" type="4" x="5415.15" y="636.364" width="66.6667" height="151.515"/>
+  <object id="21" name="NURSE" type="4" x="4906.06" y="618.182" width="66.6667" height="151.515"/>
+  <object id="23" name="MELEE" type="4" x="2896.97" y="621.212" width="66.6667" height="151.515"/>
+  <object id="24" name="JPMELEE" type="4" x="5496.97" y="375.758" width="66.6667" height="151.515"/>
   <object id="25" name="SPIDER" type="4" x="6560.61" y="627.273" width="66.6667" height="151.515"/>
   <object id="26" name="NURSE" type="4" x="7375.76" y="630.303" width="66.6667" height="151.515"/>
-  <object id="27" name="JPSHIELD" type="4" x="7214.55" y="613.697" width="66.6667" height="151.515"/>
-  <object id="28" name="JPMELEE" type="4" x="8632.3" y="620.485" width="66.6667" height="151.515"/>
+  <object id="27" name="JPSHIELD" type="4" x="6772.12" y="568.242" width="66.6667" height="151.515"/>
+  <object id="28" name="JPMELEE" type="4" x="9241.39" y="402.303" width="66.6667" height="151.515"/>
   <object id="29" name="MELEE" type="4" x="6887.27" y="638.909" width="66.6667" height="151.515"/>
-  <object id="30" name="JPMELEE" type="4" x="7138.12" y="414.606" width="66.6667" height="151.515"/>
-  <object id="31" name="JPRIFLE" type="4" x="9430.48" y="618.727" width="66.6667" height="151.515"/>
+  <object id="30" name="NURSE" type="4" x="7150.24" y="641.879" width="66.6667" height="151.515"/>
+  <object id="31" name="NURSE" type="4" x="9430.48" y="618.727" width="66.6667" height="151.515"/>
   <object id="32" name="TRUCK" type="4" x="9875.82" y="612.97" width="66.6667" height="151.515"/>
-  <object id="35" name="SPIDER" type="4" x="12189.2" y="146.121" width="66.6667" height="151.515"/>
-  <object id="36" name="NURSE" type="4" x="12610.4" y="149.152" width="66.6667" height="151.515"/>
-  <object id="39" name="RIFLE" type="4" x="13038.8" y="151.455" width="66.6667" height="151.515"/>
-  <object id="40" name="MELEE" type="4" x="12296.4" y="142.364" width="66.6667" height="151.515"/>
-  <object id="41" name="MELEE" type="4" x="12411.6" y="142.364" width="66.6667" height="151.515"/>
-  <object id="42" name="MELEE" type="4" x="11960.1" y="151.455" width="66.6667" height="151.515"/>
+  <object id="35" name="SPIDER" type="4" x="11992.2" y="143.091" width="66.6667" height="151.515"/>
+  <object id="36" name="NURSE" type="4" x="12158.8" y="143.091" width="66.6667" height="151.515"/>
+  <object id="39" name="SHIELD" type="4" x="12508.5" y="148.424" width="66.6667" height="151.515"/>
   <object id="43" name="SHOTGUN" type="4" x="12757" y="151.455" width="66.6667" height="151.515"/>
-  <object id="44" name="SHOTGUN" type="4" x="10711.1" y="514.424" width="66.6667" height="151.515"/>
-  <object id="45" name="MELEE" type="4" x="10438.4" y="581.091" width="66.6667" height="151.515"/>
-  <object id="46" name="MELEE" type="4" x="10811.1" y="614.424" width="66.6667" height="151.515"/>
-  <object id="47" name="MELEE" type="4" x="9026.24" y="632.606" width="66.6667" height="151.515"/>
+  <object id="45" name="SHOTGUN" type="4" x="10747.5" y="629.576" width="66.6667" height="151.515"/>
+  <object id="47" name="SPIDER" type="4" x="9026.24" y="632.606" width="66.6667" height="151.515"/>
   <object id="48" name="JPMELEE" type="4" x="7665.64" y="608.364" width="66.6667" height="151.515"/>
   <object id="49" name="MELEE" type="4" x="5269.09" y="641.939" width="66.6667" height="151.515"/>
-  <object id="50" name="MELEE" type="4" x="5038.79" y="638.909" width="66.6667" height="151.515"/>
-  <object id="51" name="MELEE" type="4" x="4908.48" y="638.909" width="66.6667" height="151.515"/>
-  <object id="52" name="NURSE" type="4" x="4512.12" y="615.152" width="66.6667" height="151.515"/>
-  <object id="53" name="SPIDER" type="4" x="1946.06" y="630.848" width="66.6667" height="151.515"/>
-  <object id="54" name="MELEE" type="4" x="2557.58" y="618.182" width="66.6667" height="151.515"/>
-  <object id="56" name="NURSE" type="4" x="3042.42" y="639.394" width="66.6667" height="151.515"/>
-  <object id="57" name="SPIDER" type="4" x="1164.24" y="621.758" width="66.6667" height="151.515"/>
-  <object id="59" name="JPMELEE" type="4" x="1390.91" y="587.879" width="66.6667" height="151.515"/>
-  <object id="60" name="MELEE" type="4" x="282.303" y="617.636" width="66.6667" height="151.515"/>
-  <object id="61" name="MELEE" type="4" x="652" y="620.667" width="66.6667" height="151.515"/>
+  <object id="52" name="NURSE" type="4" x="4675.76" y="624.242" width="66.6667" height="151.515"/>
+  <object id="53" name="SPIDER" type="4" x="2452.12" y="618.727" width="66.6667" height="151.515"/>
+  <object id="54" name="MELEE" type="4" x="3021.21" y="618.182" width="66.6667" height="151.515"/>
+  <object id="59" name="JPMELEE" type="4" x="1018.18" y="275.758" width="66.6667" height="151.515"/>
+  <object id="60" name="MELEE" type="4" x="533.818" y="605.515" width="66.6667" height="151.515"/>
+  <object id="62" name="NURSE" type="4" x="2167.27" y="633.879" width="66.6667" height="151.515"/>
  </objectgroup>
 </map>

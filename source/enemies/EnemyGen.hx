@@ -33,7 +33,7 @@ class EnemyGen extends Enemy {
 	//private var originalColor:FlxColor = 0xffffff;
     private var enemies:FlxTypedGroup<Enemy>;
 
-    private var genTime:Float = 2.5;
+    private var genTime:Float = 3.8;
     private var genTimer:Float = -1;
     private var cap:Int = 0;
 
@@ -50,7 +50,7 @@ class EnemyGen extends Enemy {
         health = 350;
         brain = new EnemyFSM(nothing);
         acceleration.y = 0;
-        cap = 18 * level;
+        cap = 15 * level;
     }
 
     override public function update(elapsed:Float):Void {
@@ -112,8 +112,8 @@ class EnemyGen extends Enemy {
             //case 4: return "SHIELD";
             //case 5: return "JPSHIELD";
             case 6: return "SPIDER";
-            case 5: return "NURSE";
-            case 6: return "SHOTGUN";
+            case 4: return "NURSE";
+            case 5: return "SHOTGUN";
         }
         return null;
     // 	JPRIFLE;
