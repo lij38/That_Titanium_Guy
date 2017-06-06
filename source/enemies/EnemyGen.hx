@@ -111,9 +111,9 @@ class EnemyGen extends Enemy {
             case 3: return "JPMELEE";
             //case 4: return "SHIELD";
             //case 5: return "JPSHIELD";
-            //case 6: return "SPIDER";
-            case 5: return "NURSE";
-            case 6: return "SHOTGUN";
+            case 6: return "SPIDER";
+            case 4: return "NURSE";
+            case 5: return "SHOTGUN";
         }
         return null;
     // 	JPRIFLE;
