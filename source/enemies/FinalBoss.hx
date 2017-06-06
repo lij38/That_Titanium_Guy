@@ -75,6 +75,7 @@ class FinalBoss extends Enemy {
 		brain = new EnemyFSM(turn);
 		range = meleeDist;
 		hurtTime = 0.10;
+		level = 2;
 	}
 
     override public function update(elapsed:Float) {

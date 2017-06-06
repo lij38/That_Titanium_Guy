@@ -82,6 +82,7 @@ class Boss2 extends Enemy {
 		_in_catch = false;
 		_in_attack = false;
 		hurtTime = 0.10;
+		level = 1;
 	}
 
 	override public function update(elapsed:Float):Void {
