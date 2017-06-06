@@ -206,15 +206,12 @@
   <object id="31" name="JPMELEE" type="3" x="1304.48" y="396.97" width="67" height="155"/>
   <object id="32" name="JPMELEE" type="3" x="1931.76" y="390.909" width="67" height="155"/>
   <object id="33" name="JPRIFLE" type="3" x="2491.3" y="599" width="67" height="155"/>
-  <object id="34" name="SHOTGUN" type="3" x="6118.58" y="341.424" width="67" height="155"/>
   <object id="35" name="MELEE" type="3" x="6319.64" y="342.424" width="67" height="155"/>
   <object id="38" name="JPSHIELD" type="3" x="2197.36" y="586.879" width="67" height="155"/>
-  <object id="39" name="JPSHIELD" type="3" x="5230.7" y="595.97" width="67" height="155"/>
   <object id="40" name="SHOTGUN" type="3" x="10570.1" y="574.758" width="67" height="155"/>
   <object id="43" name="JPSHIELD" type="3" x="6733.73" y="362.636" width="67" height="155"/>
   <object id="45" name="JPMELEE" type="3" x="9419.64" y="187.879" width="84.8485" height="179.242"/>
   <object id="48" name="JPMELEE" type="3" x="12088.3" y="226.273" width="67" height="155"/>
-  <object id="49" name="JPSHIELD" type="3" x="7642.82" y="353.545" width="67" height="155"/>
   <object id="50" name="JPRIFLE" type="3" x="12949.9" y="469.697" width="76.0909" height="155"/>
   <object id="53" name="JPMELEE" type="3" x="12740.8" y="139.394" width="67" height="155"/>
   <object id="55" name="MELEE" type="3" x="10098.4" y="555.394" width="90" height="180"/>
@@ -234,7 +231,6 @@
   <object id="69" name="SHOTGUN" type="3" x="8660.03" y="149.545" width="67" height="155"/>
   <object id="70" name="JPMELEE" type="3" x="8426.36" y="155.515" width="67" height="155"/>
   <object id="71" name="JPSHIELD" type="3" x="8720.82" y="519.545" width="67" height="155"/>
-  <object id="72" name="SHIELD" type="3" x="10862.3" y="566.667" width="90" height="180"/>
   <object id="73" name="MELEE" type="3" x="11852.4" y="527.394" width="90" height="180"/>
   <object id="74" name="MELEE" type="3" x="10210.4" y="573.394" width="90" height="180"/>
   <object id="75" name="SHOTGUN" type="3" x="13159.9" y="131.697" width="76.0909" height="155"/>
