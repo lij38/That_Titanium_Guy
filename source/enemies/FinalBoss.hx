@@ -75,6 +75,7 @@ class FinalBoss extends Enemy {
 		brain = new EnemyFSM(turn);
 		range = meleeDist;
 		hurtTime = 0.10;
+		level = 2;
 	}
 
     override public function update(elapsed:Float) {
@@ -185,7 +186,7 @@ class FinalBoss extends Enemy {
 		animation.play("stop");
 
 		shootTimer += elapsed;
-		if (shootTimer > 0.15) {
+		if (shootTimer > 0.3) {
 			if (facing == FlxObject.LEFT) {
                 var curBullet:EnemyBullet = bulletArray.recycle(EnemyBullet);
                 curBullet.setBullet(x, y, 250, cast(angle, Int), 15, 2000, SKULL, this);
