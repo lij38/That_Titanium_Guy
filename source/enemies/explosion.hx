@@ -13,4 +13,10 @@ class Explosion extends FlxSprite {
     public function update(elapsed:Float) {
         super.update(elapsed);
     }
+
+    public function explode(X:Float, Y:Float) {
+        this.x = X;
+        this.y = Y;
+        animation.play("exp");
+    }
 }

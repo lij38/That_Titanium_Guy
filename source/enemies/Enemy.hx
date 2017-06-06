@@ -24,6 +24,7 @@ enum EnemyType {
 	RIFLE;
 	TRUCK;
 	SPIDER;
+	NURSE;
 	BOSS1;
 	BOSS2;
 	BOSS3;
@@ -47,7 +48,7 @@ class Enemy extends FlxSprite {
 	public var seesPlayer:Bool = false;
 	public var hurtTime:Float = 0.25;
 	private var range:Float;
-	private var detectRange:Float = 700;
+	public var detectRange:Float = 700;
 	private var hurtColorTimer:Float = -1;
 	private var originalColor:FlxColor = 0xffffff;
 	private var level:Int;
@@ -119,7 +120,7 @@ class Enemy extends FlxSprite {
 			seesPlayer = false;
 		}
 		if (!alive) {
-			velocity.set(0, 0);
+			velocity.set(0, 500);
 			acceleration.y = GRAVITY;
 			super.update(elapsed);
 			color = originalColor;

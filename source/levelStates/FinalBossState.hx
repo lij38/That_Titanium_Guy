@@ -15,24 +15,25 @@ import flixel.addons.editors.tiled.TiledTileLayer;
 import flixel.addons.editors.tiled.TiledObjectLayer;
 import flixel.tile.FlxBaseTilemap;
 
-class Boss2State extends PlayState {
+class FinalBossState extends PlayState {
 	//private var _enemy:Boss1;
 	//private var _boss_hud:Boss1HUD;
     private var timer:FlxText;
+    private var explosion:Explosion;
 
 	override public function create():Void {
 		LEVELID = 9;
 		_is_boss = true;
         _is_boss3 = true;
 		
-		_map = new TiledMap(AssetPaths.boss2__tmx);
+		_map = new TiledMap(AssetPaths.finalBoss__tmx);
 		_plat = new FlxTilemap();
 		_plat.loadMapFromArray(cast(_map.getLayer("foreground"), TiledTileLayer).tileArray, _map.width, _map.height, 
-			AssetPaths.boss2tile__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 4626, 1, 1);
+			AssetPaths.finalTile__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 4372, 1, 1);
 
 		_background = new FlxTilemap();
 		_background.loadMapFromArray(cast(_map.getLayer("background"), TiledTileLayer).tileArray, _map.width, _map.height, 
-			AssetPaths.boss2bg__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 4628);
+			AssetPaths.finalBossBg__png, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1, 1, 4373);
 
 		_plat.follow();
 		_background.follow();
@@ -42,12 +43,19 @@ class Boss2State extends PlayState {
 		// FlxG.debugger.drawDebug = true;
 
 		super.create();
+        explosion = new Explosion();
 		add(_hud);
 		Main.LOGGER.logLevelStart(LEVELID);
 		addTopLayer();
+        add(explosion);
+        explosion.kill();
 	}
 
 	override public function update(elapsed:Float):Void {
+        if(enemiesGroup.countLiving() == -1) {
+            explosion.revive();
+            explosion.explode(boss.x, boss.y);
+        }
         _boss_hud.updateTimer();
 		super.update(elapsed);
 		//playerPos.copyFrom(_player.getMidpoint());

@@ -11,6 +11,8 @@ enum BulletType {
 	SHOTGUN;
 	WEB;
 	SKULL;
+	NEEDLE;
+	HEART;
 }
 
 class EnemyBullet extends Bullet {
@@ -61,6 +63,13 @@ class EnemyBullet extends Bullet {
 			animation.play("first");
 		} else if (bulletType == SKULL) {
 			loadGraphic(AssetPaths.poisonSkull__png);
+		} else if (bulletType == NEEDLE) {
+			this.type = "melee";
+			makeGraphic(11, 11, meleeColor);
+		} else if (bulletType == HEART) {
+			loadGraphic(AssetPaths.nurse_heart__png, true, 18, 32);
+			animation.add("first", [0, 1, 2, 1, 0, 3, 4, 3], 6);
+			animation.play("first");
 		}
 		
 		if (bulletType == SHOTGUN) {

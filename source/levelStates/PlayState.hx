@@ -302,6 +302,7 @@ class PlayState extends FlxState {
 		var en:Enemy;
 		var boss:Boss1;
 		var boss2:Boss2;
+		var boss3:FinalBoss;
 		_hand = new Boss2Hand();
 		
 		if (entityName == "boss1") {
@@ -315,6 +316,8 @@ class PlayState extends FlxState {
 			enemiesGroup.add(boss2);
 			_boss_hud = new Boss1HUD(boss2);
 			
+		} else if (entityName == "finalboss"){
+			boss3 = new FinalBoss(x, y, enId, enemiesBullets, coinsGroup, 0, _map.width * _map.tileWidth, _hud);
 		} else {
 			en = EnemyFactory.getEnemy(entityName, x, y, enId,
 										enemiesBullets, coinsGroup,
@@ -338,9 +341,10 @@ class PlayState extends FlxState {
 					(player.isShielding() && player.faced == bullet.facing)) {
 				player.hurt(damage);
 				_hud.updateDamage(damage);
+				// stun player
 				if (bullet.bulletType == WEB) {
-					player.stun();
-					_hud.startDaze();
+					player.stun(1.0);
+					_hud.startDaze(1.0);
 				}
 			} else {
 				// player is shielding the right direction

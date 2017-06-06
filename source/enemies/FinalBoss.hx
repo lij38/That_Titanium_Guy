@@ -46,10 +46,9 @@ class FinalBoss extends Enemy {
 
         this.pHud = pHud;
 
-		loadGraphic(AssetPaths.finalBoss__png, true, 1007, 702);
-		scale.set(0.6, 0.6);
-		setSize(120, 215);
-		offset.set(445, 310);
+		loadGraphic(AssetPaths.finalBoss__png, true, 399, 387);
+		setSize(140, 297);
+		offset.set(130, 78);
 		this.name = "Supreme Leader. Clint, Don";
 		//cast(this, FlxObject).debugBoundingBoxColor = FlxColor.RED;
 		
