@@ -13,6 +13,7 @@ import flixel.addons.editors.tiled.TiledObjectLayer;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import levelStates.*;
+import otherStates.*;
 
 class CatchKatyState extends FlxState
 {

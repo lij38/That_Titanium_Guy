@@ -209,6 +209,13 @@ class FinishState extends FlxState
             FlxG.sound.music.destroy();
             if(_level == 3 && Main.SAVE.data.bmTut == null) {
                 FlxG.switchState(new MarketState());
+            } else if(_level == 7) {
+                if(Main.SAVE.data.katyCaught == null) {
+                    Main.SAVE.data.katyCaught = true;
+                    FlxG.switchState(new CatchKatyState());
+                } else {
+                    FlxG.switchState(new Level5State());
+                }
             } else {
                 FlxG.switchState(new HomeState());
             }

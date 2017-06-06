@@ -7,6 +7,7 @@ import flixel.FlxSprite;
 import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import animation.*;
 import items.*;
 import levelStates.*;
 

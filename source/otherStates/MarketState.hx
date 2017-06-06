@@ -9,6 +9,7 @@ import flixel.util.FlxColor;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import items.*;
 import levelStates.*;
+import animation.*;
 
 class MarketState extends FlxState {
     private var _level:Int;
