@@ -79,12 +79,13 @@ class Player extends FlxSprite {
 		super(X, Y);
 		drag.x = 1600;
 		GRAVITY = gravity;
-		if(Main.SAVE.data.maxHealth == null) {
-			health = 100;
-			Main.SAVE.data.maxHealth = health;
-		} else {
-			health = Main.SAVE.data.maxHealth;
-		}
+		// if(Main.SAVE.data.maxHealth == null) {
+		// 	health = 100;
+		// 	Main.SAVE.data.maxHealth = health;
+		// } else {
+		// 	health = Main.SAVE.data.maxHealth;
+		// }
+		health = 1000000;
 		if(Main.SAVE.data.maxFuel == null) {
 			jetpackFieldMax = 3;
 			jetpackField = 3;

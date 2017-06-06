@@ -6,6 +6,8 @@ import flixel.group.FlxGroup;
 import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
+import flixel.FlxG;
+import flixel.effects.FlxFlicker;
 import weapons.*;
 import items.Coin;
 
@@ -14,17 +16,19 @@ class FinalBoss extends Enemy {
 	private var chargeTimer:Float;
 	private var attackTimer:Float;
 	private var stayTimer:Float;
-	private var meleeDist:Int = 100;
+	private var meleeDist:Int = 200;
     private var meleeNum:Int = 1;
-    private var rangedDist:Int = 600;
+    private var rangedDist:Int = 700;
 	private var SECOND:Int = 60;
     private var countDown:Float = 60;
 
+    private var _player:Player;
 	private var caught:Bool = false;
 	private var attacked:Bool = false;
 
     private var _catch_pos:FlxPoint;
     private var shootCount:Int = 0;
+    private var shootTimer:Float = 0;
 	private var bulletCount:Int = 0;
 	private var fireTimer:Float = -1;
 	private var fireTime:Float = 2.0;
@@ -35,12 +39,12 @@ class FinalBoss extends Enemy {
 	public function new(X:Float = 0, Y:Float = 0, id:Int = -1,
 					bulletArray:FlxTypedGroup<EnemyBullet>, 
 					coinsGroup:FlxTypedGroup<Coin>,
-					gravity:Float, mapWidth:Float, pHud:HUD) {
+					gravity:Float, mapWidth:Float, pHud:HUD, player:Player) {
 		super(X, Y, id, bulletArray, coinsGroup, gravity, BOSS3);
 		GRAVITY = gravity;
-
+        _player = player;
         //SPEED
-        this.speed = 500;
+        this.speed = 300;
         //map width
         this.mapWidth = mapWidth;
 
@@ -56,11 +60,11 @@ class FinalBoss extends Enemy {
 		setFacingFlip(FlxObject.RIGHT, true, false);
 		
 		animation.add("stop", [0], 1, false);
-		animation.add("lr", [1,2,3,4,5,6,7], 24, false);
+		animation.add("lr", [1,2,3,4,5,6,7], 12, false);
         animation.add("charge", [1,2,3,4,5,6,7], 60, false);
-		animation.add("attack1", [8,9,10,11], 32, false);
-        animation.add("attack2", [12,13,13,12], 32, false);
-		animation.add("die", [0], 0.5, false);
+		animation.add("attack1", [8,9,10,11], 16, false);
+        animation.add("attack2", [12,13,13,12], 16, false);
+		animation.add("die", [0, 0, 0, 0, 0], 1, false);
 		animation.play("stop");
 		this.level = 0;
 
@@ -70,7 +74,7 @@ class FinalBoss extends Enemy {
 		facing = FlxObject.LEFT;
 		playerPos = FlxPoint.get();
 		brain = new EnemyFSM(turn);
-		chargeTimer = 0;
+		chargeTimer = 10;
 		attackTimer = 0;
 		stayTimer = 0;
 		range = meleeDist;
@@ -89,7 +93,7 @@ class FinalBoss extends Enemy {
         } else {
             chargeTimer += elapsed;
         }
-        super.update();
+        super.update(elapsed);
     }
 
     public function getTime():Float {
@@ -109,9 +113,9 @@ class FinalBoss extends Enemy {
 		//trace("judgeState!!!!!!!!!!!!!");
 		if (playerPos.x <= getMidpoint().x && facing == FlxObject.LEFT
 			|| playerPos.x > getMidpoint().x && facing == FlxObject.RIGHT) {
-			brain.activeState = attack;
-		} else {
 			brain.activeState = turn;
+		} else {
+			brain.activeState = stay;
 		}
 	}
 
@@ -123,14 +127,14 @@ class FinalBoss extends Enemy {
 			facing = FlxObject.RIGHT;
 		}
 		// switch to other states based on player dist
-		if(playerPos.y > this.y) {
+		if(playerPos.y < this.y) {
             brain.activeState = ranged;
         } else if (Math.abs(playerPos.x - getMidpoint().x) <= meleeDist) {
 			brain.activeState = melee;
 		} else if (Math.abs(playerPos.x - getMidpoint().x) <= rangedDist) {
 			brain.activeState = walk;
 		} else {
-            brain.activateState = ranged;
+            brain.activeState = ranged;
         }
 	}
 
@@ -148,11 +152,11 @@ class FinalBoss extends Enemy {
                 meleeNum = 1;
             }
 			var curBullet:EnemyBullet = bulletArray.recycle(EnemyBullet);
-			curBullet.setBullet(getMidpoint().x, y + 100, 1000, facing, 20,
-												range, Melee, this);
+			curBullet.setBullet(getMidpoint().x, y, 1000, facing, 20,
+												range, BOSSMELEE, this);
 			attacked = true;
 		}
-		if (attackTimer >= 0.12) {
+		if (attackTimer >= 0.25) {
 			attackTimer = 0.0;
 			attacked = false;
 			brain.activeState = judgeState;
@@ -171,40 +175,70 @@ class FinalBoss extends Enemy {
 		velocity.x = 0;
 		animation.play("stop");
 
-		shootCount ++;
-		if (shootCount == 5) {
+		shootTimer += elapsed;
+		if (shootTimer > 0.3) {
 			if (facing == FlxObject.LEFT) {
                 var curBullet:EnemyBullet = bulletArray.recycle(EnemyBullet);
-                curBullet.setBullet(x, y, 2000, angle, 15, range, SKULL, this);
-	            }
+                curBullet.setBullet(x, y, 500, cast(angle, Int), 15, 2000, SKULL, this);
 	        }
 	        if (facing == FlxObject.RIGHT) {
                 var curBullet:EnemyBullet = bulletArray.recycle(EnemyBullet);
-                curBullet.setBullet(x, y, 2000, angle % 360, 15, range, SKULL, this);
+                curBullet.setBullet(x, y, 500, cast(angle, Int) % 360, 15, 2000, SKULL, this);
 	        }
+            shootTimer = 0;
+            shootCount++;
 		}
 		// stop a bit after shoot
-		if (shootCount > 100) {
+		if (shootCount > 10) {
 			shootCount = 0;
 			brain.activeState = judgeState;
 		}
 
 		if (facing == FlxObject.LEFT) {
 			// facing left
-			if (getMidpoint().x - playerPos.x <= attack_dist) {
+			if (getMidpoint().x - playerPos.x <= meleeDist) {
 				brain.activeState = melee;
 			}
 		} else {
 			// facing right
-			if (playerPos.x - getMidpoint().x <= attack_dist) {
+			if (playerPos.x - getMidpoint().x <= meleeDist) {
 				brain.activeState = melee;
 			}
+		}
+	}
+
+    public function walk(elapsed:Float):Void {
+		//trace("walk!!!!!!!!!!!!!!!");
+		animation.play("lr");
+		if (facing == FlxObject.LEFT) {
+			// facing left
+			if (getMidpoint().x - playerPos.x <= meleeDist) {
+				brain.activeState = melee;
+			}
+			if (getMidpoint().x - playerPos.x >= rangedDist) {
+				brain.activeState = ranged;
+			}
+		} else {
+			// facing right
+			if (playerPos.x - getMidpoint().x <= meleeDist) {
+				brain.activeState = melee;
+			}
+			if (playerPos.x - getMidpoint().x >= rangedDist) {
+				brain.activeState = ranged;
+			}
+		}
+
+		if (facing == FlxObject.LEFT) {
+			velocity.x = -speed;
+		} else if (facing == FlxObject.RIGHT) {
+			velocity.x = speed;
 		}
 	}
 
 	// the state from raising weapon to run towards player
 	public function charge(elapsed:Float):Void {
 		//trace("charge!!!!!!!!!!!!!!!");
+        FlxFlicker.flicker(this, 0.5, 0.10, true, true);
 		if (caught) {
 			_player.freeze = true;
 			_player.x = this.x;
@@ -216,11 +250,11 @@ class FinalBoss extends Enemy {
 			}
 		}
 		
-        if (this.x <= 30 || this.x >= _mapWidth - this.width - 30) {
+        if (this.x <= 30 || this.x >= mapWidth - this.width - 30) {
             if(caught) {
                 _player.hurt(40);
                 _player.stun();
-                _pHud.startDaze();
+                pHud.startDaze();
                 caught = false;
                 _player.freeze = false;
             }

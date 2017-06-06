@@ -54,7 +54,7 @@ class FinalBossState extends PlayState {
 	override public function update(elapsed:Float):Void {
         if(enemiesGroup.countLiving() == -1) {
             explosion.revive();
-            explosion.explode(boss.x, boss.y);
+            explosion.explode(boss3.x, boss3.y);
         }
         _boss_hud.updateTimer();
 		super.update(elapsed);
@@ -73,10 +73,10 @@ class FinalBossState extends PlayState {
 
 	override public function playerCollidesEnemies(player:Player, enemy:Enemy):Void {
 		if(!player.isTumbling()) {
-			if (player.facing == FlxObject.LEFT) {
-				player.x += 2;
+			if (player.getMidpoint().x <= enemy.getMidpoint().x) {
+				player.x -= 2;
 			} else {
-				player.x -= 2;	
+				player.x += 2;
 			}
 		}
 	}

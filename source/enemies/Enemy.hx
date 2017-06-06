@@ -98,7 +98,7 @@ class Enemy extends FlxSprite {
 		if (type == SHIELD || type == JPSHIELD) {
 			hasShield = true;
 		}
-		if (type == BOSS1 || type == BOSS2) {
+		if (type == BOSS1 || type == BOSS2 || type == BOSS3) {
 			isBoss = true;
 		}
 		

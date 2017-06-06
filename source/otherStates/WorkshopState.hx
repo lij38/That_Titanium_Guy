@@ -120,8 +120,6 @@ class WorkshopState extends FlxState {
         } else {
             rvshow = false;
         }
-        sgshow = true;
-        rvshow = true;
 
         //load the select panel
         loadSP();
