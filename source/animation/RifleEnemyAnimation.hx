@@ -20,6 +20,7 @@ class RifleEnemyAnimation extends FlxSprite {
 		//scale.set(0.35, 0.35);
 		setSize(35, 122);
 		offset.set(77, 0);
+		scale.set(1.2, 1.2);
 		
 		setFacingFlip(FlxObject.LEFT, false, false);
 		setFacingFlip(FlxObject.RIGHT, true, false);
