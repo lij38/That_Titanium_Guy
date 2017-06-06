@@ -120,7 +120,7 @@ class FinishState extends FlxState
         add(_btnPlay);
         _btnHome = new ImageButton(300, 550, "Go Home", clickHome);
         _btnHome.loadGraphic(AssetPaths.gohome__png, false, 200, 40);
-        if(Main.SAVE.data.wsTut != null) {
+        if(Main.SAVE.data.wsTut != null && _level != 9) {
             add(_btnHome);
         }
         ending = new FlxText(100, 450, 600, "Thanks for playing! You've beat all of the levels we have so far but more levels are coming soon!", 20);

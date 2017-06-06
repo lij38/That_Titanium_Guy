@@ -176,12 +176,14 @@ class MenuState extends FlxState {
 	private function setting1():Void {
 		Main.SAVE.data.jump = [FlxKey.SPACE];
 		Main.SAVE.data.roll = [FlxKey.S];
+		Main.LOGGER.logActionWithNoLevel(1);
 		killControl();
 	}
 
 	private function setting2():Void {
 		Main.SAVE.data.jump = [FlxKey.W];
 		Main.SAVE.data.roll = [FlxKey.SPACE];
+		Main.LOGGER.logActionWithNoLevel(2);
 		killControl();
 	}
 

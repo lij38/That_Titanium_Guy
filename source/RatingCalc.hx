@@ -7,17 +7,17 @@ class RatingCalc {
         private static var dmg2:Float = 22;
         private static var time3:Float = 43;
         private static var dmg3:Float = 0;
-        private static var time4:Float = 150;
-        private static var dmg4:Float = 40;
-        private static var time5:Float = 195;
-        private static var dmg5:Float = 85;
-        private static var time6:Float = 110;
+        private static var time4:Float = 60;
+        private static var dmg4:Float = 30;
+        private static var time5:Float = 80;
+        private static var dmg5:Float = 35;
+        private static var time6:Float = 100;
         private static var dmg6:Float = 0;
-        private static var time7:Float = 110;
-        private static var dmg7:Float = 0;
-        private static var time8:Float = 110;
-        private static var dmg8:Float = 0;
-        private static var time9:Float = 110;
+        private static var time7:Float = 120;
+        private static var dmg7:Float = 40;
+        private static var time8:Float = 180;
+        private static var dmg8:Float = 50;
+        private static var time9:Float = 120;
         private static var dmg9:Float = 0;
 
         public static function getTimeRating(level:Int):Int {

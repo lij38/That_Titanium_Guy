@@ -22,7 +22,6 @@ class OpeningState extends FlxState
 	private var _dialog:Dialog;
 	private var _bg:FlxSprite;
 	private var _text:FlxText;
-	private var _enemy:RifleEnemyAnimation;
 	private var _helptext:FlxText;
 	private var _skiptext:FlxText;
 	// an array stores all conversations
@@ -55,21 +54,19 @@ class OpeningState extends FlxState
 		// initialize with all conversations
 		_text_array = new Array<String>();
 		_conv_index = 0;
-		_text_array.push("Federal Army Soldiers: This land is now confiscated under the authority of the Federal Government for our Supreme Leader");
-		_text_array.push("FA Soldiers: You have 24 hours to vacate the premises. Failure to do so will result in the use of deadly forces.");
-		_text_array.push("J. Hypin: Grab our stuff and wait for me outside!");
-		_text_array.push("Katy Hypin: Ok. Be safe!.");
-		_text_array.push("J. Hypin: You can’t just take my land from me and my family! We have rights to this land and we will defend our rights!");
-		_text_array.push("FA Soldiers: Resistance detected, deadly force is now authorized.");
+		_text_array.push("Katy lived! You saved your wife!");
+		_text_array.push("J. Hypin: ...!");
+		_text_array.push("Katy Hypin: ...*groans* where... am I?");
+		_text_array.push("J: Don't worry, you are safe now! It's ok... it's all over. Let's go home...");
 
 		_player = new PlayerAnimation(200,300,0);
-		_wife = new WifeAnimation(100, 260, 0);
+		_wife = new WifeAnimation(600, 300, 0);
 
 		_dialog = new Dialog(39, 431);
 		_dialog.width = 720;
 		_dialog.height = 145;
-		_skiptext = new FlxText(FlxG.width / 2 - 120, 20, 250, "Press ESC to skip", 30);
-		_skiptext.setFormat(AssetPaths.FONT, _skiptext.size);
+		// _skiptext = new FlxText(FlxG.width / 2 - 120, 20, 250, "Press ESC to skip", 30);
+		// _skiptext.setFormat(AssetPaths.FONT, _skiptext.size);
 
 		_text = new FlxText(200, 450, 530, 23);
 		_text.setFormat(AssetPaths.FONT, _text.size);
@@ -78,7 +75,6 @@ class OpeningState extends FlxState
 		_helptext.visible = false;
 		_text.width = 300;
 		_text.height = 100;
-		_enemy = new RifleEnemyAnimation(688, 280, 0);
 
 		 add(_bg);
 		 add(_player);
@@ -87,7 +83,7 @@ class OpeningState extends FlxState
 		 add(_text);
 		 add(_enemy);
 		 add(_helptext);
-		 add(_skiptext);
+		 //add(_skiptext);
 
 		FlxG.camera.fade(FlxColor.BLACK, .25, true);
 
