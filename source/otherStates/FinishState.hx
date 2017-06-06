@@ -8,6 +8,7 @@ import flixel.ui.FlxButton;
 import levelStates.*;
 import flixel.util.FlxColor;
 import items.*;
+import animation.*;
 
 class FinishState extends FlxState
 {
