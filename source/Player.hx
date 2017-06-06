@@ -49,7 +49,7 @@ class Player extends FlxSprite {
 	private var swordTimer:Float = -1;
 	private var curConfig:String;
 	private var dmgTaken:Float;
-	private var jetpack:Bool = false;
+	public var jetpack:Bool = false;
 	private var jrvTimer:Float = -1;
 	private var krvTimer:Float = -1;
 	

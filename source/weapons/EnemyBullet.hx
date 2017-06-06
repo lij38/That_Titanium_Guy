@@ -10,6 +10,7 @@ enum BulletType {
 	Ranged;
 	SHOTGUN;
 	WEB;
+	SKULL;
 }
 
 class EnemyBullet extends Bullet {
@@ -58,6 +59,8 @@ class EnemyBullet extends Bullet {
 			setFacingFlip(FlxObject.RIGHT, true, false);
 			animation.add("first", [0], 1);
 			animation.play("first");
+		} else if (bulletType == SKULL) {
+			loadGraphic(AssetPaths.poisonSkull__png);
 		}
 		
 		if (bulletType == SHOTGUN) {
