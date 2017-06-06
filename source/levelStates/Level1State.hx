@@ -57,6 +57,8 @@ class Level1State extends PlayState {
 		}
 
         super.create();
+        ///////////////////////////////////////////
+        ///////////////////////////////////////////
         Main.LOGGER.logLevelStart(LEVELID);
         add(_keys);
 		add(texts);
@@ -67,6 +69,7 @@ class Level1State extends PlayState {
 	
 	override public function update(elapsed:Float):Void {
 		super.update(elapsed);
+        //enemyG.playerPos.copyFrom(_player.getMidpoint());
 	}
 	
 
@@ -87,5 +90,12 @@ class Level1State extends PlayState {
                         r.setFormat(AssetPaths.FONT, r.size);
                         texts.add(r);
        }
+    }
+
+    private function placeEnemG(entityName:String, entityData:Xml):Void {
+        var x:Int = Std.parseInt(entityData.get("x"));
+		var y:Int = Std.parseInt(entityData.get("y"));
+        enemiesGroup.add(new EnemyGen(x, y, -1, enemiesBullets, coinsGroup, GRAVITY, enemiesGroup, LEVELID));
+
     }
 }

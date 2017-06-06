@@ -43,6 +43,7 @@ class Boss2State extends PlayState {
 
 		super.create();
 		add(_hud);
+		addTopLayer();
 		Main.LOGGER.logLevelStart(LEVELID);
 		addTopLayer();
 	}
