@@ -117,7 +117,7 @@ class CatchKatyState extends FlxState
 	override public function update(elapsed:Float):Void {
 		
 		if(FlxG.keys.anyJustPressed([ESCAPE])) {
-			//FlxG.switchState(new TutorialState());
+			FlxG.switchState(new HomeState());
 		}
 
 		// stage1 is enemy enter from the right side of screen

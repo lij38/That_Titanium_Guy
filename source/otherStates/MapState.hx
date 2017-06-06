@@ -13,6 +13,7 @@ import flixel.addons.editors.tiled.TiledObjectLayer;
 import flixel.FlxG;
 import flixel.addons.editors.tiled.TiledMap;
 import flixel.FlxSprite;
+import animation.*;
 
 class MapState extends FlxState
 {
@@ -42,8 +43,11 @@ class MapState extends FlxState
         add(_bg);
         _bg.follow();
 
-        var level:Int = Main.SAVE.data.levelCompleted + 1;
-
+         var level:Int = Main.SAVE.data.levelCompleted;
+        if(Main.SAVE.data.levelCompleted < 9) {
+            level = Main.SAVE.data.levelCompleted + 1;
+        }
+    
         _levelarr = new Array<ImageButton>();
         _tutorial = new ImageButton(0, 0, tutorialOnClick);
         _level1 = new ImageButton(0, 0, level1OnClick);
@@ -53,7 +57,7 @@ class MapState extends FlxState
         _level3 = new ImageButton(0, 0, level3OnClick);
         _level4 = new ImageButton(0, 0, level4OnClick);
         _level5 = new ImageButton(0, 0, level5OnClick);
-        _finalboss = new ImageButton();
+        _finalboss = new ImageButton(0, 0, finalOnClick);
         _home = new ImageButton(0, 0, switchHomeState);
         _levelarr.push(_tutorial);
         _levelarr.push(_level1);
@@ -76,7 +80,11 @@ class MapState extends FlxState
              placeStars(e.type, e.xmlData.x);
          }
 
-         for (i in 0...(level - 1)) {
+         var temp = level - 1;
+         if(level == 9) {
+             temp++;
+         }
+         for (i in 0...temp) {
 			 if (Main.SAVE.data.stararr != null) {
 				var rating:Int = Main.SAVE.data.stararr[i];
 				if (rating == 3) {
@@ -198,6 +206,17 @@ class MapState extends FlxState
     private function level5OnClick():Void {
         FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
             FlxG.switchState(new Level5State());
+        });
+    }
+
+    private function finalOnClick():Void {
+        FlxG.camera.fade(FlxColor.BLACK,.25, false, function() {
+            if(Main.SAVE.data.bossTalk == null) {
+                FlxG.switchState(new BeforeFinalBossState());
+                Main.SAVE.data.bossTalk = true;
+            } else {
+                FlxG.switchState(new FinalBossState());
+            }
         });
     }
 

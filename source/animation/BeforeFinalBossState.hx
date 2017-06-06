@@ -101,7 +101,7 @@ class BeforeFinalBossState extends FlxState
 	override public function update(elapsed:Float):Void {
 		
 		if(FlxG.keys.anyJustPressed([ESCAPE])) {
-			//FlxG.switchState(new TutorialState());
+			FlxG.switchState(new FinalBossState());
 		}
 
 		// hypin talks to the boss 

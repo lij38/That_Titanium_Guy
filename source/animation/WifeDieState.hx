@@ -91,7 +91,7 @@ class WifeDieState extends FlxState
 	override public function update(elapsed:Float):Void {
 		
 		if(FlxG.keys.anyJustPressed([ESCAPE])) {
-			FlxG.switchState(new TutorialState());
+			FlxG.switchState(new CreditState());
 		}
 
 		// narrator
