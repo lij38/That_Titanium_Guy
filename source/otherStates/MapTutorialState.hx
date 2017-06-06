@@ -26,23 +26,20 @@ class MapTutorialState extends FlxState
     private var _level3:FlxButton;
     private var _level4:FlxButton;
     private var _level5:FlxButton;
+    private var _finalboss:FlxButton;
+
     private var _home:FlxButton;
     private var _levelarr:Array<FlxButton>;
     private var _level_index:Int;
     private var _arrow:Arrow;
     private var _stararr:Array<FlxSprite>;
 
-    // stage1 is home button
-    private var _stage1:Bool;
-    // stage2 is tutorial level button
-    private var _stage2:Bool;
-    // stage3 is new level button
-    private var _stage3:Bool;
-    // stage4 is boss level button
-    private var _stage4:Bool;
-    // stage5 is finish tutorial
-    private var _stage5:Bool;
     private var _text:FlxText;
+    private var _text2:FlxText;
+    private var _text3:FlxText;
+    private var _arrow2:Arrow;
+    private var _arrow3:Arrow;
+    private var _helptxt:FlxText;
 
     override public function create():Void
     {
@@ -64,6 +61,7 @@ class MapTutorialState extends FlxState
         _level3 = new FlxButton();
         _level4 = new FlxButton();
         _level5 = new FlxButton();
+        _finalboss = new FlxButton();
         _home = new FlxButton();
         _levelarr.push(_tutorial);
         _levelarr.push(_level1);
@@ -73,6 +71,7 @@ class MapTutorialState extends FlxState
         _levelarr.push(_level2boss);
         _levelarr.push(_level4);
         _levelarr.push(_level5);
+        _levelarr.push(_finalboss);
         _level_index = 0;
         _arrow = new Arrow();
 
@@ -102,7 +101,7 @@ class MapTutorialState extends FlxState
         for (i in 0...level) {
              _levelarr[i].active = true;
             // BOSS Level
-            if (i == 2 || i == 5) {
+            if (i == 2 || i == 5 || i == 8) {
                 _levelarr[i].loadGraphic(AssetPaths.star_red__png, false, 50, 50);
             } else {
                 _levelarr[i].loadGraphic(AssetPaths.star_yellow__png, false, 50, 50);
@@ -112,7 +111,7 @@ class MapTutorialState extends FlxState
         // locked states
         for (i in level..._levelarr.length) {
             _levelarr[i].active = false;
-            if (i == 2 || i == 5) {
+            if (i == 2 || i == 5 || i == 8) {
                 _levelarr[i].loadGraphic(AssetPaths.star_red_lock__png, false, 50, 50);
             } else {
                 _levelarr[i].loadGraphic(AssetPaths.star_yellow_lock__png, false, 50, 50);
@@ -121,31 +120,46 @@ class MapTutorialState extends FlxState
 
         _text = new FlxText(0, 0, 330, 18);
         _text.text = "Welcome to the Map! This is your home, where you can equip and switch out your"
-            + " weapon configurations. (Click Anywhere to continue)";
+            + " weapon configurations. ";
         _text.setFormat(AssetPaths.FONT, 18);
 
-        for (i in 3...8) {
+        _text2 = new FlxText(179, 424, 330, 18);
+        _text2.text =  "This is the level that you just cleared. Once you finish a level, the next level will be unlocked. " +
+                    "You can re-do any finished level with new weapons to achieve higher ratings.";
+        _text2.setFormat(AssetPaths.FONT, 18);
+        _arrow2 = new Arrow(115, 441);
+
+        _text3 = new FlxText(307, 365, 330, 18);
+        _text3.text =  "This is a newly unlocked level, the red star means that it's a boss level. ";
+        _text3.setFormat(AssetPaths.FONT, 18);
+        _arrow3 = new Arrow(251, 376);
+
+        _helptxt = new FlxText(0, 0, 500, 24);
+        _helptxt.text = "CLICK Anywhere to CONTINUE. ";
+        _helptxt.setFormat(AssetPaths.FONT, 24);
+
+        for (i in 3...9) {
             _levelarr[i].color = 0x777777;
         }
 
         for (level in _levelarr) {
             add(level);
         }
+
         add(_home);
         add(_arrow);
         add(_text);
-
+        add(_text2);
+        add(_text3);
+        add(_arrow2);
+        add(_arrow3);
+        add(_helptxt);
 
         var tmpMap:TiledObjectLayer = cast _map.getLayer("entities");
          for (e in tmpMap.objects)
          {
              placeEntities(e.type, e.xmlData.x);
          }
-
-         _stage1 = true;
-         _stage2 = false;
-         _stage3 = false;
-         _stage4 = false;
 
         super.create();
     }
@@ -156,66 +170,10 @@ class MapTutorialState extends FlxState
         if (FlxG.mouse.justPressed) {
             click = true;
         }
-        if (_stage1) {
-            if (click) {
-                _stage1 = false;
-                _stage2 = true;
-                _arrow.x = 123;
-                _arrow.y = 263;
-                _text.x = 187;
-                _text.y = 241;
-                _text.text = "This is the tutorial level that you cleared. You can re-do any finished level " +
-                    "with new weapons to achieve higher ratings. (Click Anywhere to continue)";
-            }
-        } else if (_stage2) {
-            if (click) {
-                _stage2 = false;
-                _stage3 = true;
-                _arrow.x = 115;
-                _arrow.y = 441;
-                _text.x = 179;
-                _text.y = 424;
-                _text.text = "This is the level that you just cleared. Once you finish a level, the next level will be unlocked. " +
-                    "(Click Anywhere to continue)";
-            }
-        } else if (_stage3) {
-            if (click) {
-                _stage3 = false;
-                _stage4 = true;
-                _arrow.x = 251;
-                _arrow.y = 376;
-                _text.x = 307;
-                _text.y = 365;
-                _text.text = "This is a newly unlocked level, the red star means that it's a boss level. (Click Anywhere to continue)";
-            }
-        } else if (_stage4) {
-            if (click) {
-                _stage4 = false;
-                _stage5 = true;
-                _arrow.visible = false;
-                // _text.x = 293;
-                // _text.y = 76;
-                // _text.text = "Now that you've finished the tutorial, you are free to challenge the next level "
-                //     + "or go home. Remember, this is only your first step on your journey to reach the FA Supreme "
-                //     + "Leader in the Capital Hills, good luck! (Click Anywhere to continue)";
-                _bg.color = 0xffffff;
-                for (i in 3...8) {
-                    _levelarr[i].color = 0xffffff;
-                }
-                FlxG.switchState(new MapState());
-            }
-         }// else if (_stage5) {
-        //     if (click) {
-        //         _stage5 = false;
-        //         _arrow.visible = false;
-        //         _text.visible = false;
-        //         _bg.color = 0xffffff;
-        //         for (i in 3...7) {
-        //             _levelarr[i].color = 0xffffff;
-        //         }
-        //         FlxG.switchState(new MapState());
-        //     }
-        // } 
+        if (click) {
+            FlxG.switchState(new MapState());
+        }
+         
         super.update(elapsed);
     }
 
@@ -233,6 +191,9 @@ class MapTutorialState extends FlxState
         } else if (entityName == "text") {
             _text.x = x;
             _text.y = y;
+        } else if (entityName == "helptxt") {
+            _helptxt.x = x;
+            _helptxt.y = y;
         }else {
             var icon:FlxButton = _levelarr[_level_index];
             _level_index++;

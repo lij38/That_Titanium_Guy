@@ -26,6 +26,8 @@ class MapState extends FlxState
     private var _level3:ImageButton;
     private var _level4:ImageButton;
     private var _level5:ImageButton;
+    private var _finalboss:ImageButton;
+
     private var _home:ImageButton;
     private var _levelarr:Array<ImageButton>;
     private var _level_index:Int;
@@ -51,6 +53,7 @@ class MapState extends FlxState
         _level3 = new ImageButton(0, 0, level3OnClick);
         _level4 = new ImageButton();
         _level5 = new ImageButton();
+        _finalboss = new ImageButton();
         _home = new ImageButton(0, 0, switchHomeState);
         _levelarr.push(_tutorial);
         _levelarr.push(_level1);
@@ -60,6 +63,8 @@ class MapState extends FlxState
         _levelarr.push(_level2boss);
         _levelarr.push(_level4);
         _levelarr.push(_level5);
+        _levelarr.push(_finalboss);
+
         _level_index = 0;
 
         _home.loadGraphic(AssetPaths.shield_imageicon__png, false, 65, 65);
@@ -89,7 +94,7 @@ class MapState extends FlxState
         for (i in 0...level) {
              _levelarr[i].active = true;
             // BOSS Level
-            if (i == 2 || i == 5) {
+            if (i == 2 || i == 5 || i == 8) {
                 _levelarr[i].loadGraphic(AssetPaths.star_red__png, false, 50, 50);
             } else {
                 _levelarr[i].loadGraphic(AssetPaths.star_yellow__png, false, 50, 50);
@@ -99,7 +104,7 @@ class MapState extends FlxState
         // locked states
         for (i in level..._levelarr.length) {
             _levelarr[i].active = false;
-            if (i == 2 || i == 5) {
+            if (i == 2 || i == 5 || i == 8) {
                 _levelarr[i].loadGraphic(AssetPaths.star_red_lock__png, false, 50, 50);
             } else {
                 _levelarr[i].loadGraphic(AssetPaths.star_yellow_lock__png, false, 50, 50);

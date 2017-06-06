@@ -37,6 +37,11 @@ class HUD extends FlxTypedGroup<FlxSprite> {
 	private var _daze:Daze;
 	private var _dazeTime:Float = 0.5;
 	private var _dazeTimer:Float = -1;
+	
+	private var poisonTime:Float = 11;
+	private var poisonTimer:Float = -1;
+	private var poisonCount:Int = 1;
+	private var poisonDmg:Float;
 
     public function new(player:Player) {
          super();
@@ -140,6 +145,17 @@ class HUD extends FlxTypedGroup<FlxSprite> {
     }
 	
 	override public function update(elapsed:Float) {
+		if (poisonTimer >= 0.0) {
+			poisonTimer += elapsed;
+		}
+		if (poisonTimer > poisonTime) {
+			poisonTimer = -1;
+			poisonCount = 0;
+		}
+		if (poisonTimer > poisonCount) {
+			poisonCount++;
+			updateDamage(poisonDmg);
+		}
 		if (_dazeTimer >= 0.0) {
 			_dazeTimer += elapsed;
 			_daze.x = _player.getMidpoint().x - (_daze.width / 2);
@@ -158,6 +174,12 @@ class HUD extends FlxTypedGroup<FlxSprite> {
 		_dazeTimer = 0.0;
 		_daze.x = _player.getMidpoint().x - (_daze.width / 2);
 		_daze.y = _player.y - 50;
+	}
+	
+	public function startPoison(dmg:Float = 1.0) {
+		poisonTimer = 0.0;
+		poisonCount = 0;
+		poisonDmg = dmg;
 	}
 
     public function updateHUD(jAmmo:Int = 0, kAmmo:Int = 0, jReloading:Bool, 

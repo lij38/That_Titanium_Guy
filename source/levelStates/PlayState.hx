@@ -336,6 +336,9 @@ class PlayState extends FlxState {
 			if (enId == 34 && lvl == 1) {
 				en.onPickUpItem = pickUpRifle;
 			}
+			if (enId == 36 && lvl == 4) {
+				en.onPickUpItem = pickUpRevolver;
+			}
 			enemiesGroup.add(en);
 		}
 	}
@@ -377,6 +380,7 @@ class PlayState extends FlxState {
 					}
 				}
 			}
+			// shotgun knockback
 			if (bullet.bulletType == SHOTGUN) {
 				if (bullet.velocity.x < 0) {
 					player.x -= 5;
@@ -387,14 +391,18 @@ class PlayState extends FlxState {
 								_map.width * _map.tileWidth - player.width - 20);
 				}
 			}
-			
+			// poison: web, needle, skull
+			if (bullet.bulletType == WEB || bullet.bulletType == NEEDLE ||
+					bullet.bulletType == SKULL) {
+				player.poison();
+				_hud.startPoison();
+			}
 			bullet.kill();
 		}
 	}
 	
 	private function bulletsRangeUpdate():Void {
 		for (pb in playerBullets) {
-			//destroyed?
 			if (pb.outOfRange()){
 				playerBullets.remove(pb);
 				pb.destroy();
@@ -428,6 +436,9 @@ class PlayState extends FlxState {
 			var dmg:Float = bullet.getDamage();
 			if (bullet.getType() == "shotgun") {
 				var len:Int = Std.int(cast(bullet, ShotgunBullet).getPushBack());
+				if (enemy.isBoss) {
+					len = len / 10;
+				}
 				enemy.knockBack(len, bullet.facing);
 			}
 			if(bullet.getType() == "melee") {
