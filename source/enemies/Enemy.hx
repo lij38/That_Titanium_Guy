@@ -134,6 +134,16 @@ class Enemy extends FlxSprite {
 				rifle.onPickUp = onPickUpItem;
 				coinsGroup.add(rifle);
 				dropItem = true;
+				dropCoin = true;
+			} else if (id == 36 && level == 4 && !dropItem && 
+							Main.SAVE.data.levelCompleted != null &&
+							Main.SAVE.data.levelCompleted < 4) {
+				var revolver:Coin = new Coin(getMidpoint().x, getMidpoint().y, OTHER);
+				revolver.loadGraphic(AssetPaths.revolver__png);
+				revolver.onPickUp = onPickUpItem;
+				coinsGroup.add(revolver);
+				dropItem = true;
+				dropCoin = true;
 			} else if (!dropCoin) {
 				var lowB:Int = level * 4 + 2;
 				var upB:Int = level * 4 + 6;
