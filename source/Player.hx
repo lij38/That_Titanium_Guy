@@ -92,7 +92,7 @@ class Player extends FlxSprite {
 		// } else {
 		// 	health = Main.SAVE.data.maxHealth;
 		// }
-		health = 1000000;
+		health = 200;
 		if(Main.SAVE.data.maxFuel == null) {
 			jetpackFieldMax = 3;
 			jetpackField = 3;

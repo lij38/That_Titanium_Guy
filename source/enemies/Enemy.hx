@@ -28,6 +28,7 @@ enum EnemyType {
 	BOSS1;
 	BOSS2;
 	BOSS3;
+	ENEMYG;
 }
 
 class Enemy extends FlxSprite {
@@ -170,6 +171,19 @@ class Enemy extends FlxSprite {
 					// always drop potion if this is truck enemy
 					var potion:Coin = new Coin(getMidpoint().x, getMidpoint().y, POTION);
 					coinsGroup.add(potion);
+					dropCoin = true;
+				} else if (type == ENEMYG) {
+                	var potion:Coin = new Coin(getMidpoint().x, getMidpoint().y, POTION);
+			    	coinsGroup.add(potion);
+                	var rx:Float = Math.random() * 600 - 75;
+                	if (coinCount < 5 && rx < 75) {
+						var ry:Float = Math.random() * 15 - 7;
+						var coin:Coin = new Coin(getMidpoint().x + rx, getMidpoint().y + 45 + ry,
+									COIN, lowB, upB);
+				    	coinsGroup.add(coin);
+						coinCount++;
+
+                	}
 					dropCoin = true;
 				} else {
 					var randP:Int = Std.random(10);
