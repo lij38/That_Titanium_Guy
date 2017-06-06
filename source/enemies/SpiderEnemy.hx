@@ -14,13 +14,13 @@ import items.Coin;
 
 class SpiderEnemy extends Enemy {
 	
-	private var rate:Float = 1.0;
+	private var rate:Float = 0.5;
 	private var webRate:Float = 0.5;
 	private var rateTimer:Float = -1;
 	private var attacked:Bool = false;
 	
 	private var meleeRange:Float = 130;
-	private var webRange:Float = 250;
+	private var webRange:Float = 350;
 	
 	private var webCD:Float = 5;
 	private var webCDTimer:Float = 5;
@@ -48,7 +48,7 @@ class SpiderEnemy extends Enemy {
 		animation.add("lr", [0, 1, 2, 3], 9, false);
 		animation.add("hurt", [8, 8, 8, 8, 0], 12, false);
 		animation.add("die", [8, 8, 9, 9, 9, 9, 9, 9, 9, 9, 9], 9, false);
-		animation.add("attack", [4, 4, 4, 5, 5, 6, 6, 7, 7], 9, false);
+		animation.add("attack", [4, 4, 4, 5, 5, 6, 6, 7, 7], 18, false);
 		animation.add("spillWeb", [10], 1, false);
 		animation.play("stop");
 		
@@ -78,7 +78,7 @@ class SpiderEnemy extends Enemy {
 	
 	public function judge(elapsed:Float):Void {
 		if (!seesPlayer) {
-			velocity.set(0, 0);
+			velocity.x = 0;
 			brain.activeState = idle;
 			animation.play("stop");
 			return;
@@ -160,7 +160,7 @@ class SpiderEnemy extends Enemy {
 		} else if (rateTimer < 0) {
 			animation.play("lr");
 		}
-		if (rateTimer > 0.50 && !attacked) {
+		if (rateTimer > 0.25 && !attacked) {
 			var curBullet:EnemyBullet = bulletArray.recycle(EnemyBullet);
 			curBullet.setBullet(getMidpoint().x, y + 10, 1000, facing,
 							damageLevel[level], range, 

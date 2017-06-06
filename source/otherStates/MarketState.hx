@@ -275,7 +275,7 @@ class MarketState extends FlxState {
                     + "Each upgrade grants you 0.5 second extra flying time\n"
                     + "Cost: $" + jfcost + "\nUpgrades left: " + jfnum;
         jfcc.text = "Cost: $" + jfcost + "\n# Left: " + jfnum;
-        pText.text = "Purchasing this upgrade will allow you to hold and save potions for emergency use.\n"
+        pText.text = "Purchasing this upgrade will allow you to hold and save potions for emergency use and to remove poison.\n"
                     + "Each subsequent purchase will grant you one extra slot.\n"
                     + "Press \'H\' in game to use a saved health potion.\n"
                     + "Cost: $" + pcost + "\n" + "Upgrades left: " + pnum;
@@ -428,7 +428,7 @@ class MarketState extends FlxState {
             pnum = Main.SAVE.data.pnum;
         }
         pText = new FlxText(200, 150, 450);
-        pText.text = "Purchasing this upgrade will allow you to hold and save potions for emergency use.\n"
+        pText.text = "Purchasing this upgrade will allow you to hold and save potions for emergency use and to remove poison.\n"
             + "Each subsequent purchase will grant you one extra slot.\n"
             + "Press \'H\' in game to use a saved health potion.\n"
             + "Cost: $" + pcost + "\n" + "Upgrades left: " + pnum;

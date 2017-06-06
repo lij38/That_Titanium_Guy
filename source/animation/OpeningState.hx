@@ -17,6 +17,7 @@ import levelStates.*;
 class OpeningState extends FlxState
 {
 	private var _player:PlayerAnimation;
+	private var _wife:WifeAnimation;
 	private var count:Int = 0;
 	private var _dialog:Dialog;
 	private var _bg:FlxSprite;
@@ -37,6 +38,8 @@ class OpeningState extends FlxState
 	// hypin and enemy run towards each others
 	private var _stage4:Bool;
 
+	private var begin_walk:Bool;
+
 	override public function create():Void
 	{
 		// animation stage parameters
@@ -44,6 +47,7 @@ class OpeningState extends FlxState
 		_stage2 = false;
 		_stage3 = false;
 		_stage4 = false;
+		begin_walk = false;
 
 		_bg = new FlxSprite();
 		_bg.loadGraphic(AssetPaths.home__png, false, 1060, 600);
@@ -53,10 +57,14 @@ class OpeningState extends FlxState
 		_conv_index = 0;
 		_text_array.push("Federal Army Soldiers: This land is now confiscated under the authority of the Federal Government for our Supreme Leader");
 		_text_array.push("FA Soldiers: You have 24 hours to vacate the premises. Failure to do so will result in the use of deadly forces.");
+		_text_array.push("J. Hypin: It is not safe here. Wait me outside.");
+		_text_array.push("J. Katy: Ok. Be safe.");
 		_text_array.push("J. Hypin: WHAT?! You can’t just take my land from me and my family! We have rights to this land and I will defend my rights!");
 		_text_array.push("FA Soldiers: Resistance detected, deadly force is now authorized.");
 
-		_player = new PlayerAnimation(100,320,0);
+		_player = new PlayerAnimation(200,300,0);
+		_wife = new WifeAnimation(100, 260, 0);
+
 		_dialog = new Dialog(39, 431);
 		_dialog.width = 720;
 		_dialog.height = 145;
@@ -70,10 +78,11 @@ class OpeningState extends FlxState
 		_helptext.visible = false;
 		_text.width = 300;
 		_text.height = 100;
-		_enemy = new RifleEnemyAnimation(688, 300, 0);
+		_enemy = new RifleEnemyAnimation(688, 280, 0);
 
 		 add(_bg);
 		 add(_player);
+		 add(_wife);
 		 add(_dialog);
 		 add(_text);
 		 add(_enemy);
@@ -94,6 +103,7 @@ class OpeningState extends FlxState
 			FlxG.switchState(new TutorialState());
 		}
 
+		// stage1 is enemy enter from the right side of screen and begins to talk a bit
 		if (_stage1) {
 			count++;
 		    if(count > 10 && count < 100 && count % 3 == 0) {
@@ -103,51 +113,110 @@ class OpeningState extends FlxState
 		     } else if (count == 105) {
 		     	_enemy.animation.play("stop");
 		     } else if (count == 120) {
-		     	// enemy begins to talk, stage1 ends, stage2 starts
+		     	// enemy begins to talk
 		     	_dialog.dialog2();
 		     	_text.text = _text_array[0];
 		     	_text.visible = true;
 		     	_helptext.visible = true;
-		     	_stage1 = false;
-		     	_stage2 = true;
-		     	count = 0;
+		     } else if (count > 120) {
+		     	// when enemy talk ends, switch to next scene
+		     	// enemy has two sentences to talk
+			    var space:Bool = FlxG.keys.anyJustPressed([ENTER]);
+		 		if (space) {
+		 			if (_conv_index == 1) {
+		 				_dialog.visible = false;
+	 					_text.visible = false;
+	 					_helptext.visible = false;
+		 				_stage1 = false;
+		 				_stage2 = true;
+		 				count = 0;
+		 			} else {
+			 			_conv_index += 1;
+			 			_text.text = _text_array[_conv_index];
+		 			}
+		 		}
 		     }
+
+		 // stage2 is hypin escort wife out of the screen and then walks towards enemy
 	 	} else if (_stage2) {
-	 		var space:Bool = FlxG.keys.anyJustPressed([ENTER]);
-	 		if (space) {
-	 			if (_conv_index == 1) {
-	 				// after enemy talk ends, end stage2, begin stage3
-	 				_stage2 = false;
-	 				_stage3 = true;
-	 			} else {
-		 			_conv_index += 1;
-		 			_text.text = _text_array[_conv_index];
-	 			}
-	 		}
-	 	} else if (_stage3) {
+	 		// this is hypin and wife talks
 	 		count++;
-	 		if (count == 10) {
-	 			_dialog.visible = false;
-	 			_text.visible = false;
-	 			_helptext.visible = false;
-	 		} else if (count > 10 && count < 100 && count % 3 ==0) {
-	 			// hypin escore wife and children out of scene
-	 			_player.animation.play("Run");
-		     	_player.x += 4;
-	 		} else if (count == 105) {
-		     	_enemy.animation.play("stop");
-		    } else if (count == 120) {
+	 		// hypin and wife talks
+	 		if (!begin_walk) {
+		 		if (count == 15) {
+		 			// hypin talks to wife
+		 			_player.facing = FlxObject.LEFT;
+		 			_conv_index += 1;
+			 		_text.text = _text_array[_conv_index];
+			 		_text.visible = true;
+			 		_helptext.visible = true;
+			 		_dialog.dialog1();
+			 		_dialog.visible = true;
+		 		} else if (count > 15) {
+		 			// wife response
+		 			var space:Bool = FlxG.keys.anyJustPressed([ENTER]);
+			 		if (space) {
+			 			if (_conv_index == 3) {
+			 				// if talk ends, end stage3, begin stage4
+			 				begin_walk = true;
+				 			count = 0;
+			 			} else {
+			 				// wife talks, one sentence
+				 			_conv_index += 1;
+				 			_dialog.dialog3();
+				    		_text.text = _text_array[_conv_index];
+			    		}
+			 		}
+		 		} 
+
+		 	// conversation ends, they begin to move to the left screen
+		 	} else {
+		 		if (count == 10) {
+		 			_dialog.visible = false;
+		 			_text.visible = false;
+		 			_helptext.visible = false;
+		 			_wife.facing = FlxObject.LEFT;
+		 		// hypin and katy walks...
+		 		} else if (count > 20 && count < 120 && count % 3 == 0) {
+		 			_player.animation.play("Run");
+		 			_wife.animation.play("lr");
+		 			_player.x -= 4;
+		 			_wife.x -= 4;
+		 		// katy continue walks, hypin stops
+		 		} else if (count == 120) {
+		 			_player.animation.play("Stop");
+		 			//_player.facing = FlxObject.RIGHT;
+		 		} else if (count > 120 && count < 240 && count % 3 == 0) {
+		 			_wife.animation.play("lr");
+		 			_wife.x -= 4;
+		 		} else if (count == 240) {
+		 			_player.facing = FlxObject.RIGHT;
+		 		} else if (count > 280 && count < 400 && count % 3 == 0) {
+		 			_player.animation.play("Run");
+		 			_player.x += 4; 	
+		 		} else if (count > 400) {
+		 			_player.animation.play("Stop");
+		 			_stage2 = false;
+		 			_stage3 = true;
+		 			count = 0;
+		 		}
+	 		}
+
+	 	// hypin begins to talk to enemy
+		 }	else if (_stage3) {
+		 	count ++;
+		    if (count == 10) {
 		    	// hypin begins to talk
 		    	_dialog.dialog1();
 		    	_conv_index += 1;
 		    	_text.text = _text_array[_conv_index];
 		    	_dialog.visible = true;
 		    	_text.visible = true;	    	
-		    } else if (count > 120) {
+		    } else if (count > 10) {
 		    	// enemy and hypin talks
 		    	var space:Bool = FlxG.keys.anyJustPressed([ENTER]);
 		 		if (space) {
-		 			if (_conv_index == 3) {
+		 			if (_conv_index == 5) {
 		 				// if talk ends, end stage3, begin stage4
 		 				_stage3 = false;
 			 			_stage4 = true;
@@ -159,13 +228,15 @@ class OpeningState extends FlxState
 		    		}
 		 		}
 		    }
+
+		// conversation ends, hypin and enmy walks towards each other
 	 	} else if (_stage4) {
 	 		count++;
 	 		if (count == 10) {
 	 			_dialog.visible = false;
 	 			_text.visible = false;
 	 		} else if (count > 10 && count < 100 && count % 3 ==0) {
-	 			// hypin escore wife and children out of scene
+	 			// hypin and enemy walks towards each other
 	 			_player.animation.play("Run");
 		     	_player.x += 4;
 		     	_enemy.animation.play("lr");

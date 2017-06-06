@@ -60,7 +60,7 @@ class PlayState extends FlxState {
 	private var _pausetxt:FlxText;
 
 	private var _hand:Boss2Hand;
-
+	private var boss3:FinalBoss;
 	
 	override public function create():Void {
 		//FlxG.debugger.drawDebug = true;
@@ -303,6 +303,7 @@ class PlayState extends FlxState {
 		var en:Enemy;
 		var boss:Boss1;
 		var boss2:Boss2;
+		
 		_hand = new Boss2Hand();
 		
 		if (entityName == "boss1") {
@@ -316,6 +317,10 @@ class PlayState extends FlxState {
 			enemiesGroup.add(boss2);
 			_boss_hud = new Boss1HUD(boss2);
 			
+		} else if (entityName == "finalboss"){
+			boss3 = new FinalBoss(x, y, enId, enemiesBullets, coinsGroup, GRAVITY, _map.width * _map.tileWidth, _hud, _player);
+			enemiesGroup.add(boss3);
+			_boss_hud = new Boss1HUD(boss3);
 		} else {
 			en = EnemyFactory.getEnemy(entityName, x, y, enId,
 										enemiesBullets, coinsGroup,
@@ -326,6 +331,9 @@ class PlayState extends FlxState {
 			
 			if (enId == 34 && lvl == 1) {
 				en.onPickUpItem = pickUpRifle;
+			}
+			if (enId == 36 && lvl == 4) {
+				en.onPickUpItem = pickUpRevolver;
 			}
 			enemiesGroup.add(en);
 		}
@@ -339,9 +347,10 @@ class PlayState extends FlxState {
 					(player.isShielding() && player.faced == bullet.facing)) {
 				player.hurt(damage);
 				_hud.updateDamage(damage);
+				// stun player
 				if (bullet.bulletType == WEB) {
-					player.stun();
-					_hud.startDaze();
+					player.stun(1.0);
+					_hud.startDaze(1.0);
 				}
 			} else {
 				// player is shielding the right direction
@@ -367,6 +376,7 @@ class PlayState extends FlxState {
 					}
 				}
 			}
+			// shotgun knockback
 			if (bullet.bulletType == SHOTGUN) {
 				if (bullet.velocity.x < 0) {
 					player.x -= 5;
@@ -377,14 +387,18 @@ class PlayState extends FlxState {
 								_map.width * _map.tileWidth - player.width - 20);
 				}
 			}
-			
+			// poison: web, needle, skull
+			if (bullet.bulletType == WEB || bullet.bulletType == NEEDLE ||
+					bullet.bulletType == SKULL) {
+				player.poison();
+				_hud.startPoison();
+			}
 			bullet.kill();
 		}
 	}
 	
 	private function bulletsRangeUpdate():Void {
 		for (pb in playerBullets) {
-			//destroyed?
 			if (pb.outOfRange()){
 				playerBullets.remove(pb);
 				pb.destroy();
@@ -418,6 +432,9 @@ class PlayState extends FlxState {
 			var dmg:Float = bullet.getDamage();
 			if (bullet.getType() == "shotgun") {
 				var len:Int = Std.int(cast(bullet, ShotgunBullet).getPushBack());
+				if (enemy.isBoss) {
+					len = len / 10;
+				}
 				enemy.knockBack(len, bullet.facing);
 			}
 			playerBullets.remove(bullet);

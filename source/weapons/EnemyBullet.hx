@@ -10,10 +10,14 @@ enum BulletType {
 	Ranged;
 	SHOTGUN;
 	WEB;
+	SKULL;
+	NEEDLE;
+	HEART;
+	BOSSMELEE;
 }
 
 class EnemyBullet extends Bullet {
-	private var meleeColor:FlxColor = FlxColor.TRANSPARENT;
+	private var meleeColor:FlxColor = FlxColor.BLACK;
 	public var bulletType:BulletType;
 	public var parent:Enemy;
 
@@ -58,9 +62,20 @@ class EnemyBullet extends Bullet {
 			setFacingFlip(FlxObject.RIGHT, true, false);
 			animation.add("first", [0], 1);
 			animation.play("first");
+		} else if (bulletType == SKULL) {
+			loadGraphic(AssetPaths.poisonSkull__png);
+		} else if (bulletType == NEEDLE) {
+			this.type = "melee";
+			makeGraphic(11, 11, meleeColor);
+		} else if (bulletType == HEART) {
+			loadGraphic(AssetPaths.nurse_heart__png, true, 18, 32);
+			animation.add("first", [0, 1, 2, 1, 0, 3, 4, 3], 6);
+			animation.play("first");
+		} else if (bulletType == BOSSMELEE) {
+			makeGraphic(20, 250, meleeColor);
 		}
 		
-		if (bulletType == SHOTGUN) {
+		if (bulletType == SHOTGUN || bulletType == SKULL) {
 			velocity.set(speed, 0);
 			velocity.rotate(FlxPoint.weak(0, 0), direction);
 			if (velocity.x < 0) {
