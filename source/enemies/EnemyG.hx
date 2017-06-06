@@ -14,23 +14,24 @@ import flixel.util.FlxColor;
 import items.Coin;
 
 
-class EnemyGen extends Enemy {
-//	private var id:Int;
-    //private var lvl:Int;
+class EnemyG extends FlxSprite {
+	private var id:Int;
+    private var lvl:Int;
 
-	// private var bulletArray:FlxTypedGroup<EnemyBullet>;
-	// private var coinsGroup:FlxTypedGroup<Coin>;
-	// private var dropCoin:Bool = false;
-	// private var coinCount:Int = 0;
+	private var bulletArray:FlxTypedGroup<EnemyBullet>;
+	private var coinsGroup:FlxTypedGroup<Coin>;
+	private var dropCoin:Bool = false;
+	private var coinCount:Int = 0;
 	
-	//private var GRAVITY:Float;
-	//private var brain:EnemyFSM;
-	//public var playerPos(default, null):FlxPoint;
-	//public var seesPlayer:Bool = false;
-	//public var hurtTime:Float = 0.25;
-	//private var detectRange:Float = 700;
-	//private var hurtColorTimer:Float = -1;
-	//private var originalColor:FlxColor = 0xffffff;
+	private var GRAVITY:Float;
+	private var brain:EnemyFSM;
+	public var playerPos(default, null):FlxPoint;
+	public var seesPlayer:Bool = false;
+	public var hurtTime:Float = 0.25;
+	private var detectRange:Float = 700;
+	private var hurtColorTimer:Float = -1;
+	private var originalColor:FlxColor = 0xffffff;
+	private var level:Int;
     private var enemies:FlxTypedGroup<Enemy>;
 
     private var genTime:Float = 3.0;
@@ -42,18 +43,66 @@ class EnemyGen extends Enemy {
 						enemiesBulletArray:FlxTypedGroup<EnemyBullet>,
 						coinsGroup:FlxTypedGroup<Coin>,
 						gravity:Float, enemies:FlxTypedGroup<Enemy>, lvl:Int) {
-		super(X, Y, id, enemiesBulletArray, coinsGroup, gravity, ENEMYG);
+		super(X, Y);
         loadGraphic(AssetPaths.gen__png);
+        setSize(100, 100);
+		//offset.set();
+		GRAVITY = gravity;
+		this.coinsGroup = coinsGroup;
+		this.id = id;
+        this.bulletArray = enemiesBulletArray;
         this.enemies = enemies;
-        this.level = lvl;
+        this.lvl = lvl;
+        //acceleration.y = GRAVITY;
+        playerPos = FlxPoint.get();
+	    color = originalColor;
         health = 200;
         brain = new EnemyFSM(nothing);
     }
 
     override public function update(elapsed:Float):Void {
+		if (!seesPlayer &&
+			Math.abs(playerPos.x - getMidpoint().x) < detectRange / 2 &&
+			Math.abs(playerPos.y - getMidpoint().y) < detectRange / 2) {
+			seesPlayer = true;
+		}
+		if (seesPlayer &&
+			(Math.abs(playerPos.x - getMidpoint().x) > detectRange ||
+			Math.abs(playerPos.y - getMidpoint().y) > detectRange)) {
+			seesPlayer = false;
+		}
         if (genTimer >= 0 && genTimer < genTime) {
             genTimer += elapsed;
         } 
+        if(!alive) {
+            if (!dropCoin) {
+			    var lowB:Int = level * 4 + 2;
+			    var upB:Int = level * 4 + 6;
+                var potion:Coin = new Coin(getMidpoint().x, getMidpoint().y, POTION);
+			    coinsGroup.add(potion);
+                var rx:Float = Math.random() * 600 - 75;
+                if (coinCount < 5 && rx < 75) {
+					var ry:Float = Math.random() * 15 - 7;
+					var coin:Coin = new Coin(getMidpoint().x + rx, getMidpoint().y + 45 + ry,
+									COIN, lowB, upB);
+				    coinsGroup.add(coin);
+					coinCount++;
+                }
+
+			    dropCoin = true;
+            }
+        } else {
+            brain.update(elapsed);
+        }
+
+        if (hurtColorTimer >= 0) {
+			hurtColorTimer += elapsed;
+		}
+
+		if (hurtColorTimer > hurtTime) {
+			hurtColorTimer = -1;
+			color = originalColor;
+		}
         super.update(elapsed);
     }
 
@@ -67,14 +116,6 @@ class EnemyGen extends Enemy {
 		hurtColorTimer = 0.0;
     }
 
-    override public function knockBack(len:Int, dir:Int):Void {
-    
-    }
-
-    override public function startDaze():Void {
-    
-    }
-
     public function generate(elapsed:Float):Void {
         trace(enemies.countLiving());
         if (genTimer < 0) {
@@ -86,9 +127,9 @@ class EnemyGen extends Enemy {
         if (genTimer >= genTime && enemies.countLiving() < 60) {
             var enem:String = randType();
                 if (enem != null) {
-                    enemies.add(EnemyFactory.getEnemy(enem, getMidpoint().x - 17, getMidpoint().y - 60, id, bulletArray, coinsGroup, GRAVITY, level));
+                    enemies.add(EnemyFactory.getEnemy(enem, getMidpoint().x - 17, getMidpoint().y - 60, id, bulletArray, coinsGroup, GRAVITY, lvl));
                 } else {
-                    enemies.add(EnemyFactory.getEnemy("TRUCK", getMidpoint().x, getMidpoint().y - 60, id, bulletArray, coinsGroup, GRAVITY, level));
+                    enemies.add(EnemyFactory.getEnemy("TRUCK", getMidpoint().x, getMidpoint().y - 60, id, bulletArray, coinsGroup, GRAVITY, lvl));
                 }
             genTimer = 0;
         }
@@ -122,5 +163,4 @@ class EnemyGen extends Enemy {
             brain.activeState = generate;
         }
     }
-
 }

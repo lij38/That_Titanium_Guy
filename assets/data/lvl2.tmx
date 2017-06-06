@@ -492,7 +492,7 @@
   <object id="32" name="JPSHIELD" type="2" x="4210.55" y="1025.21" width="69.3333" height="170.667"/>
   <object id="34" name="JPMELEE" type="2" x="5560.73" y="270.303" width="69.3333" height="170.667"/>
   <object id="35" name="JPMELEE" type="2" x="5942.18" y="60.8477" width="69.3333" height="170.667"/>
-  <object id="36" name="RIFLE" type="2" x="6541.33" y="82.6667" width="69.3333" height="170.667"/>
+  <object id="36" name="RIFLE" type="2" x="7171.63" y="188.727" width="69.3333" height="170.667"/>
   <object id="37" name="JPSHIELD" type="2" x="6816.48" y="440.242" width="69.3333" height="170.667"/>
   <object id="41" name="JPMELEE" type="2" x="6576.91" y="431.758" width="69.3333" height="170.667"/>
   <object id="42" name="JPRIFLE" type="2" x="5565.58" y="959.641" width="69.3333" height="170.667"/>
