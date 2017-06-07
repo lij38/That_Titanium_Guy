@@ -148,7 +148,7 @@ class HUD extends FlxTypedGroup<FlxSprite> {
 		if (poisonTimer >= 0.0) {
 			poisonTimer += elapsed;
 		}
-		if (poisonTimer > poisonTime) {
+		if (poisonTimer > poisonTime || !_player.isPoison()) {
 			poisonTimer = -1;
 			poisonCount = 0;
 		}
