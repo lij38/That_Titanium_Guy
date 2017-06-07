@@ -192,7 +192,7 @@ class PlayState extends FlxState {
 		_hud.updateXY();
 
 		//use potion
-		if(FlxG.keys.anyPressed([H])) {
+		if(FlxG.keys.anyJustPressed([H])) {
 			_player.usePotion();
 		}
 

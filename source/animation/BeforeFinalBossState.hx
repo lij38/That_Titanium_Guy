@@ -63,7 +63,7 @@ class BeforeFinalBossState extends FlxState
 		_text_array.push("J. Hypin: What the hell did you do to my wife?");
 		_text_array.push("Don Clint: HAHAHAHAHAHAHAHA. She will soon be absorbed by me. And the next is you !");
 		_text_array.push("J. Hypin: ...You will die before either of that happens.");
-		_text_array.push("Rules: You have to kill Don Clint in 120 secs before Katy gets completely absorbed by him");
+		_text_array.push("Rules: You have to kill Don Clint in 60 secs before Katy gets completely absorbed by him");
 
 		_player = new PlayerAnimation(120,330,0);
 		_enemy = new FinalBossAnimation(500, 130, 0);
