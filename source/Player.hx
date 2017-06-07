@@ -656,6 +656,10 @@ class Player extends FlxSprite {
 		hurtColor = 0x00ff00;
 	}
 	
+	public function isPoison():Bool {
+		return poisonTimer >= 0 && poisonTimer < poisonTime;
+	}
+	
 	public function getWeaponName(which:Int):String {
 		if(which == 0) {
 			if(jWeapon == null) {
