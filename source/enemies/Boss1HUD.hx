@@ -37,7 +37,7 @@ class Boss1HUD extends FlxTypedGroup<FlxSprite>
          //count down timer
          if(boss.type == BOSS3) {
             _name.x = 200;
-            timer = new FlxText(360, 50, 0, "120", 50);
+            timer = new FlxText(360, 50, 0, "60", 50);
             timer.setFormat(AssetPaths.FONT, timer.size);
             add(timer);
          }
