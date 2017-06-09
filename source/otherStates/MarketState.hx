@@ -353,6 +353,7 @@ class MarketState extends FlxState {
                         + "Each upgrade grants you 10% extra damage\n" + "Cost: $" + rvDmgCost + "\nUpgrades left: " + rvDmgNum;
             rvDmgCC.text = "Cost: $" + rvDmgCost + "\n# Left: " + rvDmgNum;
             chargeT.text = "What's scarier than a .44 magnum? A charged up one.\n"
+                        + "Hold the attack button in game to charge up a shot.\n"
                         + "Each upgrade grants you +10% charged damage\n" + "Cost: $" + chargeCost + "\nUpgrades left: " + chargeNum;
             chargeCC.text = "Cost: $" + chargeCost + "\n# Left: " + chargeNum;  
         }
@@ -1074,7 +1075,8 @@ class MarketState extends FlxState {
             chargeNum = Main.SAVE.data.chargeNum;
         }
         chargeT = new FlxText(200, 150, 450);
-        chargeT.text = "What's scarier than a .44 magnum? A charged up one.\nHold the attack button in game to charge a shot.\n"
+        chargeT.text = "What's scarier than a .44 magnum? A charged up one.\n"
+            + "Hold the attack button in game to charge up a shot.\n"
             + "Each upgrade grants you +10% charged damage\n" + "Cost: $" + chargeCost + "\nUpgrades left: " + chargeNum; 
         chargeT.setFormat(AssetPaths.FONT, 25);
         chargeT.kill();
