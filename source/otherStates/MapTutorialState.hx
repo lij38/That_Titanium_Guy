@@ -119,18 +119,17 @@ class MapTutorialState extends FlxState
         }
 
         _text = new FlxText(0, 0, 330, 18);
-        _text.text = "Welcome to the Map! This is your home, where you can equip and switch out your"
+        _text.text = "Welcome to the Map! This is your home, where you can upgrade and switch out your"
             + " weapon configurations. ";
         _text.setFormat(AssetPaths.FONT, 18);
 
         _text2 = new FlxText(179, 424, 330, 18);
-        _text2.text =  "This is the level that you just cleared. Once you finish a level, the next level will be unlocked. " +
-                    "You can re-do any finished level with new weapons to achieve higher ratings.";
+        _text2.text = "You can re-do any finished level with new weapons to achieve higher ratings.";
         _text2.setFormat(AssetPaths.FONT, 18);
         _arrow2 = new Arrow(115, 441);
 
         _text3 = new FlxText(307, 365, 330, 18);
-        _text3.text =  "This is a newly unlocked level, the red star means that it's a boss level. ";
+        _text3.text =  "The red star means that this is a boss level.";
         _text3.setFormat(AssetPaths.FONT, 18);
         _arrow3 = new Arrow(251, 376);
 

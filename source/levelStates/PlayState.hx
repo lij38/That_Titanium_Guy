@@ -181,10 +181,10 @@ class PlayState extends FlxState {
 		}
 
 		super.update(elapsed);
-		//if (FlxG.keys.anyPressed([MINUS])) {
-			//// kill all enemies
-			//enemiesGroup.forEach(killAllEnemies);
-		//}
+		// if (FlxG.keys.anyPressed([MINUS])) {
+		// 	// kill all enemies
+		// 	enemiesGroup.forEach(killAllEnemies);
+		// }
 		enemiesGroup.forEach(enemiesUpdate);
 		if (!_is_boss) {
 			updateEnemyHud();

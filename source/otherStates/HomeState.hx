@@ -35,7 +35,8 @@ class HomeState extends FlxState {
 	private var _workshoptext:FlxText;
 	private var _stage1:Bool;
 	private var _stage2:Bool;
-	//private var _stage3:Bool;
+	private var _stage3:Bool;
+	private var timer:Float = 0;
 	
 	// pause state and menu
 	private var _pause:Bool;
@@ -259,15 +260,14 @@ class HomeState extends FlxState {
 				}
 			} else if (_stage2) {
 				if (click) {
-					// _stage2 = false;
-					// _stage3 = true;
+					_stage2 = false;
+					_stage3 = true;
 					// _arrow.x = 295;
 					// _arrow.y = 350;
 					// _arrow.loadGraphic(AssetPaths.arrow2__png, false, 25, 40);
 					// _text.x = 177;
 					// _text.y = 415;
 					// _text.text = "This is the workshop, you can equip and change your weapon configurations here!";
-					tutorial_map = false;
 		        	_arrow.visible = false;
 		        	_text.visible = false;
 		        	_bg.color = 0xffffff;
@@ -277,24 +277,17 @@ class HomeState extends FlxState {
 		        	_workshop.color = 0xdddddd;
 					_blackmarket.color = 0xdddddd;
 		        	_mapbutton.active = true;
-					_workshop.active = true;
 					_maptext.visible = true;
 				}
-			} //else if (_stage3) {
-			// 	if (click) {
-			// 		_stage3 = false;
-			// 		tutorial_map = false;
-		    //     	_arrow.visible = false;
-		    //     	_text.visible = false;
-		    //     	_bg.color = 0xffffff;
-		    //     	_player.color = 0xffffff;
-		    //     	_fg.color = 0xffffff;
-		    //     	_workshop.color = 0xdddddd;
-		    //     	_mapbutton.active = true;
-			// 		_workshop.active = true;
-			// 		_maptext.visible = true;
-	        // 	}
-			// }
+			} else if (_stage3) {
+				if(timer > 0.5) {
+					_workshop.active = true;
+					tutorial_map = false;
+					_stage3 = false;
+				} else {
+					timer += elapsed;
+				}
+			}
         	
 		} else {
 			_maptext.visible = true;
