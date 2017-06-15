@@ -65,7 +65,23 @@ select aid, count(*) from player_actions_log where cid=3 and qid=-1 group by aid
 --return rate
 select count(c) from (select count(distinct sessionid) as c from player_quests_log where cid=3 group by uid) as t where c > 0;
 
+--session play time
+select count(*) from (select (max(client_ts)-min(client_ts))/1000/60 as duration from player_quests_log t where cid=4 group by sessionid) t1
+where duration > 0;
+--average session play time
+select avg(duration) from (select (max(client_ts)-min(client_ts))/1000/60 as duration from player_quests_log t where cid=4 group by sessionid) t1;
 
+--average player play time
+select avg(player_sum) from (select sum(duration) as player_sum from 
+(select (max(client_ts)-min(client_ts))/1000/60 as duration, uid from player_quests_log t where cid=4 group by sessionid) t1 group by uid) t2;
+/*
+select avg(player_sum) from
+	(select sum(duration) as player_sum 
+	 from (select (max(client_ts)-min(client_ts))/1000/60 as duration, uid 
+		   from player_quests_log t 
+		   where cid=4 
+		   group by sessionid) t1
+	 group by uid) t2;*/
 
 
 
